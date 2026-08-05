@@ -28,6 +28,12 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao;
 
+use CgmRepository;
+use ServidorRepository;
+use Exception;
+use DBDate;
+use cl_avaliacaogruporespostaprocesso;
+use DateTime;
 use Assentamento;
 use BusinessException;
 use CgmFactory;
@@ -54,12 +60,12 @@ class ESocialEnvio
     private $codigo;
 
     /**
-     * @var \stdClass[]
+     * @var stdClass[]
      */
     private $ocorrencias;
 
     /**
-     * @var \stdClass[]
+     * @var stdClass[]
      */
     private $recibos;
     /**
@@ -164,19 +170,19 @@ class ESocialEnvio
                 case Tipo::S1020:
                     $cgm = CgmFactory::getInstanceByCgm($this->empregador);
                     $descricao = "{$cgm->getCnpj()} - {$cgm->getNome()} ";
-                    $dados = json_decode($this->dados);
+                    $dados = json_decode((string) $this->dados);
                     $descricao .= "<br>LOTAÇÃO: " . $dados->ideLotacao->codLotacao;
                     break;
                 case Tipo::S2190:
-                    $dados = json_decode($this->dados);
+                    $dados = json_decode((string) $this->dados);
                     $descricao = 'CPF: ' . db_formatar($dados->infoRegPrelim->cpfTrab, 'CPF');
                     $matricula = $dados->infoRegPrelim->matricula;
                     if (!empty($matricula)) {
                         try {
                             $servidor = new Servidor($this->responsavelPreenchimento);
-                            $nomeCgm = \CgmRepository::getNomeByCodigo($servidor->getCodigoCgm());
+                            $nomeCgm = CgmRepository::getNomeByCodigo($servidor->getCodigoCgm());
                             $descricao .= "<br> {$this->responsavelPreenchimento} - $nomeCgm";
-                        } catch (BusinessException $e) {
+                        } catch (BusinessException) {
                             $descricao .= "<br> Servidor não cadastrado";
                         }
                     }
@@ -194,13 +200,13 @@ class ESocialEnvio
                 case Tipo::R2010:
                     $prestador = JSON::create()->parse($this->dados);
                     $cnpj_prestador = $prestador->ideEstabObra->idePrestServ->cnpjPrestador;
-                    $descricao = \CgmRepository::getNomeByCNPJ($cnpj_prestador);
+                    $descricao = CgmRepository::getNomeByCNPJ($cnpj_prestador);
                     unset($prestador, $cnpj_prestador);
                     break;
                 case Tipo::R2055:
                     $prestador = JSON::create()->parse($this->dados);
                     $cnpj_prestador = $prestador->ideEstabAdquir->ideprodutor->nrinscprod;
-                    $descricao = \CgmRepository::getNomeByCNPJ($cnpj_prestador);
+                    $descricao = CgmRepository::getNomeByCNPJ($cnpj_prestador);
                     unset($prestador, $cnpj_prestador);
                     break;
                 case Tipo::S2200:
@@ -211,21 +217,21 @@ class ESocialEnvio
                 case Tipo::S2300:
                 case Tipo::S2306:
                 case Tipo::S2420:
-                    if (\ServidorRepository::isMatriculaValida($this->responsavelPreenchimento)) {
+                    if (ServidorRepository::isMatriculaValida($this->responsavelPreenchimento)) {
                         $servidor = new Servidor($this->responsavelPreenchimento);
                         $descricao = "{$this->responsavelPreenchimento} - "
-                            . \CgmRepository::getNomeByCodigo($servidor->getCodigoCgm());
+                            . CgmRepository::getNomeByCodigo($servidor->getCodigoCgm());
                     } else {
                         $descricao = "Matricula : {$this->responsavelPreenchimento} não encontrada .";
                     }
                     break;
                 case Tipo::S2240:
-                    $dados = explode("_", $this->responsavelPreenchimento);
+                    $dados = explode("_", (string) $this->responsavelPreenchimento);
 
-                    if (\ServidorRepository::isMatriculaValida($dados[0])) {
+                    if (ServidorRepository::isMatriculaValida($dados[0])) {
                         $servidor = new Servidor($dados[0]);
                         $descricao = "Matrícula: $dados[0]<br>";
-                        $descricao .= \CgmRepository::getNomeByCodigo($servidor->getCodigoCgm());
+                        $descricao .= CgmRepository::getNomeByCodigo($servidor->getCodigoCgm());
 
                         foreach ($servidor->getLocaisTrabalho() as $localTrabalho) {
                             if ($localTrabalho->getCodigo() == $dados[1]) {
@@ -238,16 +244,16 @@ class ESocialEnvio
                     break;
                 case Tipo::S2399:
                     $matricula = substr(
-                        $this->responsavelPreenchimento,
+                        (string) $this->responsavelPreenchimento,
                         0,
-                        strlen($this->responsavelPreenchimento) - 6
+                        strlen((string) $this->responsavelPreenchimento) - 6
                     );
                     $servidor = new Servidor($matricula);
                     $descricao = "{$matricula} - "
-                        . \CgmRepository::getNomeByCodigo($servidor->getCodigoCgm());
+                        . CgmRepository::getNomeByCodigo($servidor->getCodigoCgm());
                     break;
                 case Tipo::S2299:
-                    $competencia = substr($this->responsavelPreenchimento, -6);
+                    $competencia = substr((string) $this->responsavelPreenchimento, -6);
                     /**
                      * SE a competencia for do formato AAAAMM
                      */
@@ -255,30 +261,30 @@ class ESocialEnvio
                         && (int)substr($competencia, 4) <= 12
                     ) {
                         $matricula = substr(
-                            $this->responsavelPreenchimento,
+                            (string) $this->responsavelPreenchimento,
                             0,
-                            strlen($this->responsavelPreenchimento) - 6
+                            strlen((string) $this->responsavelPreenchimento) - 6
                         );
                         /**
                          * Se a competencia for do formato AAAAM
                          */
                     } elseif ($competencia[2] == "0" || $competencia[2] == "9") {
                         $matricula = substr(
-                            $this->responsavelPreenchimento,
+                            (string) $this->responsavelPreenchimento,
                             0,
-                            strlen($this->responsavelPreenchimento) - 5
+                            strlen((string) $this->responsavelPreenchimento) - 5
                         );
                         /**
                          * Se a competencia for do Formato AAAA
                          */
                     } else {
                         $matricula = substr(
-                            $this->responsavelPreenchimento,
+                            (string) $this->responsavelPreenchimento,
                             0,
-                            strlen($this->responsavelPreenchimento) - 4
+                            strlen((string) $this->responsavelPreenchimento) - 4
                         );
                     }
-                    $servidor = \ServidorRepository::getInstanciaByCodigo($matricula);
+                    $servidor = ServidorRepository::getInstanciaByCodigo($matricula);
                     $descricao = $servidor->getMatricula() . ' - ' . $servidor->getCgm()->getNome();
                     break;
                 case Tipo::S2220:
@@ -291,7 +297,7 @@ class ESocialEnvio
                         if (!empty($assentamento->getDataTermino())) {
                             $descricao .= " até {$assentamento->getDataTermino()}";
                         }
-                    } catch (\Exception $e) {
+                    } catch (Exception) {
                         $descricao = "";
                         $dados = JSON::create()->parse($this->dados);
                         if (!empty($dados->ideVinculo->matricula)) {
@@ -303,7 +309,7 @@ class ESocialEnvio
                         $data = "";
                         $data = "";
                         if (isset($dados->exMedOcup->aso->dtAso) && !empty($dados->exMedOcup->aso->dtAso)) {
-                            $data = "Data do Atestado " . \DBDate::format($dados->exMedOcup->aso->dtAso);
+                            $data = "Data do Atestado " . DBDate::format($dados->exMedOcup->aso->dtAso);
                         }
                         $descricao .= " {$data} <br>";
                         $descricao .= " Não localizado no sistema.<br>(Provavelmente o assentamento foi excluído).";
@@ -320,7 +326,7 @@ class ESocialEnvio
                         if (!empty($assentamento->getDataTermino())) {
                             $descricao .= " até {$assentamento->getDataTermino()}";
                         }
-                    } catch (\Exception $e) {
+                    } catch (Exception) {
                         $descricao = "";
                         $dados = JSON::create()->parse($this->dados);
                         if (!empty($dados->ideVinculo->matricula)) {
@@ -333,15 +339,15 @@ class ESocialEnvio
                         if (!empty($dados->infoAfastamento->iniAfastamento->dtIniAfast)
                             && !empty($dados->infoAfastamento->fimAfastamento->dtTermAfast)
                         ) {
-                            $data = "Periodo " . \DBDate::format($dados->infoAfastamento->iniAfastamento->dtIniAfast)
-                                . " até " . \DBDate::format($dados->infoAfastamento->fimAfastamento->dtTermAfast);
+                            $data = "Periodo " . DBDate::format($dados->infoAfastamento->iniAfastamento->dtIniAfast)
+                                . " até " . DBDate::format($dados->infoAfastamento->fimAfastamento->dtTermAfast);
                         } else {
                             if (!empty($dados->infoAfastamento->iniAfastamento->dtIniAfast)) {
                                 $data = "Inicio em "
-                                    . \DBDate::format($dados->infoAfastamento->iniAfastamento->dtIniAfast);
+                                    . DBDate::format($dados->infoAfastamento->iniAfastamento->dtIniAfast);
                             } else {
                                 $data = "Termino em "
-                                    . \DBDate::format($dados->infoAfastamento->fimAfastamento->dtTermAfast);
+                                    . DBDate::format($dados->infoAfastamento->fimAfastamento->dtTermAfast);
                             }
                         }
                         $descricao .= " {$data} <br>";
@@ -350,9 +356,9 @@ class ESocialEnvio
                     }
                     break;
                 case Tipo::S2231:
-                    $dados = json_decode($this->dados);
-                    $referencias = explode("_", $dados->referencia);
-                    $servidor = \ServidorRepository::getInstanciaByCodigo($referencias[0]);
+                    $dados = json_decode((string) $this->dados);
+                    $referencias = explode("_", (string) $dados->referencia);
+                    $servidor = ServidorRepository::getInstanciaByCodigo($referencias[0]);
                     $descricao = $servidor->getMatricula() . ' - ' . $servidor->getCgm()->getNome();
                     $dataFormatada = date('d/m/Y', strtotime($referencias[3]));
                     if ($referencias[2] == 'inicio') {
@@ -365,38 +371,38 @@ class ESocialEnvio
                     $descricao = "CÓDIGO DA CONVOCAÇÃO: {$this->responsavelPreenchimento}";
                     break;
                 case Tipo::S3000:
-                    $dados = json_decode($this->dados);
+                    $dados = json_decode((string) $this->dados);
                     $descricao = "<span title='O evento S-3000 foi originado do evento";
                     $descricao .= " {$dados->infoExclusao->tpEvento}.'>";
                     $descricao .= "Nº DO RECIBO EXCLUÍDO: {$this->responsavelPreenchimento}";
                     switch ($dados->infoExclusao->tpEvento) {
                         case "S-1210":
-                            $nome = \CgmRepository::getNomeByCpf($dados->infoExclusao->ideTrabalhador->cpfTrab);
+                            $nome = CgmRepository::getNomeByCpf($dados->infoExclusao->ideTrabalhador->cpfTrab);
                             $descricao .= "<br>CPF: {$dados->infoExclusao->ideTrabalhador->cpfTrab} - {$nome}";
                             $descricao .= "<br>Evento: S-1210 - Referencia: ";
                             $descricao .= $dados->infoExclusao->ideFolhaPagto->perApur;
                             break;
                         case "S-2230":
-                            $nome = \CgmRepository::getNomeByCpf($dados->infoExclusao->ideTrabalhador->cpfTrab);
+                            $nome = CgmRepository::getNomeByCpf($dados->infoExclusao->ideTrabalhador->cpfTrab);
                             $descricao .= "<br>CPF: {$dados->infoExclusao->ideTrabalhador->cpfTrab} - {$nome}";
                             $descricao .= "<br>Evento: S2230 - Afastamento Temporário";
                             break;
                     }
                     break;
                 case Tipo::S3500:
-                    $dados = json_decode($this->dados);
+                    $dados = json_decode((string) $this->dados);
                     $descricao = "Originado do evento ";
                     if ($dados->infoExclusao->tpEvento == 'S-2500') {
-                        $dadoReferencia = explode('-', $dados->referencia);
-                        $servidor = \ServidorRepository::getInstanciaByCodigo($dadoReferencia[0]);
+                        $dadoReferencia = explode('-', (string) $dados->referencia);
+                        $servidor = ServidorRepository::getInstanciaByCodigo($dadoReferencia[0]);
                         $nome = $servidor->getCgm()->getNome();
                         $matricula = $servidor->getMatricula();
                         $descricao .= $dados->infoExclusao->tpEvento;
                         $descricao .= "<br>Matricula: {$dadoReferencia[0]} - {$nome}";
                     }
                     if ($dados->infoExclusao->tpEvento == 'S-2501') {
-                        $dadoReferencia = explode('-', $dados->referencia);
-                        $nome = \CgmRepository::getNomeByCpf($dadoReferencia[0]);
+                        $dadoReferencia = explode('-', (string) $dados->referencia);
+                        $nome = CgmRepository::getNomeByCpf($dadoReferencia[0]);
                         $descricao .= $dados->infoExclusao->tpEvento;
                         $descricao .= "<br>CPF: {$dadoReferencia[0]} - {$nome}";
                     }
@@ -404,8 +410,8 @@ class ESocialEnvio
                     $descricao .= "<br>Nº DO RECIBO EXCLUÍDO: <strong>{$dados->infoExclusao->nrRecEvt}</strong>";
                     break;
                 case Tipo::S2400:
-                    $nome = \CgmRepository::getNomeByCpf($this->responsavelPreenchimento);
-                    $servidores = \ServidorRepository::getServidoresPorCpf($this->responsavelPreenchimento);
+                    $nome = CgmRepository::getNomeByCpf($this->responsavelPreenchimento);
+                    $servidores = ServidorRepository::getServidoresPorCpf($this->responsavelPreenchimento);
                     $descricao = $nome;
                     $matriculas = "<br>Matricula(s): ";
                     foreach ($servidores as $servidor) {
@@ -421,18 +427,18 @@ class ESocialEnvio
                     break;
                 case Tipo::S2410:
                 case Tipo::S2416:
-                    $dados = json_decode($this->dados);
-                    if (\ServidorRepository::isMatriculaValida($dados->referencia)) {
-                        $servidor = \ServidorRepository::getInstanciaByCodigo($dados->referencia);
+                    $dados = json_decode((string) $this->dados);
+                    if (ServidorRepository::isMatriculaValida($dados->referencia)) {
+                        $servidor = ServidorRepository::getInstanciaByCodigo($dados->referencia);
                         $descricao = $servidor->getCgm()->getNome() . ' -  ' . $servidor->getMatricula();
                     } else {
                         $descricao = "Matricula : {$dados->referencia} não encontrada .";
                     }
                     break;
                 case Tipo::S2405:
-                    $dados = json_decode($this->dados);
-                    $nome = \CgmRepository::getNomeByCpf($this->responsavelPreenchimento);
-                    $servidores = \ServidorRepository::getServidoresPorCpf($this->responsavelPreenchimento);
+                    $dados = json_decode((string) $this->dados);
+                    $nome = CgmRepository::getNomeByCpf($this->responsavelPreenchimento);
+                    $servidores = ServidorRepository::getServidoresPorCpf($this->responsavelPreenchimento);
                     $descricao = $nome;
                     $matriculas = "<br>Matricula(s): ";
                     foreach ($servidores as $servidor) {
@@ -447,9 +453,9 @@ class ESocialEnvio
                     }
                     break;
                 case Tipo::S1200:
-                    $dados = json_decode($this->dados);
-                    $numeroCgm = substr($this->responsavelPreenchimento, 0, -7);
-                    $nome = \CgmRepository::getNomeByCodigo($numeroCgm);
+                    $dados = json_decode((string) $this->dados);
+                    $numeroCgm = substr((string) $this->responsavelPreenchimento, 0, -7);
+                    $nome = CgmRepository::getNomeByCodigo($numeroCgm);
 
                     $descricao = "CPF: " . $dados->ideTrabalhador->cpfTrab;
                     $descricao .= "<br>Matrícula(s): ";
@@ -458,7 +464,7 @@ class ESocialEnvio
                             foreach ($dmDev->infoPerAnt->ideADC[0]->idePeriodo[0]->ideEstabLot as $ideEstabLot) {
                                 foreach ($ideEstabLot->remunPerAnt as $remunPerAnt) {
                                     if (isset($remunPerAnt->matricula) && !empty($remunPerAnt->matricula)) {
-                                        if (!str_contains($descricao, $remunPerAnt->matricula)) {
+                                        if (!str_contains($descricao, (string) $remunPerAnt->matricula)) {
                                             $descricao .= (string)$remunPerAnt->matricula . ", ";
                                         }
                                     }
@@ -468,7 +474,7 @@ class ESocialEnvio
                             foreach ($dmDev->infoPerApur->ideEstabLot as $ideEstabLot) {
                                 foreach ($ideEstabLot->remunPerApur as $remunPerApur) {
                                     if (isset($remunPerApur->matricula) && !empty($remunPerApur->matricula)) {
-                                        if (!str_contains($descricao, $remunPerApur->matricula)) {
+                                        if (!str_contains($descricao, (string) $remunPerApur->matricula)) {
                                             $descricao .= (string)$remunPerApur->matricula . ", ";
                                         }
                                     }
@@ -480,7 +486,7 @@ class ESocialEnvio
                     $descricao = substr($descricao, 0, -2);
 
                     $descricao .= " - {$nome}";
-                    $competencia = substr($dados->referencia, -7, 6);
+                    $competencia = substr((string) $dados->referencia, -7, 6);
                     $descricao .= "<br> COMPETÊNCIA: " . substr($competencia, -2)
                         . '/' . substr($competencia, 0, 4) . "</span>";
                     if ($dados->indApuracao == 2) {
@@ -491,10 +497,10 @@ class ESocialEnvio
                     unset($dados);
                     break;
                 case Tipo::S1202:
-                    $dados = json_decode($this->dados);
-                    $referencias = explode("-", $dados->referencia);
+                    $dados = json_decode((string) $this->dados);
+                    $referencias = explode("-", (string) $dados->referencia);
                     $numeroCgm = $referencias[0];
-                    $nome = \CgmRepository::getNomeByCodigo($numeroCgm);
+                    $nome = CgmRepository::getNomeByCodigo($numeroCgm);
 
                     $descricao = "CPF: " . $dados->ideTrabalhador->cpfTrab;
                     $descricao .= "<br>Matrícula(s): ";
@@ -537,9 +543,9 @@ class ESocialEnvio
                     unset($dados);
                     break;
                 case Tipo::S1207:
-                    $dados = json_decode($this->dados);
-                    $referencia = explode('_', $this->responsavelPreenchimento);
-                    $nome = \CgmRepository::getNomeByCodigo($referencia[0]);
+                    $dados = json_decode((string) $this->dados);
+                    $referencia = explode('_', (string) $this->responsavelPreenchimento);
+                    $nome = CgmRepository::getNomeByCodigo($referencia[0]);
                     $descricao = "CPF: " . $dados->ideBenef->cpfBenef;
                     $descricao .= "<br>Matrícula(s): ";
                     $matriculas = [];
@@ -560,7 +566,7 @@ class ESocialEnvio
                     unset($dados);
                     break;
                 case Tipo::S1210:
-                    $dados = json_decode($this->dados);
+                    $dados = json_decode((string) $this->dados);
                     $tipoPagamento = [];
                     $arrayRef = [];
                     foreach ($dados->ideBenef->infoPgto as $infoPgto) {
@@ -570,7 +576,7 @@ class ESocialEnvio
 
                     $decimo = false;
 
-                    $referencias = explode("_", $dados->referencia);
+                    $referencias = explode("_", (string) $dados->referencia);
                     $cgm = CgmFactory::getInstanceByCgm($referencias[0]);
 
                     $competencia = str_split($referencias[1], 4);
@@ -598,11 +604,11 @@ class ESocialEnvio
                     $descricao .= "<br>Matrícula(s): ";
                     $matri_nome = "{$matricula} - {$cgm->getNome()}<br> COMPETÊNCIA C.X:";
                     $descricao .= " {$matri_nome}";
-                    $periodoApuracao = explode('-', $dados->perApur);
+                    $periodoApuracao = explode('-', (string) $dados->perApur);
                     $descricao .= "{$periodoApuracao[1]}/$periodoApuracao[0]</span>";
                     $competencias = [];
                     foreach ($arrayRef as $value) {
-                        $comp = explode('-', $value);
+                        $comp = explode('-', (string) $value);
                         $qtd = sizeof($comp);
 
                         switch ($qtd) {
@@ -625,11 +631,11 @@ class ESocialEnvio
                     break;
                 case Tipo::S1295:
                 case Tipo::S1299:
-                    $dados = json_decode($this->dados);
+                    $dados = json_decode((string) $this->dados);
                     $descricao = $dados->perApur;
                     break;
                 case Tipo::S1300:
-                    $dados = json_decode($this->dados);
+                    $dados = json_decode((string) $this->dados);
                     $descricao = $dados->ideEmpregador->perApur;
                     break;
                 case Tipo::EFD_FECHAMENTO_PERIODICOS:
@@ -637,8 +643,8 @@ class ESocialEnvio
                     $descricao = "{$this->responsavelPreenchimento} - {$cgm->getNome()}";
                     break;
                 case Tipo::S1298:
-                    $dados = json_decode($this->dados);
-                    $referencias = explode("_", $dados->referencia);
+                    $dados = json_decode((string) $this->dados);
+                    $referencias = explode("_", (string) $dados->referencia);
                     $competencia = explode('-', $referencias[1]);
 
                     $descricao = "COMPETÊNCIA: {$competencia[0]}";
@@ -647,9 +653,9 @@ class ESocialEnvio
                     }
                     break;
                 case Tipo::S2210:
-                    $dados = json_decode($this->dados);
-                    $dataAcidente = \DBDate::format($dados->cat->dtAcid);
-                    $nome = \CgmRepository::getNomeByCpf($dados->ideVinculo->cpfTrab);
+                    $dados = json_decode((string) $this->dados);
+                    $dataAcidente = DBDate::format($dados->cat->dtAcid);
+                    $nome = CgmRepository::getNomeByCpf($dados->ideVinculo->cpfTrab);
                     $descricao = "<br>CPF: {$dados->ideVinculo->cpfTrab} - {$nome}";
                     if (!empty($dados->ideVinculo->matricula)) {
                         $descricao .= "<br>Matrícula: {$dados->ideVinculo->matricula}";
@@ -657,16 +663,16 @@ class ESocialEnvio
                     $descricao .= "<br>Data do Acidente: {$dataAcidente}";
                     break;
                 case Tipo::S2500:
-                    $dados = json_decode($this->dados);
-                    $dadoReferencia = explode('-', $dados->referencia);
+                    $dados = json_decode((string) $this->dados);
+                    $dadoReferencia = explode('-', (string) $dados->referencia);
                     $matricula = $dadoReferencia[0];
                     if (isset($dados->infoProcesso->dadosCompl->infoProcJud->dtSent)) {
-                        $dataSentenca = \DBDate::format($dados->infoProcesso->dadosCompl->infoProcJud->dtSent);
+                        $dataSentenca = DBDate::format($dados->infoProcesso->dadosCompl->infoProcJud->dtSent);
                     }
                     if (isset($dados->infoProcesso->dadosCompl->infoCCP->dtCCP)) {
-                        $dataAcordo = \DBDate::format($dados->infoProcesso->dadosCompl->infoCCP->dtCCP);
+                        $dataAcordo = DBDate::format($dados->infoProcesso->dadosCompl->infoCCP->dtCCP);
                     }
-                    $nome = \CgmRepository::getNomeByCpf($dados->ideTrab->cpfTrab);
+                    $nome = CgmRepository::getNomeByCpf($dados->ideTrab->cpfTrab);
                     $descricao = "<br>CPF: {$dados->ideTrab->cpfTrab} - {$nome}";
                     if (!empty($matricula)) {
                         $descricao .= "<br>Matrícula: {$matricula}";
@@ -680,9 +686,9 @@ class ESocialEnvio
                     }
                     break;
                 case Tipo::S2501:
-                    $dados = json_decode($this->dados);
-                    $dadoReferencia = explode('-', $dados->referencia);
-                    $nome = \CgmRepository::getNomeByCpf($dadoReferencia[0]);
+                    $dados = json_decode((string) $this->dados);
+                    $dadoReferencia = explode('-', (string) $dados->referencia);
+                    $nome = CgmRepository::getNomeByCpf($dadoReferencia[0]);
                     $descricao = "<br>CPF: {$dadoReferencia[0]} - {$nome}";
                     $descricao .= "<br>Processo: {$dados->ideProc->nrProcTrab}";
                     $descricao .= "<br>Pagamento: {$dados->ideProc->perApurPgto}";
@@ -698,26 +704,26 @@ class ESocialEnvio
                     }
                     break;
                 case Tipo::R4020:
-                    $dados = json_decode($this->dados);
+                    $dados = json_decode((string) $this->dados);
                     $cnpj_prestador = $dados->idebenef->cnpjbenef;
-                    $descricao = \CgmRepository::getNomeByCNPJ($cnpj_prestador);
+                    $descricao = CgmRepository::getNomeByCNPJ($cnpj_prestador);
                     break;
                 case Tipo::R4010:
-                    $dados = json_decode($this->dados);
+                    $dados = json_decode((string) $this->dados);
                     $cpfbenef = $dados->idebenef->cpfbenef;
-                    $descricao = \CgmRepository::getNomeByCNPJ($cpfbenef);
+                    $descricao = CgmRepository::getNomeByCNPJ($cpfbenef);
                     break;
                 case Tipo::R4040:
                     $cgm = CgmFactory::getInstanceByCgm($this->empregador);
                     $descricao = "{$cgm->getCnpj()} - {$cgm->getNome()}";
                     break;
                 case Tipo::R4099:
-                    $dados = json_decode($this->dados);
+                    $dados = json_decode((string) $this->dados);
                     $tipo = ($dados->fechret == 0) ? 'FECHAMENTO' : 'REABERTURA';
                     $descricao = $tipo;
                     break;
                 case Tipo::R9000:
-                    $dados = json_decode($this->dados);
+                    $dados = json_decode((string) $this->dados);
                     $descricao  = "<b>Evento:</b> {$dados->infoExclusao->tpEvento} ";
                     $descricao .= "<b>Competência:</b> {$dados->infoExclusao->perApur} ";
                     $descricao .= "<b>Recibo:</b> {$dados->infoExclusao->nrRecEvt}";
@@ -734,7 +740,7 @@ class ESocialEnvio
      */
     private function buscaProcesso($responsavel)
     {
-        $avaliacaoGrupoRespostaProcesso = new \cl_avaliacaogruporespostaprocesso();
+        $avaliacaoGrupoRespostaProcesso = new cl_avaliacaogruporespostaprocesso();
         $sqlProcesso = $avaliacaoGrupoRespostaProcesso->processoPorEnvio($responsavel);
 
         $rsProcesso = db_query($sqlProcesso);
@@ -861,7 +867,7 @@ class ESocialEnvio
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getData()
     {
@@ -869,7 +875,7 @@ class ESocialEnvio
     }
 
     /**
-     * @param \DateTime $data
+     * @param DateTime $data
      */
     public function setData($data)
     {
@@ -957,7 +963,7 @@ class ESocialEnvio
     }
 
     /**
-     * @return \stdClass[]
+     * @return stdClass[]
      */
     public function getOcorrencias()
     {
@@ -965,7 +971,7 @@ class ESocialEnvio
     }
 
     /**
-     * @param \stdClass[] $ocorrencias
+     * @param stdClass[] $ocorrencias
      */
     public function setOcorrencias($ocorrencias)
     {
@@ -973,7 +979,7 @@ class ESocialEnvio
     }
 
     /**
-     * @return \stdClass[]
+     * @return stdClass[]
      */
     public function getRecibos()
     {
@@ -981,7 +987,7 @@ class ESocialEnvio
     }
 
     /**
-     * @param \stdClass[] $recibos
+     * @param stdClass[] $recibos
      */
     public function setRecibos($recibos)
     {
@@ -1001,7 +1007,7 @@ class ESocialEnvio
     public function serialize()
     {
         $serialize = clone $this;
-        if ($this->data instanceof \DateTime) {
+        if ($this->data instanceof DateTime) {
             $serialize->setData($this->data->format("d/m/Y H:i:s"));
         }
         return JSON::create()->stringify(get_object_vars($serialize));
@@ -1037,7 +1043,7 @@ class ESocialEnvio
         }
 
         if (array_key_exists('rh213_data', $state)) {
-            $esocialEnvio->setData(new \DateTime($state['rh213_data']));
+            $esocialEnvio->setData(new DateTime($state['rh213_data']));
         }
         if (array_key_exists('rh213_situacao', $state)) {
             $esocialEnvio->setSituacaoSalva((string)$state['rh213_situacao']);

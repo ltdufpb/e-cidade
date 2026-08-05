@@ -50,13 +50,13 @@ class DocumentoContabil {
    * Variaveis cadastradas para o documento contabil
    * @var array
 	 */
-	protected $aVariaveisDocumento = array();
+	protected $aVariaveisDocumento = [];
 
 	/**
 	 * Array contendo as variáveis e suas informações
 	 * @var array
 	 */
-	protected $aInformacoesVariaveis = array();
+	protected $aInformacoesVariaveis = [];
 
 	/**
 	 * Carrega o objeto e suas propriedades
@@ -145,7 +145,7 @@ class DocumentoContabil {
 	 */
 	static public function getDocumentosPorGrupo ($iCodigoGrupo) {
 
-	  $aDocumentos = array();
+	  $aDocumentos = [];
 	  switch ($iCodigoGrupo) {
 
 	    case 7: //servicos

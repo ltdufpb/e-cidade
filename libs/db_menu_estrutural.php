@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -42,7 +42,7 @@
     
     var $mostra_conta = null;
 
-    function menu_estrutural(){
+    function __construct(){
      //-- constructor
     }  
     function monta_select(){

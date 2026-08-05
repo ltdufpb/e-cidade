@@ -8,6 +8,11 @@
 
 namespace ECidade\Financeiro\Contabilidade\MatrizSaldoContabil;
 
+use DateTime;
+use db_utils;
+use Instituicao;
+use stdClass;
+
 /**
  * Processa a lista de recursos atravez da matriz
  * Class SaldoRecurso
@@ -24,17 +29,17 @@ class SaldoRecurso
     protected $estrutural;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $dataInicial;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $dataFinal;
 
     /**
-     * @var \Instituicao[]
+     * @var Instituicao[]
      */
     private $instituicoes;
 
@@ -45,15 +50,15 @@ class SaldoRecurso
      * retorna os saldos por recurso da conta informadoda
      * @param $conta
      * @param array $instituicoes
-     * @param \DateTime $dataInicial
-     * @param \DateTime $dataFinal
+     * @param DateTime $dataInicial
+     * @param DateTime $dataFinal
      * @param null $estrutural
-     * @return \stdClass[]
+     * @return stdClass[]
      */
     public function getRecursos(
         array $instituicoes,
-        \DateTime $dataInicial,
-        \DateTime $dataFinal,
+        DateTime $dataInicial,
+        DateTime $dataFinal,
         $conta = null,
         $estrutural = null,
         $verificaSaldoAnterior = true
@@ -95,7 +100,7 @@ class SaldoRecurso
         $resRecursos = db_query($sqlRecursos);
 
         db_query("drop table {$this->tableName}");
-        return \db_utils::getCollectionByRecord($resRecursos);
+        return db_utils::getCollectionByRecord($resRecursos);
     }
 
     /**
@@ -107,10 +112,7 @@ class SaldoRecurso
     {
 
         global $DB_BASE;
-        $codigoInstituicoes = array_map(function (\Instituicao $instituicao) {
-
-            return "'%" . $instituicao->getCodigoTribunal() . "#PO%'";
-        }, $this->instituicoes);
+        $codigoInstituicoes = array_map(fn(Instituicao $instituicao) => "'%" . $instituicao->getCodigoTribunal() . "#PO%'", $this->instituicoes);
 
         $whereInstituicoes = 'like ' . implode(' or c125_hashcontaatributos like', $codigoInstituicoes);
         $this->tableName = "saldo_recursos_matriz_" . time();
@@ -167,16 +169,13 @@ SQL;
     {
         $dataInicial = $this->dataInicial->format('Y-m-d');
         $dataFinal = $this->dataFinal->format('Y-m-d');
-        $codigoInstituicoes = implode(',', array_map(function (\Instituicao $instituicao) {
-
-            return $instituicao->getCodigo();
-        }, $this->instituicoes));
+        $codigoInstituicoes = implode(',', array_map(fn(Instituicao $instituicao) => $instituicao->getCodigo(), $this->instituicoes));
 
         $ano = $this->dataInicial->format('Y');
 
         $wherePorTipo = " and c124_tipo <> '1' ";
         $sqlRegistrosSaldoAnterior = "select count(*) as total from {$this->tableName}";
-        $totalRegistros = \db_utils::fieldsMemory(db_query($sqlRegistrosSaldoAnterior), 0)->total;
+        $totalRegistros = db_utils::fieldsMemory(db_query($sqlRegistrosSaldoAnterior), 0)->total;
 
         /**
          * primeiro ano da mSC

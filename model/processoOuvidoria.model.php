@@ -245,23 +245,23 @@ class processoOuvidoria
             throw new Exception("{$sMsgErro}, nenhuma transação encontrada!");
         }
 
-        if (trim($iCodProc) == '') {
+        if (trim((string) $iCodProc) == '') {
             throw new Exception("{$sMsgErro}, nenhum processo informado!");
         }
 
-        if (trim($iCodDeptoRec) == '') {
+        if (trim((string) $iCodDeptoRec) == '') {
             throw new Exception("{$sMsgErro}, departamento de recebimento não informado!");
         }
 
-        if (trim($iIdUsuarioRec) == '') {
+        if (trim((string) $iIdUsuarioRec) == '') {
             $iIdUsuarioRec = 0;
         }
 
-        if (trim($iIdUsuario) == '') {
+        if (trim((string) $iIdUsuario) == '') {
             $iIdUsuario = db_getsession('DB_id_usuario');
         }
 
-        if (trim($iCodDepto) == '') {
+        if (trim((string) $iCodDepto) == '') {
             $iCodDepto = db_getsession('DB_coddepto');
         }
 
@@ -307,15 +307,15 @@ class processoOuvidoria
             throw new Exception("{$sMsgErro}, nenhuma transação encontrada!");
         }
 
-        if (trim($iCodProc) == '') {
+        if (trim((string) $iCodProc) == '') {
             throw new Exception("{$sMsgErro}, nenhum processo informado!");
         }
 
-        if (trim($iIdUsuario) == '') {
+        if (trim((string) $iIdUsuario) == '') {
             $iIdUsuario = db_getsession('DB_id_usuario');
         }
 
-        if (trim($iCodDepto) == '') {
+        if (trim((string) $iCodDepto) == '') {
             $iCodDepto = db_getsession('DB_coddepto');
         }
 
@@ -324,7 +324,7 @@ class processoOuvidoria
         $clProcTransAnd = new cl_proctransand();
         $clProcAndamInt = new cl_procandamint();
 
-        if (trim($iCodTran) == '') {
+        if (trim((string) $iCodTran) == '') {
             $sWhereProcesso = "     p58_codproc = {$iCodProc}               ";
             $sWhereProcesso .= " and p61_codandam is null                    ";
             $sWhereProcesso .= " and ((  p62_coddeptorec = {$iCodDepto}      ";
@@ -410,7 +410,7 @@ class processoOuvidoria
 
     public function incluirDespachoInterno(
         $iCodProc = '',
-        $sDespacho,
+        $sDespacho = null,
         $iIdUsuario = '',
         $iCodDepto = '',
         $publico = null
@@ -421,15 +421,15 @@ class processoOuvidoria
             throw new Exception("{$sMsgErro}, nenhuma transação encontrada!");
         }
 
-        if (trim($iCodProc) == '') {
+        if (trim((string) $iCodProc) == '') {
             throw new Exception("{$sMsgErro}, nenhum processo informado!");
         }
 
-        if (trim($iIdUsuario) == '') {
+        if (trim((string) $iIdUsuario) == '') {
             $iIdUsuario = db_getsession('DB_id_usuario');
         }
 
-        if (trim($iCodDepto) == '') {
+        if (trim((string) $iCodDepto) == '') {
             $iCodDepto = db_getsession('DB_coddepto');
         }
 
@@ -464,15 +464,15 @@ class processoOuvidoria
             throw new Exception("{$sMsgErro}, nenhuma transação encontrada!");
         }
 
-        if (trim($iCodProc) == '') {
+        if (trim((string) $iCodProc) == '') {
             throw new Exception("{$sMsgErro}, nenhum processo informado!");
         }
 
-        if (trim($iCodDepto) == '') {
+        if (trim((string) $iCodDepto) == '') {
             throw new Exception("{$sMsgErro}, departamento não informado!");
         }
 
-        if (trim($iOrdem) == '') {
+        if (trim((string) $iOrdem) == '') {
             try {
                 $iOrdem = $this->getPosicaoAtualProrrogacao($iCodProc);
             } catch (Exception $eException) {
@@ -480,7 +480,7 @@ class processoOuvidoria
             }
         }
 
-        if (trim($dtDataInicial) == '') {
+        if (trim((string) $dtDataInicial) == '') {
             $dtDataIni = db_getsession('DB_datausu');
         }
 
@@ -578,8 +578,8 @@ class processoOuvidoria
                 }
 
                 if (($lProcessado && $lNovoDepto) || (!$lProcessado && !$lNovoDepto)) {
-                    $aDataPrevIni = explode('-', $oProrrogacao->ov15_dtini);
-                    $aDataPrevFin = explode('-', $oProrrogacao->ov15_dtfim);
+                    $aDataPrevIni = explode('-', (string) $oProrrogacao->ov15_dtini);
+                    $aDataPrevFin = explode('-', (string) $oProrrogacao->ov15_dtfim);
                     $iDataPrevIni = mktime(0, 0, 0, $aDataPrevIni[1], $aDataPrevIni[2], $aDataPrevIni[0]);
                     $iDataPrevFin = mktime(0, 0, 0, $aDataPrevFin[1], $aDataPrevFin[2], $aDataPrevFin[0]);
                     $iDiasDif = ceil(($iDataPrevFin - $iDataPrevIni) / 86400) + 1;
@@ -626,15 +626,15 @@ class processoOuvidoria
             throw new Exception("{$sMsgErro}, nenhuma transação encontrada!");
         }
 
-        if (trim($iCodProc) == '') {
+        if (trim((string) $iCodProc) == '') {
             throw new Exception("{$sMsgErro}, nenhum processo informado!");
         }
 
-        if (trim($iCodDepto) == '') {
+        if (trim((string) $iCodDepto) == '') {
             throw new Exception("{$sMsgErro}, departamento não informado!");
         }
 
-        if (trim($iOrdem) == '') {
+        if (trim((string) $iOrdem) == '') {
             try {
                 $iOrdem = $this->getPosicaoAtualProrrogacao($iCodProc);
             } catch (Exception $eException) {
@@ -679,7 +679,7 @@ class processoOuvidoria
                 }
 
                 if ((!$lSegueSequencia || ($lSegueSequencia && $iCodDepto == $oProrrogacao->ov15_coddepto)) && !$lProcessado) {
-                    $aDataIni = explode('-', $oProrrogacao->ov15_dtini);
+                    $aDataIni = explode('-', (string) $oProrrogacao->ov15_dtini);
                     $dtDataIni = mktime(0, 0, 0, $aDataIni[1], $aDataIni[2], $aDataIni[0]);
                     $dtDataFim = db_stdClass::getIntervaloDiasUteis($dtDataIni, $iDias);
 
@@ -705,8 +705,8 @@ class processoOuvidoria
                 }
 
                 if ($lProcessado) {
-                    $aDataPrevIni = explode('-', $oProrrogacao->ov15_dtini);
-                    $aDataPrevFin = explode('-', $oProrrogacao->ov15_dtfim);
+                    $aDataPrevIni = explode('-', (string) $oProrrogacao->ov15_dtini);
+                    $aDataPrevFin = explode('-', (string) $oProrrogacao->ov15_dtfim);
                     $iDataPrevIni = mktime(0, 0, 0, $aDataPrevIni[1], $aDataPrevIni[2], $aDataPrevIni[0]);
                     $iDataPrevFin = mktime(0, 0, 0, $aDataPrevFin[1], $aDataPrevFin[2], $aDataPrevFin[0]);
                     $iDiasDif = ceil(($iDataPrevFin - $iDataPrevIni) / 86400) + 1;
@@ -744,11 +744,11 @@ class processoOuvidoria
     {
         $sMsgErro = 'Consulta de departamento abortada';
 
-        if (trim($iCodProc) == '') {
+        if (trim((string) $iCodProc) == '') {
             throw new Exception("{$sMsgErro}, nenhum processo informado!");
         }
 
-        if (trim($iDeptoAtual) == '') {
+        if (trim((string) $iDeptoAtual) == '') {
             $iDeptoAtual = db_getsession('DB_coddepto');
         }
 
@@ -791,7 +791,7 @@ class processoOuvidoria
     {
         $sMsgErro = 'Consulta da posição atual na prorrogação abortada';
 
-        if (trim($iCodProc) == '') {
+        if (trim((string) $iCodProc) == '') {
             throw new Exception("{$sMsgErro}, nenhum processo informado!");
         }
 
@@ -821,15 +821,15 @@ class processoOuvidoria
             throw new Exception("{$sMsgErro}, nenhuma transação encontrada!");
         }
 
-        if (trim($iCodProc) == '') {
+        if (trim((string) $iCodProc) == '') {
             throw new Exception("{$sMsgErro}, nenhum processo informado!");
         }
 
-        if (trim($iIdUsuario) == '') {
+        if (trim((string) $iIdUsuario) == '') {
             $iIdUsuario = db_getsession('DB_id_usuario');
         }
 
-        if (trim($iCodDepto) == '') {
+        if (trim((string) $iCodDepto) == '') {
             $iCodDepto = db_getsession('DB_coddepto');
         }
 

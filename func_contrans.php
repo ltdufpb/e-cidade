@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_contrans_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcontrans = new cl_contrans;
 $clcontrans->rotulo->label("c45_seqtrans");
 $clcontrans->rotulo->label("c45_coddoc");
@@ -54,7 +55,7 @@ $clcontrans->rotulo->label("c45_coddoc");
               <?=$Lc45_seqtrans?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c45_seqtrans",6,$Ic45_seqtrans,true,"text",4,"","chave_c45_seqtrans");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcontrans->rotulo->label("c45_coddoc");
               <?=$Lc45_coddoc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c45_coddoc",4,$Ic45_coddoc,true,"text",4,"","chave_c45_coddoc");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clcontrans->rotulo->label("c45_coddoc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_contrans.php")==true){
@@ -118,12 +119,12 @@ $clcontrans->rotulo->label("c45_coddoc");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

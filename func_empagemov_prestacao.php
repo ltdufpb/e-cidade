@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -32,7 +32,8 @@ include modification("libs/db_usuariosonline.php");
 include modification("dbforms/db_funcoes.php");
 include modification("classes/db_empagemov_classe.php");
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clempagemov = new cl_empagemov;
 $clempagemov->rotulo->label("e81_codmov");
 $clempagemov->rotulo->label("e81_numemp");
@@ -57,7 +58,7 @@ $oRotulo->label("e60_codemp");
               <?=$Le81_codmov?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("e81_codmov",6,$Ie81_codmov,true,"text",4,"","chave_e81_codmov");
 		       ?>
             </td>
@@ -67,7 +68,7 @@ $oRotulo->label("e60_codemp");
               <?=$Le60_numemp?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("e81_numemp",10, $Ie60_numemp,true,"text",4,"","chave_e81_numemp");
 		       ?>
             </td>
@@ -77,7 +78,7 @@ $oRotulo->label("e60_codemp");
              <?=$Le60_codemp?>
            </td>
            <td width="96%" align="left" nowrap>
-             <?
+             <?php 
              db_input("e60_codemp",10, $Ie60_codemp,true,"text",4,"","chave_e60_codemp");
              ?>
            </td>
@@ -167,12 +168,12 @@ $oRotulo->label("e60_codemp");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

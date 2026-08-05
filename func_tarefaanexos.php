@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tarefaanexos_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltarefaanexos = new cl_tarefaanexos;
 $cltarefaanexos->rotulo->label("at25_sequencial");
 $cltarefaanexos->rotulo->label("at25_tarefa");
@@ -54,7 +55,7 @@ $cltarefaanexos->rotulo->label("at25_tarefa");
               <?=$Lat25_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at25_sequencial",10,$Iat25_sequencial,true,"text",4,"","chave_at25_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cltarefaanexos->rotulo->label("at25_tarefa");
               <?=$Lat25_tarefa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at25_tarefa",10,$Iat25_tarefa,true,"text",4,"","chave_at25_tarefa");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cltarefaanexos->rotulo->label("at25_tarefa");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tarefaanexos.php")==true){
@@ -122,12 +123,12 @@ $cltarefaanexos->rotulo->label("at25_tarefa");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -65,15 +65,15 @@ $clrotulo->label("e60_codemp");
   </tr>
   <tr>
     <td nowrap title="<?=@$Te45_tipo?>">
-       <?
+       <?php 
        db_ancora(@$Le45_tipo,"js_pesquisae45_tipo(true);",$db_op);
        ?>
     </td>
     <td>
-<?
+<?php 
 db_input('e45_tipo',8,$Ie45_tipo,true,'text',$db_op," onchange='js_pesquisae45_tipo(false);'")
 ?>
-       <?
+       <?php 
 db_input('e44_descr',40,$Ie44_descr,true,'text',3,'')
        ?>
     </td>
@@ -83,7 +83,7 @@ db_input('e44_descr',40,$Ie44_descr,true,'text',3,'')
        <?=@$Le45_data?>
     </td>
     <td>
-<?
+<?php 
 db_inputdata('e45_data',@$e45_data_dia,@$e45_data_mes,@$e45_data_ano,true,'text',$db_op)
 ?>
     </td>
@@ -93,7 +93,7 @@ db_inputdata('e45_data',@$e45_data_dia,@$e45_data_mes,@$e45_data_ano,true,'text'
        <?=@$Le45_conferido?>
     </td>
     <td>
-<?
+<?php 
 db_inputdata('e45_conferido',@$e45_conferido_dia,@$e45_conferido_mes,@$e45_conferido_ano,true,'text',$db_opcao)
 ?>
     </td>
@@ -102,7 +102,7 @@ db_inputdata('e45_conferido',@$e45_conferido_dia,@$e45_conferido_mes,@$e45_confe
     <td nowrap title="<?=@$Te45_obs?>" colspan="2">
       <fieldset>
         <legend><b><?=@$Le45_obs?></b></legend>
-      <?
+      <?php 
         db_textarea('e45_obs', 5, 70,$Ie45_obs,true,'text',$db_op)
       ?>
       </fieldset>

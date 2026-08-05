@@ -60,7 +60,7 @@ th {
 
 
 
-    <?
+    <?php 
    if(1==1){
 
     $sql =	"select
@@ -182,7 +182,7 @@ th {
       <th width="17%" nowrap>Descri&ccedil;&atilde;o</th>
       <th width="15%" nowrap>Valor</th>
     </tr>
-    <?
+    <?php 
     $sql = "select a.k00_numpre,
 	                k00_numpar,
 					k00_numtot,
@@ -240,12 +240,12 @@ th {
          <td width="17%" nowrap><?=$k02_drecei?></td>
          <td width="15%" nowrap align="right"> <?=db_formatar(db_formatar($k00_valor,"v")*-1,"f")?> </td>
       </tr>
-    <?
+    <?php 
   	  }
     }
     ?>
   </table>
- <?
+ <?php 
  }
  ?>
 </body>

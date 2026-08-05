@@ -62,7 +62,7 @@ class cl_aguaestruturatarifaria {
                  x37_aguacategoriaconsumo = int4 = Código da Categoria de Consumo
                  ";
    //funcao construtor da classe
-   function cl_aguaestruturatarifaria() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguaestruturatarifaria");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

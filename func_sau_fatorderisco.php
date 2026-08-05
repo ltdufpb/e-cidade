@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_sau_fatorderisco_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clsau_fatorderisco = new cl_sau_fatorderisco;
 $clsau_fatorderisco->rotulo->label("s105_i_codigo");
@@ -56,7 +57,7 @@ $clsau_fatorderisco->rotulo->label("s105_v_descricao");
               <?=$Ls105_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		          db_input("s105_i_codigo",10,$Is105_i_codigo,true,"text",4,"","chave_s105_i_codigo");
 		          ?>
             </td>
@@ -66,7 +67,7 @@ $clsau_fatorderisco->rotulo->label("s105_v_descricao");
               <?=$Ls105_v_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		          db_input("s105_v_descricao",50,$Is105_v_descricao,true,"text",4,"","chave_s105_v_descricao");
 		          ?>
             </td>
@@ -84,7 +85,7 @@ $clsau_fatorderisco->rotulo->label("s105_v_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if (!isset($pesquisa_chave)) {
         if (isset($campos)==false) {
            if (file_exists("funcoes/db_func_sau_fatorderisco.php")==true) {
@@ -131,12 +132,12 @@ $clsau_fatorderisco->rotulo->label("s105_v_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_leitor_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 
 $clleitor  = new cl_leitor;
@@ -57,7 +58,7 @@ if (isset($chavepesquisa)) {
     parent.document.formaba.acervo2.disabled = false;
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acervo2.location.href='bib1_carteira001.php?bi16_leitor=<?=$bi10_codigo?>&z01_nome=<?=$nome?>';
   </script>
-  <?
+  <?php 
 }
 ?>
 <html>
@@ -76,7 +77,7 @@ if (isset($chavepesquisa)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Leitor</b></legend>
-    <?require_once(modification("forms/db_frmleitor.php"));?>
+    <?php require_once(modification("forms/db_frmleitor.php"));?>
    </fieldset>
    </center>
   </td>
@@ -84,7 +85,7 @@ if (isset($chavepesquisa)) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
   
   if ($clleitor->erro_status == "0") {
@@ -104,7 +105,7 @@ if (isset($alterar)) {
       parent.document.formaba.acervo2.disabled = false;
       (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acervo2.location.href='bib1_carteira001.php?bi16_leitor=<?=$bi10_codigo?>&z01_nome=<?=$nome?>';
     </script>
-    <?
+    <?php 
     $clleitor->erro(true,false);
   };
 };

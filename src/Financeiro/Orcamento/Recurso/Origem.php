@@ -2,6 +2,11 @@
 
 namespace ECidade\Financeiro\Orcamento\Recurso;
 
+use cl_origemcomplementorecurso;
+use db_utils;
+use EmpenhoFinanceiro;
+use stdClass;
+use _db_fields;
 use Exception;
 
 /**
@@ -25,19 +30,19 @@ class Origem
             "o206_origem = {$origem}",
             "o206_numero = {$numero}",
         ]);
-        $dao = new \cl_origemcomplementorecurso();
+        $dao = new cl_origemcomplementorecurso();
         $sql = $dao->sql_query_complemento("*", $where);
         $res = db_query($sql);
         if (!$res || pg_num_rows($res) == 0) {
             return false;
         }
-        return \db_utils::fieldsMemory($res, 0);
+        return db_utils::fieldsMemory($res, 0);
     }
 
     /**
      * Retorna a origem selecionada pelo usuário na autorização do empenho.
      * @param $numero
-     * @return bool|\stdClass
+     * @return bool|stdClass
      */
     public static function getAutorizacao($numero)
     {
@@ -48,7 +53,7 @@ class Origem
      * Retorna a origem selecionada pelo usuário na emissão do empenho.
      * @param $numero
      * @param $ano ano que esta processando
-     * @return \_db_fields|bool|\stdClass
+     * @return _db_fields|bool|stdClass
      */
     public static function getEmpenho($numero, $ano)
     {
@@ -159,7 +164,7 @@ class Origem
     public static function set($origem, $numero, $recurso, $complemento)
     {
         $codigoOrigem = self::get($numero, $origem);
-        $daoComplemento = new \cl_origemcomplementorecurso();
+        $daoComplemento = new cl_origemcomplementorecurso();
         $daoComplemento->o206_numero = $numero;
         $daoComplemento->o206_origem = $origem;
         $daoComplemento->o206_complementorecurso = $complemento;
@@ -172,29 +177,15 @@ class Origem
         }
 
         if ($daoComplemento->erro_status == 0) {
-            switch ($origem) {
-                case self::AUTORIZACAO_EMPENHO:
-                    $texto = ' a autorização de empenho ';
-                    break;
-                case self::EMISSAO_EMPENHO:
-                case self::DESPESA:
-                    $texto = ' o empenho ';
-                    break;
-                case self::LANCAMENTO_CONTABIL:
-                    $texto = ' o lançamento contábil';
-                    break;
-                case self::PLANILHA_ARRECADACAO:
-                    $texto = ' a planilha de receita ';
-                    break;
-                case self::RECIBO:
-                    $texto = ' o recibo de receita ';
-                    break;
-                case self::COMPLEMENTO_PADRAO:
-                    $texto = ' o complemento padrão de receita ';
-                    break;
-                default:
-                    throw new Exception('Origem de complemeto não implementada');
-            }
+            $texto = match ($origem) {
+                self::AUTORIZACAO_EMPENHO => ' a autorização de empenho ',
+                self::EMISSAO_EMPENHO, self::DESPESA => ' o empenho ',
+                self::LANCAMENTO_CONTABIL => ' o lançamento contábil',
+                self::PLANILHA_ARRECADACAO => ' a planilha de receita ',
+                self::RECIBO => ' o recibo de receita ',
+                self::COMPLEMENTO_PADRAO => ' o complemento padrão de receita ',
+                default => throw new Exception('Origem de complemeto não implementada'),
+            };
             throw new Exception("Não foi possível salvar origem do complemento para {$texto} {$numero}.");
         }
         return true;
@@ -203,7 +194,7 @@ class Origem
     /**
      * @param $numero
      *
-     * @return bool|\stdClass
+     * @return bool|stdClass
      */
     public static function getPlanilhaArrecadacao($numero)
     {
@@ -213,7 +204,7 @@ class Origem
     /**
      * @param $numero
      *
-     * @return bool|\stdClass
+     * @return bool|stdClass
      */
     public static function getRecibo($numero)
     {
@@ -223,7 +214,7 @@ class Origem
     /**
      * @param $numero
      *
-     * @return bool|\stdClass
+     * @return bool|stdClass
      */
     public static function getPadrao($numero)
     {
@@ -238,7 +229,7 @@ class Origem
      */
     private static function empenhoIsRP($numero, $ano)
     {
-        $empenho = new \EmpenhoFinanceiro($numero);
+        $empenho = new EmpenhoFinanceiro($numero);
         return $empenho->isRP($ano);
     }
 
@@ -254,7 +245,7 @@ class Origem
             "o206_origem = {$origem}",
             "o206_numero = {$numero}",
         ]);
-        $dao = new \cl_origemcomplementorecurso();
+        $dao = new cl_origemcomplementorecurso();
         $dao->excluir(null, $where);
         if ($dao->erro_status == 0) {
             throw new Exception("Erro ao excluir origem.");

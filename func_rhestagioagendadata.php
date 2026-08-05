@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhestagioagendadata_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhestagioagendadata = new cl_rhestagioagendadata;
 $clrhestagioagendadata->rotulo->label("h64_sequencial");
 $clrhestagioagendadata->rotulo->label("h64_data");
@@ -59,7 +60,7 @@ $clrotulo->label("rh01_regist");
               <?=$Lh64_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-           <?
+           <?php 
 		       db_input("h64_sequencial",10,$Ih64_sequencial,true,"text",4,"","chave_h64_sequencial");
 		       ?>
             </td>
@@ -69,7 +70,7 @@ $clrotulo->label("rh01_regist");
               <?=$Lrh01_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-           <?
+           <?php 
 		       db_input("rh01_regist",10,$Irh01_regist,true,"text",4,"","chave_rh01_regist");
 		       ?>
             </td>
@@ -79,7 +80,7 @@ $clrotulo->label("rh01_regist");
               <?=$Lz01_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -97,7 +98,7 @@ $clrotulo->label("rh01_regist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sWhere = " h57_instit = ".db_getsession("DB_instit");
       if(!isset($pesquisa_chave)){
         $campos  = "h64_sequencial,h57_regist,cgm.z01_nome,h50_descr,h64_data,h56_sequencial as db_h56_sequencial,"; 
@@ -140,12 +141,12 @@ $clrotulo->label("rh01_regist");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

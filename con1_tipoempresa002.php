@@ -82,19 +82,19 @@ if(isset($alterar)){
   <tr>
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmtipoempresa.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar)){
   if($cltipoempresa->erro_status=="0"){
     $cltipoempresa->erro(true,false);

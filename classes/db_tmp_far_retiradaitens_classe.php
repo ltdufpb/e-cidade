@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -65,7 +65,7 @@ class cl_tmp_far_retiradaitens {
                  fa06_t_controlado = char(2) = Med.Controlado
                  ";
    //funcao construtor da classe 
-   function cl_tmp_far_retiradaitens() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tmp_far_retiradaitens"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

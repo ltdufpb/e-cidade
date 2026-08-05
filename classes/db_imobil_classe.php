@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -50,7 +50,7 @@ class cl_imobil {
                  j44_numcgm = int4 = Numcgm 
                  ";
    //funcao construtor da classe 
-   function cl_imobil() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("imobil"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

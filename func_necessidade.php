@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -34,7 +34,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_necessidade_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clnecessidade = new cl_necessidade;
 $clnecessidade->rotulo->label("ed48_i_codigo");
 $clnecessidade->rotulo->label("ed48_c_descr");
@@ -56,7 +57,7 @@ $clnecessidade->rotulo->label("ed48_c_descr");
       <?=$Led48_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed48_i_codigo",10,$Ied48_i_codigo,true,"text",4,"","chave_ed48_i_codigo");?>
+      <?php db_input("ed48_i_codigo",10,$Ied48_i_codigo,true,"text",4,"","chave_ed48_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -64,7 +65,7 @@ $clnecessidade->rotulo->label("ed48_c_descr");
       <?=$Led48_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed48_c_descr",40,$Ied48_c_descr,true,"text",4,"","chave_ed48_c_descr");?>
+      <?php db_input("ed48_c_descr",40,$Ied48_c_descr,true,"text",4,"","chave_ed48_c_descr");?>
      </td>
     </tr>
     <tr>
@@ -80,7 +81,7 @@ $clnecessidade->rotulo->label("ed48_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $sWhere = "ed48_i_codigo <> 108";
 
    if(!isset($pesquisa_chave)){

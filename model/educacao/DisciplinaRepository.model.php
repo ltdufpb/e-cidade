@@ -37,7 +37,7 @@ class DisciplinaRepository
      * Collection de Disciplina
      * @var array
      */
-    private $aDisciplina = array();
+    private $aDisciplina = [];
 
     /**
      * Instancia da classe
@@ -61,7 +61,7 @@ class DisciplinaRepository
     public static function getDisciplinaByCodigo($iCodigoDisciplina)
     {
 
-        if (!array_key_exists($iCodigoDisciplina, DisciplinaRepository::getInstance()->aDisciplina)) {
+        if (!array_key_exists((string) $iCodigoDisciplina, DisciplinaRepository::getInstance()->aDisciplina)) {
             DisciplinaRepository::getInstance()->aDisciplina[$iCodigoDisciplina] = new Disciplina($iCodigoDisciplina);
         }
         return DisciplinaRepository::getInstance()->aDisciplina[$iCodigoDisciplina];

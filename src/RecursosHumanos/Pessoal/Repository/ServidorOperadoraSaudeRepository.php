@@ -44,7 +44,7 @@ class ServidorOperadoraSaudeRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param array|int $ids
@@ -70,7 +70,7 @@ class ServidorOperadoraSaudeRepository
      * @param ServidorOperadoraSaude|null $servidorOperadoraSaude
      * @throws Exception
      */
-    public function delete(ServidorOperadoraSaude $servidorOperadoraSaude = null)
+    public function delete(?ServidorOperadoraSaude $servidorOperadoraSaude = null)
     {
         $id = $servidorOperadoraSaude instanceof ServidorOperadoraSaude ? $servidorOperadoraSaude->getSequencial() : null;
 
@@ -88,7 +88,7 @@ class ServidorOperadoraSaudeRepository
      * @return bool|ServidorOperadoraSaude
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_servidoroperadorasaude();
         $sql = $dao->sql_query($id, implode(', ', $columns));
@@ -112,13 +112,13 @@ class ServidorOperadoraSaudeRepository
      * @return ServidorOperadoraSaude[]
      * @throws Exception
      */
-    public function all($columns = array('*'))
+    public function all($columns = ['*'])
     {
         $dao = new cl_servidoroperadorasaude();
         $sql = $dao->sql_query(null, implode(', ', $columns));
         $rs = db_query($sql);
 
-        $servidorOperadorasSaude = array();
+        $servidorOperadorasSaude = [];
 
         if (pg_num_rows($rs) === 0) {
             return $servidorOperadorasSaude;
@@ -145,7 +145,7 @@ class ServidorOperadoraSaudeRepository
             throw new Exception("Não foi possível buscar os vínculos dos servidores com suas operadoras de saúde.\nContate o suporte.");
         }
 
-        $servidorOperadorasSaude = array();
+        $servidorOperadorasSaude = [];
 
         if (pg_num_rows($rs) === 0) {
             return $servidorOperadorasSaude;
@@ -295,7 +295,7 @@ class ServidorOperadoraSaudeRepository
      */
     public function resetScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
         return $this;
     }
 
@@ -305,7 +305,7 @@ class ServidorOperadoraSaudeRepository
      */
     public function removeScope($key)
     {
-        if (array_key_exists($key, $this->scopes)) {
+        if (array_key_exists((string) $key, $this->scopes)) {
             unset($this->scopes[$key]);
         }
 

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -53,23 +53,23 @@ $db_opcao = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?
+   <?php 
    MsgAviso(db_getsession("DB_coddepto"),"escola");
 
-    $aIdentifica = array(
+    $aIdentifica = [
                  "a1" => "Turma",
                  "a2" => "Disciplinas",
                  "a3" => "Horários",
                  "a4" => "Alunos",
                  "a5" => "Pareceres",
                  "a6" => "Outros Profissionais"
-                );
+                ];
 
    $clcriaabas->identifica = $aIdentifica;
 
-   $clcriaabas->sizecampo  = array( "a1" => "20", "a2" => "20", "a3" => "20", "a4" => "20", "a5" => "20", "a6" => "20");
-   $clcriaabas->src        = array( "a1" => "edu1_turma003.php", "a2" => "", "a3" => "", "a4" => "", "a5" => "", "a6" => "");
-   $clcriaabas->disabled   = array( "a2" => "true", "a3" => "true", "a4" => "true", "a5" => "true", "a6" => "true");
+   $clcriaabas->sizecampo  = [ "a1" => "20", "a2" => "20", "a3" => "20", "a4" => "20", "a5" => "20", "a6" => "20"];
+   $clcriaabas->src        = [ "a1" => "edu1_turma003.php", "a2" => "", "a3" => "", "a4" => "", "a5" => "", "a6" => ""];
+   $clcriaabas->disabled   = [ "a2" => "true", "a3" => "true", "a4" => "true", "a5" => "true", "a6" => "true"];
    $clcriaabas->cordisabled = "#9b9b9b";
    $clcriaabas->iframe_width = '100%';
    $clcriaabas->iframe_height = 600;
@@ -79,6 +79,6 @@ $db_opcao = 1;
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

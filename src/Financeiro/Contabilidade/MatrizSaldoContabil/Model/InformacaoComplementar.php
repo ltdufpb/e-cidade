@@ -27,6 +27,9 @@
 
 namespace ECidade\Financeiro\Contabilidade\MatrizSaldoContabil\Model;
 
+use DBRegistry;
+use Exception;
+use db_utils;
 use \cl_infocomplementarvalor;
 
 /**
@@ -314,7 +317,7 @@ class InformacaoComplementar
      *
      * @return bool
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function atualizarValor($lancamentoManual = false)
     {
@@ -342,7 +345,7 @@ class InformacaoComplementar
                 break;
             case self::INFO_COMP_TIPO_FP:
                 $hash = "atributo_fp{$this->getContaReduzida()}#{$this->getAnousu()}#{$this->getCodigoInstituicao()}";
-                if (!\DBRegistry::has($hash)) {
+                if (!DBRegistry::has($hash)) {
                     $sql = $oDaoInfoComplementarValor->sql_query_infocomplementar_fp_by_reduzido(
                         $this->getContaReduzida(),
                         $this->getAnousu(),
@@ -353,13 +356,13 @@ class InformacaoComplementar
                     if (!$rsInfoComplementarValor) {
                         $msg  = "Não foi possível processar a informação complementar {$this->getDescricao()}";
                         $msg .= " para o lançamento {$this->getCodigoLancamento()}.";
-                        throw new \Exception($msg);
+                        throw new Exception($msg);
                     }
 
-                    $valor = \db_utils::fieldsMemory($rsInfoComplementarValor, 0)->infocomplementar_valor;
-                    \DBRegistry::add($hash, $valor);
+                    $valor = db_utils::fieldsMemory($rsInfoComplementarValor, 0)->infocomplementar_valor;
+                    DBRegistry::add($hash, $valor);
                 }
-                $this->setValor(\DBRegistry::get($hash));
+                $this->setValor(DBRegistry::get($hash));
                 return true;
 
                 break;
@@ -398,17 +401,17 @@ class InformacaoComplementar
                 $sql = 'select null as infocomplementar_valor';
                 break;
             default:
-                throw new \Exception('Informação complementar inválida.');
+                throw new Exception('Informação complementar inválida.');
         }
 
         $rsInfoComplementarValor = \db_query($sql);
 
         if (!$rsInfoComplementarValor) {
-            throw new \Exception("Não foi possível processar a informação complementar {$this->getDescricao()}
+            throw new Exception("Não foi possível processar a informação complementar {$this->getDescricao()}
              para o lançamento {$this->getCodigoLancamento()}.");
         }
 
-        $valor = \db_utils::fieldsMemory($rsInfoComplementarValor, 0)->infocomplementar_valor;
+        $valor = db_utils::fieldsMemory($rsInfoComplementarValor, 0)->infocomplementar_valor;
         $this->setValor($valor);
 
         return true;

@@ -1,35 +1,35 @@
-<?
+<?php
 //MODULO: escola
 //CLASSE DA ENTIDADE transferencialotematricula
 class cl_transferencialotematricula { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed138_sequencial = 0; 
-   var $ed138_transferencialote = 0; 
-   var $ed138_matricula = 0; 
+   public $ed138_sequencial = 0; 
+   public $ed138_transferencialote = 0; 
+   public $ed138_matricula = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed138_sequencial = int4 = Código 
                  ed138_transferencialote = int4 = Transferência em Lote 
                  ed138_matricula = int4 = Matrícula 
                  ";
    //funcao construtor da classe 
-   function cl_transferencialotematricula() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("transferencialotematricula"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -81,10 +81,10 @@ class cl_transferencialotematricula {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed138_sequencial = pg_result($result,0,0); 
+       $this->ed138_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from transferencialotematricula_ed138_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed138_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed138_sequencial)){
          $this->erro_sql = " Campo ed138_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_transferencialotematricula {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Matrículas do Lote de Transferência ($this->ed138_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Matrículas do Lote de Transferência já Cadastrado";
@@ -145,12 +145,12 @@ class cl_transferencialotematricula {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,22019,'$this->ed138_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3962,22019,'','".AddSlashes(pg_result($resaco,0,'ed138_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3962,22020,'','".AddSlashes(pg_result($resaco,0,'ed138_transferencialote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3962,22021,'','".AddSlashes(pg_result($resaco,0,'ed138_matricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3962,22019,'','".AddSlashes(pg_fetch_result($resaco,0,'ed138_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3962,22020,'','".AddSlashes(pg_fetch_result($resaco,0,'ed138_transferencialote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3962,22021,'','".AddSlashes(pg_fetch_result($resaco,0,'ed138_matricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_transferencialotematricula {
       $this->atualizacampos();
      $sql = " update transferencialotematricula set ";
      $virgula = "";
-     if(trim($this->ed138_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed138_sequencial"])){ 
+     if(trim((string) $this->ed138_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed138_sequencial"])){ 
        $sql  .= $virgula." ed138_sequencial = $this->ed138_sequencial ";
        $virgula = ",";
-       if(trim($this->ed138_sequencial) == null ){ 
+       if(trim((string) $this->ed138_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed138_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_transferencialotematricula {
          return false;
        }
      }
-     if(trim($this->ed138_transferencialote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed138_transferencialote"])){ 
+     if(trim((string) $this->ed138_transferencialote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed138_transferencialote"])){ 
        $sql  .= $virgula." ed138_transferencialote = $this->ed138_transferencialote ";
        $virgula = ",";
-       if(trim($this->ed138_transferencialote) == null ){ 
+       if(trim((string) $this->ed138_transferencialote) == null ){ 
          $this->erro_sql = " Campo Transferência em Lote não informado.";
          $this->erro_campo = "ed138_transferencialote";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_transferencialotematricula {
          return false;
        }
      }
-     if(trim($this->ed138_matricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed138_matricula"])){ 
+     if(trim((string) $this->ed138_matricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed138_matricula"])){ 
        $sql  .= $virgula." ed138_matricula = $this->ed138_matricula ";
        $virgula = ",";
-       if(trim($this->ed138_matricula) == null ){ 
+       if(trim((string) $this->ed138_matricula) == null ){ 
          $this->erro_sql = " Campo Matrícula não informado.";
          $this->erro_campo = "ed138_matricula";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_transferencialotematricula {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,22019,'$this->ed138_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed138_sequencial"]) || $this->ed138_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3962,22019,'".AddSlashes(pg_result($resaco,$conresaco,'ed138_sequencial'))."','$this->ed138_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3962,22019,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed138_sequencial'))."','$this->ed138_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed138_transferencialote"]) || $this->ed138_transferencialote != "")
-             $resac = db_query("insert into db_acount values($acount,3962,22020,'".AddSlashes(pg_result($resaco,$conresaco,'ed138_transferencialote'))."','$this->ed138_transferencialote',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3962,22020,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed138_transferencialote'))."','$this->ed138_transferencialote',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed138_matricula"]) || $this->ed138_matricula != "")
-             $resac = db_query("insert into db_acount values($acount,3962,22021,'".AddSlashes(pg_result($resaco,$conresaco,'ed138_matricula'))."','$this->ed138_matricula',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3962,22021,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed138_matricula'))."','$this->ed138_matricula',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_transferencialotematricula {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,22019,'$ed138_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3962,22019,'','".AddSlashes(pg_result($resaco,$iresaco,'ed138_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3962,22020,'','".AddSlashes(pg_result($resaco,$iresaco,'ed138_transferencialote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3962,22021,'','".AddSlashes(pg_result($resaco,$iresaco,'ed138_matricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3962,22019,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed138_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3962,22020,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed138_transferencialote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3962,22021,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed138_matricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

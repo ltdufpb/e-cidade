@@ -3,6 +3,7 @@
 
 namespace ECidade\Enum\Educacao\Escola;
 
+use Override;
 use ECidade\Enum\Enum;
 use Exception;
 
@@ -28,7 +29,7 @@ class FormaObtencaoEnum extends Enum
      */
     public function name()
     {
-        $data = array(
+        $data = [
             self::ATRIBUIDO => "Atribuído",
             self::MAIOR_NIVEL => "Maior Nível",
             self::ULTIMO_NIVEL => "Último Nível",
@@ -38,7 +39,7 @@ class FormaObtencaoEnum extends Enum
             self::MAIOR_NOTA => "Maior Nota",
             self::ULTIMA_NOTA => "Última Nota",
             self::APROVACAO_PERIODOS => "Aprovação por Período",
-        );
+        ];
 
         if (empty($data[$this->getValue()])) {
             throw new Exception('Forma de Obtenção não encontrada.');
@@ -52,15 +53,16 @@ class FormaObtencaoEnum extends Enum
      * @return array
      * @throws Exception
      */
+    #[Override]
     public static function toArrayWithNames()
     {
         $tipos = self::values();
-        $return = array();
+        $return = [];
         foreach ($tipos as $tipo) {
-            $return[] = array(
+            $return[] = [
                 'value' => $tipo->value(),
                 'name' => $tipo->name()
-            );
+            ];
         }
 
         return $return;

@@ -54,7 +54,7 @@ class cl_itbiruralcaract {
                  it19_tipocaract = int4 = Tipo de Característica
                  ";
    //funcao construtor da classe
-   public function cl_itbiruralcaract() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbiruralcaract");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

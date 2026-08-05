@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
-use \ECidade\Educacao\Secretaria\EstruturalNotaValidacao;
+
 
 require_once (modification("libs/db_stdlib.php"));
 require_once (modification("libs/db_utils.php"));

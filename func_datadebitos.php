@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_datadebitos_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldatadebitos = new cl_datadebitos;
 $cldatadebitos->rotulo->label("k115_sequencial");
 $cldatadebitos->rotulo->label("k115_data");
@@ -54,7 +55,7 @@ $cldatadebitos->rotulo->label("k115_data");
               <?=$Lk115_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k115_sequencial",10,$Ik115_sequencial,true,"text",4,"","chave_k115_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldatadebitos->rotulo->label("k115_data");
               <?=$Lk115_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k115_data",10,$Ik115_data,true,"text",4,"","chave_k115_data");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldatadebitos->rotulo->label("k115_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_datadebitos.php")==true){
@@ -122,12 +123,12 @@ $cldatadebitos->rotulo->label("k115_data");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

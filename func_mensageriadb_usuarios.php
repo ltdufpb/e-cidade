@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_usuarios_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_usuarios = new cl_db_usuarios;
 $cldb_usuarios->rotulo->label("id_usuario");
 $cldb_usuarios->rotulo->label("nome");
@@ -54,7 +55,7 @@ $cldb_usuarios->rotulo->label("nome");
               <strong>Código do Usuário:</strong>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("id_usuario",10,$Iid_usuario,true,"text",4,"","chave_id_usuario");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_usuarios->rotulo->label("nome");
               <strong>Nome do Usuário:</strong>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("nome",40,$Inome,true,"text",4,"","chave_nome");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_usuarios->rotulo->label("nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <? 
+      <?php  
       if(!isset($pesquisa_chave)){
 
 
@@ -133,12 +134,12 @@ $cldb_usuarios->rotulo->label("nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

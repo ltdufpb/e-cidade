@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_serieregimemat_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clserieregimemat = new cl_serieregimemat;
 $clrotulo = new rotulocampo;
 $clrotulo->label("ed11_i_codigo");
@@ -55,7 +56,7 @@ $clrotulo->label("ed11_c_descr");
        <?=$Led11_i_codigo?>
       </td>
       <td width="96%" align="left" nowrap>
-       <?db_input("ed11_i_codigo",20,$Ied11_i_codigo,true,"text",4,"","chave_ed11_i_codigo");?>
+       <?php db_input("ed11_i_codigo",20,$Ied11_i_codigo,true,"text",4,"","chave_ed11_i_codigo");?>
       </td>
      </tr>
      <tr>
@@ -63,7 +64,7 @@ $clrotulo->label("ed11_c_descr");
        <?=$Led11_c_descr?>
       </td>
       <td width="96%" align="left" nowrap>
-       <?db_input("ed11_c_descr",30,$Ied11_c_descr,true,"text",4,"","chave_ed11_c_descr");?>
+       <?php db_input("ed11_c_descr",30,$Ied11_c_descr,true,"text",4,"","chave_ed11_c_descr");?>
       </td>
      </tr>
      <tr>
@@ -79,7 +80,7 @@ $clrotulo->label("ed11_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $condicao = " ed11_i_ensino = $codensino AND ed223_i_regimemat = $codregime";
    if(isset($inicial)){
     $result1 = $clserieregimemat->sql_record($clserieregimemat->sql_query("","ed223_i_ordenacao as seq",""," $condicao AND ed11_i_codigo = $inicial "));

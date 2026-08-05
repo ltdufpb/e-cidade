@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -124,7 +124,7 @@ input {
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-	<?
+	<?php 
 	if(isset($retorno)) {
 		$sCampos  = "to_char(po01_data,'DD-MM-YYYY') 						as data,                        ";
 	  $sCampos .= "po01_nome                       						as nome,w03_tipo as categoria,  ";
@@ -180,7 +180,7 @@ input {
               <td width="87%"><?=@$categoria?></td>
             </tr>
             <tr> 
-              <? $x = array('f'=>'Não','t'=>'Sim');?>
+              <?php  $x = array('f'=>'Não','t'=>'Sim');?>
               <td width="13%" height="20" nowrap><strong>Deseja manter o nome e<br /> dados em sigilo?</strong></td>
               <td width="87%"><?=@$x[$sigilo]?></td>
             </tr>
@@ -188,7 +188,7 @@ input {
               <td width="13%" height="20" nowrap><strong>Deseja receber resposta?</strong></td>
               <td width="87%"><?=@$x[$resposta]?></td>
             </tr>
-            <? $x = array('0'=>'Carta','1'=>'E-mail','2'=>'Telefone');?>
+            <?php  $x = array('0'=>'Carta','1'=>'E-mail','2'=>'Telefone');?>
             <tr> 
               <td width="13%" height="20" nowrap><strong>Tipo da resposta?</strong></td>
               <td width="87%"><?=@$x[$tiporesposta]?></td>
@@ -198,7 +198,7 @@ input {
               <td width="87%"><?=@($datanascimento!='null')?$datanascimento:''?></td>
             </tr>
             <tr> 
-              <? $x = array('F'=>'Feminino','M'=>'Masculino');?>
+              <?php  $x = array('F'=>'Feminino','M'=>'Masculino');?>
               <td width="13%" height="20" nowrap><strong>Sexo:</strong></td>
               <td width="87%"><?=@$x[$sexo]?></td>
             </tr>
@@ -207,7 +207,7 @@ input {
               <td width="87%"><?=@$profissao?></td>
             </tr>
             <tr> 
-              <? $x = array('0'=>'Não alfabetizado','1'=>'Nível fundamental','2'=>'Nível médio','3'=>'Graduado');?>
+              <?php  $x = array('0'=>'Não alfabetizado','1'=>'Nível fundamental','2'=>'Nível médio','3'=>'Graduado');?>
               <td width="13%" height="20" nowrap><strong>Escolaridade:</strong></td>
               <td width="87%"><?=@$x[$escolaridade]?></td>
             </tr>
@@ -251,18 +251,18 @@ input {
               <td width="13%" height="20" nowrap><strong>Mensagem:</strong></td>
               <td width="87%"><?=@nl2br($comentario)?></td>
             </tr>
-            <? if(!empty($url01)){ ?>
+            <?php  if(!empty($url01)){ ?>
             <tr> 
               <td width="13%" height="20" nowrap><strong></strong></td>
               <td width="87%"><a href="javascript:void(0);" onclick="js_download('<?=@$url01?>');">Anexo 1</a></td>
             </tr>
-            <?}?>
-            <? if(!empty($url02)){ ?>
+            <?php }?>
+            <?php  if(!empty($url02)){ ?>
             <tr> 
               <td width="13%" height="20" nowrap><strong></strong></td>
               <td width="87%"><a href="javascript:void(0);" onclick="js_download('<?=@$url02?>');">Anexo 2</a></td>
             </tr>
-            <?}?>
+            <?php }?>
             <tr align="center" valign="middle"> 
               <td height="40" colspan="2" nowrap><u><em><strong>Resposta:</strong></em></u></td>
             </tr>
@@ -296,7 +296,7 @@ input {
     </tr>
 	</table>
 	</center>
-	<?
+	<?php 
 	} else {
       $query = "SELECT po01_sequencial as dl_ouvidoria, 
       								 w03_tipo        as dl_categoria, 
@@ -313,7 +313,7 @@ input {
   echo "</center>";
 	}//final do isset($retorno)
 	?>
-	<?
+	<?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 	</td>

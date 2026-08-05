@@ -69,7 +69,7 @@ if ($iTipo == "pad") {
               <tr>
                 <td colspan="1">
                   <b>Arquivos do:</b>
-                    <?
+                    <?php 
                     global $periodopad;
                     $periodopad = date("m",db_getsession("DB_datausu"))-1;
                     if (db_getsession("DB_anousu") != date("Y",db_getsession("DB_datausu"))) {

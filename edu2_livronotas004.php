@@ -26,7 +26,7 @@
  *                                licenca/licenca_pt.txt
  */
 
-use ECidade\Educacao\Escola\Model\DiarioArea;
+
 use ECidade\Educacao\Escola\Model\DiarioAreaAvaliacao;
 
 require_once(modification("fpdf151/scpdf.php"));
@@ -81,7 +81,7 @@ $oDadosRelatorio->iAltura = 4;
  * Atribuimos ao objeto Pdf os dados passados por parametro
  */
 $oDadosRelatorio->oDados = $oDados;
-$aTurmas = explode(",", $oDadosRelatorio->oDados->aTurmas);
+$aTurmas = explode(",", (string) $oDadosRelatorio->oDados->aTurmas);
 $oCalendario = new Calendario($oDadosRelatorio->oDados->iCalendario);
 
 /**
@@ -118,7 +118,7 @@ foreach ($aRetornoTurmas as $oRetornoTurma) {
     /**
      * Buscamos os alunos matriculados na turma
      */
-    $oDadosRelatorio->aAlunosMatriculados = array();
+    $oDadosRelatorio->aAlunosMatriculados = [];
     $oDadosRelatorio->aAlunosMatriculados = $oTurma->getAlunosMatriculadosNaTurmaPorSerie($oEtapa);
     $oDadosRelatorio->iTotalAlunos = count($oDadosRelatorio->aAlunosMatriculados);
     $oDadosRelatorio->sEtapa = $oEtapa->getNome();
@@ -159,7 +159,7 @@ foreach ($aRetornoTurmas as $oRetornoTurma) {
      */
     $iPagina = 0;
     $iContadorAux = 0;
-    $aDisciplinasPorPagina = array();
+    $aDisciplinasPorPagina = [];
 
     /**
      * Organizamos um array com o limite de disciplinas por pagina, e o total de paginas

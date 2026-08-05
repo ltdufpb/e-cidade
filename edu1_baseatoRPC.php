@@ -44,8 +44,8 @@ if($oPost->sAction == 'PesquisaSerie') {
          inner join serie as a on a.ed11_i_codigo = baseserie. ed87_i_serieinicial  
          inner join serie as b on b.ed11_i_codigo = baseserie. ed87_i_seriefinal where ed87_i_codigo= {$oPost->base}";
   $result1 = db_query($sql1);
-  $inicial = pg_result($result1,0,0);
-  $final = pg_result($result1,0,1);
+  $inicial = pg_fetch_result($result1,0,0);
+  $final = pg_fetch_result($result1,0,1);
   //die($sql1);
   $sql = "SELECT ed11_i_codigo,ed11_i_sequencia,
                 ed11_c_descr,
@@ -72,8 +72,8 @@ if($oPost->sAction == 'PesquisaSerieIncluida') {
          inner join serie as a on a.ed11_i_codigo = baseserie. ed87_i_serieinicial  
          inner join serie as b on b.ed11_i_codigo = baseserie. ed87_i_seriefinal where ed87_i_codigo= {$oPost->base}";
   $result2 = db_query($sql2);
-  $seqinicial = pg_result($result2,0,0);
-  $seqfinal = pg_result($result2,0,1);
+  $seqinicial = pg_fetch_result($result2,0,0);
+  $seqfinal = pg_fetch_result($result2,0,1);
 
   $sql = "SELECT ed11_i_codigo,ed11_i_sequencia,
                 ed11_c_descr,

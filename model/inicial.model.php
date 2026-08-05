@@ -215,11 +215,11 @@ class inicial
 
     public function excluiCertidaoInicial($iCertidao = "", $iInicial = "")
     {
-        if (trim($iCertidao) == "") {
+        if (trim((string) $iCertidao) == "") {
             throw new Exception("Exclusão de certidão da inicial abortada, nº de certidão inválido!");
         }
 
-        if (trim($iInicial) == "") {
+        if (trim((string) $iInicial) == "") {
             throw new Exception("Exclusão de certidão da inicial abortada, nº da inicial inválido!");
         }
 
@@ -254,7 +254,7 @@ class inicial
             $sSqlNumpresInicial .= "             and v51_certidao = {$iCertidao} ) as x                                     ";
 
             $rsNumpresInicial = db_query($sSqlNumpresInicial);
-            $iLinhasNumpres = pg_numrows($rsNumpresInicial);
+            $iLinhasNumpres = pg_num_rows($rsNumpresInicial);
 
             for ($iInd = 0; $iInd < $iLinhasNumpres; $iInd++) {
 
@@ -315,11 +315,11 @@ class inicial
 
     public function anulaInicial($iInicial = "", $iCodSituacao = "", $sObservacao = null)
     {
-        if (trim($iInicial) == "") {
+        if (trim((string) $iInicial) == "") {
             throw new Exception("Anualção abortada, nº da inicial inválido!");
         }
 
-        if (trim($iCodSituacao) == "") {
+        if (trim((string) $iCodSituacao) == "") {
             throw new Exception("Anualção abortada, código de situação inválido!");
         }
 
@@ -373,7 +373,7 @@ class inicial
         */
 
         // Altera Situacao na InicialMov para Anulada
-        if (trim($this->getObservacaoMovimentacao()) != '') {
+        if (trim((string) $this->getObservacaoMovimentacao()) != '') {
             $oDaoInicialmov->v56_obs = $this->getObservacaoMovimentacao();
         }
 
@@ -404,7 +404,7 @@ class inicial
         $sSqlNumpresInicial .= "           where v51_inicial  = {$iInicial} ) as x                                       ";
 
         $rsNumpresInicial = db_query($sSqlNumpresInicial);
-        $iLinhasNumpres = pg_numrows($rsNumpresInicial);
+        $iLinhasNumpres = pg_num_rows($rsNumpresInicial);
 
         for ($iInd = 0; $iInd < $iLinhasNumpres; $iInd++) {
             $oNumpresInicial = db_utils::fieldsMemory($rsNumpresInicial, $iInd);

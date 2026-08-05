@@ -2,6 +2,10 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use BusinessException;
+use DBException;
+use Exception;
 use Cedencia;
 use ECidade\RecursosHumanos\ESocial\Entity\Servidor;
 use ECidade\RecursosHumanos\ESocial\Service\ServidorService;
@@ -45,9 +49,10 @@ class CessaoExercicioFormatter extends Formatter
     /**
      * @param  array $dados
      * @return mixed|stdClass[]
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
+    #[Override]
     public function formatar($dados)
     {
         $dadosServidor = [];
@@ -65,8 +70,8 @@ class CessaoExercicioFormatter extends Formatter
     /**
      * @param  $dadosFormatado
      * @return mixed
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function processamento($servidor)
     {
@@ -116,9 +121,9 @@ class CessaoExercicioFormatter extends Formatter
 
     /**
      * @param  $dadoServidor
-     * @throws \BusinessException
-     * @throws \DBException
-     * @throws \Exception
+     * @throws BusinessException
+     * @throws DBException
+     * @throws Exception
      */
     private function atualizarDadosServidor(&$dadoServidor)
     {
@@ -195,6 +200,7 @@ class CessaoExercicioFormatter extends Formatter
      *
      * @return  CgmJuridico
      */
+    #[Override]
     public function getEmpregador()
     {
         return $this->empregador;
@@ -207,6 +213,7 @@ class CessaoExercicioFormatter extends Formatter
      *
      * @return  self
      */
+    #[Override]
     public function setEmpregador(CgmJuridico $empregador)
     {
         $this->empregador = $empregador;

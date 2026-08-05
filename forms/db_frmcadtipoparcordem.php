@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -99,7 +99,7 @@ function js_submit() {
       <table border="0">
       	<tr><td>
       	<select name="campos[]" id="campos" size="10" style="width:250px" multiple>
-      	<?
+      	<?php 
       	for($i = 0;$i < $linhastipoparc;$i++) {
 		  db_fieldsmemory($resulttipoparc,$i);
           echo "<option value='{$k40_codigo}'>{$k40_descr} </option>";
@@ -126,7 +126,7 @@ function js_submit() {
 </table>
 </form>
 
-<?
+<?php 
 }else{
   db_msgbox("Nunhuma regra de parcelamento encontrada.");
 }

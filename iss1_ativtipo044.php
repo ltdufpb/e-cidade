@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -157,15 +157,15 @@ background-color:#ccddcc;
 <td ></td>
 <td ></td>
 </tr>
-  <?
+  <?php 
   if ((isset($processar))&&(!isset($atualizar))){
     $db_opcao=3;
   }else $db_opcao=1;
   ?>
   <tr> 
-    <td  align="left" nowrap title="<?=$Tq81_codigo?>"><?db_ancora(@$Lq81_codigo,"js_pesquisa_tipcalc(true);",1);?></td>
+    <td  align="left" nowrap title="<?=$Tq81_codigo?>"><?php db_ancora(@$Lq81_codigo,"js_pesquisa_tipcalc(true);",1);?></td>
     <td align="left" nowrap>
-      <? db_input("q81_codigo",6,$Iq81_codigo,true,"text",$db_opcao,"onchange='js_pesquisa_tipcalc(false);'");
+      <?php  db_input("q81_codigo",6,$Iq81_codigo,true,"text",$db_opcao,"onchange='js_pesquisa_tipcalc(false);'");
          db_input("q81_descr",40,"$Iq81_descr",true,"text",3);  
         ?></td>
   </tr>
@@ -179,7 +179,7 @@ background-color:#ccddcc;
   </td>
   </tr>
 
-  <?
+  <?php 
     if (isset($q81_codigo) && $q81_codigo!=""){
        $result01=$clativid->sql_record($clativid->sql_query_file(null,"*","q03_ativ"));
        $numrows01=$clativid->numrows;
@@ -233,7 +233,7 @@ background-color:#ccddcc;
     <input name="limpa" type="button" onclick='js_limpa();'  value="Voltar">
   </td>
   </tr>
-  <?
+  <?php 
   }
   ?>
  
@@ -242,7 +242,7 @@ background-color:#ccddcc;
  
 
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 //---------------------------------------------------------------
 function js_pesquisa_tipcalc(mostra){
@@ -270,7 +270,7 @@ function js_mostraportetipo1(chave1,chave2){
 }
 //----------------------------------------------------------------------
 </script>
-<?
+<?php 
 if (isset($atualizar)){
     db_msgbox($erro_msg);
     if($clativtipo->erro_campo!=""){

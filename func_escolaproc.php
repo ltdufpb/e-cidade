@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_escolaproc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clescolaproc = new cl_escolaproc;
 $clescolaproc->rotulo->label("ed82_i_codigo");
 $clescolaproc->rotulo->label("ed82_c_nome");
@@ -54,7 +55,7 @@ $clescolaproc->rotulo->label("ed82_c_nome");
       <?=$Led82_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed82_i_codigo",10,$Ied82_i_codigo,true,"text",4,"","chave_ed82_i_codigo");?>
+      <?php db_input("ed82_i_codigo",10,$Ied82_i_codigo,true,"text",4,"","chave_ed82_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -62,7 +63,7 @@ $clescolaproc->rotulo->label("ed82_c_nome");
       <?=$Led82_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed82_c_nome",30,$Ied82_c_nome,true,"text",4,"","chave_ed82_c_nome");?>
+      <?php db_input("ed82_c_nome",30,$Ied82_c_nome,true,"text",4,"","chave_ed82_c_nome");?>
      </td>
     </tr>
     <tr>

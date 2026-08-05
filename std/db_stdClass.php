@@ -81,8 +81,8 @@ class db_stdClass
             }
 
         }
-        $sRetornoSql = @call_user_func_array(array(&$oClass, "sql_query_file"), $aParam);
-        $rsRetornoSql = @call_user_func_array(array(&$oClass, "sql_record"), array($sRetornoSql));
+        $sRetornoSql = @call_user_func_array([&$oClass, "sql_query_file"], $aParam);
+        $rsRetornoSql = @call_user_func_array([&$oClass, "sql_record"], [$sRetornoSql]);
 
 
         $oRetorno = db_utils::getCollectionByRecord($rsRetornoSql);
@@ -130,13 +130,13 @@ class db_stdClass
      *
      * @param string $sString string
      * @return string
-     * @deprecated db_stripTagsJsonSemEscape
      * @see db_stripTagsJsonSemEscape
      */
+    #[Deprecated(message: 'db_stripTagsJsonSemEscape')]
     public static function db_stripTagsJson($sString)
     {
 
-        $aReferences = array(
+        $aReferences = [
             "<arroba>",
             "<quebralinha>",
             "<aspa>",
@@ -153,8 +153,8 @@ class db_stdClass
             "<sustenido>",
             "<ecomercial>",
             "<barra>"
-        );
-        $aMappTo = array(
+        ];
+        $aMappTo = [
             "@",
             "\\n",
             "\"",
@@ -171,7 +171,7 @@ class db_stdClass
             "#",
             "&",
             "/"
-        );
+        ];
         $sString = str_replace($aReferences, $aMappTo, $sString);
         return $sString;
 
@@ -186,7 +186,7 @@ class db_stdClass
     public static function db_stripTagsJsonSemEscape($sString)
     {
 
-        $aReferences = array(
+        $aReferences = [
             "<arroba>",
             "<quebralinha>",
             "<aspa>",
@@ -205,8 +205,8 @@ class db_stdClass
             "<tab>",
             "<barra>",
             "<hifengrande>",
-        );
-        $aMappTo = array(
+        ];
+        $aMappTo = [
             "@",
             "\n",
             '"',
@@ -225,7 +225,7 @@ class db_stdClass
             "\t",
             "/",
             "-",
-        );
+        ];
         $sString = str_replace($aReferences, $aMappTo, $sString);
         return $sString;
 
@@ -242,7 +242,7 @@ class db_stdClass
      *
      * @return void
      */
-    public static function oo2pdf($tipoDoc, $codDoc = null, $sAgt, $aParam, $sCaminhoSalvoSxw, $sNomeRelatorio)
+    public static function oo2pdf($tipoDoc, $codDoc = null, $sAgt = null, $aParam = null, $sCaminhoSalvoSxw = null, $sNomeRelatorio = null)
     {
         $clagata = new cl_dbagata($sAgt);
         $api = $clagata->api;
@@ -380,12 +380,12 @@ class db_stdClass
      * Entra uma String com função javastring tagString
      * @param String $sString codificada
      * @return String decodificada
-     * @deprecated normalizeStringJsonEscapeString
      * @see db_stdClass::normalizeStringJsonEscapeString
      */
+    #[Deprecated(message: 'normalizeStringJsonEscapeString')]
     public static function normalizeStringJson($sString)
     {
-        return urlDecode(\DBString::utf8_decode_all(db_stdclass::db_stripTagsJson($sString)));
+        return urlDecode((string) DBString::utf8_decode_all(db_stdclass::db_stripTagsJson($sString)));
     }
 
 
@@ -401,7 +401,7 @@ class db_stdClass
     public static function normalizeStringJsonEscapeString($sString)
     {
         return pg_escape_string(
-            \DBString::utf8_decode_all(db_stdclass::db_stripTagsJsonSemEscape(urlDecode($sString)))
+            DBString::utf8_decode_all(db_stdclass::db_stripTagsJsonSemEscape(urlDecode($sString)))
         );
     }
 
@@ -430,7 +430,7 @@ class db_stdClass
     {
 
         // Troco os caracteres especiais por pelo coringa
-        $aOrig = array(
+        $aOrig = [
             'á',
             'é',
             'í',
@@ -463,7 +463,7 @@ class db_stdClass
             'Ò',
             'Ù',
             'Ç'
-        );
+        ];
 
         return str_replace($aOrig, '_', mb_convert_encoding($sString, "ISO-8859-1", "UTF-8"));
 

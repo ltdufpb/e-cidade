@@ -145,11 +145,11 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
                          ) as ed279_i_serie
                         ";
 
-          $chavepri = array(
+          $chavepri = [
                              "ed278_i_codigo"    => @$ed278_i_codigo,
                              "ed278_i_atolegal"  => @$ed278_i_atolegal,
                              "ed05_c_finalidade" => @$ed05_c_finalidade
-                           );
+                           ];
 
           $cliframe_alterar_excluir->chavepri      = $chavepri;
           $cliframe_alterar_excluir->sql           = $clbaseato->sql_query( "", $campos_sql, "ed279_i_serie", " ed278_i_escolabase = $codbaseescola" );
@@ -172,7 +172,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
     </table>
   </form>
 <script>
-<?$codbaseescola = $codbaseescola;?>
+<?php $codbaseescola = $codbaseescola;?>
 
 function js_pesquisaed278_i_atolegal() {
   js_OpenJanelaIframe(

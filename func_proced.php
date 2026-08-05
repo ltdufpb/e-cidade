@@ -32,7 +32,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_proced_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clproced = new cl_proced;
 $clproced->rotulo->label("v03_codigo");
@@ -55,7 +56,7 @@ $clproced->rotulo->label("v03_descr");
               <?=$Lv03_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("v03_codigo",4,$Iv03_codigo,true,"text",4,"","chave_v03_codigo");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clproced->rotulo->label("v03_descr");
               <?=$Lv03_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("v03_descr",20,$Iv03_descr,true,"text",4,"","chave_v03_descr");
 		       ?>
             </td>

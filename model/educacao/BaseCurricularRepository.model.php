@@ -36,7 +36,7 @@
      * Collection de BaseCurricular
      * @var array
      */
-    private $aBaseCurricular = array();
+    private $aBaseCurricular = [];
 
     /**
      * Instancia da classe
@@ -58,7 +58,7 @@
      */
     public static function getBaseCurricularByCodigo($iCodigoBaseCurricular) {
 
-      if (!array_key_exists($iCodigoBaseCurricular, BaseCurricularRepository::getInstance()->aBaseCurricular)) {
+      if (!array_key_exists((string) $iCodigoBaseCurricular, BaseCurricularRepository::getInstance()->aBaseCurricular)) {
         BaseCurricularRepository::getInstance()->aBaseCurricular[$iCodigoBaseCurricular] = new BaseCurricular($iCodigoBaseCurricular);
       }
       return BaseCurricularRepository::getInstance()->aBaseCurricular[$iCodigoBaseCurricular];

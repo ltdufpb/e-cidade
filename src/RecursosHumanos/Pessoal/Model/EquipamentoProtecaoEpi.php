@@ -26,8 +26,9 @@
  */
 namespace ECidade\RecursosHumanos\Pessoal\Model;
 
-use ECidade\Configuracao\Instituicao\Model\Instituicao;
-
+use DBException;
+use BusinessException;
+use db_utils;
 class EquipamentoProtecaoEpi
 {
     /**
@@ -65,14 +66,14 @@ class EquipamentoProtecaoEpi
             $rs = \db_query($sql);
 
             if (!$rs) {
-                throw new \DBException("Houve um erro ao buscar o EPI código {$codigo}.");
+                throw new DBException("Houve um erro ao buscar o EPI código {$codigo}.");
             }
 
             if (pg_num_rows($rs) == 0) {
-                throw new \BusinessException("EPI código {$codigo} não encontrado.");
+                throw new BusinessException("EPI código {$codigo} não encontrado.");
             }
 
-            $epi = \db_utils::fieldsMemory($rs, 0);
+            $epi = db_utils::fieldsMemory($rs, 0);
             $this->setCodigo($epi->rh259_sequencial);
             $this->setCodigoEquipamentoProtecao($epi->rh259_rhlocaltrabequipamentoprotecao);
             $this->setDocumentoAvaliacao($epi->rh259_documentoavaliacao);
@@ -161,12 +162,12 @@ class EquipamentoProtecaoEpi
             if (!$rs) {
                 $msg = "Houve um erro ao buscar os EPIs do equipamento de proteção coletivo ";
                 $msg .= "código {$codigoEquipamento}.";
-                throw new \DBException($msg);
+                throw new DBException($msg);
             }
 
             $totalEpis = pg_num_rows($rs);
             for ($i = 0; $i < $totalEpis; $i++) {
-                $epi = \db_utils::fieldsMemory($rs, $i);
+                $epi = db_utils::fieldsMemory($rs, $i);
                 $epis[] = new EquipamentoProtecaoEpi($epi->rh259_sequencial);
             }
         }

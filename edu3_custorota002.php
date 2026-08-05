@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -37,7 +37,7 @@ include(modification("classes/db_rotamov_classe.php"));
 include(modification("classes/db_veicretirada_classe.php"));
 include(modification("classes/db_itinerario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $claluno = new cl_aluno;
 $clitinerario = new cl_itinerario;
 $clrotulo = new rotulocampo;
@@ -125,8 +125,8 @@ if(isset($chavepesquisa)){
          <tr>
           <td nowrap title="Período">
           Período<br>
-          <?db_inputdata('datainicial',@$datainicial_dia,@$datainicial_mes,@$datainicial_ano,true,'text',$db_opcao,"")?>
-          <?db_inputdata('datafim',@$datafim_dia,@$datafim_mes,@$datafim_ano,true,'text',$db_opcao,"")?>
+          <?php db_inputdata('datainicial',@$datainicial_dia,@$datainicial_mes,@$datainicial_ano,true,'text',$db_opcao,"")?>
+          <?php db_inputdata('datafim',@$datafim_dia,@$datafim_mes,@$datafim_ano,true,'text',$db_opcao,"")?>
           </td>
          </tr>
            <tr>

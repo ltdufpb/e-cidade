@@ -40,7 +40,7 @@ class Registro60Service
     /**
      * @var Registro60[]
      */
-    private $registros = array();
+    private $registros = [];
     /**
      * @var Censo
      */
@@ -92,7 +92,7 @@ class Registro60Service
     {
         $registro60Repository = new Registro60Repository();
         $turmasProcessadas = Registro20Service::getTurmasProcessadas();
-        $matriculas = array();
+        $matriculas = [];
         foreach ($turmasProcessadas as $turma) {
             if ($turma->isEscolarizacao()) {
                 $matriculas = array_merge(

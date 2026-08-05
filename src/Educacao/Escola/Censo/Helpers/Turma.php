@@ -41,28 +41,28 @@ class Turma
             ));
         }
 
-        return substr($codigo, $len);
+        return substr((string) $codigo, $len);
     }
 
     public static function decodeCodigoTurmaRegular($codigo)
     {
         $len = strlen(self::TURMA_REGULAR);
 
-        return substr($codigo, $len);
+        return substr((string) $codigo, $len);
     }
 
     public static function decodeCodigoTurmaAC($codigo)
     {
         $len = strlen(self::TURMA_AC);
 
-        return substr($codigo, $len);
+        return substr((string) $codigo, $len);
     }
 
     public static function decodeCodigoTurmaUnificada($codigo)
     {
         $len = strlen(self::TURMA_UNIFICADA);
 
-        return substr($codigo, $len);
+        return substr((string) $codigo, $len);
     }
 
     public static function isTurmaAC($codigo)
@@ -81,6 +81,6 @@ class Turma
 
     private static function match($pattern, $codigoTurma)
     {
-        return preg_match($pattern, $codigoTurma) === 1;
+        return preg_match($pattern, (string) $codigoTurma) === 1;
     }
 }

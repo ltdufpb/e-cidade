@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cairetordem_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcairetordem = new cl_cairetordem;
 $clcairetordem->rotulo->label("k32_sequencia");
 $clcairetordem->rotulo->label("k32_sequencia");
@@ -54,7 +55,7 @@ $clcairetordem->rotulo->label("k32_sequencia");
               <?=$Lk32_sequencia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k32_sequencia",10,$Ik32_sequencia,true,"text",4,"","chave_k32_sequencia");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcairetordem->rotulo->label("k32_sequencia");
               <?=$Lk32_sequencia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k32_sequencia",10,$Ik32_sequencia,true,"text",4,"","chave_k32_sequencia");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clcairetordem->rotulo->label("k32_sequencia");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cairetordem.php")==true){
@@ -122,12 +123,12 @@ $clcairetordem->rotulo->label("k32_sequencia");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -47,27 +47,27 @@ $clrotulo->label("o52_descr");
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Trh25_codlotavinc?>">
-       <?
+       <?php 
        db_ancora(@$Lrh25_codlotavinc,"",3);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('rh25_codlotavinc',8,$Irh25_codlotavinc,true,'text',3)
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh25_codigo?>">
-       <?
+       <?php 
        db_ancora(@$Lrh25_codigo,"",3);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('rh25_codigo',8,$Irh25_codigo,true,'text',3)
 ?>
-<?
+<?php 
 db_input('rh25_descr',50,$Ir70_descr,true,'text',3);
 ?>
     </td>
@@ -75,12 +75,12 @@ db_input('rh25_descr',50,$Ir70_descr,true,'text',3);
 
   <tr>
     <td nowrap title="<?=@$Trh39_projativ?>">
-       <?
+       <?php 
        db_ancora(@$Lrh39_projativ,"js_pesquisarh39_projativ(true)",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('rh39_projativ',8,$Irh39_projativ,true,'text',$db_opcao,"onchange='js_pesquisarh39_projativ(false)'");
 db_input('rh39_anousu',4,$Irh39_anousu,true,'text',3);
 db_input('o55_descr',44,$Io55_descr,true,'text',3);
@@ -90,12 +90,12 @@ db_input('o55_descr',44,$Io55_descr,true,'text',3);
 
   <tr>
     <td nowrap title="<?=@$Trh43_recurso?>">
-       <?
+       <?php 
        db_ancora(@$Lrh43_recurso,"js_pesquisarh43_recurso(true)",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('rh43_recurso',8,$Irh43_recurso,true,'text',$db_opcao,"onchange='js_pesquisarh43_recurso(false)'");
 db_input('o15_descr',30,$Io15_descr,true,'text',3,"");
 ?>
@@ -135,12 +135,12 @@ db_input('o15_descr',30,$Io15_descr,true,'text',3,"");
 
   <tr>
     <td nowrap title="<?=@$Trh28_codeledef?>">
-       <?
+       <?php 
        db_ancora(@$Lrh28_codeledef,"js_pesquisarh28_codeledef(true)",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('rh28_codeledef',8,$Irh28_codeledef,true,'text',$db_opcao,"onchange='js_pesquisarh28_codeledef(false)'");
 db_input('o56_descr',50,$Io56_descr,true,'text',3);
 ?>
@@ -148,12 +148,12 @@ db_input('o56_descr',50,$Io56_descr,true,'text',3);
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh28_codelenov?>">
-       <?
+       <?php 
        db_ancora(@$Lrh28_codelenov,"js_pesquisarh28_codelenov(true)",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('rh28_codelenov',8,$Irh28_codelenov,true,'text',$db_opcao,"onchange='js_pesquisarh28_codelenov(false)'");
 db_input('o56_descr',50,$Io56_descr,true,'text',3,"","o56_descrnov");
 ?>
@@ -162,7 +162,7 @@ db_input('o56_descr',50,$Io56_descr,true,'text',3,"","o56_descrnov");
   <tr>
     <td colspan="2" align="center">
       <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?>>
-      <?
+      <?php 
       if($db_opcao!=1){
 	echo '<input name="novo" type="button" id="cancelar" value="Novo" onclick="js_cancelar();" >&nbsp;';
       }
@@ -173,7 +173,7 @@ db_input('o56_descr',50,$Io56_descr,true,'text',3,"","o56_descrnov");
  <table width="90%" height="100%">
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php 
    $where = " orcelemento.o56_anousu = ".db_getsession("DB_anousu")." and a.o56_anousu = ".db_getsession("DB_anousu");
 	 if(isset($rh25_codlotavinc) && trim($rh25_codlotavinc)!=""){
 	   $where .= " and rh28_codlotavinc = $rh25_codlotavinc ";
@@ -216,7 +216,7 @@ function js_pesquisarh39_projativ(mostra){
     parent.document.form1.chave6.value = '';
     parent.document.form1.chave7.value = '';
   }
-  <?
+  <?php 
   if(isset($opcao) && $opcao=="alterar"){
     echo "(window.CurrentWindow || parent.CurrentWindow).corpo.iframe_rhlotavinc.document.form1.chave.value  = document.form1.rh39_anousu.value;";
     echo "(window.CurrentWindow || parent.CurrentWindow).corpo.iframe_rhlotavinc.document.form1.chave1.value = document.form1.rh39_projativ.value;";
@@ -263,7 +263,7 @@ function js_pesquisarh28_codeledef(mostra){
     parent.document.form1.chave6.value = '';
     parent.document.form1.chave7.value = '';
   }
-  <?
+  <?php 
   if(isset($opcao) && $opcao=="alterar"){
     echo "(window.CurrentWindow || parent.CurrentWindow).corpo.iframe_rhlotavinc.document.form1.chave.value  = document.form1.rh39_anousu.value;";
     echo "(window.CurrentWindow || parent.CurrentWindow).corpo.iframe_rhlotavinc.document.form1.chave1.value = document.form1.rh39_projativ.value;";
@@ -301,7 +301,7 @@ function js_pesquisarh28_codelenov(mostra){
     parent.document.form1.chave6.value = '';
     parent.document.form1.chave7.value = '';
   }
-  <?
+  <?php 
   if(isset($opcao) && $opcao=="alterar"){
     echo "(window.CurrentWindow || parent.CurrentWindow).corpo.iframe_rhlotavinc.document.form1.chave.value  = document.form1.rh39_anousu.value;";
     echo "(window.CurrentWindow || parent.CurrentWindow).corpo.iframe_rhlotavinc.document.form1.chave1.value = document.form1.rh39_projativ.value;";
@@ -340,7 +340,7 @@ function js_pesquisarh43_recurso(mostra){
     parent.document.form1.chave4.value = '';
     parent.document.form1.chave5.value = '';
   }
-  <?
+  <?php 
   if(isset($opcao) && $opcao=="alterar"){
     echo "(window.CurrentWindow || parent.CurrentWindow).corpo.iframe_rhlotavinc.document.form1.chave.value   = document.form1.rh39_anousu.value;";
     echo "(window.CurrentWindow || parent.CurrentWindow).corpo.iframe_rhlotavinc.document.form1.chave1.value  = document.form1.rh39_projativ.value;";

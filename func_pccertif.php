@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pccertif_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpccertif = new cl_pccertif;
 $clpccertif->rotulo->label("pc59_certif");
 $clpccertif->rotulo->label("pc59_descr");
@@ -54,7 +55,7 @@ $clpccertif->rotulo->label("pc59_descr");
               <?=$Lpc59_certif?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc59_certif",6,$Ipc59_certif,true,"text",4,"","chave_pc59_certif");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clpccertif->rotulo->label("pc59_descr");
               <?=$Lpc59_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc59_descr",40,$Ipc59_descr,true,"text",4,"","chave_pc59_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clpccertif->rotulo->label("pc59_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pccertif.php")==true){
@@ -118,12 +119,12 @@ $clpccertif->rotulo->label("pc59_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

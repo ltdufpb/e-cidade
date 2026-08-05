@@ -27,6 +27,7 @@
 
 namespace ECidade\RecursosHumanos\RH\Efetividade\Model;
 
+use DBDate;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\Jornada;
 
 /**
@@ -52,7 +53,7 @@ class EscalaTrabalho {
 
     /**
      * Data base de início da escala
-     * @var \DBDate
+     * @var DBDate
      */
     private $oDataBase;
 
@@ -60,7 +61,7 @@ class EscalaTrabalho {
      * Jornadas configuradas para escala
      * @var array
      */
-    private $aJornadas = array();
+    private $aJornadas = [];
 
     /**
      * @var bool|Revezamento
@@ -90,7 +91,7 @@ class EscalaTrabalho {
 
     /**
      * Retorna a data base configurada para início da escala de trabalho
-     * @return \DBDate
+     * @return DBDate
      */
     public function getDataBase() {
         return $this->oDataBase;
@@ -133,9 +134,9 @@ class EscalaTrabalho {
     }
 
     /**
-     * @param \DBDate $oDataBase
+     * @param DBDate $oDataBase
      */
-    public function setDataBase(\DBDate $oDataBase) {
+    public function setDataBase(DBDate $oDataBase) {
         $this->oDataBase = $oDataBase;
     }
 
@@ -162,7 +163,7 @@ class EscalaTrabalho {
      */
     public function setExtraAutomaticaFeriado($lExtraAutomaticaFeriado)
     {
-        $this->lExtraAutomaticaFeriado = (boolean)$lExtraAutomaticaFeriado;
+        $this->lExtraAutomaticaFeriado = (bool) $lExtraAutomaticaFeriado;
         return $this;
     }
 
@@ -177,7 +178,7 @@ class EscalaTrabalho {
     /**
      * Organiza as jornadas de trabalho da escala pela ordem de configuração
      *
-     * @param \ECidade\RecursosHumanos\RH\Efetividade\Model\Jornada $oJornada
+     * @param Jornada $oJornada
      * @param int $iOrdemHorario
      */
     public function addJornada(Jornada $oJornada, $iOrdemHorario) {

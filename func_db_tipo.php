@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_tipo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_tipo = new cl_db_tipo;
 $cldb_tipo->rotulo->label("w03_codtipo");
 $cldb_tipo->rotulo->label("w03_tipo");
@@ -54,7 +55,7 @@ $cldb_tipo->rotulo->label("w03_tipo");
               <?=$Lw03_codtipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("w03_codtipo",10,$Iw03_codtipo,true,"text",4,"","chave_w03_codtipo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_tipo->rotulo->label("w03_tipo");
               <?=$Lw03_tipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("w03_tipo",50,$Iw03_tipo,true,"text",4,"","chave_w03_tipo");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_tipo->rotulo->label("w03_tipo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "db_tipo.*";
@@ -114,14 +115,14 @@ $cldb_tipo->rotulo->label("w03_tipo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_w03_codtipo.focus();
 document.form2.chave_w03_codtipo.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

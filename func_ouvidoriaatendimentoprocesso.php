@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ouvidoriaatendimento_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clouvidoriaatendimento = new cl_ouvidoriaatendimento;
 $clouvidoriaatendimento->rotulo->label("ov01_sequencial");
 $clouvidoriaatendimento->rotulo->label("ov01_numero");
@@ -54,7 +55,7 @@ $clouvidoriaatendimento->rotulo->label("ov01_numero");
               <?=$Lov01_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ov01_sequencial",10,$Iov01_sequencial,true,"text",4,"","chave_ov01_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clouvidoriaatendimento->rotulo->label("ov01_numero");
               <?=$Lov01_numero?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ov01_numero",10,$Iov01_numero,true,"text",4,"","chave_ov01_numero");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clouvidoriaatendimento->rotulo->label("ov01_numero");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       
       $sWhere = 'ov01_instit = '.db_getsession('DB_instit');
       
@@ -176,12 +177,12 @@ $clouvidoriaatendimento->rotulo->label("ov01_numero");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

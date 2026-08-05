@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_agrupamentocaracteristica_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clagrupamentocaracteristica = new cl_agrupamentocaracteristica;
 $clagrupamentocaracteristica->rotulo->label("j139_sequencial");
 $clagrupamentocaracteristica->rotulo->label("j139_caracter");
@@ -50,11 +51,11 @@ $clagrupamentocaracteristica->rotulo->label("j139_caracter");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lj139_sequencial?></label></td>
-          <td><? db_input("j139_sequencial",10,$Ij139_sequencial,true,"text",4,"","chave_j139_sequencial"); ?></td>
+          <td><?php  db_input("j139_sequencial",10,$Ij139_sequencial,true,"text",4,"","chave_j139_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lj139_caracter?></label></td>
-          <td><? db_input("j139_caracter",10,$Ij139_caracter,true,"text",4,"","chave_j139_caracter");?></td>
+          <td><?php  db_input("j139_caracter",10,$Ij139_caracter,true,"text",4,"","chave_j139_caracter");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,7 +63,7 @@ $clagrupamentocaracteristica->rotulo->label("j139_caracter");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_agrupamentocaracteristica.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_agrupamentocaracteristica.php")==true){
@@ -104,12 +105,12 @@ $clagrupamentocaracteristica->rotulo->label("j139_caracter");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

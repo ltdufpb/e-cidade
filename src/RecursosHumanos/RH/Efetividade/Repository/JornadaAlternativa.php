@@ -9,9 +9,17 @@
 namespace ECidade\RecursosHumanos\RH\Efetividade\Repository;
 
 
+use BaseClassRepository;
+use Servidor;
+use DBDate;
+use BusinessException;
+use db_utils;
+use DateTime;
+use ECidade\RecursosHumanos\RH\Efetividade\Model\Jornada;
+use DBException;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\JornadaAlternativa as JornadaAlternativaModel;
 
-class JornadaAlternativa extends \BaseClassRepository
+class JornadaAlternativa extends BaseClassRepository
 {
 
     /**
@@ -20,26 +28,26 @@ class JornadaAlternativa extends \BaseClassRepository
      */
     protected static $oInstance;
 
-    protected $jornadas = array();
+    protected $jornadas = [];
 
     /**
      * Retorna uma instância de Jornada
      * @param  $iCodigo
-     * @return \ECidade\RecursosHumanos\RH\Efetividade\Model\Jornada|null
-     * @throws \DBException
+     * @return Jornada|null
+     * @throws DBException
      */
     protected function make($iCodigo) {
 
     }
 
     /**
-     * @param \Servidor $servidor
-     * @param \DateTime $dataInicial
-     * @param \DateTime|null $dataFinal
+     * @param Servidor $servidor
+     * @param DateTime $dataInicial
+     * @param DateTime|null $dataFinal
      * @return JornadaAlternativaModel[]
-     * @throws \BusinessException
+     * @throws BusinessException
      */
-    public static function getMaiorqueDataPorServidor(\Servidor $servidor, \DBDate $data)
+    public static function getMaiorqueDataPorServidor(Servidor $servidor, DBDate $data)
     {
 
         if (!empty(self::getInstance()->jornadas[$servidor->getMatricula()])) {
@@ -47,20 +55,20 @@ class JornadaAlternativa extends \BaseClassRepository
         }
 
         $whereDatas = "rh212_data >= '{$data->getDate()}'";
-        $where = array(
+        $where = [
             "rh212_matricula = {$servidor->getMatricula()}",
             $whereDatas
-        );
+        ];
         $sSqlDadosJornada = "select * from jornadaservidor where ".implode(" and ", $where);
         $rsDadosJornada = db_query($sSqlDadosJornada);
         if (!$rsDadosJornada) {
-            throw new \BusinessException("Erro ao pesquisar as jornadas alternativas do servidor.\n".pg_last_error());
+            throw new BusinessException("Erro ao pesquisar as jornadas alternativas do servidor.\n".pg_last_error());
         }
 
-        $jornadas = \db_utils::makeCollectionFromRecord($rsDadosJornada, function($dados) use ($servidor){
+        $jornadas = db_utils::makeCollectionFromRecord($rsDadosJornada, function($dados) use ($servidor){
 
             $jornadaAlternativa = new JornadaAlternativaModel();
-            $jornadaAlternativa->setData(new \DateTime($dados->rh212_data));
+            $jornadaAlternativa->setData(new DateTime($dados->rh212_data));
             $jornadaAlternativa->setServidor($servidor);
             $jornadaAlternativa->setJornada($dados->rh212_jornada);
             return $jornadaAlternativa;

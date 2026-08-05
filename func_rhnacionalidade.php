@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhnacionalidade_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhnacionalidade = new cl_rhnacionalidade;
 $clrhnacionalidade->rotulo->label("rh06_nacionalidade");
 $clrhnacionalidade->rotulo->label("rh06_descr");
@@ -54,7 +55,7 @@ $clrhnacionalidade->rotulo->label("rh06_descr");
               <?=$Lrh06_nacionalidade?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh06_nacionalidade",6,$Irh06_nacionalidade,true,"text",4,"","chave_rh06_nacionalidade");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clrhnacionalidade->rotulo->label("rh06_descr");
               <?=$Lrh06_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh06_descr",40,$Irh06_descr,true,"text",4,"","chave_rh06_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clrhnacionalidade->rotulo->label("rh06_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhnacionalidade.php")==true){
@@ -118,12 +119,12 @@ $clrhnacionalidade->rotulo->label("rh06_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

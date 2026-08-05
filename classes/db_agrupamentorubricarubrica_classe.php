@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ class cl_agrupamentorubricarubrica {
                  rh114_instituicao = int4 = Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_agrupamentorubricarubrica() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("agrupamentorubricarubrica"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

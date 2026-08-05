@@ -27,6 +27,7 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas;
 
+use DateTime;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacoesPontoCollection;
 
@@ -40,7 +41,7 @@ class HorasJustificadas extends CalculoHoraLinear implements Horas {
 
     /**
      * Hora justificada
-     * @var \DateTime
+     * @var DateTime
      */
     private $horaJustificada;
 
@@ -58,7 +59,7 @@ class HorasJustificadas extends CalculoHoraLinear implements Horas {
     {
         parent::__construct($oDiaTrabalho);
         $this->horaJustificada = $this->getHoraZerada();
-        $this->marcacoes       = array();
+        $this->marcacoes       = [];
 
         if($this->getDiaTrabalho()->getMarcacoes() instanceof MarcacoesPontoCollection) {
             $this->marcacoes = $this->getDiaTrabalho()->getMarcacoes()->getMarcacoes();
@@ -103,7 +104,7 @@ class HorasJustificadas extends CalculoHoraLinear implements Horas {
         $this->horaJustificada->modify('+'. BaseHora::converterMinutosEmMinutosNoturnos(BaseHora::converterDateTimeEmMinutos($this->oHorasNoturnas)) .' minutes');
     }
 
-    public function isHoraTrabalhada(\DateTime $momentoAtual)
+    public function isHoraTrabalhada(DateTime $momentoAtual)
     {
         
         $marcacoes = $this->marcacoes;
@@ -137,11 +138,11 @@ class HorasJustificadas extends CalculoHoraLinear implements Horas {
     }
 
     /**
-     * @param \DateTime $horaJustificada
+     * @param DateTime $horaJustificada
      *
      * @return self
      */
-    public function setHoraJustificada(\DateTime $horaJustificada)
+    public function setHoraJustificada(DateTime $horaJustificada)
     {
         $this->horaJustificada = $horaJustificada;
         return $this;
@@ -159,7 +160,7 @@ class HorasJustificadas extends CalculoHoraLinear implements Horas {
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getHoraJustificada()
     {

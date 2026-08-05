@@ -43,7 +43,7 @@
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<?
+<?php 
   db_postmemory($HTTP_GET_VARS,0);
 
   $cldb_config = new cl_db_config;
@@ -188,7 +188,7 @@
     </td>
   </tr>
 
-<?
+<?php 
   } else if ($solicitacao == "Paralisacoes") {
       
       $sql = "select

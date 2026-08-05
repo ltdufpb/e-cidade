@@ -68,13 +68,13 @@ $bVerif = false;
 
 $ed52_d_inicio = db_formatar($oDadosInicioFim->ed52_d_inicio, 'd');
 
-$aDataIni = explode('/', $ed52_d_inicio);
+$aDataIni = explode('/', (string) $ed52_d_inicio);
 $ed52_d_inicio_dia = $aDataIni[0];
 $ed52_d_inicio_mes = $aDataIni[1];
 $ed52_d_inicio_ano = $aDataIni[2];
 
 $ed52_d_fim = db_formatar($oDadosInicioFim->ed52_d_fim, 'd');
-$aDataFim = explode('/', $ed52_d_fim);
+$aDataFim = explode('/', (string) $ed52_d_fim);
 $ed52_d_fim_dia = $aDataFim[0];
 $ed52_d_fim_mes = $aDataFim[1];
 $ed52_d_fim_ano = $aDataFim[2];
@@ -156,7 +156,7 @@ $ed52_d_fim_ano = $aDataFim[2];
                         </td>
                         <td>
                             <?php
-                            $aOptions = array("1" => "TXT", "2" => "PDF");
+                            $aOptions = ["1" => "TXT", "2" => "PDF"];
                             db_select("formatoarquivo", $aOptions, "", 1);
                             ?>
                         </td>

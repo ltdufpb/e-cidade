@@ -36,7 +36,7 @@ class CriterioAvaliacaoRepository {
    * Coleção de CriterioAvaliacao
    * @var array
    */
-  private $aCriterioAvaliacao = array();
+  private $aCriterioAvaliacao = [];
 
   /**
    * Instancia da classe
@@ -107,7 +107,7 @@ class CriterioAvaliacaoRepository {
    */
   public static function getCriteriosPorVinculos( Disciplina $oDisciplina, Turma $oTurma, PeriodoAvaliacao $oPeriodoAvaliacao ) {
 
-    $aCriterios              = array();
+    $aCriterios              = [];
     $oDaoCriterioAvaliacao   = new cl_criterioavaliacao();
     $sWhereCriterioAvaliacao = "      ed339_disciplina = {$oDisciplina->getCodigoDisciplina()}";
     $sWhereCriterioAvaliacao .= " AND ed341_turma = {$oTurma->getCodigo()} ";

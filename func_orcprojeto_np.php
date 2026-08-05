@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcprojeto_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcprojeto = new cl_orcprojeto;
 $clorcprojeto->rotulo->label("o39_codproj");
 $clorcprojeto->rotulo->label("o39_numero");
@@ -54,18 +55,18 @@ $anousu = db_getsession("DB_anousu");
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$To39_codproj?>"><?=$Lo39_codproj?></td>
             <td width="96%" align="left" nowrap> 
-              <? db_input("o39_codproj",8,$Io39_codproj,true,"text",4,"","chave_o39_codproj"); ?> </td>
+              <?php  db_input("o39_codproj",8,$Io39_codproj,true,"text",4,"","chave_o39_codproj"); ?> </td>
           </tr>
           
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$To39_numero?>"><?=$Lo39_numero?></td>
-            <td width="96%" align="left" nowrap><? db_input("o39_numero",10,$Io39_numero,true,"text",4,"","chave_o39_numero"); ?> </td>
+            <td width="96%" align="left" nowrap><?php  db_input("o39_numero",10,$Io39_numero,true,"text",4,"","chave_o39_numero"); ?> </td>
           </tr>
           
           
           <tr> 
             <td width="4%" align="right" nowrap title="<?=$To39_descr?>"><?=$Lo39_descr?></td>
-            <td width="96%" align="left" nowrap><? db_input("o39_descr",20,$Io39_descr,true,"text",4,"","chave_o39_descr"); ?></td>
+            <td width="96%" align="left" nowrap><?php  db_input("o39_descr",20,$Io39_descr,true,"text",4,"","chave_o39_descr"); ?></td>
           </tr>
           <tr> 
             <td colspan="2" align="center"> 
@@ -80,7 +81,7 @@ $anousu = db_getsession("DB_anousu");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcprojeto.php")==true){
@@ -127,12 +128,12 @@ $anousu = db_getsession("DB_anousu");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

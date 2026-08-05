@@ -27,6 +27,12 @@
 
 namespace ECidade\RecursosHumanos\RH\Efetividade\Repository;
 
+use BaseClassRepository;
+use cl_jornada;
+use DBException;
+use db_utils;
+use BusinessException;
+use DBDate;
 use ECidade\RecursosHumanos\ESocial\Migracao\Servidor;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\EscalaServidor as EscalaServidorModel;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\Jornada as JornadaModel;
@@ -39,7 +45,7 @@ use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
  * @package ECidade\RecursosHumanos\RH\Efetividade\Repository
  * @author Fábio Esteves <fabio.esteves@dbseller.com.br>
  */
-class Jornada extends \BaseClassRepository {
+class Jornada extends BaseClassRepository {
 
     /**
      * Sobrescreve o atributo da classe pai para
@@ -51,23 +57,23 @@ class Jornada extends \BaseClassRepository {
      * Retorna uma instância de Jornada
      * @param  $iCodigo
      * @return \ECidade\RecursosHumanos\RH\Efetividade\Model\Jornada|null
-     * @throws \DBException
+     * @throws DBException
      */
     protected function make($iCodigo) {
 
-        $oDaoJornada = new \cl_jornada();
+        $oDaoJornada = new cl_jornada();
         $sSqlJornada = $oDaoJornada->sql_query_file(null, '*', null, "rh188_sequencial = {$iCodigo}");
         $rsJornada   = db_query($sSqlJornada);
 
         if(!$rsJornada) {
-            throw new \DBException("Erro ao buscar as informações da jornada.");
+            throw new DBException("Erro ao buscar as informações da jornada.");
         }
 
         if(pg_num_rows($rsJornada) == 0) {
-            throw new \DBException("Jornada não encontrada.");
+            throw new DBException("Jornada não encontrada.");
         }
 
-        return \db_utils::makeFromRecord($rsJornada, function($oRetorno) {
+        return db_utils::makeFromRecord($rsJornada, function($oRetorno) {
 
             $oJornada = new JornadaModel();
             $oJornada->setCodigo($oRetorno->rh188_sequencial);
@@ -91,8 +97,8 @@ class Jornada extends \BaseClassRepository {
      * @param DiaTrabalho $oDiaTrabalho
      * @param EscalaServidor $oEscalaServidor
      * @return mixed
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public static function getOrdem(DiaTrabalho $oDiaTrabalho, EscalaServidorModel $oEscalaServidor)
     {
@@ -109,14 +115,14 @@ class Jornada extends \BaseClassRepository {
         $rsOrdem    = db_query($sSqlOrdem);
 
         if(!$rsOrdem) {
-            throw new \DBException("Erro ao buscar a ordem da jornada.");
+            throw new DBException("Erro ao buscar a ordem da jornada.");
         }
 
         if(pg_num_rows($rsOrdem) == 0) {
-            throw new \BusinessException("Ordem da grade de horário não encontrada.");
+            throw new BusinessException("Ordem da grade de horário não encontrada.");
         }
 
-        return \db_utils::fieldsMemory($rsOrdem, 0)->ordem;
+        return db_utils::fieldsMemory($rsOrdem, 0)->ordem;
     }
 
     /**
@@ -127,7 +133,7 @@ class Jornada extends \BaseClassRepository {
      * @param array $tiposJornada
      * @return Jornada[] | array()
      */
-    public static function getJornadasPorPeriodo(\Servidor $servidor, PeriodoEfetividade $periodo, array $tiposJornada = null)
+    public static function getJornadasPorPeriodo(\Servidor $servidor, PeriodoEfetividade $periodo, ?array $tiposJornada = null)
     {
         $periodoAnterior = clone $periodo->getDataInicio();
         $periodoAnterior->modificarIntervalo('-1 month');
@@ -160,19 +166,19 @@ class Jornada extends \BaseClassRepository {
 
         if(!$rsJornadas) {
             $msg  = " Erro ao buscar as jornadas para o servidor ({$matricula})\n";
-            $msg .= " no periodo ({$periodoInicio->getDate(\DBDate::DATA_PTBR)} - {$periodoFim->getDate(\DBDate::DATA_PTBR)})";
+            $msg .= " no periodo ({$periodoInicio->getDate(DBDate::DATA_PTBR)} - {$periodoFim->getDate(DBDate::DATA_PTBR)})";
             throw new DBException($msg);
         }
 
         $qtdeJornadas = pg_num_rows($rsJornadas);
         if($qtdeJornadas == 0) {
-            return array();
+            return [];
         }
 
         for ($i = 0; $i < $qtdeJornadas; $i++) {
 
-            $jornada = \db_utils::fieldsMemory($rsJornadas, $i);
-            $jornadas[str_replace('-', '', $jornada->data)]['data']    = new \DBDate($jornada->data);
+            $jornada = db_utils::fieldsMemory($rsJornadas, $i);
+            $jornadas[str_replace('-', '', $jornada->data)]['data']    = new DBDate($jornada->data);
             $jornadas[str_replace('-', '', $jornada->data)]['ordem']   = $jornada->ordem_jornada;
             $jornadas[str_replace('-', '', $jornada->data)]['jornada'] = self::getInstanciaPorCodigo($jornada->codigo_jornada);
         }
@@ -180,7 +186,7 @@ class Jornada extends \BaseClassRepository {
         return $jornadas;
     }
 
-    public static function getJornadasNoIntervalo(\Servidor $servidor, PeriodoEfetividade $periodo, array $tiposJornada = null)
+    public static function getJornadasNoIntervalo(\Servidor $servidor, PeriodoEfetividade $periodo, ?array $tiposJornada = null)
     {
         $matricula     = $servidor->getMatricula();
         $sqlJornadas   = " SELECT
@@ -208,19 +214,19 @@ class Jornada extends \BaseClassRepository {
 
         if(!$rsJornadas) {
             $msg  = " Erro ao buscar as jornadas para o servidor ({$matricula})\n";
-            $msg .= " no periodo ({$periodo->getDate(\DBDate::DATA_PTBR)} - {$periodo->getDate(\DBDate::DATA_PTBR)})";
+            $msg .= " no periodo ({$periodo->getDate(DBDate::DATA_PTBR)} - {$periodo->getDate(DBDate::DATA_PTBR)})";
             throw new DBException($msg);
         }
 
         $qtdeJornadas = pg_num_rows($rsJornadas);
         if($qtdeJornadas == 0) {
-            return array();
+            return [];
         }
 
         for ($i = 0; $i < $qtdeJornadas; $i++) {
 
-            $jornada = \db_utils::fieldsMemory($rsJornadas, $i);
-            $jornadas[str_replace('-', '', $jornada->data)]['data']    = new \DBDate($jornada->data);
+            $jornada = db_utils::fieldsMemory($rsJornadas, $i);
+            $jornadas[str_replace('-', '', $jornada->data)]['data']    = new DBDate($jornada->data);
             $jornadas[str_replace('-', '', $jornada->data)]['ordem']   = $jornada->ordem_jornada;
             $jornadas[str_replace('-', '', $jornada->data)]['jornada'] = self::getInstanciaPorCodigo($jornada->codigo_jornada);
         }
@@ -230,23 +236,23 @@ class Jornada extends \BaseClassRepository {
 
     /**
      * @param \Servidor $servidor
-     * @param \DBDate $data
+     * @param DBDate $data
      * @return \ECidade\RecursosHumanos\RH\Efetividade\Model\Jornada
-     * @throws \DBException
+     * @throws DBException
      */
-    public function getJornadaServidorNoDia(\Servidor $servidor, \DBDate $data)
+    public function getJornadaServidorNoDia(\Servidor $servidor, DBDate $data)
     {
         $sql = "select * from fc_getjornadaservidornadata('{$data->getDate()}', {$servidor->getMatricula()})";
         $rs = db_query($sql);
 
         if(!$rs) {
-            throw new \DBException("Erro ao buscar a jornada do servidor {$servidor->getMatricula()} no dia {$data->getDate(\DBDate::DATA_PTBR)}.");
+            throw new DBException("Erro ao buscar a jornada do servidor {$servidor->getMatricula()} no dia {$data->getDate(DBDate::DATA_PTBR)}.");
         }
 
         if(pg_num_rows($rs) == 0) {
-            throw new \DBException("Nenhuma jornada encontrada para o servidor {$servidor->getMatricula()} no dia {$data->getDate(\DBDate::DATA_PTBR)}.");
+            throw new DBException("Nenhuma jornada encontrada para o servidor {$servidor->getMatricula()} no dia {$data->getDate(DBDate::DATA_PTBR)}.");
         }
 
-        return self::getInstanciaByCodigo(\db_utils::fieldsMemory($rs, 0)->codigo_jornada);
+        return self::getInstanciaByCodigo(db_utils::fieldsMemory($rs, 0)->codigo_jornada);
     }
 }

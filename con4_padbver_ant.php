@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,7 +29,7 @@ class bver_ant {
   var $arq=null;
 
 
-  function bver_ant($header){
+  function __construct($header){
 
     umask(74);
     $this->arq = fopen("tmp/BVER_ANT.TXT",'w+');

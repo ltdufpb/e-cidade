@@ -50,7 +50,7 @@ class LancamentoRRARepository {
    *
    * @var $aLancamentoRRA;
    */
-  private static $aLancamentoRRA = array();
+  private static $aLancamentoRRA = [];
 
 
   /**
@@ -83,9 +83,9 @@ class LancamentoRRARepository {
    *
    * @access private
    * @param  LancamentoRRA $oLancamentoRRA
-   * @return \LancamentoRRA|\LancamentoRRA[]
-   * @throws \DBException
-   * @throws \ParameterException
+   * @return LancamentoRRA|LancamentoRRA[]
+   * @throws DBException
+   * @throws ParameterException
    */
   private static function make($oLancamentoRRA) {
 
@@ -116,7 +116,7 @@ class LancamentoRRARepository {
 			throw new DBException(_M(self::MENSAGEM."nenhum_lancamento_encontrado"));
 		}
 
-    $aLancamentoRRA = array();
+    $aLancamentoRRA = [];
 
     if($iQtdeLancamentos > 0) {
 
@@ -180,8 +180,8 @@ class LancamentoRRARepository {
    * @static
    * @access public
    * @param  AssentamentoRRA $oAssentamentoRRA
-   * @return \LancamentoRRA[]
-   * @throws \BusinessException
+   * @return LancamentoRRA[]
+   * @throws BusinessException
    */
   public static function getInstanciasByAssentamento(AssentamentoRRA $oAssentamentoRRA) {
 
@@ -211,11 +211,11 @@ class LancamentoRRARepository {
 
     } catch (Exception $oErro) {
 
-      if(strpos($oErro->getMessage(), 'nenhum lan') === false) {
+      if(!str_contains($oErro->getMessage(), 'nenhum lan')) {
         throw new BusinessException($oErro->getMessage());
       }
 
-      return array();
+      return [];
     }
   }
 

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_autotipobaixa_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clautotipobaixa = new cl_autotipobaixa;
 $clautotipobaixa->rotulo->label("y86_codautotipo");
 $clautotipobaixa->rotulo->label("y86_codautotipo");
@@ -54,7 +55,7 @@ $clautotipobaixa->rotulo->label("y86_codautotipo");
               <?=$Ly86_codautotipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y86_codautotipo",8,$Iy86_codautotipo,true,"text",4,"","chave_y86_codautotipo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clautotipobaixa->rotulo->label("y86_codautotipo");
               <?=$Ly86_codautotipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y86_codautotipo",8,$Iy86_codautotipo,true,"text",4,"","chave_y86_codautotipo");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clautotipobaixa->rotulo->label("y86_codautotipo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_autotipobaixa.php")==true){
@@ -118,12 +119,12 @@ $clautotipobaixa->rotulo->label("y86_codautotipo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

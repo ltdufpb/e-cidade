@@ -89,8 +89,8 @@ class Smtp {
   public function Auth() {
 
     $this->Put("AUTH LOGIN");
-    $this->Put(base64_encode($this->user));
-    $this->Put(base64_encode($this->pass));
+    $this->Put(base64_encode((string) $this->user));
+    $this->Put(base64_encode((string) $this->pass));
 
     return true;
   }

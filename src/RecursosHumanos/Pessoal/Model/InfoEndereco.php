@@ -2,6 +2,9 @@
 
 namespace ECidade\RecursosHumanos\Pessoal\Model;
 
+use db_utils;
+use DBException;
+
 class InfoEndereco
 {
     private $codigoIbge;
@@ -28,7 +31,7 @@ class InfoEndereco
             //     throw new \BusinessException("código {$codigo} não encontrado.");
             // }
 
-            $municipio = \db_utils::fieldsMemory($rsIbge, 0);
+            $municipio = db_utils::fieldsMemory($rsIbge, 0);
             $this->setCodigoIbge($municipio->db125_codigosistema);
         }
         if (!empty($nomeRua)) {
@@ -42,13 +45,13 @@ class InfoEndereco
                     where db74_descricao = '{$nomeRua}' and db74_cadendermunicipio = $codigo;";
             $rsLogr = \db_query($sql);
             if (!$rsLogr) {
-                throw new \DBException("Houve um erro ao buscar a rua {$nomeRua} {$codigo}.");
+                throw new DBException("Houve um erro ao buscar a rua {$nomeRua} {$codigo}.");
             }
             // if (pg_num_rows($rsLogr) == 0) {
             //     throw new \BusinessException("rua {$nomeRua} não encontrado.");
             // }
 
-            $tipoLogr = \db_utils::fieldsMemory($rsLogr, 0);
+            $tipoLogr = db_utils::fieldsMemory($rsLogr, 0);
             $this->setTipoLogradouro($tipoLogr->j88_sigla);
         }
     }

@@ -33,7 +33,7 @@ require_once(modification('libs/JSON.php'));
 require_once(modification('libs/db_utils.php'));
 
 $oJson   = new services_json();
-$sName   = html_entity_decode(crossUrlDecode($_POST['string']));
+$sName   = html_entity_decode((string) crossUrlDecode($_POST['string']));
 
 $oDaoDisciplina = new cl_disciplina();
 
@@ -62,7 +62,7 @@ $sSql    = $oDaoDisciplina->sql_query(null, $sCampos, $sOrder, $sWhere);
 $rs      = $oDaoDisciplina->sql_record($sSql);
 $iLinhas = $oDaoDisciplina->numrows;
 
-$aRetorno = array();
+$aRetorno = [];
 if ($iLinhas > 0) {
   $aRetorno = db_utils::getCollectionByRecord($rs, false, false, true);
 }
@@ -74,9 +74,9 @@ echo $oJson->encode($aRetorno);
 function crossUrlDecode($sSource) {
 
   // Troco os caracteres especiais por pelo coringa
-  $aOrig   = array('á', 'é', 'í', 'ó', 'ú', 'â', 'ê', 'ô', 'ã', 'õ', 'à', 'è', 'ì', 'ò', 'ù', 'ç',
+  $aOrig   = ['á', 'é', 'í', 'ó', 'ú', 'â', 'ê', 'ô', 'ã', 'õ', 'à', 'è', 'ì', 'ò', 'ù', 'ç',
     'Á', 'É', 'Í', 'Ó', 'Ú', 'Â', 'Ê', 'Ô', 'Ã', 'Õ', 'À', 'È', 'Ì', 'Ò', 'Ù', 'Ç'
-  );
+  ];
 
   return str_replace($aOrig, '_', mb_convert_encoding($sSource, "ISO-8859-1", "UTF-8"));
 

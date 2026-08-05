@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_parametrodependenciaetapa_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clparametrodependenciaetapa = new cl_parametrodependenciaetapa;
 $db_opcao = 1;
 $db_botao = true;
@@ -62,14 +62,14 @@ if(isset($incluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmparametrodependenciaetapa.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -77,7 +77,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","ed296_parametrodependencia",true,1,"ed296_parametrodependencia",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
   if($clparametrodependenciaetapa->erro_status=="0"){
     $clparametrodependenciaetapa->erro(true,false);

@@ -3,13 +3,11 @@
 
 namespace ECidade\Educacao\Escola\Relatorios\GuiaTransferencia;
 
+use Matricula;
+use RelatorioGradeAproveitamento;
 use Exception;
 use FpdfMultiCellBorder;
-use stdClass;
-use DBDate;
-use db_utils;
 use ECidade\Educacao\Escola\Service\NotificacaoTransferenciaService;
-use Escola;
 
 class GuiaTransferencia
 {
@@ -33,17 +31,11 @@ class GuiaTransferencia
 
     public $assinatura;
 
-    public $notificar;
 
-    public $tipoTransferencia;
-
-
-    public function __construct($orientation, $tipoTransf = "", $modelo = null, $notificar = false, $escola = "")
+    public function __construct($orientation, public $tipoTransferencia = "", $modelo = null, public $notificar = false, $escola = "")
     {
         $this->escola = $escola;
-        $this->tipoTransferencia = $tipoTransf;
-        $this->notificar = $notificar;
-        $this->orientation = strtoupper($orientation);
+        $this->orientation = strtoupper((string) $orientation);
         $this->pdf = new FpdfMultiCellBorder($orientation);
         $this->pdf->Open();
         $this->pdf->AliasNbPages();
@@ -81,7 +73,7 @@ class GuiaTransferencia
 
     public function setAssinatura($diretor)
     {
-        $arrayAssinatura = $diretor != "" ? explode("|", $diretor) : null;
+        $arrayAssinatura = $diretor != "" ? explode("|", (string) $diretor) : null;
         $this->assinatura['nome'] = !is_null($arrayAssinatura) ? $arrayAssinatura[1] : null;
         $this->assinatura['atividade'] = !is_null($arrayAssinatura) ? $arrayAssinatura[0] . " desta escola," : null;
         $funcao = trim($arrayAssinatura[2]) != "" ? $arrayAssinatura[2] : "";
@@ -122,7 +114,7 @@ class GuiaTransferencia
                 $aluno->data_transf
             );
             $notificacaoService->setGuiaTransferencia($path);
-            $turma = isset($aluno->descr_turma) ? $aluno->descr_turma : $aluno->matricula[0]->descr_turma;
+            $turma = $aluno->descr_turma ?? $aluno->matricula[0]->descr_turma;
             $notificacaoService->notificar($turma, $aluno->obs);
         }
     }
@@ -130,11 +122,9 @@ class GuiaTransferencia
     public function imprimeDados()
     {
         $folha = 1;
-        $nome = !is_null($this->assinatura['nome']) ?
-                            $this->assinatura['nome'] :
-                            "------------------------------------------------------";
+        $nome = $this->assinatura['nome'] ?? "------------------------------------------------------";
 
-        $funcao = !is_null($this->assinatura['funcao']) ? $this->assinatura['funcao'] : "";
+        $funcao = $this->assinatura['funcao'] ?? "";
 
         foreach ($this->dados['alunos'] as $aluno) {
             $folha = 1;
@@ -154,7 +144,7 @@ class GuiaTransferencia
                         $this->pdf->addPage();
                     }
                 }
-                $matricula = new \Matricula($aluno->codigomatricula);
+                $matricula = new Matricula($aluno->codigomatricula);
                 $espaco = "_______________________________________";
                 $titulo = "Guia de Transferência";
                 $this->pdf->setfont('arial', 'b', $this->tamanhoFonte);
@@ -163,7 +153,7 @@ class GuiaTransferencia
                 $this->pdf->MultiCell($this->larguraLinha, 5, $aluno->atestado, 'LR', 'J', 0);
                 $this->pdf->cell($this->larguraLinha, $this->alturaLinha * 2, "", "LRB", 1, "C", 0, 0);
                 $this->pdf->cell($this->larguraLinha, $this->alturaLinha, $aluno->descricaoEnsino, "LRB", 1, "C", 1, 0);
-                $grade = new \RelatorioGradeAproveitamento($this->pdf, $matricula, $this->larguraLinha);
+                $grade = new RelatorioGradeAproveitamento($this->pdf, $matricula, $this->larguraLinha);
                 $grade->montarGrade();
                 $this->pdf->cell($this->larguraLinha, $this->alturaLinha, "", "LRB", 1, "C", 1, 0);
                 $this->pdf->cell($this->larguraLinha, $this->alturaLinha * 2, "", "LR", 1, "C", 0, 0);

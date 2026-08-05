@@ -16,7 +16,7 @@ class AreaProcedimentoResultadoRegistry
     /**
      * @var AreaProcedimentoResultado[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param AreaProcedimentoResultado $areaProcedimentoResultado
@@ -33,7 +33,7 @@ class AreaProcedimentoResultadoRegistry
      */
     public static function get($key)
     {
-        if (!array_key_exists($key, self::$storage)) {
+        if (!array_key_exists((string) $key, self::$storage)) {
             $areaConhecimento = AreaProcedimentoResultadoRepository::find($key);
             if (is_null($areaConhecimento)) {
                 return null;

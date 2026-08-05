@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,7 @@ require_once(modification('dbforms/db_funcoes.php'));
 require_once(modification('libs/db_utils.php'));
 require_once(modification("model/educacao/ArredondamentoNota.model.php"));
 require_once(modification("model/educacao/DBEducacaoTermo.model.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if (!isset($iTrocaTurma)) {
 	$iTrocaTurma = null;
@@ -85,8 +85,8 @@ function getComboBoxConceito($sDisabled, $sCorDisabled, $lDiarioEncerrado, $iFor
   $rs   = $oDaoConceito->sql_record($sSql);
   for ($iCont = 0; $iCont < $oDaoConceito->numrows; $iCont++) {
 
-    $sConceito = trim(db_utils::fieldsmemory($rs, $iCont)->ed39_c_conceito);
-    $sSelected = ($sConceito == trim($sValorConceito) ? 'selected' : '');
+    $sConceito = trim((string) db_utils::fieldsmemory($rs, $iCont)->ed39_c_conceito);
+    $sSelected = ($sConceito == trim((string) $sValorConceito) ? 'selected' : '');
     $sCombo   .= '<option value="'.$sConceito.'" '.$sSelected.' >'.$sConceito.'</option>';
 
   }
@@ -101,20 +101,20 @@ function getHtmlParecerAluno($sDisabled, $sCorDisabled, $oDadosMat, $iTurma, $lA
                              $sOnchange = '', $iCont = null) {
 
   global $iCodigoEnsino;
-  $sPar   = empty($oDadosMat->ed73_t_parecer) ? '' : substr($oDadosMat->ed73_t_parecer, 0, 20).'...';
+  $sPar   = empty($oDadosMat->ed73_t_parecer) ? '' : substr((string) $oDadosMat->ed73_t_parecer, 0, 20).'...';
   $sHtml  = '<input name="ed73_t_parecer'.$iCont.'" value="'.mb_strtoupper($sPar).'" type="text" size="20" maxlength="20" ';
   $sHtml .= 'style="background:'.$sCorDisabled.';height:14px;text-align:left;border: 1px solid #000000;';
   $sHtml .= 'font-size:11px;padding:0px;" onclick="js_parecer(this, '.$oDadosMat->ed73_i_codigo.',';
   $sHtml .= $oDadosMat->ed73_i_procresultado.", '".$oDadosMat->ed42_c_descr."', '".str_replace("'", "", $oDadosMat->ed47_v_nome);
   $sHtml .= "' , '".$oDadosMat->ed95_c_encerrado."', $iTurma, ".$oDadosMat->ed47_i_codigo.');" ';
-  $sHtml .= (trim($oDadosMat->ed95_c_encerrado) == 'S' ? 'readonly' : $sDisabled).'>';
+  $sHtml .= (trim((string) $oDadosMat->ed95_c_encerrado) == 'S' ? 'readonly' : $sDisabled).'>';
   $sHtml .= '<select name="ed73_c_aprovmin" style="background:'.$sCorDisabled.';width:95px;height:17px;';
   $sHtml .= '                                      font-size:10px;padding:0px;" ';
 
   if ($lAmparado || (isset($lEncerrado) && $lEncerrado)) {
 
     $sHtml .= 'onclick="alert(\'Aluno já possui avaliações encerradas para esta disciplina!\')" ';
-    $sHtml .= (trim($oDadosMat->ed95_c_encerrado) == 'S' ? 'disabled' : $sDisabled);
+    $sHtml .= (trim((string) $oDadosMat->ed95_c_encerrado) == 'S' ? 'disabled' : $sDisabled);
 
   } else {
     $sHtml .= $sOnchange;
@@ -428,7 +428,7 @@ if (isset($aprovminimo)) {
   <script>
    // parent.iframe_RF.location.href = "edu1_diariofinal001.php?regencia=<?=$regencia?>"+"&iTrocaTurma=<?=$iTrocaTurma?>";
   </script>
-<?
+<?php 
   $valoralterado = $valor;
 
 }
@@ -479,7 +479,7 @@ if (isset($aprovminimo)) {
 <form name="form1" method="post" action="">
 <input name="ed43_i_codigo" type="hidden" value="<?=$ed43_i_codigo?>">
 <input name="regencia" type="hidden" value="<?=$regencia?>">
-<?
+<?php 
 /* Busco informações dos alunos matriculados na turma para exibir no formulário */
 
 $sCampos  = 'diariofinal.*, matricula.ed60_c_situacao, matricula.ed60_c_concluida, matricula.ed60_i_codigo, matricula.ed60_matricula,';
@@ -513,7 +513,7 @@ $rsMat    = $oDaoMatricula->sql_record($sSql);
    que é necessária antes de começar a processar os dados de cada aluno / matrícula individualmente.
 */
 $oDadosMat              = db_utils::fieldsmemory($rsMat, 0);
-$oDadosMat->ed37_c_tipo = trim($oDadosMat->ed37_c_tipo);
+$oDadosMat->ed37_c_tipo = trim((string) $oDadosMat->ed37_c_tipo);
 
 $iCodigoEnsino = $oDadosRegencia->ed12_i_ensino;
 /* Títulos */
@@ -612,7 +612,7 @@ if ($lCasasDecimais) {
      <td class="cabec1">Código</td>
      <td class="cabec1"><?=$oDadosMat->ed37_c_tipo?></td>
     </tr>
-    <?
+    <?php 
     if ($oDaoMatricula->numrows > 0) { // Matrículas encontrada
 
      for ($iCont = 0; $iCont < $oDaoMatricula->numrows; $iCont++) {
@@ -712,7 +712,7 @@ if ($lCasasDecimais) {
        /* Se o amparo não for de todo o período, então o amparo não garante a aprovação do aluno, então,
           no diarioresultado, seta para não o amparo, o que significa que o amparo não vai aprovar o aluno
         */
-       if (trim($oDadosMat->ed81_c_todoperiodo) != 'S' && trim($oDadosMat->ed60_c_concluida) == 'N' && $oDadosMat->ed60_c_parecer != 'S') {
+       if (trim((string) $oDadosMat->ed81_c_todoperiodo) != 'S' && trim((string) $oDadosMat->ed60_c_concluida) == 'N' && $oDadosMat->ed60_c_parecer != 'S') {
 
          /* Faço isso para limpar os campos possivelmente já setados na classe */
          $oDaoDiarioResultado                = db_utils::getdao('diarioresultado');
@@ -724,7 +724,7 @@ if ($lCasasDecimais) {
        }
 
        $sTdAmparo = '';
-       if (trim($oDadosMat->ed81_c_todoperiodo) == 'S') {
+       if (trim((string) $oDadosMat->ed81_c_todoperiodo) == 'S') {
 
          /* Se a matrícula ainda está ativa, exibe a justificativa legal do amparo. */
          if ($oDadosMat->ed60_c_ativa == 'S') {
@@ -742,7 +742,7 @@ if ($lCasasDecimais) {
          /* Se ainda não foi concluída a etapa / matrícula, então seto para sim o status amparado e
             limpo os valores lançados (notas, conceitos, pareceres), pois o aluno foi amparado na
             disciplina, não necessitando constar valores. */
-         if (trim($oDadosMat->ed60_c_concluida) == 'N' && $oDadosMat->ed60_c_parecer != 'S') {
+         if (trim((string) $oDadosMat->ed60_c_concluida) == 'N' && $oDadosMat->ed60_c_parecer != 'S') {
 
            /* Faço isso para limpar os campos possivelmente já setados na classe */
            $oDaoDiarioResultado = db_utils::getdao('diarioresultado');
@@ -771,11 +771,11 @@ if ($lCasasDecimais) {
        */
        $sDisabled    = '';
        $sCorDisabled = '#FFD5AA';
-       if (trim($oDadosMat->ed60_c_situacao) != 'MATRICULADO' || trim($oDadosMat->ed73_c_amparo) == 'S') {
+       if (trim((string) $oDadosMat->ed60_c_situacao) != 'MATRICULADO' || trim((string) $oDadosMat->ed73_c_amparo) == 'S') {
 
-         if (trim($oDadosMat->ed60_c_situacao) == 'TRANSFERIDO FORA' && $oDadosMat->ed60_c_ativa == 'S') {
+         if (trim((string) $oDadosMat->ed60_c_situacao) == 'TRANSFERIDO FORA' && $oDadosMat->ed60_c_ativa == 'S') {
            $oDadosMat->ed95_c_encerrado = 'N';
-         } elseif (trim($oDadosMat->ed60_c_situacao) == 'TRANSFERIDO FORA' && $oDadosMat->ed60_c_ativa == 'N') {
+         } elseif (trim((string) $oDadosMat->ed60_c_situacao) == 'TRANSFERIDO FORA' && $oDadosMat->ed60_c_ativa == 'N') {
 
            $sDisabled                       = 'disabled';
            $oDadosMat->ed73_i_valornota     = "null";
@@ -790,12 +790,12 @@ if ($lCasasDecimais) {
          $sCorDisabled = '#FFFFFF';
        }
 
-       $sAlturaLinha = trim($oDadosMat->ed60_c_concluida) == 'S' ? '': "height='33'";
+       $sAlturaLinha = trim((string) $oDadosMat->ed60_c_concluida) == 'S' ? '': "height='33'";
        $sParecer     = $oDadosMat->ed60_c_parecer == 'S' ? '<b>&nbsp;&nbsp;&nbsp;(NEE - Parecer)</b>' : '';
 
        /* Obtenho a descrição da situação do aluno */
        $sSitAluno    = '';
-       if (trim($oDadosMat->ed81_c_todoperiodo) == 'S' && $oDadosMat->ed60_c_ativa == 'S') {
+       if (trim((string) $oDadosMat->ed81_c_todoperiodo) == 'S' && $oDadosMat->ed60_c_ativa == 'S') {
 
          if ($oDadosMat->ed81_i_justificativa != '') {
            $sSitAluno = 'AMPARADO';
@@ -820,26 +820,26 @@ if ($lCasasDecimais) {
        <td align="center" class='aluno'><?=db_formatar($oDadosMat->ed60_d_datamatricula, 'd')?></td>
        <td align="center" class='aluno'><?=empty($datasaida) ? '&nbsp;': $datasaida?></td>
        <td align="right" class='aluno'><b><?=$oDadosMat->ed47_i_codigo?></b></td>
-       <?
+       <?php 
        echo (empty($sTdAmparo) ? '<td class="aluno" align="center">' : $sTdAmparo);
 
-       if (trim($oDadosMat->ed81_c_todoperiodo) != 'S') { // Não tem amparo completo (todo o período)
+       if (trim((string) $oDadosMat->ed81_c_todoperiodo) != 'S') { // Não tem amparo completo (todo o período)
 
-         if (trim($oDadosMat->ed60_c_concluida) == 'S') {
+         if (trim((string) $oDadosMat->ed60_c_concluida) == 'S') {
 
-           if (trim($oDadosMat->ed37_c_tipo) == 'NIVEL') {
+           if (trim((string) $oDadosMat->ed37_c_tipo) == 'NIVEL') {
 
              echo $sFormaObtencao.': <br>'.getComboBoxConceito($sDisabled,
                                                                $sCorDisabled,
-                                                               trim($oDadosMat->ed95_c_encerrado) == 'S',
+                                                               trim((string) $oDadosMat->ed95_c_encerrado) == 'S',
                                                                $oDadosMat->ed43_i_formaavaliacao,
                                                                $oDadosMat->ed73_c_valorconceito,
                                                                true
                                                               );
 
-           } elseif (trim($oDadosMat->ed37_c_tipo) == 'PARECER') {
+           } elseif (trim((string) $oDadosMat->ed37_c_tipo) == 'PARECER') {
              echo getHtmlParecerAluno($sDisabled, $sCorDisabled, $oDadosMat, $oDadosRegencia->ed59_i_turma, true, $iCodigoEnsino);
-           } elseif (trim($oDadosMat->ed37_c_tipo) == 'NOTA') {
+           } elseif (trim((string) $oDadosMat->ed37_c_tipo) == 'NOTA') {
 
              $sHtml = $sFormaObtencao.':<br><input name="ed73_i_valornota" value="';
              $sHtml .= ($oDadosMat->ed73_i_valornota == "" ?
@@ -848,7 +848,7 @@ if ($lCasasDecimais) {
              $sHtml .= ';width:45px;height:14px;border: 1px solid #000000;';
              $sHtml .= 'font-size:11px;text-align:right;padding:0px;" ';
              $sHtml .= 'onclick="alert(\'Aluno já possui avaliações encerradas para esta disciplina!\')"';
-             $sHtml .= (trim($oDadosMat->ed95_c_encerrado) == 'S' ? 'readonly' : $sDisabled).'>';
+             $sHtml .= (trim((string) $oDadosMat->ed95_c_encerrado) == 'S' ? 'readonly' : $sDisabled).'>';
 
              echo $sHtml;
 
@@ -856,9 +856,9 @@ if ($lCasasDecimais) {
 
          } else { // Matrícula ainda não está concluída
 
-           if (trim($oDadosResultado->obtencao) == 'AT') {
+           if (trim((string) $oDadosResultado->obtencao) == 'AT') {
 
-             if (trim($oDadosMat->ed37_c_tipo) == 'NIVEL') {
+             if (trim((string) $oDadosMat->ed37_c_tipo) == 'NIVEL') {
 
                if (isset($conc) && $conc == '' && $oDadosMat->ed60_c_situacao == 'MATRICULADO') {
 
@@ -868,7 +868,7 @@ if ($lCasasDecimais) {
 
                  echo getComboBoxConceito($sDisabled,
                                           $sCorDisabled,
-                                          trim($oDadosMat->ed95_c_encerrado) == 'S',
+                                          trim((string) $oDadosMat->ed95_c_encerrado) == 'S',
                                           $oDadosMat->ed43_i_formaavaliacao,
                                           $oDadosMat->ed73_c_valorconceito,
                                           false,
@@ -877,7 +877,7 @@ if ($lCasasDecimais) {
                                          );
                }
 
-             } elseif (trim($oDadosMat->ed37_c_tipo) == 'PARECER') {
+             } elseif (trim((string) $oDadosMat->ed37_c_tipo) == 'PARECER') {
 
                if (isset($parec) && $parec == '') {
 
@@ -904,11 +904,11 @@ if ($lCasasDecimais) {
                  }
 
                  echo getHtmlParecerAluno($sDisabled, $sCorDisabled, $oDadosMat, $oDadosRegencia->ed59_i_turma,
-                                          false, $sOnchange, $iCont, $iCodigoEnsino);
+                                          false, $sOnchange, $iCont);
 
                }
 
-             } elseif (trim($oDadosMat->ed37_c_tipo) == 'NOTA') {
+             } elseif (trim((string) $oDadosMat->ed37_c_tipo) == 'NOTA') {
 
                $sHtml = '<input name="ed73_i_valornota'.$iCont.'" value="';
                $sHtml .= ($oDadosMat->ed73_i_valornota == "" ?
@@ -917,7 +917,7 @@ if ($lCasasDecimais) {
                $sHtml .= ';width:45px;height:14px;border: 1px solid #000000;';
                $sHtml .= 'font-size:11px;text-align:right;padding:0px;" ';
 
-               if (trim($oDadosMat->ed95_c_encerrado) == 'S' || $oDadosMat->ed60_c_situacao != 'MATRICULADO') {
+               if (trim((string) $oDadosMat->ed95_c_encerrado) == 'S' || $oDadosMat->ed60_c_situacao != 'MATRICULADO') {
 
                  $sHtml .= "onclick=\"alert('Aluno já possui avaliações encerradas para esta disciplina!')\"";
                  $sHtml .= 'readonly';
@@ -954,7 +954,7 @@ if ($lCasasDecimais) {
                                                                           );
              $rsResAval    = $oDaoDiarioResultado->sql_record($sSql);
 
-             $sCampoRes    = trim($oDadosMat->ed37_c_tipo) == 'NIVEL' ? 'conceito': 'nota';
+             $sCampoRes    = trim((string) $oDadosMat->ed37_c_tipo) == 'NIVEL' ? 'conceito': 'nota';
 
              $iNumLinhas   = $oDaoDiarioResultado->numrows;
              $iNumPeriodos = $oDaoDiarioResultado->numrows;
@@ -995,9 +995,9 @@ if ($lCasasDecimais) {
                        /* Obtenho o mínimo para aprovação da avaliação vinculada (anterior) */
                        $sMinAprovacao = VerAprovAvalAnt($oDadosResAval->avalvinc, $oDadosMat->ed73_i_diario, 'A');
 
-                       if (trim($oDadosMat->ed60_c_situacao) != 'MATRICULADO') {
+                       if (trim((string) $oDadosMat->ed60_c_situacao) != 'MATRICULADO') {
 
-                         $valor      = trim(Situacao($oDadosMat->ed60_c_situacao, $oDadosMat->ed60_i_codigo));
+                         $valor      = trim((string) Situacao($oDadosMat->ed60_c_situacao, $oDadosMat->ed60_i_codigo));
                          $sBgColor   = $sCorNao;
                          $sEmBranco .= 'S';
 
@@ -1029,9 +1029,9 @@ if ($lCasasDecimais) {
 
                        $sEmBranco    .= $sMinAprovacao == 'N' ? 'S' : 'N';
 
-                       if (trim($oDadosMat->ed60_c_situacao) != 'MATRICULADO') {
+                       if (trim((string) $oDadosMat->ed60_c_situacao) != 'MATRICULADO') {
 
-                         $valor    = trim(Situacao($oDadosMat->ed60_c_situacao, $oDadosMat->ed60_i_codigo));
+                         $valor    = trim((string) Situacao($oDadosMat->ed60_c_situacao, $oDadosMat->ed60_i_codigo));
                          $sBgColor = $sCorNao;
 
                        /* Se o mínimo para aprovação for == 'N', significa que a nota ainda não foi lançada, mas
@@ -1057,10 +1057,10 @@ if ($lCasasDecimais) {
 
                    } else { // Não tem um resultado / avaliação anterior que decida se o aluno deveria realizar este
 
-                     $valor      = trim($oDadosMat->ed60_c_situacao) != 'MATRICULADO' ?
-                                     trim(Situacao($oDadosMat->ed60_c_situacao, $oDadosMat->ed60_i_codigo)) : 'EM BRANCO';
+                     $valor      = trim((string) $oDadosMat->ed60_c_situacao) != 'MATRICULADO' ?
+                                     trim((string) Situacao($oDadosMat->ed60_c_situacao, $oDadosMat->ed60_i_codigo)) : 'EM BRANCO';
                      $sEmBranco .= 'S'; // Nota vazia
-                     $sBgColor   = $oDadosResAval->$sCampoRes == '' || trim($oDadosMat->ed60_c_situacao) != 'MATRICULADO' ?
+                     $sBgColor   = $oDadosResAval->$sCampoRes == '' || trim((string) $oDadosMat->ed60_c_situacao) != 'MATRICULADO' ?
                                      $sCorNao : $sCorSim;
 
                    }
@@ -1069,16 +1069,16 @@ if ($lCasasDecimais) {
                    $iNumPeriodos--;
 
                  /* Se houver nota e o aluno estiver matriculado */
-                 } elseif (trim($oDadosMat->ed37_c_tipo) == 'NOTA'
-                           && trim($oDadosMat->ed60_c_situacao) == 'MATRICULADO') {
+                 } elseif (trim((string) $oDadosMat->ed37_c_tipo) == 'NOTA'
+                           && trim((string) $oDadosMat->ed60_c_situacao) == 'MATRICULADO') {
 
                    $valor      = number_format($oDadosResAval->$sCampoRes, ArredondamentoNota::getNumeroCasasDecimais($iAno), ".", "");
                    $sEmBranco .= 'N';
                    $sBgColor   = $sCorSim;
 
                  /* Se houver nível e o aluno estiver matriculado */
-                 } elseif (trim($oDadosMat->ed37_c_tipo) == 'NIVEL'
-                           && trim($oDadosMat->ed60_c_situacao) == 'MATRICULADO') {
+                 } elseif (trim((string) $oDadosMat->ed37_c_tipo) == 'NIVEL'
+                           && trim((string) $oDadosMat->ed60_c_situacao) == 'MATRICULADO') {
 
                    $valor      = $oDadosResAval->$sCampoRes;
                    $sEmBranco .= 'N';
@@ -1086,9 +1086,9 @@ if ($lCasasDecimais) {
 
                  } else { // Ou o aluno não está matriculado ou a avaliação é por parecer
 
-                   $valor      = trim(Situacao($oDadosMat->ed60_c_situacao, $oDadosMat->ed60_i_codigo));
+                   $valor      = trim((string) Situacao($oDadosMat->ed60_c_situacao, $oDadosMat->ed60_i_codigo));
                    $sEmBranco .= 'N';
-                   $sBgColor   = trim($oDadosMat->ed60_c_situacao) != 'MATRICULADO' ? $sCorNao : $sCorSim;
+                   $sBgColor   = trim((string) $oDadosMat->ed60_c_situacao) != 'MATRICULADO' ? $sCorNao : $sCorSim;
 
                  }
 
@@ -1182,7 +1182,7 @@ if ($lCasasDecimais) {
              if (($lPermiteNotaEmBranco || strstr($sEmBranco, 'S')) && !strstr($sPesoBranco, 'S')) {
 
                /* Avaliação por nível */
-               if (trim($oDadosMat->ed37_c_tipo) == 'NIVEL') {
+               if (trim((string) $oDadosMat->ed37_c_tipo) == 'NIVEL') {
 
                  $sSql             = $oDaoConceito->sql_query(null, 'ed39_i_sequencia', 'ed39_i_sequencia',
                                                               " ed39_c_conceito = '".
@@ -1195,7 +1195,7 @@ if ($lCasasDecimais) {
 
                  $iMaxConcei        = -1;
                  /* Avaliação por nível, obtenção por maior nível */
-                 if (trim($oDadosResultado->obtencao) == 'MC') {
+                 if (trim((string) $oDadosResultado->obtencao) == 'MC') {
 
                    /* Obtenho a ordem do maior conceito */
                    $sCampos      = 'max((select ed39_i_sequencia ';
@@ -1236,7 +1236,7 @@ if ($lCasasDecimais) {
                    }
 
                  /* Avaliação por nível, obtenção por último nível (conceito) */
-                 } elseif (trim($oDadosResultado->obtencao) == 'UC') {
+                 } elseif (trim((string) $oDadosResultado->obtencao) == 'UC') {
 
                    /* Obtenho o conceito do último componente (período ou resultado de avaliação) */
                    $sCampos      = 'max((select ed39_i_sequencia ';
@@ -1295,7 +1295,7 @@ if ($lCasasDecimais) {
                  echo 'padding:0px;" readonly></td>';
 
                /* Avaliação por nota */
-               } elseif (trim($oDadosMat->ed37_c_tipo) ==  'NOTA') {
+               } elseif (trim((string) $oDadosMat->ed37_c_tipo) ==  'NOTA') {
 
                  $iNumPeriodos = $iNumPeriodos == 0 ? 1 : $iNumPeriodos; // Impeço divisão por 0
 
@@ -1309,7 +1309,7 @@ if ($lCasasDecimais) {
 
                  $sCampos     = 'nota, peso, tipo';
                  /* Avaliação por nota, forma de obtenção última nota */
-                 if (trim($oDadosResultado->obtencao) == 'UN') {
+                 if (trim((string) $oDadosResultado->obtencao) == 'UN') {
 
                    $sOrderBy    = 'sequencia desc limit 1';
                    $sWhere      = ' diario = '.$oDadosMat->ed73_i_diario;
@@ -1342,7 +1342,7 @@ if ($lCasasDecimais) {
                        $nNota = ArredondamentoNota::formatar($nNota, $iAno);
                      }
                      /* Avaliação por nota, forma de obtenção média aritmética */
-                     if (trim($oDadosResultado->obtencao) == 'ME') {
+                     if (trim((string) $oDadosResultado->obtencao) == 'ME') {
 
                        if (!empty($nNota) && $iNotas < $iTotalRegistros + 1) {
 
@@ -1352,7 +1352,7 @@ if ($lCasasDecimais) {
                          $nNotaFinal = $nNotaFinal / $iNumPeriodos;
                        }
                      /* Avaliação por nota, forma de obtenção média ponderada */
-                     } elseif (trim($oDadosResultado->obtencao) == 'MP') {
+                     } elseif (trim((string) $oDadosResultado->obtencao) == 'MP') {
 
                        if (!empty($nNota) && $iNotas < $iTotalRegistros + 1) {
 
@@ -1364,7 +1364,7 @@ if ($lCasasDecimais) {
                          $nNotaFinal = ($nNotaFinal) / $nPesoFinal;
                        }
                      /* Avaliação por nota, forma de obtenção soma */
-                     } elseif (trim($oDadosResultado->obtencao) == 'SO') {
+                     } elseif (trim((string) $oDadosResultado->obtencao) == 'SO') {
 
                        if (!empty($nNota)) {
 
@@ -1372,7 +1372,7 @@ if ($lCasasDecimais) {
                        }
 
                      /* Avaliação por nota, forma de obtenção maior nota */
-                     } elseif (trim($oDadosResultado->obtencao) == 'MN') {
+                     } elseif (trim((string) $oDadosResultado->obtencao) == 'MN') {
 
                        if (!empty($nNota)) {
 
@@ -1382,7 +1382,7 @@ if ($lCasasDecimais) {
                        }
 
                      /* Avaliação por nota, forma de obtenção última nota */
-                     } elseif (trim($oDadosResultado->obtencao) == 'UN') {
+                     } elseif (trim((string) $oDadosResultado->obtencao) == 'UN') {
 
                        if ( !empty($nNota) ) {
                          $nNotaFinal = $nNota;
@@ -1399,7 +1399,7 @@ if ($lCasasDecimais) {
                  /* oDadosResAval do último componente, então a última nota foi amparada, logo,
                     se a última nota é a que vale, é como se todo o período tivesse sido amparado.
                  */
-                 if (trim($oDadosResultado->obtencao) == 'UN' && $oDadosResAval->amparo == 'S') {
+                 if (trim((string) $oDadosResultado->obtencao) == 'UN' && $oDadosResAval->amparo == 'S') {
 
                    $sMinimo      = 'S';
                    $sResFinal    = null;
@@ -1420,7 +1420,7 @@ if ($lCasasDecimais) {
 
                  }
 
-                 $sResFinal = trim($oDadosMat->ed60_c_situacao) != 'MATRICULADO'? '' : $sResFinal;
+                 $sResFinal = trim((string) $oDadosMat->ed60_c_situacao) != 'MATRICULADO'? '' : $sResFinal;
                  //$sResFinal = $sResFinal == 0 ? '0' : $sResFinal;
                  $sResFinal = $sResFinal == '' ? 'null' : $sResFinal;
                  /* Atualizo o diário resultado do aluno */
@@ -1433,7 +1433,7 @@ if ($lCasasDecimais) {
                  $oDaoDiarioResultado->alterar($oDadosMat->ed73_i_codigo);
                  $sResFinalOriginal = $sResFinal;
                  $sResFinal = $sResFinal == 'null' ? '' : ArredondamentoNota::arredondar($sResFinal, $iAno);
-                 
+
                  /* TD com o resultado final */
                  echo '<td class="aluno" align="center"> '.$sFormaObtencao.': <br>';
                  echo '<input name="ed73_i_valornota" value="'.$sResFinal.'" type="text" ';
@@ -1447,17 +1447,17 @@ if ($lCasasDecimais) {
 
              $oDaoResultadoRecuperacao = new cl_diarioresultadorecuperacao();
              $oDaoResultadoRecuperacao->excluir(null, "ed116_diarioresultado = {$oDadosMat->ed73_i_codigo}");
-            
+
              if ($sMinimo == 'N') {
 
                $oResultado          = ResultadoAvaliacaoRepository::getResultadoAvaliacaoByCodigo($oDadosMat->ed73_i_procresultado);
                $oAvalicaoDependente = AvaliacaoPeriodicaRepository::getAvaliacaoDependente($oResultado);
-               
+
                if (!empty($oAvalicaoDependente)) {
 
                   $lGeraRecuparacao  = false;  // Se deve gerar recuperação validando configuração
                   $lJaFezRecuperacao = false; // se aluno tem nota no provão desta disciplina
-                  
+
                   /**
                    * Verificamos em quantas disciplinas aluno ficou em abaixo da média
                    */
@@ -1477,7 +1477,7 @@ if ($lCasasDecimais) {
                   }
                   // Busca como esta configurado                  
                   $iQuantidadeMaximaDisciplinasParaRecuperacao = $oAvalicaoDependente->quantidadeMaximaDisciplinasParaRecuperacao();
-                  
+
                   /**
                    * Validamos se o aluno esta apto a cursar a recuperação. 
                    * - Quando $iQuantidadeMaximaDisciplinasParaRecuperacao == 0 significa que @todo complementar
@@ -1488,7 +1488,7 @@ if ($lCasasDecimais) {
                        && $iQuantidadeMaximaDisciplinasParaRecuperacao >= $iDisciplinasAbaixoMedia) {
                   	$lGeraRecuparacao = true;
                   }
-                   
+
                   /**
                    * Veridicamos se aluno já tem resultado no provão.
                    * Não devemos incluir em diarioresultadorecuperacao se aluno já tivér realizado o provão
@@ -1499,7 +1499,7 @@ if ($lCasasDecimais) {
                   $sSqlAvaliacaoRecuperacao .= "   from diarioavaliacao             ";
                   $sSqlAvaliacaoRecuperacao .= "  where ed72_i_procavaliacao = {$oAvalicaoDependente->getCodigo()}";
                   $sSqlAvaliacaoRecuperacao .= "    and ed72_i_diario = {$oDadosMat->ed73_i_diario} ";
-                  
+
                   $rsAvaliacaoRecuperacao = db_query($sSqlAvaliacaoRecuperacao);
                   if ( $rsAvaliacaoRecuperacao ) {
 
@@ -1510,7 +1510,7 @@ if ($lCasasDecimais) {
                      * Alunos Amparados no periodo, nao devem ter recuperacao lancada
                      */
                     $lJaFezRecuperacao = $oDadosAvaliacaoRecuperacao->ed72_i_valornota != ''  ||
-                                        trim($oDadosAvaliacaoRecuperacao->ed72_c_valorconceito) != '';
+                                        trim((string) $oDadosAvaliacaoRecuperacao->ed72_c_valorconceito) != '';
 
                     if ($oDadosAvaliacaoRecuperacao->ed72_c_amparo == 'S') {
                       $lJaFezRecuperacao = true;
@@ -1559,13 +1559,13 @@ if ($lCasasDecimais) {
 </form>
 </body>
 </html>
-<?
+<?php 
 if (isset($aprovminimo) && !isset($lNotaParecer)) {
  ?>
  <script>
   js_OpenJanelaIframe('','db_iframe_outrasdisc','func_outrasdisc.php?regencia=<?=$regencia?>&ed43_i_codigo=<?=$ed43_i_codigo?>&codigo=<?=$codigo?>&valor=<?=$valoralterado?>','Informar este resultado para outras disciplinas',true);
  </script>
- <?
+ <?php 
 }
 
 ?>
@@ -1680,11 +1680,11 @@ function js_movimentos(matricula) {
 }
 function js_cent(amount) {
  //retorna o valor com 2 casas decimais
- <?if ($lCasasDecimais) {?>
+ <?php if ($lCasasDecimais) {?>
   return(amount == Math.floor(amount)) ? amount + '.00' : ( (amount*10 == Math.floor(amount*10)) ? amount + '0' : amount);
- <?} else {?>
+ <?php } else {?>
   return(amount == Math.floor(amount)) ? Math.floor(amount) : ( (amount*10 == Math.floor(amount*10)) ? Math.floor(amount) : Math.floor(amount));
- <?}?>
+ <?php }?>
 }
 function js_dec(cantidad, decimales) {
  //arredonda o valor

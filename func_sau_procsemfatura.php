@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_procsemfatura_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsau_procsemfatura = new cl_sau_procsemfatura;
 $clsau_procsemfatura->rotulo->label("s146_c_cod");
 $clsau_procsemfatura->rotulo->label("s146_c_descr");
@@ -54,7 +55,7 @@ $clsau_procsemfatura->rotulo->label("s146_c_descr");
               <?=$Ls146_c_cod?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("s146_c_cod",4,$Is146_c_cod,true,"text",4,"","chave_s146_c_cod");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clsau_procsemfatura->rotulo->label("s146_c_descr");
               <?=$Ls146_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("s146_c_descr",4,$Is146_c_descr,true,"text",4,"","chave_s146_c_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clsau_procsemfatura->rotulo->label("s146_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_procsemfatura.php")==true){
@@ -123,12 +124,12 @@ $clsau_procsemfatura->rotulo->label("s146_c_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

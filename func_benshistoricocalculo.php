@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_benshistoricocalculo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbenshistoricocalculo = new cl_benshistoricocalculo;
 $clbenshistoricocalculo->rotulo->label("t57_sequencial");
 $clbenshistoricocalculo->rotulo->label("t57_ano");
@@ -54,7 +55,7 @@ $clbenshistoricocalculo->rotulo->label("t57_ano");
               <?=$Lt57_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t57_sequencial",10,$It57_sequencial,true,"text",4,"","chave_t57_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clbenshistoricocalculo->rotulo->label("t57_ano");
               <?=$Lt57_ano?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t57_ano",10,$It57_ano,true,"text",4,"","chave_t57_ano");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clbenshistoricocalculo->rotulo->label("t57_ano");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_benshistoricocalculo.php")==true){
@@ -122,12 +123,12 @@ $clbenshistoricocalculo->rotulo->label("t57_ano");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

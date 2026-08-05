@@ -138,7 +138,7 @@ if( $clescola->numrows > 0 ) {
                   base.ed31_c_descr,
                   escolabase.ed77_i_basecont,
                   basecont.ed31_c_descr as ed57_i_base";
-        $chavepri= array(
+        $chavepri= [
                            "ed77_i_codigo"   => @$ed77_i_codigo,
                            "ed77_i_escola"   => @$ed77_i_escola,
                            "ed18_c_nome"     => @$ed18_c_nome,
@@ -146,7 +146,7 @@ if( $clescola->numrows > 0 ) {
                            "ed31_c_descr"    => @$ed31_c_descr,
                            "ed77_i_basecont" => @$ed77_i_basecont,
                            "ed57_i_base"     => @$ed57_i_base
-                        );
+                        ];
 
         $cliframe_alterar_excluir->chavepri      = $chavepri;
         @$cliframe_alterar_excluir->sql          = $clescolabase->sql_query("",$campos,"ed18_c_nome"," ed77_i_base = $ed77_i_base");

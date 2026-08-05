@@ -72,7 +72,7 @@ try {
         throw new DBException( _M( MENSAGENS_MODELOS_RELATORIO_RPC . 'erro_busca_modelo', $oPropriedadesMensagem ) );
       }
 
-      $oRetorno->aModelos = array();
+      $oRetorno->aModelos = [];
 
       if( $rsDadosEduRelModel && pg_num_rows( $rsDadosEduRelModel ) ) {
 
@@ -82,7 +82,7 @@ try {
           $oDadosModelo         = db_utils::fieldsMemory( $rsDadosEduRelModel, $iContador );
           $oModelo              = new stdClass();
           $oModelo->iCodigo     = $oDadosModelo->ed217_i_codigo;
-          $oModelo->sNome       = urlencode( $oDadosModelo->ed217_c_nome );
+          $oModelo->sNome       = urlencode( (string) $oDadosModelo->ed217_c_nome );
           $oRetorno->aModelos[] = $oModelo;
         }
       }

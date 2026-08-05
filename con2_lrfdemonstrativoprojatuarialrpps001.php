@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -50,7 +50,7 @@ $iCodRel = $relatorio::CODIGO_RELATORIO;
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body class="body-default abas">
-    <?
+    <?php 
 
       $clCriaAbas->identifica = array("relatorio"  => "Relatório",
                                       "notas"      => "Fonte/Notas Explicativas",
@@ -74,7 +74,7 @@ $iCodRel = $relatorio::CODIGO_RELATORIO;
       $clCriaAbas->cria_abas();
 
     ?>
-<?
+<?php 
 db_menu();
 ?>
 </body>

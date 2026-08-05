@@ -26,6 +26,8 @@
 
 namespace ECidade\RecursosHumanos\Pessoal\Model;
 
+use BusinessException;
+use DBException;
 use Servidor;
 use CgmFisico;
 use ServidorRepository;
@@ -95,8 +97,8 @@ class PensaoAlimenticia
     /**
      * @param array $state
      * @return PensaoAlimenticia
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public static function fromState(array $state)
     {
@@ -142,7 +144,7 @@ class PensaoAlimenticia
      */
     public function toArray()
     {
-        return array(
+        return [
             'sequencial' => $this->getSequencial(),
             'ano' => $this->getAno(),
             'mes' => $this->getMes(),
@@ -151,7 +153,7 @@ class PensaoAlimenticia
             'valorRescisao' => $this->getValorRescisao(),
             'valor' => $this->getValor(),
             'valorDecimo' => $this->getValorDecimo()
-        );
+        ];
     }
 
     /**

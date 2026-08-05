@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_atenditem_classe.php"));
 include(modification("classes/db_db_ordematend_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clatenditem = new cl_atenditem;
 $cldb_ordematend = new cl_db_ordematend;
 $clatenditem->rotulo->label("at05_seq");
@@ -57,7 +58,7 @@ $clatenditem->rotulo->label("at05_solicitado");
               <?=$Lat05_codatend?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at05_codatend",6,$Iat05_codatend,true,"text",4,"","chave_at05_codatend");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clatenditem->rotulo->label("at05_solicitado");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         $campos = "at01_nomecli,at02_dataini,at02_horaini,at02_horafim,atenditem.*";
 	$result = $cldb_ordematend->sql_record($cldb_ordematend->sql_query_file("","","","*"));

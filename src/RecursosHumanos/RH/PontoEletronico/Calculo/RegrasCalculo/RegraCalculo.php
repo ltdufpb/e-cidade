@@ -27,6 +27,7 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\RegrasCalculo;
 
+use DateTime;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 
 /**
@@ -97,9 +98,9 @@ abstract class RegraCalculo
 
             $data = $this->diaTrabalho->getData()->getDate();
 
-            $this->horaNoturnaInicio = new \DateTime($data . ' 22:00');
-            $this->horaNoturnaFim = new \DateTime($data . ' 05:00');
-            $this->horaNoturnaFimNoMesmoDia = new \DateTime($data . ' 05:00');
+            $this->horaNoturnaInicio = new DateTime($data . ' 22:00');
+            $this->horaNoturnaFim = new DateTime($data . ' 05:00');
+            $this->horaNoturnaFimNoMesmoDia = new DateTime($data . ' 05:00');
 
             $this->horaNoturnaFim->modify('+1 day');
         }
@@ -109,9 +110,9 @@ abstract class RegraCalculo
      * Método que será sempre invocado
      * em cada implementação de regra
      *
-     * @param \DateTime $hora
+     * @param DateTime $hora
      */
-    abstract public function processar(\DateTime $hora);
+    abstract public function processar(DateTime $hora);
 
     /**
      * @return DiaTrabalho

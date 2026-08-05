@@ -39,7 +39,7 @@ class ProfissionalEscolaRepository {
    * Collection de ProfissionalEscola
    * @var array
    */
-  private $aProfissionalEscola = array();
+  private $aProfissionalEscola = [];
 
   /**
    * Instancia da classe
@@ -113,7 +113,7 @@ class ProfissionalEscolaRepository {
    */
   public static function getEscolasProfissionalByCGM( CGMBase $oCgm ) {
 
-    $aProfissionalEscola     = array();
+    $aProfissionalEscola     = [];
     $oDaoRecHumanoEscola     = new cl_rechumanoescola();
     $sWhereRecHumanoEscola   = "case ";
     $sWhereRecHumanoEscola  .= "  when ed20_i_tiposervidor = 1 ";

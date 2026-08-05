@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_db_depart_classe.php"));
 include(modification("classes/db_escolaestrutura_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldb_depart = new cl_db_depart;
 $cl_escolaestrutura = new cl_escolaestrutura;
 $departamento = db_getsession("DB_coddepto");
@@ -135,7 +135,7 @@ if(isset($incluir)){
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <fieldset style="width:98%;padding:1px;"><legend><b>Infraestrutura da Escola</b></legend>
-    <?include(modification("forms/db_frmescolaestrutura.php"));?>
+    <?php include(modification("forms/db_frmescolaestrutura.php"));?>
    </fieldset>
   </td>
  </tr>

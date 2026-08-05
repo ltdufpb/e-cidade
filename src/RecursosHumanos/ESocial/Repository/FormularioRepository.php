@@ -27,9 +27,10 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Repository;
 
+use stdClass;
+use cl_avaliacaogrupoperguntaresposta;
+use BusinessException;
 use db_utils;
-use Exception;
-use ParameterException;
 
 use \ECidade\Configuracao\Formulario\Repository\Formulario;
 use ECidade\Configuracao\Formulario\Resposta\Repository\Resposta;
@@ -57,16 +58,16 @@ class FormularioRepository
         }
 
         $perguntasMapeadas = $mapeador->getPerguntas();
-        $dados = new \stdClass();
-        $dados->fields = array();
-        $dados->respostas =array();
+        $dados = new stdClass();
+        $dados->fields = [];
+        $dados->respostas =[];
 
         $iColunas = 1;
-        $listaColunas = array();
+        $listaColunas = [];
 
         foreach ($formulario->getPerguntas() as $pergunta) {
             $listaColunas[] = $pergunta->getIdentificador();
-            $campo = new \stdClass();
+            $campo = new stdClass();
 
             $campo->identificador = strtolower($pergunta->getIdentificadorCampo());
             $campo->descricao = self::removeHtmlContent($pergunta->getDescricao());
@@ -81,8 +82,8 @@ class FormularioRepository
             }
             $listaColunas = $novasColunas;
         }
-        $oDaoAvaliacaoResposta = new \cl_avaliacaogrupoperguntaresposta;
-        $aWhere   = array("db101_sequencial = {$formulario->getCodigo()}");
+        $oDaoAvaliacaoResposta = new cl_avaliacaogrupoperguntaresposta;
+        $aWhere   = ["db101_sequencial = {$formulario->getCodigo()}"];
 
         $group  = " group by db106_resposta ";
 
@@ -115,13 +116,13 @@ class FormularioRepository
 
         $rsRespostas = db_query($sSqlRespostas);
         if (!$rsRespostas) {
-            throw new \BusinessException("Erro ao pesquisar as respostas do formulário {$formulario->getNome()}.");
+            throw new BusinessException("Erro ao pesquisar as respostas do formulário {$formulario->getNome()}.");
         }
-        $dados->respostas = \db_utils::makeCollectionFromRecord(
+        $dados->respostas = db_utils::makeCollectionFromRecord(
             $rsRespostas,
             function ($dados) use ($formulario, $listaColunas) {
                 $oResposta = Resposta::make($dados, $formulario);
-                $oRespostaRetorno = new \stdClass();
+                $oRespostaRetorno = new stdClass();
                 $respostas = [];
                 foreach ($oResposta->getRespostas() as $valorResposta) {
                     $identificadorCampo = strtolower($valorResposta->getPergunta()->getIdentificadorCampo());
@@ -132,7 +133,7 @@ class FormularioRepository
                         if ($coluna == $identificadorCampo) {
                             $valor = $valorResposta->getValor();
                             $pergunta = $valorResposta->getPergunta();
-                            if (in_array($pergunta->getTipoResposta(), array(1, 3))) {
+                            if (in_array($pergunta->getTipoResposta(), [1, 3])) {
                                 $valor = $valorResposta->getOpcao()->getDescricao();
                             }
 
@@ -166,11 +167,11 @@ class FormularioRepository
 
         $where = '';
 
-        $dados = new \stdClass();
-        $dados->respostas =array();
+        $dados = new stdClass();
+        $dados->respostas =[];
 
-        $oDaoAvaliacaoResposta = new \cl_avaliacaogrupoperguntaresposta;
-        $aWhere   = array("db101_sequencial = {$formulario->getCodigo()}");
+        $oDaoAvaliacaoResposta = new cl_avaliacaogrupoperguntaresposta;
+        $aWhere   = ["db101_sequencial = {$formulario->getCodigo()}"];
 
         $sSqlRespostas  = $oDaoAvaliacaoResposta->sql_query_avaliacao(
             null,
@@ -196,9 +197,9 @@ class FormularioRepository
         };
         $rsRespostas = db_query($sSqlRespostas);
         if (!$rsRespostas) {
-            throw new \BusinessException("Erro ao pesquisar as respostas do formulário {$formulario->getNome()}.");
+            throw new BusinessException("Erro ao pesquisar as respostas do formulário {$formulario->getNome()}.");
         }
-        $dados->respostas = \db_utils::makeCollectionFromRecord(
+        $dados->respostas = db_utils::makeCollectionFromRecord(
             $rsRespostas,
             function ($dados) use ($formulario) {
                 $oResposta = Resposta::make($dados, $formulario);
@@ -212,8 +213,8 @@ class FormularioRepository
     {
         $where = " and db103_identificadorcampo = 'codRubr' and db106_resposta = '{$rubrica}'";
 
-        $oDaoAvaliacaoResposta = new \cl_avaliacaogrupoperguntaresposta;
-        $aWhere   = array("db101_sequencial = {$codigoFormulario}");
+        $oDaoAvaliacaoResposta = new cl_avaliacaogrupoperguntaresposta;
+        $aWhere   = ["db101_sequencial = {$codigoFormulario}"];
 
         $sSqlRespostas  = $oDaoAvaliacaoResposta->sql_query_avaliacao(
             null,
@@ -240,10 +241,10 @@ class FormularioRepository
         $rsRespostas = db_query($sSqlRespostas);
         if (!$rsRespostas) {
             $mensagem = "Erro ao pesquisar as respostas do formulário {$codigoFormulario}, rubrica {$rubrica}.";
-            throw new \BusinessException($mensagem);
+            throw new BusinessException($mensagem);
         }
 
-        $respostas = \db_utils::fieldsMemory($rsRespostas, 0);
+        $respostas = db_utils::fieldsMemory($rsRespostas, 0);
 
         return $respostas->db107_sequencial;
     }
@@ -255,12 +256,12 @@ class FormularioRepository
 
         if (is_array($tags) && count($tags) > 0) {
             if (!$invert) {
-                return preg_replace('@<(?!(?:'. implode('|', $tags) .')\b)(\w+)\b.*?>.*?</\1>@si', '', $text);
+                return preg_replace('@<(?!(?:'. implode('|', $tags) .')\b)(\w+)\b.*?>.*?</\1>@si', '', (string) $text);
             } else {
-                return preg_replace('@<('. implode('|', $tags) .')\b.*?>.*?</\1>@si', '', $text);
+                return preg_replace('@<('. implode('|', $tags) .')\b.*?>.*?</\1>@si', '', (string) $text);
             }
         } elseif (!$invert) {
-            return preg_replace('@<(\w+)\b.*?>.*?</\1>@si', '', $text);
+            return preg_replace('@<(\w+)\b.*?>.*?</\1>@si', '', (string) $text);
         }
         return $text;
     }

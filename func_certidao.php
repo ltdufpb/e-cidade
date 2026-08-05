@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_certidao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcertidao = new cl_certidao;
 $clcertidao->rotulo->label("p50_sequencial");
 $clcertidao->rotulo->label("p50_tipo");
@@ -54,7 +55,7 @@ $clcertidao->rotulo->label("p50_tipo");
               <?=$Lp50_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p50_sequencial",10,$Ip50_sequencial,true,"text",4,"","chave_p50_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcertidao->rotulo->label("p50_tipo");
               <?=$Lp50_tipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p50_tipo",1,$Ip50_tipo,true,"text",4,"","chave_p50_tipo");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clcertidao->rotulo->label("p50_tipo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $where = "p50_instit = ".DB_getsession("DB_instit");
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -119,12 +120,12 @@ $clcertidao->rotulo->label("p50_tipo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

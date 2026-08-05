@@ -4,7 +4,6 @@
 namespace ECidade\Educacao\Escola\Resource;
 
 use ECidade\Educacao\Escola\Model\BaseCurricularDisciplina;
-use ECidade\Educacao\Escola\Repository\BaseCurricularDisciplinaRepository;
 
 class BaseDisciplinaResource
 {

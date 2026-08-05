@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -82,7 +82,7 @@ if($clparcustos->numrows > 0){
           </td>
        </tr>
       <tr >
-        <td colspan=2 ><?
+        <td colspan=2 ><?php 
                  // $aux = new cl_arquivo_auxiliar;
                  $aux->cabecalho = "<strong>Departamentos</strong>";
                  $aux->codigo = "coddepto"; //chave de retorno da func
@@ -109,7 +109,7 @@ if($clparcustos->numrows > 0){
       <tr id='data' style='display:""'>
         <td align='center'  colspan=2 >
                <b> Período </b>
-               <? 
+               <?php  
 	                db_inputdata('data1','','','',true,'text',1,"");   		          
                   echo "<b> a</b> ";
                   db_inputdata('data2','','','',true,'text',1,"");
@@ -122,7 +122,7 @@ if($clparcustos->numrows > 0){
          <tr id='quebra' style='display:""'>
              <td align="right"  title="Quebra por departamento" >
                <strong>Quebra por departamento:</strong></td><td>
-	       <? 
+	       <?php  
 	       $tipo_que = array("N"=>"Não","S"=>"Sim");
 	       db_select("quebra",$tipo_que,true,2,"onchange='js_testord(this.value);'"); ?>
             </td>
@@ -130,7 +130,7 @@ if($clparcustos->numrows > 0){
 	  <tr id='listar' style='display:""'>
              <td align="right"  title="Listar" >
                <strong>Listar:</strong></td><td>
-	       <? 
+	       <?php  
 	       $somente_serv = array("M"=>"Materiais", "T"=>"Todos", "S"=>"Serviços");
 	       db_select("listar_serv",$somente_serv,true,2);
 		   ?>
@@ -140,14 +140,14 @@ if($clparcustos->numrows > 0){
              <td align="right"  title="Ordem por  Codigo/Departamento/Alfabética" >
                <strong>Ordem:</strong>
                </td><td>
-	       <? 
+	       <?php  
 	       $tipo_ordem = array("a"=>"Codigo","b"=>"Departamento","c"=>"Alfabética","d"=>"Data");
 	       db_select("ordem",$tipo_ordem,true,2); ?>
        		 </td>
 	  </tr>
        <tr><td align="right">
        	
-          <?
+          <?php 
 		   //verifica se está habilitado o parametro de filtrar por centro de custos.
            if( $cc09_tipocontrole != 0){
 		    db_ancora("<b>Centro de de Custo:",'js_pesquisacriterio(true)', 1);
@@ -244,10 +244,10 @@ function js_mandadados(){
  query+='&listar_serv='+document.form1.listar_serv.value;
  query+='&quebra='+document.form1.quebra.value;
  query+='&listaorgao='+listaorgao;
- <?if( $cc09_tipocontrole != 0 ){?>
+ <?php if( $cc09_tipocontrole != 0 ){?>
     query+='&centrocusto='+document.form1.cc08_sequencial.value;
     query+='&centrocustodescr='+document.form1.cc08_descricao.value;
- <?}?>
+ <?php }?>
 
  jan = window.open('mat2_relsaida002.php?'+query,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
  jan.moveTo(0,0);

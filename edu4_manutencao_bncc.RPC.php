@@ -28,7 +28,6 @@
 use ECidade\Educacao\Secretaria\BNCC\Registry\HabilidadeReferencialCurricularEstadualRegistry;
 use ECidade\Educacao\Secretaria\BNCC\Resource\BnccOriginalEducacaoInfantilResource;
 use ECidade\Educacao\Secretaria\BNCC\Resource\BnccOriginalEnsinoFundamentalResource;
-use ECidade\Educacao\Secretaria\BNCC\Repository\HabilidadeEnsinoFundamentalRepository;
 use ECidade\Educacao\Secretaria\BNCC\Resource\HabilidadeEnsinoFundamentalResource;
 use ECidade\Educacao\Secretaria\BNCC\Resource\HabilidadeReferencialCurricularResource;
 use ECidade\Educacao\Secretaria\BNCC\Service\BnccService;
@@ -50,7 +49,7 @@ require_once(modification("dbforms/db_funcoes.php"));
  * @todo
  */
 $parametros = JSON::requestParameters();
-$retorno = (object)array('erro' => false, 'mensagem' => '');
+$retorno = (object)['erro' => false, 'mensagem' => ''];
 
 $codigoEscola = db_getsession('DB_coddepto');
 $service = new BnccService();
@@ -107,7 +106,7 @@ try {
             break;
         case 'salvarHabilidadeEF':
 
-            $novaHabilidade = isset($parametros->novaHabilidade) ? $parametros->novaHabilidade : false;
+            $novaHabilidade = $parametros->novaHabilidade ?? false;
             $habilidades = [];
             foreach ($parametros->habilidades as $habilidade) {
                 $habilidades[] = JSON::create()->parse($habilidade);

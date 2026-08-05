@@ -30,7 +30,6 @@ namespace ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial;
 use cl_rhpessoalprocessovinculo;
 use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\Vinculo;
 use Exception;
-use DBDate;
 
 class VinculoRepository
 {
@@ -99,7 +98,7 @@ class VinculoRepository
      * @param Vinculo|null $vinculo
      * @throws Exception
      */
-    public function delete(Vinculo $vinculo = null)
+    public function delete(?Vinculo $vinculo = null)
     {
         $id = $vinculo instanceof Vinculo ? $vinculo->getSequencial() : null;
 
@@ -117,7 +116,7 @@ class VinculoRepository
      * @return bool|Vinculo
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhpessoalprocessovinculo;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

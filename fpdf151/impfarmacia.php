@@ -1,4 +1,4 @@
-<?
+<?php 
 //include(modification("cabec_rodape.php"));
 include(modification("fpdf151/assinatura.php"));
 
@@ -136,7 +136,7 @@ class db_impcarne extends cl_assinatura {
 
 //************************************************************//
     
-  function db_impcarne($objpdf,$impmodelo){
+  function __construct($objpdf,$impmodelo){
     $this->objpdf = $objpdf;
     $this->impmodelo = $impmodelo; 
   }

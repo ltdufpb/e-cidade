@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: issqn
 //CLASSE DA ENTIDADE juntacomercialprotocoloretorno
 class cl_juntacomercialprotocoloretorno { 
@@ -26,7 +26,7 @@ class cl_juntacomercialprotocoloretorno {
                  q149_xml = text = XML 
                  ";
    //funcao construtor da classe 
-   function cl_juntacomercialprotocoloretorno() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("juntacomercialprotocoloretorno"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

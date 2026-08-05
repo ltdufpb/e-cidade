@@ -32,7 +32,8 @@ require_once (modification("libs/db_usuariosonline.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 require_once (modification("classes/db_tipcalc_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltipcalc = new cl_tipcalc;
 ?>
 <html>
@@ -60,7 +61,7 @@ $cltipcalc = new cl_tipcalc;
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tipcalc.php")==true){
@@ -90,12 +91,12 @@ $cltipcalc = new cl_tipcalc;
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

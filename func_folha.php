@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_folha_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clfolha = new cl_folha;
 $clfolha->rotulo->label("r38_regist");
 $clfolha->rotulo->label("r38_nome");
@@ -54,7 +55,7 @@ $clfolha->rotulo->label("r38_nome");
               <?=$Lr38_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r38_regist",6,$Ir38_regist,true,"text",4,"","chave_r38_regist");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clfolha->rotulo->label("r38_nome");
               <?=$Lr38_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r38_nome",40,$Ir38_nome,true,"text",4,"","chave_r38_nome");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clfolha->rotulo->label("r38_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_folha.php")==true){
@@ -118,12 +119,12 @@ $clfolha->rotulo->label("r38_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

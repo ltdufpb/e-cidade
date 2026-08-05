@@ -8,12 +8,13 @@
 
 namespace ECidade\Patrimonial\Acordo\RegimeCompetencia\Model;
 
+use AcordoItem;
 
 class Item {
 
   /**
    * Item do acordo
-   * @var \AcordoItem
+   * @var AcordoItem
    */
   protected $item;
 
@@ -31,7 +32,7 @@ class Item {
   protected $parcelas;
 
   /**
-   * @return \AcordoItem
+   * @return AcordoItem
    */
   public function getItem() {
 
@@ -39,7 +40,7 @@ class Item {
   }
 
   /**
-   * @param \AcordoItem $item
+   * @param AcordoItem $item
    */
   public function setItem($item) {
 
@@ -63,14 +64,14 @@ class Item {
   }
 
   /**
-   * @return \ECidade\Patrimonial\Acordo\RegimeCompetencia\Model\Parcela[]
+   * @return Parcela[]
    */
   public function getParcelas() {
     return $this->parcelas;
   }
 
   /**
-   * @param \ECidade\Patrimonial\Acordo\RegimeCompetencia\Model\Parcela[] $parcelas
+   * @param Parcela[] $parcelas
    */
   public function setParcelas($parcelas) {
     $this->parcelas = $parcelas;

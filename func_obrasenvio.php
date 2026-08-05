@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -35,7 +35,8 @@ require_once(modification("classes/db_obrasenvio_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oDaoObrasEnvio = new cl_obrasenvio;
 $oDaoObrasEnvio->rotulo->label("ob16_codobrasenvio");
@@ -63,7 +64,7 @@ $oDaoObrasEnvio->rotulo->label("ob16_login");
                  <?=$Lob16_codobrasenvio?>
                </td>
                <td width="96%" align="left" nowrap> 
-                 <?
+                 <?php 
                   db_input("ob16_codobrasenvio", 10, $Iob16_codobrasenvio, true, "text", 4, "", "chave_ob16_codobrasenvio");
    		           ?>
                </td>
@@ -74,7 +75,7 @@ $oDaoObrasEnvio->rotulo->label("ob16_login");
                  <?=$Lob16_login?>
                </td>
                <td width="96%" align="left" nowrap> 
-                 <?
+                 <?php 
    		            db_input("ob16_login", 10, $Iob16_login, true, "text", 4, "", "chave_ob16_login");
    		           ?>
                </td>
@@ -96,7 +97,7 @@ $oDaoObrasEnvio->rotulo->label("ob16_login");
      
      <tr> 
        <td align="center" valign="top"> 
-         <?
+         <?php 
          if ( !isset($pesquisa_chave) ) {
             
            if ( isset($campos) == false) {
@@ -140,12 +141,12 @@ $oDaoObrasEnvio->rotulo->label("ob16_login");
    </table>
  </body>
 </html>
-<?
+<?php 
 if ( !isset($pesquisa_chave) ) {
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

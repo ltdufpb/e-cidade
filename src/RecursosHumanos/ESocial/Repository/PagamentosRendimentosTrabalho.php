@@ -27,6 +27,11 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Repository;
 
+use InstituicaoRepository;
+use DBException;
+use BusinessException;
+use EventoFinanceiroFolha;
+use ECidade\RecursosHumanos\Pessoal\Model\PensaoAlimenticia;
 use ECidade\RecursosHumanos\Pessoal\Service\PensaoAlimenticiaService;
 
 use BaseClassRepository;
@@ -52,7 +57,7 @@ class PagamentosRendimentosTrabalho extends BaseClassRepository
      *
      * @param DBCompetencia $competencia
      * @return String|null
-     * @throws \DBException
+     * @throws DBException
      */
     public static function buscarParametroRubricaPensaoAlimenticia(DBCompetencia $competencia)
     {
@@ -66,9 +71,9 @@ class PagamentosRendimentosTrabalho extends BaseClassRepository
      *
      * @param Servidor $servidor
      * @param $tipoCalculo
-     * @return array|\EventoFinanceiroFolha[]|null
-     * @throws \BusinessException
-     * @throws \DBException
+     * @return array|EventoFinanceiroFolha[]|null
+     * @throws BusinessException
+     * @throws DBException
      */
     public static function buscarCalculoFinanceiroServidor(Servidor $servidor, $tipoCalculo)
     {
@@ -86,8 +91,8 @@ class PagamentosRendimentosTrabalho extends BaseClassRepository
      *
      * @param DBCompetencia $competencia
      * @return mixed
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public static function valorDescontoIRRFPorDependente(DBCompetencia $competencia)
     {
@@ -96,18 +101,18 @@ class PagamentosRendimentosTrabalho extends BaseClassRepository
           $competencia->getAno(),
           $competencia->getMes(),
           'D901',
-          \InstituicaoRepository::getInstituicaoSessao()->getCodigo(),
+          InstituicaoRepository::getInstituicaoSessao()->getCodigo(),
           'r07_valor'
         );
 
         $rsPesDiver = db_query($sqlPesDiver);
 
         if(!$rsPesDiver) {
-            throw new \DBException("Erro ao buscar o valor de desconto IRRF para dependente.");
+            throw new DBException("Erro ao buscar o valor de desconto IRRF para dependente.");
         }
 
         if(pg_num_rows($rsPesDiver) == 0) {
-            throw new \BusinessException("Nenhum valor de desconto IRRF para dependente configurado('D901').");
+            throw new BusinessException("Nenhum valor de desconto IRRF para dependente configurado('D901').");
         }
 
         return db_utils::fieldsMemory($rsPesDiver, 0)->r07_valor;
@@ -116,7 +121,7 @@ class PagamentosRendimentosTrabalho extends BaseClassRepository
     /**
      * @param Servidor $servidor
      * @param DBCompetencia $competencia
-     * @return \ECidade\RecursosHumanos\Pessoal\Model\PensaoAlimenticia[]
+     * @return PensaoAlimenticia[]
      */
     public static function buscarBeneficiariosPensaoAlimenticia(Servidor $servidor, DBCompetencia $competencia)
     {

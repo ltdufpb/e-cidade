@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tiafcgm_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltiafcgm = new cl_tiafcgm;
 $cltiafcgm->rotulo->label("y95_codtiaf");
 $cltiafcgm->rotulo->label("y95_numcgm");
@@ -54,7 +55,7 @@ $cltiafcgm->rotulo->label("y95_numcgm");
               <?=$Ly95_codtiaf?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y95_codtiaf",10,$Iy95_codtiaf,true,"text",4,"","chave_y95_codtiaf");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cltiafcgm->rotulo->label("y95_numcgm");
               <?=$Ly95_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y95_numcgm",10,$Iy95_numcgm,true,"text",4,"","chave_y95_numcgm");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cltiafcgm->rotulo->label("y95_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tiafcgm.php")==true){
@@ -118,12 +119,12 @@ $cltiafcgm->rotulo->label("y95_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

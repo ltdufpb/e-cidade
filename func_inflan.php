@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_inflan_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 if (!isset($chave_i01_codigo)){
   $chave_i01_codigo = '';
@@ -66,7 +67,7 @@ $clinflan->rotulo->label("i01_descr");
               <?=$Li01_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("i01_codigo",5,$Ii01_codigo,true,"text",4,"","chave_i01_codigo");
 		       ?>
             </td>
@@ -76,7 +77,7 @@ $clinflan->rotulo->label("i01_descr");
               <?=$Li01_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("i01_descr",40,$Ii01_descr,true,"text",4,"","chave_i01_descr");
 		       ?>
             </td>
@@ -94,7 +95,7 @@ $clinflan->rotulo->label("i01_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
 
       $chave_i01_descr = addslashes($chave_i01_descr);
 
@@ -150,7 +151,7 @@ $clinflan->rotulo->label("i01_descr");
 </table>
 </body>
 </html>
-  <?
+  <?php 
 	if(!isset($pesquisa_chave)){
   ?>
   <script>
@@ -163,7 +164,7 @@ $clinflan->rotulo->label("i01_descr");
       //   }
       // }  
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

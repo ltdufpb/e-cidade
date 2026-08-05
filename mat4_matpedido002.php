@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("classes/db_matpedido_classe.php"));
 include(modification("classes/db_db_depusu_classe.php"));
 include(modification("classes/db_matpedidoitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 
 $clmatpedido = new cl_matpedido;
@@ -72,7 +73,7 @@ if(isset($alterar)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmmatpedido.php"));
 	?>
     </center>
@@ -81,7 +82,7 @@ if(isset($alterar)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($chavepesquisa)){
     echo "<script>
                parent.iframe_matpedidoitem.location.href='mat1_matpedidoitem001.php?m97_sequencial=".@$chavepesquisa."&m97_db_almox=".@$m97_db_almox."';\n

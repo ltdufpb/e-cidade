@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_desconto_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldesconto = new cl_desconto;
 $cldesconto->rotulo->label("r27_anousu");
 $cldesconto->rotulo->label("r27_mesusu");
@@ -56,7 +57,7 @@ $cldesconto->rotulo->label("r27_descr");
               <?=$Lr27_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r27_mesusu",2,$Ir27_mesusu,true,"text",4,"","chave_r27_mesusu");
 		       ?>
             </td>
@@ -66,7 +67,7 @@ $cldesconto->rotulo->label("r27_descr");
               <?=$Lr27_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r27_codigo",4,$Ir27_codigo,true,"text",4,"","chave_r27_codigo");
 		       ?>
             </td>
@@ -76,7 +77,7 @@ $cldesconto->rotulo->label("r27_descr");
               <?=$Lr27_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r27_descr",30,$Ir27_descr,true,"text",4,"","chave_r27_descr");
 		       ?>
             </td>
@@ -94,7 +95,7 @@ $cldesconto->rotulo->label("r27_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_desconto.php")==true){
@@ -130,12 +131,12 @@ $cldesconto->rotulo->label("r27_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

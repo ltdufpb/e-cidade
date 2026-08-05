@@ -49,7 +49,7 @@ if(isset($incluir)) {
 
   db_inicio_transacao();
   $clturmaacativ->incluir($ed267_i_codigo);
-  if(trim($ed274_c_nome)!="") {
+  if(trim((string) $ed274_c_nome)!="") {
 
     $clturmaacativnova->ed274_i_turmaacativ = $clturmaacativ->ed267_i_codigo;
     $clturmaacativnova->incluir(null);
@@ -66,7 +66,7 @@ if ( isset($alterar) ) {
   if (pg_num_rows($result2)>0) {
 
     db_fieldsmemory($result2,0);
-    if (trim($ed274_c_nome)=="") {
+    if (trim((string) $ed274_c_nome)=="") {
       $clturmaacativnova->excluir($conferenova);
     } else {
 
@@ -76,7 +76,7 @@ if ( isset($alterar) ) {
     }
   } else {
 
-    if (trim($ed274_c_nome)!="") {
+    if (trim((string) $ed274_c_nome)!="") {
       $clturmaacativnova->ed274_i_turmaacativ = $clturmaacativ->ed267_i_codigo;
       $clturmaacativnova->incluir(null);
     }
@@ -110,7 +110,7 @@ if (isset($excluir)) {
      <br>
      <center>
      <fieldset style="width:95%"><legend><b>Atividades Complementares da Turma <?=@$ed268_c_descr?></b></legend>
-        <?include(modification("forms/db_frmturmaacativ.php"));?>
+        <?php include(modification("forms/db_frmturmaacativ.php"));?>
      </fieldset>
      </center>
     </td>
@@ -121,7 +121,7 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","ed267_i_censoativcompl",true,1,"ed267_i_censoativcompl",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
  if($clturmaacativ->erro_status=="0"){
   $clturmaacativ->erro(true,false);

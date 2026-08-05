@@ -26,7 +26,6 @@
  */
 namespace ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial;
 
-use DBDate;
 use JSON;
 
 class TributoIRRF

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_viabilidade_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clviabilidade = new cl_viabilidade;
 $clviabilidade->rotulo->label("q29_codigo");
 $clviabilidade->rotulo->label("q29_codigo");
@@ -54,7 +55,7 @@ $clviabilidade->rotulo->label("q29_codigo");
               <?=$Lq29_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q29_codigo",10,$Iq29_codigo,true,"text",4,"","chave_q29_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clviabilidade->rotulo->label("q29_codigo");
               <?=$Lq29_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q29_codigo",10,$Iq29_codigo,true,"text",4,"","chave_q29_codigo");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clviabilidade->rotulo->label("q29_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "viabilidade.*";
@@ -110,14 +111,14 @@ $clviabilidade->rotulo->label("q29_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_q29_codigo.focus();
 document.form2.chave_q29_codigo.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

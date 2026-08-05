@@ -35,7 +35,7 @@ class NecessidadeEspecialRegistry
     /**
      * @var NecessidadeEspecial[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param NecessidadeEspecial $necessidadeEspecial

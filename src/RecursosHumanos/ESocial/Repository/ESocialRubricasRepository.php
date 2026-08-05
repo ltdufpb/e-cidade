@@ -63,10 +63,10 @@ class ESocialRubricasRepository
      */
     public function getByRubricaAndInstituicao(Rubrica $rubrica, Instituicao $instituicao)
     {
-        $where = array(
+        $where = [
           "eso26_rubrica = '{$rubrica->getCodigo()}'",
           "eso26_instituicao = {$instituicao->getCodigo()}"
-        );
+        ];
 
         $sql = $this->dao->sql_query_file(null, '*', null, implode(' AND ', $where));
         $rs = db_query($sql);
@@ -155,10 +155,10 @@ class ESocialRubricasRepository
      */
     public function delete(Rubrica $rubrica, Instituicao $instituicao)
     {
-        $where = array(
+        $where = [
           "eso26_rubrica = '{$rubrica->getCodigo()}'",
           "eso26_instituicao = {$instituicao->getCodigo()}"
-        );
+        ];
 
         $this->dao->excluir(null, implode(' AND ', $where));
 
@@ -220,7 +220,7 @@ class ESocialRubricasRepository
         $service->setDados($body);
         $dadosRubrica = $service->request('GET');
 
-        $rubricasValidas = array();
+        $rubricasValidas = [];
         foreach ($dadosRubrica as $dadoRubrica) {
             if (!isset($rubricasValidas[$dadoRubrica->referencia])) {
                 $rubricasValidas[$dadoRubrica->referencia] = $dadoRubrica;

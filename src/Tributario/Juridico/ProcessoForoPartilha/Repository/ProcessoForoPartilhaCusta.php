@@ -27,13 +27,15 @@
 
 namespace ECidade\Tributario\Juridico\ProcessoForoPartilha\Repository;
 
-use ECidade\Tributario\Juridico\ProcessoForoPartilha\ProcessoForoPartilha as ProcessoForoPartilhaEntity;
+use BaseClassRepository;
+use Exception;
+use stdClass;
 use ECidade\Tributario\Juridico\ProcessoForoPartilha\ProcessoForoPartilhaCusta as ProcessoForoPartilhaCustasEntity;
 use ECidade\Tributario\Arrecadacao\Repository\Taxa as TaxaRepository;
 use cl_processoforopartilhacusta;
 use DBException;
 
-class ProcessoForoPartilhaCusta extends \BaseClassRepository
+class ProcessoForoPartilhaCusta extends BaseClassRepository
 {
 
     /**
@@ -88,7 +90,7 @@ class ProcessoForoPartilhaCusta extends \BaseClassRepository
     }
 
     /**
-     * @param \stdClass $oDados
+     * @param stdClass $oDados
      * @return ProcessoForoPartilhaCustasEntity|null
      */
     protected function make($oDados)
@@ -119,11 +121,11 @@ class ProcessoForoPartilhaCusta extends \BaseClassRepository
      */
     private function makeCollection($rsResult)
     {
-        $aCollection = array();
+        $aCollection = [];
         $aResult = pg_fetch_all($rsResult);
 
         if (empty($aResult)) {
-            return array();
+            return [];
         }
 
         foreach ($aResult as $oResult) {
@@ -175,8 +177,7 @@ class ProcessoForoPartilhaCusta extends \BaseClassRepository
      * @param integer $partilha
      *
      * @return array|ProcessoForoPartilhaCustasEntity[]
-
-     * @throws \Exception
+     * @throws Exception
      */
     public function getByPartilha($partilha)
     {
@@ -185,11 +186,11 @@ class ProcessoForoPartilhaCusta extends \BaseClassRepository
         $rs = db_query($sql);
 
         if (!$rs) {
-            throw new \Exception("Erro ao buscar custas da partilha.");
+            throw new Exception("Erro ao buscar custas da partilha.");
         }
 
         if (pg_num_rows($rs) == 0) {
-            return array();
+            return [];
         }
 
         return $this->makeCollection($rs);

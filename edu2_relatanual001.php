@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -68,7 +68,7 @@ $dDataCenso = $dDataCensoDia."/".$dDataCensoMes."/".$dDataCensoAno;
   </table>
   <form name="form1" method="post" action="">
    <center>
-    <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+    <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
     <br>
     <fieldset style="width:95%"><legend><b>Relatório Anual de Matrículas</b></legend>
      <table width="80%" border="0" align="left">
@@ -80,7 +80,7 @@ $dDataCenso = $dDataCensoDia."/".$dDataCensoMes."/".$dDataCensoAno;
            <b>Data do Censo:</b>
           </td>
           <td nowrap>
-            <?
+            <?php 
              db_inputdata('dDataCenso',@$dDataCensoDia,@$dDataCensoMes,@$dDataCensoAno,true,
                           'text',1," onchange=\"js_ano();\"","","","parent.js_ano();"
                          );
@@ -89,7 +89,7 @@ $dDataCenso = $dDataCensoDia."/".$dDataCensoMes."/".$dDataCensoAno;
           </td>
          </tr>
          <tr>    
-          <?
+          <?php 
             if ($iModulo == 7159) {   
             	    	     
               echo '<td align="left">'; 
@@ -129,7 +129,7 @@ $dDataCenso = $dDataCensoDia."/".$dDataCensoMes."/".$dDataCensoAno;
     </fieldset>
    </center>
   </form>
-   <?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
+   <?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
              db_getsession("DB_anousu"),db_getsession("DB_instit")
             );
    ?>

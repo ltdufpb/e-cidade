@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cflicita_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcflicita = new cl_cflicita;
 $clcflicita->rotulo->label("l03_codigo");
 $clcflicita->rotulo->label("l03_descr");
@@ -54,7 +55,7 @@ $clcflicita->rotulo->label("l03_descr");
               <?=$Ll03_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("l03_codigo",6,$Il03_codigo,true,"text",4,"","chave_l03_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcflicita->rotulo->label("l03_descr");
               <?=$Ll03_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("l03_descr",40,$Il03_descr,true,"text",4,"","chave_l03_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clcflicita->rotulo->label("l03_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $dbwhere_instit = " and l03_instit = ".db_getsession("DB_instit");
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -119,12 +120,12 @@ $clcflicita->rotulo->label("l03_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

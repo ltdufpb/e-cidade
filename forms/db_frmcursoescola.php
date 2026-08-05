@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -58,20 +58,20 @@ $ed71_i_escola = db_getsession("DB_coddepto");
 <table border="0">
  <tr>
   <td nowrap title="<?=@$Ted71_i_curso?>">
-   <?db_ancora(@$Led71_i_curso,"",3);?>
+   <?php db_ancora(@$Led71_i_curso,"",3);?>
   </td>
   <td>
-   <?db_input('ed71_i_curso',15,$Ied71_i_curso,true,'text',3,"")?>
-   <?db_input('ed29_c_descr',40,@$Ied29_c_descr,true,'text',3,'')?>
+   <?php db_input('ed71_i_curso',15,$Ied71_i_curso,true,'text',3,"")?>
+   <?php db_input('ed29_c_descr',40,@$Ied29_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted71_i_escola?>">
-   <?db_ancora(@$Led71_i_escola,"",3);?>
+   <?php db_ancora(@$Led71_i_escola,"",3);?>
   </td>
   <td>
-   <?db_input('ed71_i_escola',15,$Ied71_i_escola,true,'text',3,"")?>
-   <?db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
+   <?php db_input('ed71_i_escola',15,$Ied71_i_escola,true,'text',3,"")?>
+   <?php db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -79,8 +79,8 @@ $ed71_i_escola = db_getsession("DB_coddepto");
    <?=@$Led71_c_situacao?>
   </td>
   <td>
-   <?
-   $x = array(''=>'','S'=>'SIM','N'=>'NÃO');
+   <?php 
+   $x = [''=>'','S'=>'SIM','N'=>'NÃO'];
    db_select('ed71_c_situacao',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -90,8 +90,8 @@ $ed71_i_escola = db_getsession("DB_coddepto");
    <?=@$Led71_c_turmasala?>
   </td>
   <td>
-   <?
-   $x = array(''=>'','N'=>'NÃO','S'=>'SIM');
+   <?php 
+   $x = [''=>'','N'=>'NÃO','S'=>'SIM'];
    db_select('ed71_c_turmasala',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -103,15 +103,15 @@ $ed71_i_escola = db_getsession("DB_coddepto");
 <table width="100%">
  <tr>
   <td valign="top">
-  <?
-   $chavepri= array("ed71_i_codigo"=>@$ed71_i_codigo,
+  <?php 
+   $chavepri= ["ed71_i_codigo"=>@$ed71_i_codigo,
                     "ed71_i_escola"=>@$ed71_i_escola,
                     "ed18_c_nome"=>@$ed18_c_nome,
                     "ed71_i_curso"=>@$ed71_i_curso,
                     "ed29_c_descr"=>@$ed29_c_descr,
                     "ed71_c_situacao"=>@$ed71_c_situacao,
                     "ed71_c_turmasala"=>@$ed71_c_turmasala
-                    );
+                    ];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clcursoescola->sql_query("","*","ed18_c_nome"," ed71_i_curso = $ed71_i_curso AND ed71_i_escola = $escola");
    $cliframe_alterar_excluir->campos  ="ed18_c_nome,ed71_c_situacao,ed71_c_turmasala";

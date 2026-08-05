@@ -2,9 +2,6 @@
 
 namespace ECidade\Patrimonial\Acordo\AlteracaoContratado\Model;
 
-use cl_acordoalteracaocontratado;
-use db_utils;
-
 class AlteracaoContratado
 {
 
@@ -149,12 +146,12 @@ class AlteracaoContratado
 
     public function toArray()
     {
-        return array(
+        return [
             'ac60_sequencial' => $this->getCodigoAlteracaoContratado(),
             'ac60_acordo' => $this->getCodigoAcordo(),
             'ac60_posicao' => $this->getPosicaoAcordo(),
             'ac60_anterior' => $this->getContratadoAnterior(),
             'ac60_novo' => $this->getContratadoNovo()
-        );
+        ];
     }
 }

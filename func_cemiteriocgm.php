@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_cemiteriocgm_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clcemiteriocgm = new cl_cemiteriocgm;
 $clcemiteriocgm->rotulo->label("cm15_i_cemiterio");
@@ -56,7 +57,7 @@ $clcemiteriocgm->rotulo->label("cm15_i_cgm");
               <?=$Lcm15_i_cemiterio?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("cm15_i_cemiterio",10,$Icm15_i_cemiterio,true,"text",4,"","chave_cm15_i_cemiterio");
 		       ?>
             </td>
@@ -66,7 +67,7 @@ $clcemiteriocgm->rotulo->label("cm15_i_cgm");
               <?=$Lcm15_i_cgm?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("cm15_i_cgm",10,$Icm15_i_cgm,true,"text",4,"","chave_cm15_i_cgm");
 		       ?>
             </td>
@@ -84,7 +85,7 @@ $clcemiteriocgm->rotulo->label("cm15_i_cgm");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cemiteriocgm.php")==true){

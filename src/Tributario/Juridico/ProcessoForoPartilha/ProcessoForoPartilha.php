@@ -31,7 +31,6 @@ use ECidade\Tributario\Juridico\ProcessoForoPartilha\ProcessoForoPartilhaCusta;
 use ECidade\Tributario\Juridico\Interfaces\Partilha;
 use ECidade\Tributario\Juridico\Interfaces\PartilhaCusta;
 use DateTime;
-use \Exception;
 
 class ProcessoForoPartilha implements Partilha
 {
@@ -198,7 +197,7 @@ class ProcessoForoPartilha implements Partilha
     public function getCustas()
     {
         if (empty($this->aCustas)) {
-            return array();
+            return [];
         }
         return $this->aCustas;
     }
@@ -216,7 +215,7 @@ class ProcessoForoPartilha implements Partilha
      */
     public function resetCustas()
     {
-        $this->aCustas = array();
+        $this->aCustas = [];
     }
 
     /**

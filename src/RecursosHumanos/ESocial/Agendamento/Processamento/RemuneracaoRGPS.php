@@ -27,14 +27,15 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Agendamento\Processamento;
 
+use BusinessException;
+use DBException;
+use Exception;
 use CgmRepository;
 use DBCompetencia;
 use ECidade\RecursosHumanos\ESocial\Agendamento\Evento;
 use ECidade\RecursosHumanos\ESocial\Integracao\FormatterFactory;
 use ECidade\RecursosHumanos\ESocial\Repository\RemuneracaoRGPS as RemuneracaoRGPSRepository;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
-use Instituicao;
-use DBPessoal;
 use stdClass;
 use ParameterException;
 use ParametrosPessoalRepository;
@@ -45,8 +46,6 @@ use ParametrosPessoalRepository;
  */
 class RemuneracaoRGPS extends ProcessamentoAbstract implements ProcessamentoInterface
 {
-    private $cgm;
-
     private $mes;
     private $ano;
 
@@ -71,17 +70,16 @@ class RemuneracaoRGPS extends ProcessamentoAbstract implements ProcessamentoInte
         }
     }
 
-    public function __construct($cgm)
+    public function __construct(private $cgm)
     {
-        $this->cgm = $cgm;
     }
 
     /**
      * @return bool|mixed
-     * @throws \BusinessException
-     * @throws \DBException
-     * @throws \ParameterException
-     * @throws \Exception
+     * @throws BusinessException
+     * @throws DBException
+     * @throws ParameterException
+     * @throws Exception
      */
     public function processar()
     {

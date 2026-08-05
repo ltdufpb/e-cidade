@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_atendimento_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clatendimento = new cl_atendimento;
 $clatendimento->rotulo->label("at02_codatend");
 $clatendimento->rotulo->label("at02_codcli");
@@ -47,7 +48,7 @@ $clatendimento->rotulo->label("at02_codcli");
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $where = "";
       if(isset($at02_codcli) && $at02_codcli != "" ){
         $where = " clientes.at01_codcli = $at02_codcli";

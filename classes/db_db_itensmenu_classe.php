@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE db_itensmenu
 class cl_db_itensmenu { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $id_item = 0; 
-   var $descricao = null; 
-   var $help = null; 
-   var $funcao = null; 
-   var $itemativo = null; 
-   var $manutencao = null; 
-   var $desctec = null; 
-   var $libcliente = 'f'; 
+   public $id_item = 0; 
+   public $descricao = null; 
+   public $help = null; 
+   public $funcao = null; 
+   public $itemativo = null; 
+   public $manutencao = null; 
+   public $desctec = null; 
+   public $libcliente = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  id_item = int4 = Código do ítem 
                  descricao = text = Descrição 
                  help = text = Ajuda 
@@ -62,10 +62,10 @@ class cl_db_itensmenu {
                  libcliente = bool = Se item de menu está liberado para cliente 
                  ";
    //funcao construtor da classe 
-   function cl_db_itensmenu() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_itensmenu"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -158,10 +158,10 @@ class cl_db_itensmenu {
          $this->erro_status = "0";
          return false; 
        }
-       $this->id_item = pg_result($result,0,0); 
+       $this->id_item = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_itensmenu_id_item_seq");
-       if(($result != false) && (pg_result($result,0,0) < $id_item)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $id_item)){
          $this->erro_sql = " Campo id_item maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -203,7 +203,7 @@ class cl_db_itensmenu {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Itens do menu ($this->id_item) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Itens do menu já Cadastrado";
@@ -232,17 +232,17 @@ class cl_db_itensmenu {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,821,'$this->id_item','I')");
-         $resac = db_query("insert into db_acount values($acount,156,821,'','".AddSlashes(pg_result($resaco,0,'id_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,156,750,'','".AddSlashes(pg_result($resaco,0,'descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,156,823,'','".AddSlashes(pg_result($resaco,0,'help'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,156,824,'','".AddSlashes(pg_result($resaco,0,'funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,156,825,'','".AddSlashes(pg_result($resaco,0,'itemativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,156,826,'','".AddSlashes(pg_result($resaco,0,'manutencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,156,827,'','".AddSlashes(pg_result($resaco,0,'desctec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,156,8923,'','".AddSlashes(pg_result($resaco,0,'libcliente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,156,821,'','".AddSlashes(pg_fetch_result($resaco,0,'id_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,156,750,'','".AddSlashes(pg_fetch_result($resaco,0,'descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,156,823,'','".AddSlashes(pg_fetch_result($resaco,0,'help'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,156,824,'','".AddSlashes(pg_fetch_result($resaco,0,'funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,156,825,'','".AddSlashes(pg_fetch_result($resaco,0,'itemativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,156,826,'','".AddSlashes(pg_fetch_result($resaco,0,'manutencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,156,827,'','".AddSlashes(pg_fetch_result($resaco,0,'desctec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,156,8923,'','".AddSlashes(pg_fetch_result($resaco,0,'libcliente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -252,10 +252,10 @@ class cl_db_itensmenu {
       $this->atualizacampos();
      $sql = " update db_itensmenu set ";
      $virgula = "";
-     if(trim($this->id_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_item"])){ 
+     if(trim((string) $this->id_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_item"])){ 
        $sql  .= $virgula." id_item = $this->id_item ";
        $virgula = ",";
-       if(trim($this->id_item) == null ){ 
+       if(trim((string) $this->id_item) == null ){ 
          $this->erro_sql = " Campo Código do ítem não informado.";
          $this->erro_campo = "id_item";
          $this->erro_banco = "";
@@ -265,10 +265,10 @@ class cl_db_itensmenu {
          return false;
        }
      }
-     if(trim($this->descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descricao"])){ 
+     if(trim((string) $this->descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descricao"])){ 
        $sql  .= $virgula." descricao = '$this->descricao' ";
        $virgula = ",";
-       if(trim($this->descricao) == null ){ 
+       if(trim((string) $this->descricao) == null ){ 
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "descricao";
          $this->erro_banco = "";
@@ -278,10 +278,10 @@ class cl_db_itensmenu {
          return false;
        }
      }
-     if(trim($this->help)!="" || isset($GLOBALS["HTTP_POST_VARS"]["help"])){ 
+     if(trim((string) $this->help)!="" || isset($GLOBALS["HTTP_POST_VARS"]["help"])){ 
        $sql  .= $virgula." help = '$this->help' ";
        $virgula = ",";
-       if(trim($this->help) == null ){ 
+       if(trim((string) $this->help) == null ){ 
          $this->erro_sql = " Campo Ajuda não informado.";
          $this->erro_campo = "help";
          $this->erro_banco = "";
@@ -291,14 +291,14 @@ class cl_db_itensmenu {
          return false;
        }
      }
-     if(trim($this->funcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["funcao"])){ 
+     if(trim((string) $this->funcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["funcao"])){ 
        $sql  .= $virgula." funcao = '$this->funcao' ";
        $virgula = ",";
      }
-     if(trim($this->itemativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["itemativo"])){ 
+     if(trim((string) $this->itemativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["itemativo"])){ 
        $sql  .= $virgula." itemativo = '$this->itemativo' ";
        $virgula = ",";
-       if(trim($this->itemativo) == null ){ 
+       if(trim((string) $this->itemativo) == null ){ 
          $this->erro_sql = " Campo Ítem ativo não informado.";
          $this->erro_campo = "itemativo";
          $this->erro_banco = "";
@@ -308,10 +308,10 @@ class cl_db_itensmenu {
          return false;
        }
      }
-     if(trim($this->manutencao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["manutencao"])){ 
+     if(trim((string) $this->manutencao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["manutencao"])){ 
        $sql  .= $virgula." manutencao = '$this->manutencao' ";
        $virgula = ",";
-       if(trim($this->manutencao) == null ){ 
+       if(trim((string) $this->manutencao) == null ){ 
          $this->erro_sql = " Campo Manutenção não informado.";
          $this->erro_campo = "manutencao";
          $this->erro_banco = "";
@@ -321,10 +321,10 @@ class cl_db_itensmenu {
          return false;
        }
      }
-     if(trim($this->desctec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["desctec"])){ 
+     if(trim((string) $this->desctec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["desctec"])){ 
        $sql  .= $virgula." desctec = '$this->desctec' ";
        $virgula = ",";
-       if(trim($this->desctec) == null ){ 
+       if(trim((string) $this->desctec) == null ){ 
          $this->erro_sql = " Campo Descrição Técnica não informado.";
          $this->erro_campo = "desctec";
          $this->erro_banco = "";
@@ -334,10 +334,10 @@ class cl_db_itensmenu {
          return false;
        }
      }
-     if(trim($this->libcliente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["libcliente"])){ 
+     if(trim((string) $this->libcliente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["libcliente"])){ 
        $sql  .= $virgula." libcliente = '$this->libcliente' ";
        $virgula = ",";
-       if(trim($this->libcliente) == null ){ 
+       if(trim((string) $this->libcliente) == null ){ 
          $this->erro_sql = " Campo Se item de menu está liberado para cliente não informado.";
          $this->erro_campo = "libcliente";
          $this->erro_banco = "";
@@ -361,25 +361,25 @@ class cl_db_itensmenu {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,821,'$this->id_item','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["id_item"]) || $this->id_item != "")
-             $resac = db_query("insert into db_acount values($acount,156,821,'".AddSlashes(pg_result($resaco,$conresaco,'id_item'))."','$this->id_item',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,156,821,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'id_item'))."','$this->id_item',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["descricao"]) || $this->descricao != "")
-             $resac = db_query("insert into db_acount values($acount,156,750,'".AddSlashes(pg_result($resaco,$conresaco,'descricao'))."','$this->descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,156,750,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'descricao'))."','$this->descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["help"]) || $this->help != "")
-             $resac = db_query("insert into db_acount values($acount,156,823,'".AddSlashes(pg_result($resaco,$conresaco,'help'))."','$this->help',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,156,823,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'help'))."','$this->help',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["funcao"]) || $this->funcao != "")
-             $resac = db_query("insert into db_acount values($acount,156,824,'".AddSlashes(pg_result($resaco,$conresaco,'funcao'))."','$this->funcao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,156,824,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'funcao'))."','$this->funcao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["itemativo"]) || $this->itemativo != "")
-             $resac = db_query("insert into db_acount values($acount,156,825,'".AddSlashes(pg_result($resaco,$conresaco,'itemativo'))."','$this->itemativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,156,825,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'itemativo'))."','$this->itemativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["manutencao"]) || $this->manutencao != "")
-             $resac = db_query("insert into db_acount values($acount,156,826,'".AddSlashes(pg_result($resaco,$conresaco,'manutencao'))."','$this->manutencao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,156,826,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'manutencao'))."','$this->manutencao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["desctec"]) || $this->desctec != "")
-             $resac = db_query("insert into db_acount values($acount,156,827,'".AddSlashes(pg_result($resaco,$conresaco,'desctec'))."','$this->desctec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,156,827,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'desctec'))."','$this->desctec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["libcliente"]) || $this->libcliente != "")
-             $resac = db_query("insert into db_acount values($acount,156,8923,'".AddSlashes(pg_result($resaco,$conresaco,'libcliente'))."','$this->libcliente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,156,8923,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'libcliente'))."','$this->libcliente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -433,17 +433,17 @@ class cl_db_itensmenu {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,821,'$id_item','E')");
-           $resac  = db_query("insert into db_acount values($acount,156,821,'','".AddSlashes(pg_result($resaco,$iresaco,'id_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,156,750,'','".AddSlashes(pg_result($resaco,$iresaco,'descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,156,823,'','".AddSlashes(pg_result($resaco,$iresaco,'help'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,156,824,'','".AddSlashes(pg_result($resaco,$iresaco,'funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,156,825,'','".AddSlashes(pg_result($resaco,$iresaco,'itemativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,156,826,'','".AddSlashes(pg_result($resaco,$iresaco,'manutencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,156,827,'','".AddSlashes(pg_result($resaco,$iresaco,'desctec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,156,8923,'','".AddSlashes(pg_result($resaco,$iresaco,'libcliente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,156,821,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'id_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,156,750,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,156,823,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'help'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,156,824,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,156,825,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'itemativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,156,826,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'manutencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,156,827,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'desctec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,156,8923,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'libcliente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -504,7 +504,7 @@ class cl_db_itensmenu {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_itensmenu";
@@ -540,7 +540,7 @@ class cl_db_itensmenu {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-         $campos_sql = explode("#", $ordem);
+         $campos_sql = explode("#", (string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -574,7 +574,7 @@ class cl_db_itensmenu {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-         $campos_sql = explode("#", $ordem);
+         $campos_sql = explode("#", (string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -652,7 +652,7 @@ class cl_db_itensmenu {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-         $campos_sql = explode("#", $ordem);
+         $campos_sql = explode("#", (string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

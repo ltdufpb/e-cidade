@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_consultacep_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcep = new cl_db_consultacep;
 $clrotulo = new rotulocampo;
 $clrotulo->label("db10_cep");
@@ -58,7 +59,7 @@ $clrotulo->label("cp06_numinicial");
               <?=$Ldb10_cep?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 	        db_input("db10_cep",7,$Idb10_cep,true,"text",4,"");
 	      ?>
             </td>
@@ -68,7 +69,7 @@ $clrotulo->label("cp06_numinicial");
               <?=$Ldb10_munic?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 	        db_input("db10_munic",40,$Idb10_munic,true,"text",4,"");
 	      ?>
             </td>
@@ -78,17 +79,17 @@ $clrotulo->label("cp06_numinicial");
               <?=$Ldb11_logradouro?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 	        db_input("db11_logradouro",40,$Idb11_logradouro,true,"text",4,"");
 	      ?>
             </td>
           </tr>
           <tr>
             <td width="4%" align="right" nowrap title="<?=$Tcp06_numinicial?>">
-              <? echo "<b>Número: </b>";?>
+              <?php  echo "<b>Número: </b>";?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 	        db_input("cp06_numinicial",10,$Icp06_numinicial,true,"text",4,"");
 	      ?>
             </td>
@@ -106,7 +107,7 @@ $clrotulo->label("cp06_numinicial");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
 
 
        $propaga["db10_cep"] = @$db10_cep;
@@ -161,7 +162,7 @@ $clrotulo->label("cp06_numinicial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
@@ -176,7 +177,7 @@ document.form2.db11_logradouro.value="";
 document.form2.cp06_numinicial.value="";
 }
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

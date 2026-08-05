@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ include(modification("classes/db_veicretirada_classe.php"));
 include(modification("classes/db_veicmanut_classe.php"));
 include(modification("classes/db_rotamov_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cllinha = new cl_linha;
 $clveicmanut = new cl_veicmanut;
 $clrotamov = new cl_rotamov;
@@ -48,8 +48,8 @@ $clveicretirada->rotulo->label();
 $clveicmanut->rotulo->label();
 $db_opcao = 1;
 $db_botao = true;
-$datainicial=substr($datainicial,6,4)."-".substr($datainicial,3,2)."-".substr($datainicial,0,2);
-$datafim=substr($datafim,6,4)."-".substr($datafim,3,2)."-".substr($datafim,0,2);
+$datainicial=substr((string) $datainicial,6,4)."-".substr((string) $datainicial,3,2)."-".substr((string) $datainicial,0,2);
+$datafim=substr((string) $datafim,6,4)."-".substr((string) $datafim,3,2)."-".substr((string) $datafim,0,2);
 if(isset($chavepesquisa)){
  $result = $cllinha->sql_record($cllinha->sql_query("","*",""," ed217_i_codigo = $chavepesquisa"));
  db_fieldsmemory($result,0);
@@ -97,12 +97,12 @@ if(isset($chavepesquisa)){
  <tr>
   <td valign="top" bgcolor="#CCCCCC">
    <table border="0" bgcolor="#f3f3f3" width="100%" cellspacing="0" cellpading="0" height="800" >
-    <?if($evento==1){?>
+    <?php if($evento==1){?>
      <tr>
     <td valign="top" >
      <fieldset style="background:#f3f3f3;border:2px solid #000000"><legend class="cabec"><b>Por Período</b></legend>
      <table border="1" width="100%" bgcolor="#f3f3f3" cellspacing="0" cellpading="0">
-      <?
+      <?php 
       $sql= "select sum ( ve61_medidadevol - ve60_medidasaida ),ve01_placa,ve61_medidadevol,ve61_horadevol,
              ve61_datadevol,ve60_medidasaida,ve60_horasaida,ve60_datasaida
              from veicretirada
@@ -147,7 +147,7 @@ if(isset($chavepesquisa)){
            </table>
           </td>
          </tr>
-       <?
+       <?php 
        for($f=0;$f<$linhas;$f++){
         db_fieldsmemory($result,$f);
         ?>
@@ -179,7 +179,7 @@ if(isset($chavepesquisa)){
           </table>
          </td>
         </tr>
-       <?
+       <?php 
        }
       }else{
        ?>
@@ -188,20 +188,20 @@ if(isset($chavepesquisa)){
          Nenhum registro.
         </td>
        </tr>
-       <?
+       <?php 
       }
       ?>
      </table>
      </fieldset>
     </td>
    </tr>
-   <?}?>
-    <?if($evento==2){?>
+   <?php }?>
+    <?php if($evento==2){?>
      <tr>
     <td valign="top" >
      <fieldset style="background:#f3f3f3;border:2px solid #000000"><legend class="cabec"><b>Gastos Manutenção</b></legend>
      <table border="1" width="100%" bgcolor="#f3f3f3" cellspacing="0" cellpading="0">
-      <?
+      <?php 
       $sql1 ="select sum ( ve62_vlrmobra + ve62_vlrpecas ),ve62_hora,ve62_vlrpecas,ve62_data,ve01_placa,ve60_medidasaida,ve60_hora,ve60_data
               from veicmanut
               inner join veicmanutretirada on ve65_veicmanut= ve62_codigo
@@ -212,7 +212,7 @@ if(isset($chavepesquisa)){
               where ed220_i_rota=$chavepesquisa
               group by ve62_hora,ve62_vlrpecas,ve62_data,ve01_placa,ve60_medidasaida,ve60_hora,ve60_data";
       $result1 = db_query($sql1);
-      $linhas1= pg_numrows($result1);
+      $linhas1= pg_num_rows($result1);
       if($linhas1>0){
        ?>
         <tr>
@@ -241,7 +241,7 @@ if(isset($chavepesquisa)){
            </table>
           </td>
          </tr>
-       <?
+       <?php 
        for($f=0;$f<$linhas1;$f++){
         db_fieldsmemory($result1,$f);
         ?>
@@ -271,7 +271,7 @@ if(isset($chavepesquisa)){
           </table>
          </td>
         </tr>
-       <?
+       <?php 
        }
       }else{
        ?>
@@ -280,20 +280,20 @@ if(isset($chavepesquisa)){
          Nenhum registro.
         </td>
        </tr>
-       <?
+       <?php 
       }
       ?>
      </table>
      </fieldset>
     </td>
    </tr>
-   <?}?>
-   <?if($evento==3){?>
+   <?php }?>
+   <?php if($evento==3){?>
      <tr>
     <td valign="top" >
      <fieldset style="background:#f3f3f3;border:2px solid #000000"><legend class="cabec"><b>Abastecimento</b></legend>
      <table border="1" width="100%" bgcolor="#f3f3f3" cellspacing="0" cellpading="0">
-      <?
+      <?php 
       $sql1 ="select sum ( ve70_litros ),ve70_litros,ve70_data,ve70_hora,ve70_medida,ve01_placa
                from veicabast
               inner join veicabastretirada on ve73_veicabast= ve70_codigo
@@ -304,7 +304,7 @@ if(isset($chavepesquisa)){
               where ed220_i_rota=$chavepesquisa
               group by ve70_litros,ve70_data,ve70_hora,ve70_medida,ve01_placa";
       $result1 = db_query($sql1);
-      $linhas1= pg_numrows($result1);
+      $linhas1= pg_num_rows($result1);
       if($linhas1>0){
        ?>
         <tr>
@@ -330,7 +330,7 @@ if(isset($chavepesquisa)){
            </table>
           </td>
          </tr>
-       <?
+       <?php 
        for($f=0;$f<$linhas1;$f++){
         db_fieldsmemory($result1,$f);
         ?>
@@ -357,7 +357,7 @@ if(isset($chavepesquisa)){
           </table>
          </td>
         </tr>
-       <?
+       <?php 
        }
       }else{
        ?>
@@ -366,14 +366,14 @@ if(isset($chavepesquisa)){
          Nenhum registro.
         </td>
        </tr>
-       <?
+       <?php 
       }
       ?>
      </table>
      </fieldset>
     </td>
    </tr>
-   <?}?>
+   <?php }?>
    </table>
   </td>
  </tr>

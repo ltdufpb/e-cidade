@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -43,7 +43,7 @@ include(modification("dbforms/db_funcoes.php"));
 <table align="center" border="0" cellspacing="0" cellpading="0">
 <tr>
  <td>
- <?
+ <?php 
  if(isset($GLOBALS["_FILES"]["ma01_o_imagem"])){
   db_postmemory($GLOBALS["_FILES"]["ma01_o_imagem"]);
   if($error==0){
@@ -81,7 +81,7 @@ include(modification("dbforms/db_funcoes.php"));
     echo "<center>";
     ?>
       <img src="<?=$imagem_gerada?>">
-    <?
+    <?php 
     if( empty( $scale ) ){
        echo "<p>Visualização não disponível";
        $parentname = "";
@@ -90,19 +90,19 @@ include(modification("dbforms/db_funcoes.php"));
      <script>
       parent.document.form1.ma01_o_imagem.value = "<?=$parentname?>";
      </script>
-    <?
+    <?php 
     echo "</center>";
    }
   }else{?>
    <script>
     alert("Erro na importação da imagem");
    </script>
-  <?
+  <?php 
   }
  }
  if(isset($_GET["imagem_gerada"])){?>
   <img src="<?=$imagem_gerada?>">
- <?}?>
+ <?php }?>
  </td>
 </tr>
 <table>

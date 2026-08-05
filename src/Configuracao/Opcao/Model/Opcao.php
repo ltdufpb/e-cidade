@@ -1,9 +1,9 @@
 <?php
 namespace ECidade\Configuracao\Opcao\Model;
 
-use test\Mockery\ProxyMockingTest;
+use Stringable;
 
-class Opcao
+class Opcao implements Stringable
 {
 
 
@@ -120,8 +120,8 @@ class Opcao
     /**
      * @return mixed
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->valor;
+        return (string) $this->valor;
     }
 }

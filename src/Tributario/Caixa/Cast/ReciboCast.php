@@ -2,6 +2,7 @@
 
 namespace ECidade\Tributario\Caixa\Cast;
 
+use Exception;
 use ECidade\Tributario\Caixa\Entity\Recibo;
 use ECidade\Tributario\Caixa\Service\RegraEmissaoService;
 use \Recibo as ReciboLegacy;
@@ -10,19 +11,16 @@ use \Recibo as ReciboLegacy;
  * Class ReciboCast
  * @package ECidade\Tributario\Caixa\Cast
  */
-final class ReciboCast
+final readonly class ReciboCast
 {
-    private $regraEmissaoService;
-
-    public function __construct(RegraEmissaoService $regraEmissaoService)
+    public function __construct(private RegraEmissaoService $regraEmissaoService)
     {
-        $this->regraEmissaoService = $regraEmissaoService;
     }
 
     /**
      * @param Recibo $recibo
      * @return ReciboLegacy
-     * @throws \Exception
+     * @throws Exception
      */
     public function toModel(Recibo $recibo)
     {

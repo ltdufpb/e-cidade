@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_vistsanitario_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clvistsanitario = new cl_vistsanitario;
 $clvistsanitario->rotulo->label("y74_codvist");
 $clvistsanitario->rotulo->label("y74_codsani");
@@ -54,7 +55,7 @@ $clvistsanitario->rotulo->label("y74_codsani");
               <?=$Ly74_codvist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y74_codvist",10,$Iy74_codvist,true,"text",4,"","chave_y74_codvist");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clvistsanitario->rotulo->label("y74_codsani");
               <?=$Ly74_codsani?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y74_codsani",10,$Iy74_codsani,true,"text",4,"","chave_y74_codsani");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clvistsanitario->rotulo->label("y74_codsani");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_vistsanitario.php")==true){
@@ -118,12 +119,12 @@ $clvistsanitario->rotulo->label("y74_codsani");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

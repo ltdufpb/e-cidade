@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE faixavaloresirrf
 class cl_faixavaloresirrf { 
@@ -28,7 +28,7 @@ class cl_faixavaloresirrf {
                  rh175_deducao = float8 = Valor da Dedução 
                  ";
    //funcao construtor da classe 
-   function cl_faixavaloresirrf() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("faixavaloresirrf"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

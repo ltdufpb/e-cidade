@@ -27,18 +27,21 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use stdClass;
+use Servidor;
+use Assentamento;
 use AfastamentoRepository;
 use CgmJuridico;
 use DBDate;
 use DBException;
-use ECidade\RecursosHumanos\Pessoal\Model\ServidorMovimentacao;
 use ECidade\RecursosHumanos\ESocial\Repository\ServidorAlteracao;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 
 class AlteracaoBeneficioFormatter extends CadastroBeneficioFormatter
 {
     /**
-     * @var \Servidor
+     * @var Servidor
      */
     private $servidorAtual;
 
@@ -59,15 +62,16 @@ class AlteracaoBeneficioFormatter extends CadastroBeneficioFormatter
     private $empregador;
 
     /**
-     * @var \DBDate
+     * @var DBDate
      */
     private $dataObrigatoriedade;
 
     /**
      * @param array $dados
-     * @return array|\Assentamento[]
-     * @throws \DBException
+     * @return array|Assentamento[]
+     * @throws DBException
      */
+    #[Override]
     public function formatar($dados)
     {
         $dadosServidor = parent::formatar($dados);
@@ -120,7 +124,7 @@ class AlteracaoBeneficioFormatter extends CadastroBeneficioFormatter
 
     public function dadosBeneficio(&$dado)
     {
-        $dado->infoBenAlteracao = new \stdClass();
+        $dado->infoBenAlteracao = new stdClass();
         $dado->infoBenAlteracao->dtAltBeneficio = $this->dataAlteracao->getDate();
         $dado->infoBenAlteracao->dadosBeneficio = clone $dado->infoBenInicio->dadosBeneficio;
     }
@@ -179,7 +183,7 @@ class AlteracaoBeneficioFormatter extends CadastroBeneficioFormatter
                     /**
                      * Caso encontre
                      */
-                    if (pg_numrows($rs) > 0) {
+                    if (pg_num_rows($rs) > 0) {
                         $possuiSuspensao = true;
                     }
                 }
@@ -194,7 +198,7 @@ class AlteracaoBeneficioFormatter extends CadastroBeneficioFormatter
              * 01 - Suspensão por não recadastramento
              * 99 - Outros motivos de suspensão
              */
-            $dado->suspensao = new \stdClass();
+            $dado->suspensao = new stdClass();
             $dado->suspensao->mtvSuspensao = "01";
             $dado->infoBenAlteracao->dadosBeneficio->indSuspensao = "S";
         } else {

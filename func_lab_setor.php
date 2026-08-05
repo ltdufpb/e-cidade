@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_lab_setor_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cllab_setor = new cl_lab_setor;
 $cllab_setor->rotulo->label("la23_i_codigo");
 $cllab_setor->rotulo->label("la23_c_descr");
@@ -54,7 +55,7 @@ $cllab_setor->rotulo->label("la23_c_descr");
               <?=$Lla23_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("la23_i_codigo",10,$Ila23_i_codigo,true,"text",4,"","chave_la23_i_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cllab_setor->rotulo->label("la23_c_descr");
               <?=$Lla23_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("la23_c_descr",50,$Ila23_c_descr,true,"text",4,"","chave_la23_c_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cllab_setor->rotulo->label("la23_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $aWhere = array();
       if (!empty($laboratorio)) {
 
@@ -135,12 +136,12 @@ $cllab_setor->rotulo->label("la23_c_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

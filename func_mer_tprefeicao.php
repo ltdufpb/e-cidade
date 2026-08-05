@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_tprefeicao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmer_tprefeicao = new cl_mer_tprefeicao;
 $clmer_tprefeicao->rotulo->label("me03_i_codigo");
 $clmer_tprefeicao->rotulo->label("me03_c_tipo");
@@ -55,7 +56,7 @@ $codescola = db_getsession("DB_coddepto");
       <?=$Lme03_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("me03_i_codigo",5,$Ime03_i_codigo,true,"text",4,"","chave_me03_i_codigo");?>
+      <?php db_input("me03_i_codigo",5,$Ime03_i_codigo,true,"text",4,"","chave_me03_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -63,7 +64,7 @@ $codescola = db_getsession("DB_coddepto");
       <?=$Lme03_c_tipo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("me03_c_tipo",20,@$Ime03_c_tipo,true,"text",4,"","chave_me03_c_tipo");?>
+      <?php db_input("me03_c_tipo",20,@$Ime03_c_tipo,true,"text",4,"","chave_me03_c_tipo");?>
      </td>
     </tr>
     <tr>
@@ -79,7 +80,7 @@ $codescola = db_getsession("DB_coddepto");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if (!isset($pesquisa_chave)) {
    	
     if (isset($campos)==false) {

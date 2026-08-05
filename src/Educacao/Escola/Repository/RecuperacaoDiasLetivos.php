@@ -27,6 +27,14 @@
 
 namespace ECidade\Educacao\Escola\Repository;
 
+use BaseClassRepository;
+use Turma;
+use Etapa;
+use DBException;
+use db_utils;
+use stdClass;
+use ParameterException;
+use BusinessException;
 use ECidade\Educacao\Escola\Model\RecuperacaoDiasLetivos as RecuperacaoDiasLetivosModel;
 
 use \cl_regenciahorario;
@@ -37,7 +45,7 @@ use PeriodoAula;
  * Class RecuperacaoDiasLetivos
  * @package ECidade\Educacao\Escola\Repository
  */
-class RecuperacaoDiasLetivos extends \BaseClassRepository
+class RecuperacaoDiasLetivos extends BaseClassRepository
 {
     /**
      * Representa a instância da classe,
@@ -49,11 +57,11 @@ class RecuperacaoDiasLetivos extends \BaseClassRepository
 
     /**
      * Retorna todos os horários configurados para a turma informada
-     * @param \Turma $turma
-     * @return \stdClass[]
-     * @throws \DBException
+     * @param Turma $turma
+     * @return stdClass[]
+     * @throws DBException
      */
-    public function getRecuperacaoDiasLetivosPorTurma(\Turma $turma, \Etapa $etapa)
+    public function getRecuperacaoDiasLetivosPorTurma(Turma $turma, Etapa $etapa)
     {
         $daoRegenciaHorario = new cl_regenciahorario();
         $campos  = " regenciahorario.ed58_i_codigo as identificador, ";
@@ -81,26 +89,26 @@ class RecuperacaoDiasLetivos extends \BaseClassRepository
         $sql = $daoRegenciaHorario->sql_query_recuperacao_dias_letivos($campos, $where);
         $rs = \db_query($sql);
         if (!$rs) {
-            throw new \DBException("Erro ao buscar as recuperações de dias letivos configurados para a turma.");
+            throw new DBException("Erro ao buscar as recuperações de dias letivos configurados para a turma.");
         }
 
-        return \db_utils::makeCollectionFromRecord($rs, function ($retorno) {
-            $dados = new \stdClass();
+        return db_utils::makeCollectionFromRecord($rs, function ($retorno) {
+            $dados = new stdClass();
             $dados->data = $retorno->data;
             $dados->identificador = $retorno->identificador;
-            $dados->disciplina = trim($retorno->descricao_disciplina);
-            $dados->descricaoTurma = trim($retorno->descricao_turma);
-            $dados->descricaoTurno = trim($retorno->descricao_turno);
-            $dados->regente = trim($retorno->nome_regente);
+            $dados->disciplina = trim((string) $retorno->descricao_disciplina);
+            $dados->descricaoTurma = trim((string) $retorno->descricao_turma);
+            $dados->descricaoTurno = trim((string) $retorno->descricao_turno);
+            $dados->regente = trim((string) $retorno->nome_regente);
             $dados->possui_falta_lancada = $retorno->possui_falta_lancada == 't';
             
-            $dados->regencias = explode(',', $retorno->codigos_regenciahorario);
+            $dados->regencias = explode(',', (string) $retorno->codigos_regenciahorario);
             $dados->regencias = array_unique($dados->regencias);
 
-            $dados->periodos = explode(',', $retorno->periodos);
+            $dados->periodos = explode(',', (string) $retorno->periodos);
             $dados->periodos = array_unique($dados->periodos);
 
-            $dados->codigosPeriodos = explode(',', $retorno->codigos_periodos);
+            $dados->codigosPeriodos = explode(',', (string) $retorno->codigos_periodos);
             $dados->codigosPeriodos = array_unique($dados->codigosPeriodos);
 
             sort($dados->periodos);
@@ -110,36 +118,36 @@ class RecuperacaoDiasLetivos extends \BaseClassRepository
 
     /**
      * @param \ECidade\Educacao\Escola\Model\RecuperacaoDiasLetivos $recuperacaoDiasLetivos
-     * @throws \BusinessException
-     * @throws \DBException
-     * @throws \ParameterException
+     * @throws BusinessException
+     * @throws DBException
+     * @throws ParameterException
      */
     public function salvar(RecuperacaoDiasLetivosModel $recuperacaoDiasLetivos)
     {
 
         if ($recuperacaoDiasLetivos->getTurno() == null) {
-            throw new \ParameterException('Turno não informado.');
+            throw new ParameterException('Turno não informado.');
         }
 
         if ($recuperacaoDiasLetivos->getPeriodos() == null) {
-            throw new \ParameterException('Nenhum período informado.');
+            throw new ParameterException('Nenhum período informado.');
         }
 
         if ($recuperacaoDiasLetivos->getRechumano() == null) {
-            throw new \ParameterException('Regente não informado.');
+            throw new ParameterException('Regente não informado.');
         }
 
         if ($recuperacaoDiasLetivos->getData() == null) {
-            throw new \ParameterException('Data não informada.');
+            throw new ParameterException('Data não informada.');
         }
 
         if ($recuperacaoDiasLetivos->getRegencia() == null) {
-            throw new \ParameterException('Disciplina não informada.');
+            throw new ParameterException('Disciplina não informada.');
         }
 
         $this->validaExistenciaPeriodoRegencia($recuperacaoDiasLetivos);
 
-        $daoRegenciaHorario = new \cl_regenciahorario();
+        $daoRegenciaHorario = new cl_regenciahorario();
 
         foreach ($recuperacaoDiasLetivos->getPeriodos() as $periodoEscola) {
             $daoRegenciaHorario->ed58_i_codigo = null;
@@ -155,20 +163,20 @@ class RecuperacaoDiasLetivos extends \BaseClassRepository
             $daoRegenciaHorario->incluir(null);
 
             if ($daoRegenciaHorario->erro_status == '0') {
-                throw new \DBException('Erro ao lançar a recuperação do dia letivo.');
+                throw new DBException('Erro ao lançar a recuperação do dia letivo.');
             }
         }
     }
 
     /**
      * @param RecuperacaoDiasLetivosModel $recuperacaoDiasLetivos
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function validaExistenciaPeriodoRegencia(RecuperacaoDiasLetivosModel $recuperacaoDiasLetivos)
     {
-        $daoRegenciaHorario = new \cl_regenciahorario();
-        $periodos = array();
+        $daoRegenciaHorario = new cl_regenciahorario();
+        $periodos = [];
 
         foreach ($recuperacaoDiasLetivos->getPeriodos() as $periodoEscola) {
             $periodos[] = $periodoEscola->getCodigo();
@@ -182,18 +190,18 @@ class RecuperacaoDiasLetivos extends \BaseClassRepository
         $rsRegenciaHorario = db_query($sqlRegenciaHorario);
 
         if (!$rsRegenciaHorario) {
-            throw new \DBException('Erro ao validar a existência de período lançado.');
+            throw new DBException('Erro ao validar a existência de período lançado.');
         }
 
         if (pg_num_rows($rsRegenciaHorario) > 0) {
-            throw new \BusinessException('Período já possui vínculo na regência, para esta data.');
+            throw new BusinessException('Período já possui vínculo na regência, para esta data.');
         }
     }
 
     /**
      * Remove os horários configurados
      * @param Array $horarios - Códigos da regenciahorario
-     * @throws \DBException
+     * @throws DBException
      */
     public function excluir($horarios)
     {
@@ -207,7 +215,7 @@ class RecuperacaoDiasLetivos extends \BaseClassRepository
     /**
      * @param int $codigoCalendario
      * @return array
-     * @throws \DBException
+     * @throws DBException
      */
     public function buscarDataFeriadoLetivoPorCalendario($codigoCalendario)
     {
@@ -221,12 +229,12 @@ class RecuperacaoDiasLetivos extends \BaseClassRepository
         $rs = \db_query($sql);
 
         if (!$rs) {
-            throw new \DBException('Erro ao buscar as datas de feriados e eventos letivos do calendário.');
+            throw new DBException('Erro ao buscar as datas de feriados e eventos letivos do calendário.');
         }
 
-        return \db_utils::makeCollectionFromRecord($rs, function ($retorno) {
-            $data = new \stdClass();
-            $data->descricao = urlencode($retorno->ed54_c_descr);
+        return db_utils::makeCollectionFromRecord($rs, function ($retorno) {
+            $data = new stdClass();
+            $data->descricao = urlencode((string) $retorno->ed54_c_descr);
             $data->diaSemana = $retorno->ed54_c_diasemana;
             $data->data = $retorno->ed54_d_data;
 

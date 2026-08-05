@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -42,21 +42,21 @@ require(modification("libs/db_sql.php"));
 <td colspan="3">
 <input type='hidden' name='vt' value='<?=$valor?>'>
 <strong>Valor do parcelamento sem desconto: </strong><font id="vt"></font>
-<?
+<?php 
 echo "<script>document.getElementById('vt').innerHTML = \"$valor\"</script>";
 ?>
 <br>
 <input type='hidden' name='vtcomdesconto' value='<?=$valorcomdesconto?>'>
 <input type='hidden' name='temdesconto' value='<?=$temdesconto?>'>
 <strong>Valor do parcelamento com desconto: </strong><font id="vtcomdesconto"></font>
-<?
+<?php 
 echo "<script>document.getElementById('vtcomdesconto').innerHTML = \"$valorcomdesconto\"</script>";
 echo "<script>document.getElementById('temdesconto').innerHTML = \"$temdesconto\"</script>";
 ?>
 </td>
 </tr>
 
-<?
+<?php 
 
 echo "<tr bgcolor='#6699cc'> <pre>";
 $linha = -1;

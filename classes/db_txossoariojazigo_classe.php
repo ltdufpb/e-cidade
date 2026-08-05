@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -52,7 +52,7 @@ class cl_txossoariojazigo {
                  cm30_i_itenserv = int4 = Código Item Serviço
                  ";
    //funcao construtor da classe
-   function cl_txossoariojazigo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("txossoariojazigo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

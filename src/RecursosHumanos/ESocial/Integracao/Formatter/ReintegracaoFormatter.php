@@ -26,6 +26,8 @@
  */
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+
 class ReintegracaoFormatter extends Formatter
 {
     /**
@@ -34,6 +36,7 @@ class ReintegracaoFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[Override]
     public function formatar($dados)
     {
         $dadosFormatado = parent::formatar($dados);

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE db_departender
 class cl_db_departender { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $coddepto = 0; 
-   var $codlograd = 0; 
-   var $numero = 0; 
-   var $compl = null; 
-   var $codbairro = 0; 
+   public $coddepto = 0; 
+   public $codlograd = 0; 
+   public $numero = 0; 
+   public $compl = null; 
+   public $codbairro = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  coddepto = int4 = Depart. 
                  codlograd = int4 = cód. Logradouro 
                  numero = int4 = Número do endereço 
@@ -56,10 +56,10 @@ class cl_db_departender {
                  codbairro = int4 = Cód. do Bairro 
                  ";
    //funcao construtor da classe 
-   function cl_db_departender() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_departender"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -138,7 +138,7 @@ class cl_db_departender {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Endereco do departamento ($this->coddepto) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Endereco do departamento já Cadastrado";
@@ -162,14 +162,14 @@ class cl_db_departender {
      $resaco = $this->sql_record($this->sql_query_file($this->coddepto));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,814,'$this->coddepto','I')");
-       $resac = db_query("insert into db_acount values($acount,1086,814,'','".AddSlashes(pg_result($resaco,0,'coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1086,6597,'','".AddSlashes(pg_result($resaco,0,'codlograd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1086,6598,'','".AddSlashes(pg_result($resaco,0,'numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1086,6599,'','".AddSlashes(pg_result($resaco,0,'compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1086,6600,'','".AddSlashes(pg_result($resaco,0,'codbairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1086,814,'','".AddSlashes(pg_fetch_result($resaco,0,'coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1086,6597,'','".AddSlashes(pg_fetch_result($resaco,0,'codlograd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1086,6598,'','".AddSlashes(pg_fetch_result($resaco,0,'numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1086,6599,'','".AddSlashes(pg_fetch_result($resaco,0,'compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1086,6600,'','".AddSlashes(pg_fetch_result($resaco,0,'codbairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -178,10 +178,10 @@ class cl_db_departender {
       $this->atualizacampos();
      $sql = " update db_departender set ";
      $virgula = "";
-     if(trim($this->coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["coddepto"])){ 
+     if(trim((string) $this->coddepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["coddepto"])){ 
        $sql  .= $virgula." coddepto = $this->coddepto ";
        $virgula = ",";
-       if(trim($this->coddepto) == null ){ 
+       if(trim((string) $this->coddepto) == null ){ 
          $this->erro_sql = " Campo Depart. nao Informado.";
          $this->erro_campo = "coddepto";
          $this->erro_banco = "";
@@ -191,10 +191,10 @@ class cl_db_departender {
          return false;
        }
      }
-     if(trim($this->codlograd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codlograd"])){ 
+     if(trim((string) $this->codlograd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codlograd"])){ 
        $sql  .= $virgula." codlograd = $this->codlograd ";
        $virgula = ",";
-       if(trim($this->codlograd) == null ){ 
+       if(trim((string) $this->codlograd) == null ){ 
          $this->erro_sql = " Campo cód. Logradouro nao Informado.";
          $this->erro_campo = "codlograd";
          $this->erro_banco = "";
@@ -204,10 +204,10 @@ class cl_db_departender {
          return false;
        }
      }
-     if(trim($this->numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["numero"])){ 
+     if(trim((string) $this->numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["numero"])){ 
        $sql  .= $virgula." numero = $this->numero ";
        $virgula = ",";
-       if(trim($this->numero) == null ){ 
+       if(trim((string) $this->numero) == null ){ 
          $this->erro_sql = " Campo Número do endereço nao Informado.";
          $this->erro_campo = "numero";
          $this->erro_banco = "";
@@ -217,14 +217,14 @@ class cl_db_departender {
          return false;
        }
      }
-     if(trim($this->compl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["compl"])){ 
+     if(trim((string) $this->compl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["compl"])){ 
        $sql  .= $virgula." compl = '$this->compl' ";
        $virgula = ",";
      }
-     if(trim($this->codbairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codbairro"])){ 
+     if(trim((string) $this->codbairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codbairro"])){ 
        $sql  .= $virgula." codbairro = $this->codbairro ";
        $virgula = ",";
-       if(trim($this->codbairro) == null ){ 
+       if(trim((string) $this->codbairro) == null ){ 
          $this->erro_sql = " Campo Cód. do Bairro nao Informado.";
          $this->erro_campo = "codbairro";
          $this->erro_banco = "";
@@ -242,19 +242,19 @@ class cl_db_departender {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,814,'$this->coddepto','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["coddepto"]))
-           $resac = db_query("insert into db_acount values($acount,1086,814,'".AddSlashes(pg_result($resaco,$conresaco,'coddepto'))."','$this->coddepto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1086,814,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'coddepto'))."','$this->coddepto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codlograd"]))
-           $resac = db_query("insert into db_acount values($acount,1086,6597,'".AddSlashes(pg_result($resaco,$conresaco,'codlograd'))."','$this->codlograd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1086,6597,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codlograd'))."','$this->codlograd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["numero"]))
-           $resac = db_query("insert into db_acount values($acount,1086,6598,'".AddSlashes(pg_result($resaco,$conresaco,'numero'))."','$this->numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1086,6598,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'numero'))."','$this->numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["compl"]))
-           $resac = db_query("insert into db_acount values($acount,1086,6599,'".AddSlashes(pg_result($resaco,$conresaco,'compl'))."','$this->compl',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1086,6599,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'compl'))."','$this->compl',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codbairro"]))
-           $resac = db_query("insert into db_acount values($acount,1086,6600,'".AddSlashes(pg_result($resaco,$conresaco,'codbairro'))."','$this->codbairro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1086,6600,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codbairro'))."','$this->codbairro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -299,14 +299,14 @@ class cl_db_departender {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,814,'$coddepto','E')");
-         $resac = db_query("insert into db_acount values($acount,1086,814,'','".AddSlashes(pg_result($resaco,$iresaco,'coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1086,6597,'','".AddSlashes(pg_result($resaco,$iresaco,'codlograd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1086,6598,'','".AddSlashes(pg_result($resaco,$iresaco,'numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1086,6599,'','".AddSlashes(pg_result($resaco,$iresaco,'compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1086,6600,'','".AddSlashes(pg_result($resaco,$iresaco,'codbairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1086,814,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'coddepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1086,6597,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codlograd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1086,6598,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1086,6599,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1086,6600,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codbairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_departender
@@ -366,7 +366,7 @@ class cl_db_departender {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_departender";
@@ -380,7 +380,7 @@ class cl_db_departender {
    function sql_query ( $coddepto=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -404,7 +404,7 @@ class cl_db_departender {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_db_departender {
    function sql_query_file ( $coddepto=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -437,7 +437,7 @@ class cl_db_departender {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -68,7 +68,7 @@ class cl_orcprograma {
                  o54_estrategiaimp = text = Estratégia de Implementação do Programa
                  ";
    //funcao construtor da classe
-   function cl_orcprograma() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcprograma");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

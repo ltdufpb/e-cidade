@@ -232,7 +232,7 @@ class PlacaBem {
     public function getInfoPlacaDisponivel()
     {
         $dados = ['bem' => '', 'historico' => ''];
-        $dao = new \cl_bensplaca();
+        $dao = new cl_bensplaca();
         $sql = $dao->sqlQueryIsPlacaDisponivel(!empty($this->sPlaca) ? $this->sPlaca : $this->sPlacaSeq);
         $rs = $dao->sql_record($sql);
         if ($rs !== false && $dao->numrows > 0) {
@@ -317,7 +317,7 @@ class PlacaBem {
   }
 
   public function setData($sData) {
-    $this->sData = implode('-', array_reverse(explode("/",  $sData)));
+    $this->sData = implode('-', array_reverse(explode("/",  (string) $sData)));
   }
 
   /**
@@ -332,7 +332,7 @@ class PlacaBem {
       throw new Exception("Você tem que passar a classe por parâmetro.");
     }
 
-    $mParam  = strtoupper($mParam);
+    $mParam  = strtoupper((string) $mParam);
     $sCampos = "max(t41_placaseq) as placa";
     $sWhere  = "t41_placa = '{$mParam}' ";
 

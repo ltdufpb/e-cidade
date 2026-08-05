@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sepultamentoisencao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsepultamentoisencao = new cl_sepultamentoisencao;
 $clsepultamentoisencao->rotulo->label("cm33_sequencial");
 $clsepultamentoisencao->rotulo->label("cm33_sepultamento");
@@ -54,7 +55,7 @@ $clsepultamentoisencao->rotulo->label("cm33_sepultamento");
               <?=$Lcm33_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("cm33_sequencial",10,$Icm33_sequencial,true,"text",4,"","chave_cm33_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clsepultamentoisencao->rotulo->label("cm33_sepultamento");
               <?=$Lcm33_sepultamento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("cm33_sepultamento",10,$Icm33_sepultamento,true,"text",4,"","chave_cm33_sepultamento");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clsepultamentoisencao->rotulo->label("cm33_sepultamento");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sepultamentoisencao.php")==true){
@@ -122,12 +123,12 @@ $clsepultamentoisencao->rotulo->label("cm33_sepultamento");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

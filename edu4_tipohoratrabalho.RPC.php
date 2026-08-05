@@ -97,8 +97,8 @@ try {
       }
 
       $oDaoValidaTipoHora    = new cl_tipohoratrabalho();
-      $sWhereValidaTipoHora  = "     (    trim(ed128_descricao) = '" . trim( $oParam->sDescricao ) . "'";
-      $sWhereValidaTipoHora .= "       or trim(ed128_abreviatura) = '" . trim( $oParam->sAbreviatura ) . "' )";
+      $sWhereValidaTipoHora  = "     (    trim(ed128_descricao) = '" . trim( (string) $oParam->sDescricao ) . "'";
+      $sWhereValidaTipoHora .= "       or trim(ed128_abreviatura) = '" . trim( (string) $oParam->sAbreviatura ) . "' )";
 
       if( !empty( $oParam->iCodigo ) ) {
         $sWhereValidaTipoHora .= " AND ed128_codigo <> {$oParam->iCodigo}";
@@ -128,7 +128,7 @@ try {
       $oTipoHoraTrabalho->setAtivo( $oParam->sAtivo == 't' );
       $oTipoHoraTrabalho->salvar();
 
-      $oRetorno->sMensagem = urlencode( _M( MENSAGENS_EDU4_TIPOHORATRABALHO_RPC . 'tipo_hora_salvo' ) );
+      $oRetorno->sMensagem = urlencode( (string) _M( MENSAGENS_EDU4_TIPOHORATRABALHO_RPC . 'tipo_hora_salvo' ) );
 
       db_fim_transacao();
 
@@ -171,7 +171,7 @@ try {
         throw new DBException( _M( MENSAGENS_EDU4_TIPOHORATRABALHO_RPC . 'erro_excluir_tipo_hora', $oErro ) );
       }
 
-      $oRetorno->sMensagem = urlencode( _M( MENSAGENS_EDU4_TIPOHORATRABALHO_RPC . 'tipo_hora_excluido' ) );
+      $oRetorno->sMensagem = urlencode( (string) _M( MENSAGENS_EDU4_TIPOHORATRABALHO_RPC . 'tipo_hora_excluido' ) );
 
       break;
   }

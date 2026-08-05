@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_notificaarretipodoc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clnotificaarretipodoc = new cl_notificaarretipodoc;
 $clnotificaarretipodoc->rotulo->label("k101_sequencial");
 $clnotificaarretipodoc->rotulo->label("k101_db_documento");
@@ -54,7 +55,7 @@ $clnotificaarretipodoc->rotulo->label("k101_db_documento");
               <?=$Lk101_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k101_sequencial",10,$Ik101_sequencial,true,"text",4,"","chave_k101_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clnotificaarretipodoc->rotulo->label("k101_db_documento");
               <?=$Lk101_db_documento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k101_db_documento",10,$Ik101_db_documento,true,"text",4,"","chave_k101_db_documento");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clnotificaarretipodoc->rotulo->label("k101_db_documento");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
           $campos = "k101_sequencial,k101_db_documento,db03_descr,k101_tipo,k00_descr";
@@ -115,12 +116,12 @@ $clnotificaarretipodoc->rotulo->label("k101_db_documento");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

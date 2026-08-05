@@ -27,6 +27,9 @@
 
 namespace ECidade\RecursosHumanos\RH\Efetividade\Collection;
 
+use BusinessException;
+use DBDate;
+use InstituicaoRepository;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\Periodo as PeriodoModel;
 
 /**
@@ -38,12 +41,12 @@ class Periodo {
     /**
      * @var PeriodoModel[]
      */
-    private $aPeriodos = array();
+    private $aPeriodos = [];
 
     /**
      * @param array $aPeriodos
      * @return Periodo
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     public static function makeCollectionFromArray(array $aPeriodos) {
 
@@ -51,8 +54,8 @@ class Periodo {
 
         foreach($aPeriodos as $oDadosPeriodo) {
 
-            $oDadosPeriodo->rh186_datainicioefetividade     = trim($oDadosPeriodo->rh186_datainicioefetividade);
-            $oDadosPeriodo->rh186_datafechamentoefetividade = trim($oDadosPeriodo->rh186_datafechamentoefetividade);
+            $oDadosPeriodo->rh186_datainicioefetividade     = trim((string) $oDadosPeriodo->rh186_datainicioefetividade);
+            $oDadosPeriodo->rh186_datafechamentoefetividade = trim((string) $oDadosPeriodo->rh186_datafechamentoefetividade);
 
             if(empty($oDadosPeriodo->rh186_datainicioefetividade) || empty($oDadosPeriodo->rh186_datafechamentoefetividade)) {
 
@@ -60,15 +63,15 @@ class Periodo {
                 $sMensagem .= "/{$oDadosPeriodo->rh186_competencia}. Para configurá-lo, acesse:\n";
                 $sMensagem .= " - RH > Procedimentos > Efetividade > Parâmetros > Períodos de Efetividade";
 
-                throw new \BusinessException($sMensagem);
+                throw new BusinessException($sMensagem);
             }
 
             $oPeriodoModel = new PeriodoModel();
             $oPeriodoModel->setExercicio($oDadosPeriodo->rh186_exercicio);
             $oPeriodoModel->setCompetencia($oDadosPeriodo->rh186_competencia);
-            $oPeriodoModel->setDataInicio(new \DBDate($oDadosPeriodo->rh186_datainicioefetividade));
-            $oPeriodoModel->setDataFim(new \DBDate($oDadosPeriodo->rh186_datafechamentoefetividade));
-            $oPeriodoModel->setInstituicao(\InstituicaoRepository::getInstituicaoByCodigo($oDadosPeriodo->rh186_instituicao));
+            $oPeriodoModel->setDataInicio(new DBDate($oDadosPeriodo->rh186_datainicioefetividade));
+            $oPeriodoModel->setDataFim(new DBDate($oDadosPeriodo->rh186_datafechamentoefetividade));
+            $oPeriodoModel->setInstituicao(InstituicaoRepository::getInstituicaoByCodigo($oDadosPeriodo->rh186_instituicao));
             $oPeriodoModel->setProcessado($oDadosPeriodo->rh186_processado == 't');
 
             $oCollection->add($oPeriodoModel);

@@ -1,4 +1,4 @@
-<?
+<?php 
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -327,7 +327,7 @@ if (isset($Processa_saldos) && ($Processa_saldos == 'Processar')) {
         </tr>
     </table>
 
-    <?
+    <?php 
     if (isset ($processa_sintetica) && $processa_sintetica == "Selecionar") {
     $sql = "select c60_codcon, c60_estrut, trim(c60_descr) as c60_descr
                       from conplano
@@ -352,7 +352,7 @@ if (isset($Processa_saldos) && ($Processa_saldos == 'Processar')) {
     ?> <table border=0 width=100%>
         <tr><td width="100%" align="center" ><input type="button"  name="Processa_sintetica"   value="Processar" onClick="js_sintetica();"> </td></tr>
         <table>
-            <?
+            <?php 
             }
             if (isset ($processa_plano) && $processa_plano == "Selecionar") {
 
@@ -385,7 +385,7 @@ if (isset($Processa_saldos) && ($Processa_saldos == 'Processar')) {
             <table border=0 width=100%>
                 <tr><td width="100%" align="center" ><input type="button"  name="Processa_analitica"   value="Processar" onClick="js_enviar();"> </td></tr>
                 <table>
-                    <?
+                    <?php 
 
 
                     }
@@ -416,7 +416,7 @@ if (isset($Processa_saldos) && ($Processa_saldos == 'Processar')) {
                     <table border=0 width=100%>
                         <tr><td width="100%" align="center" ><input type="button"  name="processa_bancos"   value="Processar" onClick="js_conplanoconta();"> </td></tr>
                         <table>
-                            <?
+                            <?php 
 
 
                             }
@@ -464,7 +464,7 @@ if (isset($Processa_saldos) && ($Processa_saldos == 'Processar')) {
                             <table border=0 width=100%>
                                 <tr><td width="100%" align="center" ><input type="button"  name="processa_saldos"   value="Processar" onClick="js_saldos();"> </td></tr>
                                 <table>
-                                    <?
+                                    <?php 
 
 
                                     }
@@ -477,7 +477,7 @@ if (isset($Processa_saldos) && ($Processa_saldos == 'Processar')) {
 
 
 
-<?
+<?php 
 
 
 

@@ -62,7 +62,7 @@ class cl_servidoralteracao
     public function __construct()
     {
         $this->rotulo = new rotulo("servidoralteracao");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -207,10 +207,10 @@ class cl_servidoralteracao
          $this->erro_status = "0";
          return false;
        }
-       $this->eso38_sequencial = pg_result($result,0,0);
+       $this->eso38_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from servidoralteracao_eso38_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $eso38_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $eso38_sequencial)){
          $this->erro_sql = " Campo eso38_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -260,7 +260,7 @@ class cl_servidoralteracao
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Alterações do Servidor ($this->eso38_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Alterações do Servidor já Cadastrado";
@@ -289,21 +289,21 @@ class cl_servidoralteracao
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1014178,'$this->eso38_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1010939,1014178,'','".AddSlashes(pg_result($resaco,0,'eso38_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010939,1014189,'','".AddSlashes(pg_result($resaco,0,'eso38_matricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010939,1014179,'','".AddSlashes(pg_result($resaco,0,'eso38_s2205data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010939,1014180,'','".AddSlashes(pg_result($resaco,0,'eso38_s2205processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010939,1014181,'','".AddSlashes(pg_result($resaco,0,'eso38_s2206data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010939,1014182,'','".AddSlashes(pg_result($resaco,0,'eso38_s2206processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010939,1014183,'','".AddSlashes(pg_result($resaco,0,'eso38_s2306data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010939,1014184,'','".AddSlashes(pg_result($resaco,0,'eso38_s2306processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010939,1014185,'','".AddSlashes(pg_result($resaco,0,'eso38_s2405data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010939,1014186,'','".AddSlashes(pg_result($resaco,0,'eso38_s2405processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010939,1014187,'','".AddSlashes(pg_result($resaco,0,'eso38_s2416data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010939,1014188,'','".AddSlashes(pg_result($resaco,0,'eso38_s2416processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010939,1014178,'','".AddSlashes(pg_fetch_result($resaco,0,'eso38_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010939,1014189,'','".AddSlashes(pg_fetch_result($resaco,0,'eso38_matricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010939,1014179,'','".AddSlashes(pg_fetch_result($resaco,0,'eso38_s2205data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010939,1014180,'','".AddSlashes(pg_fetch_result($resaco,0,'eso38_s2205processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010939,1014181,'','".AddSlashes(pg_fetch_result($resaco,0,'eso38_s2206data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010939,1014182,'','".AddSlashes(pg_fetch_result($resaco,0,'eso38_s2206processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010939,1014183,'','".AddSlashes(pg_fetch_result($resaco,0,'eso38_s2306data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010939,1014184,'','".AddSlashes(pg_fetch_result($resaco,0,'eso38_s2306processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010939,1014185,'','".AddSlashes(pg_fetch_result($resaco,0,'eso38_s2405data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010939,1014186,'','".AddSlashes(pg_fetch_result($resaco,0,'eso38_s2405processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010939,1014187,'','".AddSlashes(pg_fetch_result($resaco,0,'eso38_s2416data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010939,1014188,'','".AddSlashes(pg_fetch_result($resaco,0,'eso38_s2416processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -314,10 +314,10 @@ class cl_servidoralteracao
       $this->atualizacampos();
      $sql = " update servidoralteracao set ";
      $virgula = "";
-     if(trim($this->eso38_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_sequencial"])){
+     if(trim((string) $this->eso38_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_sequencial"])){
        $sql  .= $virgula." eso38_sequencial = $this->eso38_sequencial ";
        $virgula = ",";
-       if(trim($this->eso38_sequencial) == null ){
+       if(trim((string) $this->eso38_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial não informado.";
          $this->erro_campo = "eso38_sequencial";
          $this->erro_banco = "";
@@ -327,10 +327,10 @@ class cl_servidoralteracao
          return false;
        }
      }
-     if(trim($this->eso38_matricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_matricula"])){
+     if(trim((string) $this->eso38_matricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_matricula"])){
        $sql  .= $virgula." eso38_matricula = $this->eso38_matricula ";
        $virgula = ",";
-       if(trim($this->eso38_matricula) == null ){
+       if(trim((string) $this->eso38_matricula) == null ){
          $this->erro_sql = " Campo Matrícula não informado.";
          $this->erro_campo = "eso38_matricula";
          $this->erro_banco = "";
@@ -340,7 +340,7 @@ class cl_servidoralteracao
          return false;
        }
      }
-     if(trim($this->eso38_s2205data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2205data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["eso38_s2205data_dia"] !="") ){
+     if(trim((string) $this->eso38_s2205data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2205data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["eso38_s2205data_dia"] !="") ){
        $sql  .= $virgula." eso38_s2205data = '$this->eso38_s2205data' ";
        $virgula = ",";
      }     else{
@@ -349,10 +349,10 @@ class cl_servidoralteracao
          $virgula = ",";
        }
      }
-     if(trim($this->eso38_s2205processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2205processado"])){
+     if(trim((string) $this->eso38_s2205processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2205processado"])){
        $sql  .= $virgula." eso38_s2205processado = '$this->eso38_s2205processado' ";
        $virgula = ",";
-       if(trim($this->eso38_s2205processado) == null ){
+       if(trim((string) $this->eso38_s2205processado) == null ){
          $this->erro_sql = " Campo Processamento S2205 não informado.";
          $this->erro_campo = "eso38_s2205processado";
          $this->erro_banco = "";
@@ -362,7 +362,7 @@ class cl_servidoralteracao
          return false;
        }
      }
-     if(trim($this->eso38_s2206data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2206data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["eso38_s2206data_dia"] !="") ){
+     if(trim((string) $this->eso38_s2206data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2206data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["eso38_s2206data_dia"] !="") ){
        $sql  .= $virgula." eso38_s2206data = '$this->eso38_s2206data' ";
        $virgula = ",";
      }     else{
@@ -371,10 +371,10 @@ class cl_servidoralteracao
          $virgula = ",";
        }
      }
-     if(trim($this->eso38_s2206processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2206processado"])){
+     if(trim((string) $this->eso38_s2206processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2206processado"])){
        $sql  .= $virgula." eso38_s2206processado = '$this->eso38_s2206processado' ";
        $virgula = ",";
-       if(trim($this->eso38_s2206processado) == null ){
+       if(trim((string) $this->eso38_s2206processado) == null ){
          $this->erro_sql = " Campo Processamento S2206 não informado.";
          $this->erro_campo = "eso38_s2206processado";
          $this->erro_banco = "";
@@ -384,7 +384,7 @@ class cl_servidoralteracao
          return false;
        }
      }
-     if(trim($this->eso38_s2306data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2306data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["eso38_s2306data_dia"] !="") ){
+     if(trim((string) $this->eso38_s2306data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2306data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["eso38_s2306data_dia"] !="") ){
        $sql  .= $virgula." eso38_s2306data = '$this->eso38_s2306data' ";
        $virgula = ",";
      }     else{
@@ -393,10 +393,10 @@ class cl_servidoralteracao
          $virgula = ",";
        }
      }
-     if(trim($this->eso38_s2306processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2306processado"])){
+     if(trim((string) $this->eso38_s2306processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2306processado"])){
        $sql  .= $virgula." eso38_s2306processado = '$this->eso38_s2306processado' ";
        $virgula = ",";
-       if(trim($this->eso38_s2306processado) == null ){
+       if(trim((string) $this->eso38_s2306processado) == null ){
          $this->erro_sql = " Campo Processamento S2306 não informado.";
          $this->erro_campo = "eso38_s2306processado";
          $this->erro_banco = "";
@@ -406,7 +406,7 @@ class cl_servidoralteracao
          return false;
        }
      }
-     if(trim($this->eso38_s2405data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2405data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["eso38_s2405data_dia"] !="") ){
+     if(trim((string) $this->eso38_s2405data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2405data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["eso38_s2405data_dia"] !="") ){
        $sql  .= $virgula." eso38_s2405data = '$this->eso38_s2405data' ";
        $virgula = ",";
      }     else{
@@ -415,10 +415,10 @@ class cl_servidoralteracao
          $virgula = ",";
        }
      }
-     if(trim($this->eso38_s2405processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2405processado"])){
+     if(trim((string) $this->eso38_s2405processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2405processado"])){
        $sql  .= $virgula." eso38_s2405processado = '$this->eso38_s2405processado' ";
        $virgula = ",";
-       if(trim($this->eso38_s2405processado) == null ){
+       if(trim((string) $this->eso38_s2405processado) == null ){
          $this->erro_sql = " Campo Processamento S2405 não informado.";
          $this->erro_campo = "eso38_s2405processado";
          $this->erro_banco = "";
@@ -428,7 +428,7 @@ class cl_servidoralteracao
          return false;
        }
      }
-     if(trim($this->eso38_s2416data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2416data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["eso38_s2416data_dia"] !="") ){
+     if(trim((string) $this->eso38_s2416data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2416data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["eso38_s2416data_dia"] !="") ){
        $sql  .= $virgula." eso38_s2416data = '$this->eso38_s2416data' ";
        $virgula = ",";
      }     else{
@@ -437,10 +437,10 @@ class cl_servidoralteracao
          $virgula = ",";
        }
      }
-     if(trim($this->eso38_s2416processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2416processado"])){
+     if(trim((string) $this->eso38_s2416processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2416processado"])){
        $sql  .= $virgula." eso38_s2416processado = '$this->eso38_s2416processado' ";
        $virgula = ",";
-       if(trim($this->eso38_s2416processado) == null ){
+       if(trim((string) $this->eso38_s2416processado) == null ){
          $this->erro_sql = " Campo Processamento S2416 não informado.";
          $this->erro_campo = "eso38_s2416processado";
          $this->erro_banco = "";
@@ -464,33 +464,33 @@ class cl_servidoralteracao
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1014178,'$this->eso38_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso38_sequencial"]) || $this->eso38_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010939,1014178,'".AddSlashes(pg_result($resaco,$conresaco,'eso38_sequencial'))."','$this->eso38_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010939,1014178,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso38_sequencial'))."','$this->eso38_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso38_matricula"]) || $this->eso38_matricula != "")
-             $resac = db_query("insert into db_acount values($acount,1010939,1014189,'".AddSlashes(pg_result($resaco,$conresaco,'eso38_matricula'))."','$this->eso38_matricula',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010939,1014189,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso38_matricula'))."','$this->eso38_matricula',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2205data"]) || $this->eso38_s2205data != "")
-             $resac = db_query("insert into db_acount values($acount,1010939,1014179,'".AddSlashes(pg_result($resaco,$conresaco,'eso38_s2205data'))."','$this->eso38_s2205data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010939,1014179,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso38_s2205data'))."','$this->eso38_s2205data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2205processado"]) || $this->eso38_s2205processado != "")
-             $resac = db_query("insert into db_acount values($acount,1010939,1014180,'".AddSlashes(pg_result($resaco,$conresaco,'eso38_s2205processado'))."','$this->eso38_s2205processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010939,1014180,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso38_s2205processado'))."','$this->eso38_s2205processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2206data"]) || $this->eso38_s2206data != "")
-             $resac = db_query("insert into db_acount values($acount,1010939,1014181,'".AddSlashes(pg_result($resaco,$conresaco,'eso38_s2206data'))."','$this->eso38_s2206data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010939,1014181,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso38_s2206data'))."','$this->eso38_s2206data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2206processado"]) || $this->eso38_s2206processado != "")
-             $resac = db_query("insert into db_acount values($acount,1010939,1014182,'".AddSlashes(pg_result($resaco,$conresaco,'eso38_s2206processado'))."','$this->eso38_s2206processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010939,1014182,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso38_s2206processado'))."','$this->eso38_s2206processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2306data"]) || $this->eso38_s2306data != "")
-             $resac = db_query("insert into db_acount values($acount,1010939,1014183,'".AddSlashes(pg_result($resaco,$conresaco,'eso38_s2306data'))."','$this->eso38_s2306data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010939,1014183,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso38_s2306data'))."','$this->eso38_s2306data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2306processado"]) || $this->eso38_s2306processado != "")
-             $resac = db_query("insert into db_acount values($acount,1010939,1014184,'".AddSlashes(pg_result($resaco,$conresaco,'eso38_s2306processado'))."','$this->eso38_s2306processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010939,1014184,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso38_s2306processado'))."','$this->eso38_s2306processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2405data"]) || $this->eso38_s2405data != "")
-             $resac = db_query("insert into db_acount values($acount,1010939,1014185,'".AddSlashes(pg_result($resaco,$conresaco,'eso38_s2405data'))."','$this->eso38_s2405data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010939,1014185,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso38_s2405data'))."','$this->eso38_s2405data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2405processado"]) || $this->eso38_s2405processado != "")
-             $resac = db_query("insert into db_acount values($acount,1010939,1014186,'".AddSlashes(pg_result($resaco,$conresaco,'eso38_s2405processado'))."','$this->eso38_s2405processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010939,1014186,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso38_s2405processado'))."','$this->eso38_s2405processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2416data"]) || $this->eso38_s2416data != "")
-             $resac = db_query("insert into db_acount values($acount,1010939,1014187,'".AddSlashes(pg_result($resaco,$conresaco,'eso38_s2416data'))."','$this->eso38_s2416data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010939,1014187,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso38_s2416data'))."','$this->eso38_s2416data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso38_s2416processado"]) || $this->eso38_s2416processado != "")
-             $resac = db_query("insert into db_acount values($acount,1010939,1014188,'".AddSlashes(pg_result($resaco,$conresaco,'eso38_s2416processado'))."','$this->eso38_s2416processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010939,1014188,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso38_s2416processado'))."','$this->eso38_s2416processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -544,21 +544,21 @@ class cl_servidoralteracao
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1014178,'$eso38_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010939,1014178,'','".AddSlashes(pg_result($resaco,$iresaco,'eso38_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010939,1014189,'','".AddSlashes(pg_result($resaco,$iresaco,'eso38_matricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010939,1014179,'','".AddSlashes(pg_result($resaco,$iresaco,'eso38_s2205data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010939,1014180,'','".AddSlashes(pg_result($resaco,$iresaco,'eso38_s2205processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010939,1014181,'','".AddSlashes(pg_result($resaco,$iresaco,'eso38_s2206data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010939,1014182,'','".AddSlashes(pg_result($resaco,$iresaco,'eso38_s2206processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010939,1014183,'','".AddSlashes(pg_result($resaco,$iresaco,'eso38_s2306data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010939,1014184,'','".AddSlashes(pg_result($resaco,$iresaco,'eso38_s2306processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010939,1014185,'','".AddSlashes(pg_result($resaco,$iresaco,'eso38_s2405data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010939,1014186,'','".AddSlashes(pg_result($resaco,$iresaco,'eso38_s2405processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010939,1014187,'','".AddSlashes(pg_result($resaco,$iresaco,'eso38_s2416data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010939,1014188,'','".AddSlashes(pg_result($resaco,$iresaco,'eso38_s2416processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010939,1014178,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso38_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010939,1014189,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso38_matricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010939,1014179,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso38_s2205data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010939,1014180,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso38_s2205processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010939,1014181,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso38_s2206data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010939,1014182,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso38_s2206processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010939,1014183,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso38_s2306data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010939,1014184,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso38_s2306processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010939,1014185,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso38_s2405data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010939,1014186,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso38_s2405processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010939,1014187,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso38_s2416data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010939,1014188,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso38_s2416processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

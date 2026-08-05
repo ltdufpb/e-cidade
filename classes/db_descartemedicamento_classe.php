@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE descartemedicamento
 class cl_descartemedicamento { 
@@ -43,7 +43,7 @@ class cl_descartemedicamento {
                  sd107_unidadesaida = int4 = Unidade de Saída 
                  ";
    //funcao construtor da classe 
-   function cl_descartemedicamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("descartemedicamento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

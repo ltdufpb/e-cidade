@@ -51,7 +51,8 @@ $iIdUsuario        = db_getsession("DB_id_usuario");
 $lNecessitaLiberarSolicitacao = $oDadosSolicitacao->pc30_liberado == 'f';
 db_postmemory($HTTP_POST_VARS);
 db_postmemory($HTTP_GET_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clsolicita = new cl_solicita;
 $clsolicita->rotulo->label("pc10_numero");
@@ -108,7 +109,7 @@ $sWhereContrato = " and 1 = 1 ";
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
 
       $where_depart = '';
       $sDepartamento = "";
@@ -262,12 +263,12 @@ $sWhereContrato = " and 1 = 1 ";
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

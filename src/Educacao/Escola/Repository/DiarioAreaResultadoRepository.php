@@ -27,7 +27,7 @@
 
 namespace ECidade\Educacao\Escola\Repository;
 
-use cl_diarioresultado;
+use cl_diarioarearesultado;
 use ECidade\Educacao\Escola\Model\AreaProcedimentoResultado;
 use ECidade\Educacao\Escola\Model\DiarioArea;
 use ECidade\Educacao\Escola\Model\DiarioAreaResultado;
@@ -46,7 +46,7 @@ class DiarioAreaResultadoRepository extends Repository
      */
     public static function find($key)
     {
-        $dao = new \cl_diarioarearesultado();
+        $dao = new cl_diarioarearesultado();
         $sql = $dao->sql_query_file($key);
         $rs = db_query($sql);
 
@@ -63,7 +63,7 @@ class DiarioAreaResultadoRepository extends Repository
      */
     public function get()
     {
-        $dao = new \cl_diarioarearesultado();
+        $dao = new cl_diarioarearesultado();
         $sql = $dao->sql_query_file(null, '*', null, implode(' and ', $this->scopes));
         $rs = db_query($sql);
 
@@ -138,7 +138,7 @@ class DiarioAreaResultadoRepository extends Repository
 
     public function salvar(DiarioAreaResultado $diarioResultado)
     {
-        $dao = new \cl_diarioarearesultado();
+        $dao = new cl_diarioarearesultado();
         $dao->ed164_codigo = $diarioResultado->getCodigo();
         $dao->ed164_diarioarea = $diarioResultado->getDiarioArea()->getCodigo();
         $dao->ed164_areaprocedimentoresultado = $diarioResultado->getAreaProcedimentoResultado()->getCodigo();

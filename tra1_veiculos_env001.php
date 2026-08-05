@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_veiculos_env_classe.php"));
 include(modification("classes/db_acidentes_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clveiculos_env = new cl_veiculos_env;
 $clacidentes = new cl_acidentes;
@@ -102,7 +103,7 @@ if(isset($incluir)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmveiculos_env.php"));
 	?>
     </center>
@@ -111,7 +112,7 @@ if(isset($incluir)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar) || isset($excluir) || isset($incluir)){
     db_msgbox($erro_msg);
     if($clpagordemrec->erro_campo!=""){

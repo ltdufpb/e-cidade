@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -42,7 +42,7 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
           <?=@$Led233_i_codigo?>
         </td>
         <td>
-         <?db_input('ed233_i_codigo',20,$Ied233_i_codigo,true,'text',3,"class='field-size2'")?>
+         <?php db_input('ed233_i_codigo',20,$Ied233_i_codigo,true,'text',3,"class='field-size2'")?>
         </td>
       </tr>
       <tr>
@@ -61,7 +61,7 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
           <?=@$Led233_c_decimais?>
         </td>
         <td>
-          <?
+          <?php 
             $ed233_c_decimais = 'N';
             db_select('ed233_c_decimais',$x,true,$db_opcao,"");
           ?>
@@ -72,8 +72,8 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
           <?=@$Led233_c_notabranca?>
         </td>
         <td>
-          <?
-            $x = array('N'=>'NÃO','S'=>'SIM');
+          <?php 
+            $x = ['N'=>'NÃO','S'=>'SIM'];
             db_select('ed233_c_notabranca',$x,true,$db_opcao,"");
           ?>
         </td>
@@ -83,7 +83,7 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
           <?=@$Led233_f_medidaaluno?>
         </td>
         <td>
-          <?
+          <?php 
             $ed233_f_medidaaluno = isset($ed233_f_medidaaluno)&&$ed233_f_medidaaluno!=""?number_format($ed233_f_medidaaluno,2,".","."):"";
             db_input('ed233_f_medidaaluno',10,@$Ied233_f_medidaaluno,true,'text',$db_opcao," onchange='js_valida(this);' class='field-size1'")
           ?>
@@ -94,7 +94,7 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
           <?=@$Led233_c_limitemov?>
         </td>
         <td>
-          <? db_input('ed233_c_limitemov',5,@$Ied233_c_limitemov,true,'text',$db_opcao, "class='field-size1'")?>
+          <?php  db_input('ed233_c_limitemov',5,@$Ied233_c_limitemov,true,'text',$db_opcao, "class='field-size1'")?>
         </td>
       </tr>
       <tr>
@@ -102,7 +102,7 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
           <?=@$Led233_c_database?>
         </td>
         <td>
-          <? db_input('ed233_c_database',5,@$Ied233_c_database,true,'text',$db_opcao, "class='field-size1'")?>
+          <?php  db_input('ed233_c_database',5,@$Ied233_c_database,true,'text',$db_opcao, "class='field-size1'")?>
         </td>
       </tr>
       <tr>
@@ -110,8 +110,8 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
           <?=@$Led233_c_consistirmat?>
         </td>
         <td>
-          <?
-            $x = array('S'=>'SIM','N'=>'NÃO');
+          <?php 
+            $x = ['S'=>'SIM','N'=>'NÃO'];
             db_select('ed233_c_consistirmat',$x,true,$db_opcao,"");
           ?>
         </td>
@@ -122,7 +122,7 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
         </td>
         <td>
           <?php
-            $aReclassificao = array( 't' => 'SIM', 'f' => 'NÃO');
+            $aReclassificao = [ 't' => 'SIM', 'f' => 'NÃO'];
             db_select('ed233_reclassificaetapaanterior', $aReclassificao, true, $db_opcao );
           ?>
         </td>
@@ -132,8 +132,8 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
           <?=@$Led233_c_avalalternativa?>
         </td>
         <td>
-         <?
-           $x = array('S'=>'SIM','N'=>'NÃO');
+         <?php 
+           $x = ['S'=>'SIM','N'=>'NÃO'];
            db_select('ed233_c_avalalternativa',$x,true,$db_opcao,"");
          ?>
         </td>
@@ -143,7 +143,7 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
           <?=@$Led233_i_idadevotacao?>
         </td>
         <td>
-          <?
+          <?php 
             db_input('ed233_i_idadevotacao',5,@$Ied233_i_idadevotacao,true,'text',$db_opcao, "class='field-size1'");
           ?>
         </td>
@@ -153,8 +153,8 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
           <?=@$Led233_i_habilitaordemalfabeticaturma?>
         </td>
         <td>
-          <?
-            $r = array('1' => 'SIM', '2' => 'NÃO');
+          <?php 
+            $r = ['1' => 'SIM', '2' => 'NÃO'];
             db_select('ed233_i_habilitaordemalfabeticaturma',$r,true,$db_opcao,"");
           ?>
         </td>
@@ -164,7 +164,7 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
            <?=@$Led233_formalancamentoparecer?>
         </td>
         <td>
-          <?
+          <?php 
             $aFormaLancParecer = getValoresPadroesCampo('ed233_formalancamentoparecer');
             db_select('ed233_formalancamentoparecer', $aFormaLancParecer, true, $db_opcao, "");
           ?>
@@ -175,8 +175,8 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
           <?=@$Led233_bloqueioalteracaoavaliacao?>
         </td>
         <td>
-          <?
-            $x = array('t'=>'SIM','f'=>'NÃO');
+          <?php 
+            $x = ['t'=>'SIM','f'=>'NÃO'];
             db_select('ed233_bloqueioalteracaoavaliacao',$x,true,$db_opcao,"");
           ?>
         </td>
@@ -192,8 +192,8 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
                  <?=@$Led233_deslocamentocursor?>
                 </td>
                 <td rel="ignore-css">
-                  <?
-                    $aDeslocamentoCursor = array('1' => 'NOTA > FALTA', '2' => 'NOTA > NOTA');
+                  <?php 
+                    $aDeslocamentoCursor = ['1' => 'NOTA > FALTA', '2' => 'NOTA > NOTA'];
                     db_select('ed233_deslocamentocursor',$aDeslocamentoCursor,true,$db_opcao," class='field-size-max' rel='ignore-css'");
                   ?>
                 </td>
@@ -204,7 +204,7 @@ $ed18_c_nome    = db_getsession("DB_nomedepto");
                 </td>
                 <td>
                   <?php
-                    db_select('ed233_apresentarnotaproporcional', array('t'=>'SIM','f'=>'NÃO'), true, $db_opcao);
+                    db_select('ed233_apresentarnotaproporcional', ['t'=>'SIM','f'=>'NÃO'], true, $db_opcao);
                   ?>
                 </td>
               </tr>

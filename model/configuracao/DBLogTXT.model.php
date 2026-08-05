@@ -34,8 +34,6 @@ require_once(modification("interfaces/iLog.interface.php"));
  */
 class DBLogTXT implements iLog {
 
-  private $sCaminhoArquivo;
-
   private $pArquivo;
 
   private $lMostraDataHora = true;
@@ -46,9 +44,8 @@ class DBLogTXT implements iLog {
    * Construtor da Classe
    * @param integer $sCaminhoArquivo
    */
-  public function __construct($sCaminhoArquivo) {
-    $this->sCaminhoArquivo = $sCaminhoArquivo;
-    $this->pArquivo = fopen($sCaminhoArquivo, 'w');
+  public function __construct(private $sCaminhoArquivo) {
+    $this->pArquivo = fopen($this->sCaminhoArquivo, 'w');
   }
 
   /**

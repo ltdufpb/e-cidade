@@ -33,7 +33,8 @@ require_once (modification("libs/db_usuariosonline.php"));
 use ECidade\Tributario\Agua\Repository\Leitura as LeituraRepository;
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oDaoHidrometro = new cl_aguahidromatric;
 $oDaoTrocaHidrometro = new cl_aguahidrotroca;

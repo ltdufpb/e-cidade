@@ -56,7 +56,7 @@ class cl_conplanoextra {
                  c33_codcla = int4 = Classificação
                  ";
    //funcao construtor da classe
-   function cl_conplanoextra() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conplanoextra");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

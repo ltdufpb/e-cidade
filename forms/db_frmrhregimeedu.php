@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clrhregime->rotulo->label();
       <?=@$Lrh30_codreg?>
     </td>
     <td> 
-      <?db_input('rh30_codreg',2,$Irh30_codreg,true,'text',3,"")?>
+      <?php db_input('rh30_codreg',2,$Irh30_codreg,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -44,7 +44,7 @@ $clrhregime->rotulo->label();
       <?=@$Lrh30_descr?>
     </td>
     <td> 
-      <?db_input('rh30_descr',40,$Irh30_descr,true,'text',$db_opcao,"")?>
+      <?php db_input('rh30_descr',40,$Irh30_descr,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -52,8 +52,8 @@ $clrhregime->rotulo->label();
       <?=@$Lrh30_utilizacao?>
     </td>
     <td> 
-      <?
-      $arr_util = Array('3'=>'Educação');
+      <?php 
+      $arr_util = ['3'=>'Educação'];
       db_select("rh30_utilizacao",$arr_util,true,$db_opcao,"onChange=\"js_mudautilizacao(this.value)\"");
       ?>
     </td>
@@ -63,7 +63,7 @@ $clrhregime->rotulo->label();
       <?=@$Lrh30_regime?>
     </td>
     <td> 
-      <?
+      <?php 
       $result_regime = $clrhcadregime->sql_record($clrhcadregime->sql_query_file());
       db_selectrecord("rh30_regime", $result_regime, true, $db_opcao);
       ?>
@@ -74,8 +74,8 @@ $clrhregime->rotulo->label();
       <?=@$Lrh30_vinculo?>
     </td>
     <td> 
-      <?
-      $arr_vinculo = Array('A'=>'Ativo','I'=>'Inativo','P'=>'Pensionista');
+      <?php 
+      $arr_vinculo = ['A'=>'Ativo','I'=>'Inativo','P'=>'Pensionista'];
       db_select("rh30_vinculo",$arr_vinculo,true,$db_opcao);
       ?>
     </td>
@@ -85,11 +85,11 @@ $clrhregime->rotulo->label();
       <b>Natureza : </b>
     </td>
     <td> 
-      <?
+      <?php 
       $sSqlNatureza = "select rh71_sequencial,rh71_descricao from rhnaturezaregime";
       $rsNatureza   = db_query($sSqlNatureza);
       $iNatureza    = pg_num_rows($rsNatureza);
-      $aNatureza    = Array();
+      $aNatureza    = [];
       for ($i = 0; $i < $iNatureza; $i++) {
 
         db_fieldsmemory($rsNatureza,$i);
@@ -105,7 +105,7 @@ $clrhregime->rotulo->label();
       <?=$Lrh30_vinculomanad?>
     </td>
     <td>
-      <?
+      <?php 
       include(modification("classes/db_vinculomanad_classe.php"));
       $clvinculomanad   = new cl_vinculomanad();
       $sSqlVinculomanad = $clvinculomanad->sql_query_file();
@@ -117,8 +117,8 @@ $clrhregime->rotulo->label();
   <tr>
     <td> <?=$Lrh30_periodoaquisitivo?></td>
     <td>
-      <?
-      $aPeriodoArquisitivo = array("1"=>"12 meses", "2"=>"6 meses");
+      <?php 
+      $aPeriodoArquisitivo = ["1"=>"12 meses", "2"=>"6 meses"];
       db_select("rh30_periodoaquisitivo", $aPeriodoArquisitivo, true, $db_opcao, "style='width : 300px;'");
       ?>
     </td>
@@ -135,9 +135,9 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
 
   db_iframe_rhregime.hide();
-  <?
+  <?php 
   if ($db_opcao!=1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 
@@ -194,7 +194,7 @@ function js_mudautilizacao(valor){
   }
 
 }
-<?if (!isset($chavepesquisa)) {?>
+<?php if (!isset($chavepesquisa)) {?>
  js_mudautilizacao(3);
-<?}?>
+<?php }?>
 </script>

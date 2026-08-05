@@ -36,7 +36,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_jsplibwebseller.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str( $_SERVER["QUERY_STRING"]);
+parse_str( (string) $_SERVER["QUERY_STRING"], $result);
 
 $ed60_d_datamodif_dia = date( "d", db_getsession("DB_datausu") );
 $ed60_d_datamodif_mes = date( "m", db_getsession("DB_datausu") );
@@ -81,7 +81,7 @@ if ( isset($alterar) ) {
 
       foreach( $aMatriculas as $oMatricula ) {
 
-        if( trim( $oMatricula->getSituacao() ) == trim( $ed60_c_situacaoatual ) ) {
+        if( trim( (string) $oMatricula->getSituacao() ) == trim( (string) $ed60_c_situacaoatual ) ) {
           $iMatricula = $oMatricula->getCodigo();
         }
       }
@@ -123,7 +123,7 @@ if ( isset($alterar) ) {
     /**
      * Verifica a situacao selecionada foi 'MATRICULADO', atualizando as datas desta matricula
      */
-    if (trim($ed60_c_situacao) == "MATRICULADO") {
+    if (trim((string) $ed60_c_situacao) == "MATRICULADO") {
 
       $clmatricula->ed60_d_datasaida    = "null";
       $clmatricula->ed60_d_datamodifant = null;
@@ -147,7 +147,7 @@ if ( isset($alterar) ) {
       throw new Exception($sMsgErro);
     }
 
-    if (trim($ed60_c_situacao) == "MATRICULADO") {
+    if (trim((string) $ed60_c_situacao) == "MATRICULADO") {
 
       /**
        * reativa a matriculado aluno.
@@ -186,19 +186,19 @@ if ( isset($alterar) ) {
       }
 
       $clmatriculamov->ed229_t_descr  = "REATIVAÇÃO DA MATRÍCULA. SITUAÇÃO DA MATRÍCULA MODIFICADA DE ";
-      $clmatriculamov->ed229_t_descr .= trim($ed60_c_situacaoatual)." PARA ".trim($ed60_c_situacao);
+      $clmatriculamov->ed229_t_descr .= trim((string) $ed60_c_situacaoatual)." PARA ".trim((string) $ed60_c_situacao);
 
-    } else if (trim($ed60_c_situacao) == "MATRICULA INDEVIDA") {
+    } else if (trim((string) $ed60_c_situacao) == "MATRICULA INDEVIDA") {
 
       if ($ed57_novaturma != "") {
 
         trocaTurma($oDadosMatricularParaModificar->ed60_i_codigo, $ed57_novaturma, false, $ed60_matricula, $sTurno, false);
         LimpaResultadofinal($oDadosMatricularParaModificar->ed60_i_codigo);
-        $clmatriculamov->ed229_t_descr = "SITUAÇÃO DA MATRÍCULA MODIFICADA DE ".trim($ed60_c_situacaoatual)." PARA ".trim($ed60_c_situacao);
+        $clmatriculamov->ed229_t_descr = "SITUAÇÃO DA MATRÍCULA MODIFICADA DE ".trim((string) $ed60_c_situacaoatual)." PARA ".trim((string) $ed60_c_situacao);
       }
     } else {
 
-      $clmatriculamov->ed229_t_descr = "SITUAÇÃO DA MATRÍCULA MODIFICADA DE ".trim($ed60_c_situacaoatual)." PARA ".trim($ed60_c_situacao);
+      $clmatriculamov->ed229_t_descr = "SITUAÇÃO DA MATRÍCULA MODIFICADA DE ".trim((string) $ed60_c_situacaoatual)." PARA ".trim((string) $ed60_c_situacao);
       LimpaResultadofinal($oDadosMatricularParaModificar->ed60_i_codigo);
     }
 
@@ -211,7 +211,7 @@ if ( isset($alterar) ) {
       $clmatriculamov->ed229_d_dataevento   = $ed60_d_datamodif_ano."-".$ed60_d_datamodif_mes."-".$ed60_d_datamodif_dia;
       $clmatriculamov->ed229_c_horaevento   = date("H:i");
 
-      if (trim($clmatriculamov->ed229_t_descr) == "") {
+      if (trim((string) $clmatriculamov->ed229_t_descr) == "") {
         $clmatriculamov->ed229_t_descr = ' ';
       }
 
@@ -226,7 +226,7 @@ if ( isset($alterar) ) {
       $sSqlRemoveHistoricoMatricula  = "DELETE FROM matriculamov ";
       $sSqlRemoveHistoricoMatricula .= " WHERE ed229_i_matricula = $oDadosMatricularParaModificar->ed60_i_codigo  ";
       $sSqlRemoveHistoricoMatricula .= "   AND ed229_c_procedimento = 'ALTERAR SITUAÇÃO DA MATRÍCULA'";
-      $sSqlRemoveHistoricoMatricula .= "   AND ed229_t_descr like '%PARA ".trim($ed60_c_situacaoatual)."%'";
+      $sSqlRemoveHistoricoMatricula .= "   AND ed229_t_descr like '%PARA ".trim((string) $ed60_c_situacaoatual)."%'";
       $rsRemoveHistoricoMatricula    = db_query($sSqlRemoveHistoricoMatricula);
 
       if (!$rsRemoveHistoricoMatricula) {
@@ -350,7 +350,7 @@ if ( isset($alterar) ) {
    parent.document.formaba.a2.style.color = "black";
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href='edu1_alunoturma001.php?ed60_i_turma=<?=$ed57_i_codigo?>&ed57_c_descr=<?=$ed57_c_descr?>&ed52_c_descr=<?=$ed52_c_descr?>';
   </script>
- <?
+ <?php 
 }
 ?>
 <html>
@@ -369,11 +369,11 @@ if ( isset($alterar) ) {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body class="body-default" >
-  <?MsgAviso(db_getsession("DB_coddepto"), "escola");?>
-     <?include(modification("forms/db_frmmatricula.php"));?>
+  <?php MsgAviso(db_getsession("DB_coddepto"), "escola");?>
+     <?php include(modification("forms/db_frmmatricula.php"));?>
 </body>
 </html>
-<?
+<?php 
 if ( isset( $alterar ) ) {
 
   if ( $clmatricula->erro_status == "0" ) {

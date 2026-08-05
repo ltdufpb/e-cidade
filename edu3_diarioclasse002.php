@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -109,7 +109,7 @@ if ( $clturma->numrows > 0 ) {
    <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
      <td class="titulo">
-      <?
+      <?php 
 
       /**
        * Verifica se a turma é do tipo Integral e Infantil, alterando a forma como é apresentada a descrição do
@@ -123,8 +123,8 @@ if ( $clturma->numrows > 0 ) {
         && $oMatricula->getTurma()->getBaseCurricular()->getCurso()->getEnsino()->isInfantil()
       ) {
 
-        $aDescricaoTurno = array();
-        $aTurnoReferente = array( 1 => 'MANHÃ', 2 => 'TARDE', 3 => 'NOITE' );
+        $aDescricaoTurno = [];
+        $aTurnoReferente = [ 1 => 'MANHÃ', 2 => 'TARDE', 3 => 'NOITE' ];
 
         foreach ( $oMatricula->getTurnosVinculados() as $oTurnoReferente ) {
           $aDescricaoTurno[] = $aTurnoReferente[ $oTurnoReferente->ed336_turnoreferente ];
@@ -143,7 +143,7 @@ if ( $clturma->numrows > 0 ) {
     </tr>
     <tr>
      <td>
-      <?GradeAproveitamentoHTML( $aluno, "S", $ed52_i_ano )?>
+      <?php GradeAproveitamentoHTML( $aluno, "S", $ed52_i_ano )?>
      </td>
     </tr>
    </table>
@@ -160,4 +160,4 @@ function js_oculta(nomepar){
  document.getElementById(nomepar).style.visibility = "hidden";
 }
 </script>
-<?}?>
+<?php }?>

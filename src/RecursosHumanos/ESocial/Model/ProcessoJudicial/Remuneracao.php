@@ -46,8 +46,7 @@ class Remuneracao
     private $sequencialProcessoContrato;
 
     /**
-     * @var \DBDate
-     *
+     * @var DBDate
      */
     private $dataRemuneracao;
 
@@ -122,7 +121,7 @@ class Remuneracao
     /**
      * Get the value of dataRemuneracao
      *
-     * @return  \DBDate
+     * @return DBDate
      */
     public function getDataRemuneracao()
     {
@@ -132,7 +131,7 @@ class Remuneracao
     /**
      * Set the value of dataRemuneracao
      *
-     * @param  \DBDate  $dataRemuneracao
+     * @param DBDate $dataRemuneracao
      */
     public function setDataRemuneracao($dataRemuneracao)
     {

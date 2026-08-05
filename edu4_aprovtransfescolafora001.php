@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 $escola = db_getsession("DB_coddepto");
@@ -56,21 +56,21 @@ $escola = db_getsession("DB_coddepto");
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <form name="form1" method="post" action="">
    <fieldset style="width:95%"><legend><b>Importar Aproveitamento de Aluno (Somente para alunos transferidos para fora da rede)</b></legend>
     <table border="0" width="100%">
      <tr>
       <td>
-       <?db_ancora("<b>Aluno:</b>","js_pesquisatransf();",$db_opcao);?>
+       <?php db_ancora("<b>Aluno:</b>","js_pesquisatransf();",$db_opcao);?>
       </td>
       <td>
-       <?db_input('matricula',15,@$Imatricula,true,'hidden',3,"")?>
-       <?db_input('turmaorigem',15,@$Iturmaorigem,true,'hidden',3,"")?>
-       <?db_input('turmadestino',15,@$Iturmadestino,true,'hidden',3,"")?>
-       <?db_input('ed104_i_aluno',15,@$Ied104_i_aluno,true,'text',3,"")?>
-       <?db_input('ed47_v_nome',50,@$Ied47_v_nome,true,'text',3,'')?><br>
+       <?php db_input('matricula',15,@$Imatricula,true,'hidden',3,"")?>
+       <?php db_input('turmaorigem',15,@$Iturmaorigem,true,'hidden',3,"")?>
+       <?php db_input('turmadestino',15,@$Iturmadestino,true,'hidden',3,"")?>
+       <?php db_input('ed104_i_aluno',15,@$Ied104_i_aluno,true,'text',3,"")?>
+       <?php db_input('ed47_v_nome',50,@$Ied47_v_nome,true,'text',3,'')?><br>
       </td>
      </tr>
      <tr>
@@ -78,8 +78,8 @@ $escola = db_getsession("DB_coddepto");
        <b>Escola Origem:</b>
       </td>
       <td>  
-       <?db_input('ed104_i_escolaorigem',15,@$Ied104_i_escolaorigem,true,'text',3,"")?>
-       <?db_input('ed18_c_nome',50,@$Ied18_c_nome,true,'text',3,'')?><br>
+       <?php db_input('ed104_i_escolaorigem',15,@$Ied104_i_escolaorigem,true,'text',3,"")?>
+       <?php db_input('ed18_c_nome',50,@$Ied18_c_nome,true,'text',3,'')?><br>
       </td>
      </tr>
      <tr>
@@ -87,8 +87,8 @@ $escola = db_getsession("DB_coddepto");
        <b>Escola Destino:</b>
       </td>
       <td>  
-       <?db_input('ed104_i_escoladestino',15,@$Ied104_i_escoladestino,true,'text',3,"")?>
-       <?db_input('ed82_c_nome',50,@$Ied82_c_nome,true,'text',3,'')?><br>
+       <?php db_input('ed104_i_escoladestino',15,@$Ied104_i_escoladestino,true,'text',3,"")?>
+       <?php db_input('ed82_c_nome',50,@$Ied82_c_nome,true,'text',3,'')?><br>
       </td>
      </tr>
      <tr>
@@ -102,7 +102,7 @@ $escola = db_getsession("DB_coddepto");
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

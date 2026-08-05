@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE processoforoinicial
 class cl_processoforoinicial { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $v71_sequencial = 0; 
-   var $v71_id_usuario = 0; 
-   var $v71_inicial = 0; 
-   var $v71_processoforo = 0; 
-   var $v71_data_dia = null; 
-   var $v71_data_mes = null; 
-   var $v71_data_ano = null; 
-   var $v71_data = null; 
-   var $v71_anulado = 'f'; 
+   public $v71_sequencial = 0; 
+   public $v71_id_usuario = 0; 
+   public $v71_inicial = 0; 
+   public $v71_processoforo = 0; 
+   public $v71_data_dia = null; 
+   public $v71_data_mes = null; 
+   public $v71_data_ano = null; 
+   public $v71_data = null; 
+   public $v71_anulado = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  v71_sequencial = int4 = Código Sequencial 
                  v71_id_usuario = int4 = Id usuário 
                  v71_inicial = int4 = Inicial 
@@ -61,10 +61,10 @@ class cl_processoforoinicial {
                  v71_anulado = bool = Anulado 
                  ";
    //funcao construtor da classe 
-   function cl_processoforoinicial() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("processoforoinicial"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -153,10 +153,10 @@ class cl_processoforoinicial {
          $this->erro_status = "0";
          return false; 
        }
-       $this->v71_sequencial = pg_result($result,0,0); 
+       $this->v71_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from processoforoinicial_v71_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v71_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v71_sequencial)){
          $this->erro_sql = " Campo v71_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,7 +194,7 @@ class cl_processoforoinicial {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "processoforoinicial ($this->v71_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "processoforoinicial já Cadastrado";
@@ -218,15 +218,15 @@ class cl_processoforoinicial {
      $resaco = $this->sql_record($this->sql_query_file($this->v71_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17349,'$this->v71_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3070,17349,'','".AddSlashes(pg_result($resaco,0,'v71_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3070,17350,'','".AddSlashes(pg_result($resaco,0,'v71_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3070,17351,'','".AddSlashes(pg_result($resaco,0,'v71_inicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3070,17352,'','".AddSlashes(pg_result($resaco,0,'v71_processoforo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3070,17353,'','".AddSlashes(pg_result($resaco,0,'v71_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3070,17354,'','".AddSlashes(pg_result($resaco,0,'v71_anulado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3070,17349,'','".AddSlashes(pg_fetch_result($resaco,0,'v71_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3070,17350,'','".AddSlashes(pg_fetch_result($resaco,0,'v71_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3070,17351,'','".AddSlashes(pg_fetch_result($resaco,0,'v71_inicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3070,17352,'','".AddSlashes(pg_fetch_result($resaco,0,'v71_processoforo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3070,17353,'','".AddSlashes(pg_fetch_result($resaco,0,'v71_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3070,17354,'','".AddSlashes(pg_fetch_result($resaco,0,'v71_anulado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -235,10 +235,10 @@ class cl_processoforoinicial {
       $this->atualizacampos();
      $sql = " update processoforoinicial set ";
      $virgula = "";
-     if(trim($this->v71_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v71_sequencial"])){ 
+     if(trim((string) $this->v71_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v71_sequencial"])){ 
        $sql  .= $virgula." v71_sequencial = $this->v71_sequencial ";
        $virgula = ",";
-       if(trim($this->v71_sequencial) == null ){ 
+       if(trim((string) $this->v71_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "v71_sequencial";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_processoforoinicial {
          return false;
        }
      }
-     if(trim($this->v71_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v71_id_usuario"])){ 
+     if(trim((string) $this->v71_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v71_id_usuario"])){ 
        $sql  .= $virgula." v71_id_usuario = $this->v71_id_usuario ";
        $virgula = ",";
-       if(trim($this->v71_id_usuario) == null ){ 
+       if(trim((string) $this->v71_id_usuario) == null ){ 
          $this->erro_sql = " Campo Id usuário nao Informado.";
          $this->erro_campo = "v71_id_usuario";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_processoforoinicial {
          return false;
        }
      }
-     if(trim($this->v71_inicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v71_inicial"])){ 
+     if(trim((string) $this->v71_inicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v71_inicial"])){ 
        $sql  .= $virgula." v71_inicial = $this->v71_inicial ";
        $virgula = ",";
-       if(trim($this->v71_inicial) == null ){ 
+       if(trim((string) $this->v71_inicial) == null ){ 
          $this->erro_sql = " Campo Inicial nao Informado.";
          $this->erro_campo = "v71_inicial";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_processoforoinicial {
          return false;
        }
      }
-     if(trim($this->v71_processoforo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v71_processoforo"])){ 
+     if(trim((string) $this->v71_processoforo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v71_processoforo"])){ 
        $sql  .= $virgula." v71_processoforo = $this->v71_processoforo ";
        $virgula = ",";
-       if(trim($this->v71_processoforo) == null ){ 
+       if(trim((string) $this->v71_processoforo) == null ){ 
          $this->erro_sql = " Campo Processo foro nao Informado.";
          $this->erro_campo = "v71_processoforo";
          $this->erro_banco = "";
@@ -287,10 +287,10 @@ class cl_processoforoinicial {
          return false;
        }
      }
-     if(trim($this->v71_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v71_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v71_data_dia"] !="") ){ 
+     if(trim((string) $this->v71_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v71_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v71_data_dia"] !="") ){ 
        $sql  .= $virgula." v71_data = '$this->v71_data' ";
        $virgula = ",";
-       if(trim($this->v71_data) == null ){ 
+       if(trim((string) $this->v71_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "v71_data_dia";
          $this->erro_banco = "";
@@ -303,7 +303,7 @@ class cl_processoforoinicial {
        if(isset($GLOBALS["HTTP_POST_VARS"]["v71_data_dia"])){ 
          $sql  .= $virgula." v71_data = null ";
          $virgula = ",";
-         if(trim($this->v71_data) == null ){ 
+         if(trim((string) $this->v71_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "v71_data_dia";
            $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_processoforoinicial {
          }
        }
      }
-     if(trim($this->v71_anulado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v71_anulado"])){ 
+     if(trim((string) $this->v71_anulado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v71_anulado"])){ 
        $sql  .= $virgula." v71_anulado = '$this->v71_anulado' ";
        $virgula = ",";
-       if(trim($this->v71_anulado) == null ){ 
+       if(trim((string) $this->v71_anulado) == null ){ 
          $this->erro_sql = " Campo Anulado nao Informado.";
          $this->erro_campo = "v71_anulado";
          $this->erro_banco = "";
@@ -335,21 +335,21 @@ class cl_processoforoinicial {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17349,'$this->v71_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v71_sequencial"]) || $this->v71_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3070,17349,'".AddSlashes(pg_result($resaco,$conresaco,'v71_sequencial'))."','$this->v71_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3070,17349,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v71_sequencial'))."','$this->v71_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v71_id_usuario"]) || $this->v71_id_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,3070,17350,'".AddSlashes(pg_result($resaco,$conresaco,'v71_id_usuario'))."','$this->v71_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3070,17350,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v71_id_usuario'))."','$this->v71_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v71_inicial"]) || $this->v71_inicial != "")
-           $resac = db_query("insert into db_acount values($acount,3070,17351,'".AddSlashes(pg_result($resaco,$conresaco,'v71_inicial'))."','$this->v71_inicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3070,17351,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v71_inicial'))."','$this->v71_inicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v71_processoforo"]) || $this->v71_processoforo != "")
-           $resac = db_query("insert into db_acount values($acount,3070,17352,'".AddSlashes(pg_result($resaco,$conresaco,'v71_processoforo'))."','$this->v71_processoforo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3070,17352,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v71_processoforo'))."','$this->v71_processoforo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v71_data"]) || $this->v71_data != "")
-           $resac = db_query("insert into db_acount values($acount,3070,17353,'".AddSlashes(pg_result($resaco,$conresaco,'v71_data'))."','$this->v71_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3070,17353,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v71_data'))."','$this->v71_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v71_anulado"]) || $this->v71_anulado != "")
-           $resac = db_query("insert into db_acount values($acount,3070,17354,'".AddSlashes(pg_result($resaco,$conresaco,'v71_anulado'))."','$this->v71_anulado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3070,17354,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v71_anulado'))."','$this->v71_anulado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -394,15 +394,15 @@ class cl_processoforoinicial {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17349,'$v71_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3070,17349,'','".AddSlashes(pg_result($resaco,$iresaco,'v71_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3070,17350,'','".AddSlashes(pg_result($resaco,$iresaco,'v71_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3070,17351,'','".AddSlashes(pg_result($resaco,$iresaco,'v71_inicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3070,17352,'','".AddSlashes(pg_result($resaco,$iresaco,'v71_processoforo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3070,17353,'','".AddSlashes(pg_result($resaco,$iresaco,'v71_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3070,17354,'','".AddSlashes(pg_result($resaco,$iresaco,'v71_anulado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3070,17349,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v71_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3070,17350,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v71_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3070,17351,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v71_inicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3070,17352,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v71_processoforo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3070,17353,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v71_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3070,17354,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v71_anulado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from processoforoinicial
@@ -462,7 +462,7 @@ class cl_processoforoinicial {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:processoforoinicial";
@@ -508,7 +508,7 @@ class cl_processoforoinicial {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -542,7 +542,7 @@ class cl_processoforoinicial {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

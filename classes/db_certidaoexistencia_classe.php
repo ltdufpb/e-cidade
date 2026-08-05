@@ -29,44 +29,44 @@
 //CLASSE DA ENTIDADE certidaoexistencia
 class cl_certidaoexistencia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j133_sequencial = 0; 
-   var $j133_db_usuarios = 0; 
-   var $j133_matric = 0; 
-   var $j133_iptuconstr = 0; 
-   var $j133_data_dia = null; 
-   var $j133_data_mes = null; 
-   var $j133_data_ano = null; 
-   var $j133_data = null; 
-   var $j133_hora = null; 
-   var $j133_arquivo = 0; 
-   var $j133_observacao = null; 
-   var $j133_processo = null; 
-   var $j133_titulaprocesso = null; 
-   var $j133_dtprocesso_dia = null; 
-   var $j133_dtprocesso_mes = null; 
-   var $j133_dtprocesso_ano = null; 
-   var $j133_dtprocesso = null;
-   var $j133_arealote = null;
-   var $j133_areareallote = null;
-   var $j133_areaconstruida = null;
-   var $j133_arearealconstruida = null;
-   var $j133_numhabite = null;
-   var $j133_dathabite = null;
+   public $j133_sequencial = 0; 
+   public $j133_db_usuarios = 0; 
+   public $j133_matric = 0; 
+   public $j133_iptuconstr = 0; 
+   public $j133_data_dia = null; 
+   public $j133_data_mes = null; 
+   public $j133_data_ano = null; 
+   public $j133_data = null; 
+   public $j133_hora = null; 
+   public $j133_arquivo = 0; 
+   public $j133_observacao = null; 
+   public $j133_processo = null; 
+   public $j133_titulaprocesso = null; 
+   public $j133_dtprocesso_dia = null; 
+   public $j133_dtprocesso_mes = null; 
+   public $j133_dtprocesso_ano = null; 
+   public $j133_dtprocesso = null;
+   public $j133_arealote = null;
+   public $j133_areareallote = null;
+   public $j133_areaconstruida = null;
+   public $j133_arearealconstruida = null;
+   public $j133_numhabite = null;
+   public $j133_dathabite = null;
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j133_sequencial = int4 = Sequencial 
                  j133_db_usuarios = int4 = Usuário 
                  j133_matric = int4 = Matrícula 
@@ -86,10 +86,10 @@ class cl_certidaoexistencia {
                  j133_dathabite = date = Data da Emissão do Habite-se
                  ";
    //funcao construtor da classe 
-   function cl_certidaoexistencia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("certidaoexistencia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -216,10 +216,10 @@ class cl_certidaoexistencia {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j133_sequencial = pg_result($result,0,0); 
+       $this->j133_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from certidaoexistencia_j133_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j133_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j133_sequencial)){
          $this->erro_sql = " Campo j133_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -280,7 +280,7 @@ class cl_certidaoexistencia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "certidão de existência ($this->j133_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "certidão de existência já Cadastrado";
@@ -304,20 +304,20 @@ class cl_certidaoexistencia {
      $resaco = $this->sql_record($this->sql_query_file($this->j133_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18843,'$this->j133_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3341,18843,'','".AddSlashes(pg_result($resaco,0,'j133_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3341,18845,'','".AddSlashes(pg_result($resaco,0,'j133_db_usuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3341,18846,'','".AddSlashes(pg_result($resaco,0,'j133_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3341,18848,'','".AddSlashes(pg_result($resaco,0,'j133_iptuconstr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3341,18849,'','".AddSlashes(pg_result($resaco,0,'j133_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3341,18850,'','".AddSlashes(pg_result($resaco,0,'j133_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3341,18851,'','".AddSlashes(pg_result($resaco,0,'j133_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3341,18852,'','".AddSlashes(pg_result($resaco,0,'j133_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3341,18853,'','".AddSlashes(pg_result($resaco,0,'j133_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3341,18854,'','".AddSlashes(pg_result($resaco,0,'j133_titulaprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3341,18855,'','".AddSlashes(pg_result($resaco,0,'j133_dtprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3341,18843,'','".AddSlashes(pg_fetch_result($resaco,0,'j133_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3341,18845,'','".AddSlashes(pg_fetch_result($resaco,0,'j133_db_usuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3341,18846,'','".AddSlashes(pg_fetch_result($resaco,0,'j133_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3341,18848,'','".AddSlashes(pg_fetch_result($resaco,0,'j133_iptuconstr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3341,18849,'','".AddSlashes(pg_fetch_result($resaco,0,'j133_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3341,18850,'','".AddSlashes(pg_fetch_result($resaco,0,'j133_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3341,18851,'','".AddSlashes(pg_fetch_result($resaco,0,'j133_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3341,18852,'','".AddSlashes(pg_fetch_result($resaco,0,'j133_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3341,18853,'','".AddSlashes(pg_fetch_result($resaco,0,'j133_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3341,18854,'','".AddSlashes(pg_fetch_result($resaco,0,'j133_titulaprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3341,18855,'','".AddSlashes(pg_fetch_result($resaco,0,'j133_dtprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -326,10 +326,10 @@ class cl_certidaoexistencia {
       $this->atualizacampos();
      $sql = " update certidaoexistencia set ";
      $virgula = "";
-     if(trim($this->j133_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_sequencial"])){ 
+     if(trim((string) $this->j133_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_sequencial"])){ 
        $sql  .= $virgula." j133_sequencial = $this->j133_sequencial ";
        $virgula = ",";
-       if(trim($this->j133_sequencial) == null ){ 
+       if(trim((string) $this->j133_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "j133_sequencial";
          $this->erro_banco = "";
@@ -339,10 +339,10 @@ class cl_certidaoexistencia {
          return false;
        }
      }
-     if(trim($this->j133_db_usuarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_db_usuarios"])){ 
+     if(trim((string) $this->j133_db_usuarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_db_usuarios"])){ 
        $sql  .= $virgula." j133_db_usuarios = $this->j133_db_usuarios ";
        $virgula = ",";
-       if(trim($this->j133_db_usuarios) == null ){ 
+       if(trim((string) $this->j133_db_usuarios) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "j133_db_usuarios";
          $this->erro_banco = "";
@@ -352,10 +352,10 @@ class cl_certidaoexistencia {
          return false;
        }
      }
-     if(trim($this->j133_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_matric"])){ 
+     if(trim((string) $this->j133_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_matric"])){ 
        $sql  .= $virgula." j133_matric = $this->j133_matric ";
        $virgula = ",";
-       if(trim($this->j133_matric) == null ){ 
+       if(trim((string) $this->j133_matric) == null ){ 
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "j133_matric";
          $this->erro_banco = "";
@@ -365,10 +365,10 @@ class cl_certidaoexistencia {
          return false;
        }
      }
-     if(trim($this->j133_iptuconstr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_iptuconstr"])){ 
+     if(trim((string) $this->j133_iptuconstr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_iptuconstr"])){ 
        $sql  .= $virgula." j133_iptuconstr = $this->j133_iptuconstr ";
        $virgula = ",";
-       if(trim($this->j133_iptuconstr) == null ){ 
+       if(trim((string) $this->j133_iptuconstr) == null ){ 
          $this->erro_sql = " Campo Construção nao Informado.";
          $this->erro_campo = "j133_iptuconstr";
          $this->erro_banco = "";
@@ -378,10 +378,10 @@ class cl_certidaoexistencia {
          return false;
        }
      }
-     if(trim($this->j133_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j133_data_dia"] !="") ){ 
+     if(trim((string) $this->j133_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j133_data_dia"] !="") ){ 
        $sql  .= $virgula." j133_data = '$this->j133_data' ";
        $virgula = ",";
-       if(trim($this->j133_data) == null ){ 
+       if(trim((string) $this->j133_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "j133_data_dia";
          $this->erro_banco = "";
@@ -394,7 +394,7 @@ class cl_certidaoexistencia {
        if(isset($GLOBALS["HTTP_POST_VARS"]["j133_data_dia"])){ 
          $sql  .= $virgula." j133_data = null ";
          $virgula = ",";
-         if(trim($this->j133_data) == null ){ 
+         if(trim((string) $this->j133_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "j133_data_dia";
            $this->erro_banco = "";
@@ -405,10 +405,10 @@ class cl_certidaoexistencia {
          }
        }
      }
-     if(trim($this->j133_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_hora"])){ 
+     if(trim((string) $this->j133_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_hora"])){ 
        $sql  .= $virgula." j133_hora = '$this->j133_hora' ";
        $virgula = ",";
-       if(trim($this->j133_hora) == null ){ 
+       if(trim((string) $this->j133_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "j133_hora";
          $this->erro_banco = "";
@@ -418,23 +418,23 @@ class cl_certidaoexistencia {
          return false;
        }
      }
-     if(trim($this->j133_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_arquivo"])){ 
+     if(trim((string) $this->j133_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_arquivo"])){ 
        $sql  .= $virgula." j133_arquivo = $this->j133_arquivo ";
        $virgula = ",";
      }
-     if(trim($this->j133_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_observacao"])){ 
+     if(trim((string) $this->j133_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_observacao"])){ 
        $sql  .= $virgula." j133_observacao = '$this->j133_observacao' ";
        $virgula = ",";
      }
-     if(trim($this->j133_processo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_processo"])){ 
+     if(trim((string) $this->j133_processo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_processo"])){ 
        $sql  .= $virgula." j133_processo = '$this->j133_processo' ";
        $virgula = ",";
      }
-     if(trim($this->j133_titulaprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_titulaprocesso"])){ 
+     if(trim((string) $this->j133_titulaprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_titulaprocesso"])){ 
        $sql  .= $virgula." j133_titulaprocesso = '$this->j133_titulaprocesso' ";
        $virgula = ",";
      }
-     if(trim($this->j133_dtprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_dtprocesso_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j133_dtprocesso_dia"] !="") ){ 
+     if(trim((string) $this->j133_dtprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j133_dtprocesso_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j133_dtprocesso_dia"] !="") ){ 
        $sql  .= $virgula." j133_dtprocesso = '$this->j133_dtprocesso' ";
        $virgula = ",";
      }     else{ 
@@ -451,31 +451,31 @@ class cl_certidaoexistencia {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18843,'$this->j133_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j133_sequencial"]) || $this->j133_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3341,18843,'".AddSlashes(pg_result($resaco,$conresaco,'j133_sequencial'))."','$this->j133_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3341,18843,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j133_sequencial'))."','$this->j133_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j133_db_usuarios"]) || $this->j133_db_usuarios != "")
-           $resac = db_query("insert into db_acount values($acount,3341,18845,'".AddSlashes(pg_result($resaco,$conresaco,'j133_db_usuarios'))."','$this->j133_db_usuarios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3341,18845,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j133_db_usuarios'))."','$this->j133_db_usuarios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j133_matric"]) || $this->j133_matric != "")
-           $resac = db_query("insert into db_acount values($acount,3341,18846,'".AddSlashes(pg_result($resaco,$conresaco,'j133_matric'))."','$this->j133_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3341,18846,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j133_matric'))."','$this->j133_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j133_iptuconstr"]) || $this->j133_iptuconstr != "")
-           $resac = db_query("insert into db_acount values($acount,3341,18848,'".AddSlashes(pg_result($resaco,$conresaco,'j133_iptuconstr'))."','$this->j133_iptuconstr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3341,18848,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j133_iptuconstr'))."','$this->j133_iptuconstr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j133_data"]) || $this->j133_data != "")
-           $resac = db_query("insert into db_acount values($acount,3341,18849,'".AddSlashes(pg_result($resaco,$conresaco,'j133_data'))."','$this->j133_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3341,18849,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j133_data'))."','$this->j133_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j133_hora"]) || $this->j133_hora != "")
-           $resac = db_query("insert into db_acount values($acount,3341,18850,'".AddSlashes(pg_result($resaco,$conresaco,'j133_hora'))."','$this->j133_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3341,18850,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j133_hora'))."','$this->j133_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j133_arquivo"]) || $this->j133_arquivo != "")
-           $resac = db_query("insert into db_acount values($acount,3341,18851,'".AddSlashes(pg_result($resaco,$conresaco,'j133_arquivo'))."','$this->j133_arquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3341,18851,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j133_arquivo'))."','$this->j133_arquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j133_observacao"]) || $this->j133_observacao != "")
-           $resac = db_query("insert into db_acount values($acount,3341,18852,'".AddSlashes(pg_result($resaco,$conresaco,'j133_observacao'))."','$this->j133_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3341,18852,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j133_observacao'))."','$this->j133_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j133_processo"]) || $this->j133_processo != "")
-           $resac = db_query("insert into db_acount values($acount,3341,18853,'".AddSlashes(pg_result($resaco,$conresaco,'j133_processo'))."','$this->j133_processo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3341,18853,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j133_processo'))."','$this->j133_processo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j133_titulaprocesso"]) || $this->j133_titulaprocesso != "")
-           $resac = db_query("insert into db_acount values($acount,3341,18854,'".AddSlashes(pg_result($resaco,$conresaco,'j133_titulaprocesso'))."','$this->j133_titulaprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3341,18854,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j133_titulaprocesso'))."','$this->j133_titulaprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j133_dtprocesso"]) || $this->j133_dtprocesso != "")
-           $resac = db_query("insert into db_acount values($acount,3341,18855,'".AddSlashes(pg_result($resaco,$conresaco,'j133_dtprocesso'))."','$this->j133_dtprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3341,18855,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j133_dtprocesso'))."','$this->j133_dtprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      //echo $sql;
@@ -521,20 +521,20 @@ class cl_certidaoexistencia {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18843,'$j133_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3341,18843,'','".AddSlashes(pg_result($resaco,$iresaco,'j133_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3341,18845,'','".AddSlashes(pg_result($resaco,$iresaco,'j133_db_usuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3341,18846,'','".AddSlashes(pg_result($resaco,$iresaco,'j133_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3341,18848,'','".AddSlashes(pg_result($resaco,$iresaco,'j133_iptuconstr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3341,18849,'','".AddSlashes(pg_result($resaco,$iresaco,'j133_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3341,18850,'','".AddSlashes(pg_result($resaco,$iresaco,'j133_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3341,18851,'','".AddSlashes(pg_result($resaco,$iresaco,'j133_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3341,18852,'','".AddSlashes(pg_result($resaco,$iresaco,'j133_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3341,18853,'','".AddSlashes(pg_result($resaco,$iresaco,'j133_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3341,18854,'','".AddSlashes(pg_result($resaco,$iresaco,'j133_titulaprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3341,18855,'','".AddSlashes(pg_result($resaco,$iresaco,'j133_dtprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3341,18843,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j133_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3341,18845,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j133_db_usuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3341,18846,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j133_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3341,18848,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j133_iptuconstr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3341,18849,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j133_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3341,18850,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j133_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3341,18851,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j133_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3341,18852,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j133_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3341,18853,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j133_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3341,18854,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j133_titulaprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3341,18855,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j133_dtprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from certidaoexistencia
@@ -594,7 +594,7 @@ class cl_certidaoexistencia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:certidaoexistencia";
@@ -609,7 +609,7 @@ class cl_certidaoexistencia {
    function sql_query ( $j133_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -634,7 +634,7 @@ class cl_certidaoexistencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -647,7 +647,7 @@ class cl_certidaoexistencia {
    function sql_query_file ( $j133_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -668,7 +668,7 @@ class cl_certidaoexistencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

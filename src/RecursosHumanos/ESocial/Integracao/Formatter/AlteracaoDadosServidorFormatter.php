@@ -2,6 +2,11 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use endereco;
+use BusinessException;
+use DBException;
+use Exception;
 use ECidade\RecursosHumanos\ESocial\Service\ServidorService;
 use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
 use ECidade\RecursosHumanos\ESocial\Repository\ServidorAlteracao;
@@ -50,7 +55,8 @@ class AlteracaoDadosServidorFormatter extends ServidorFormatter
      * @param array $dados
      * @return array
      */
-    public function formatar($servidores)
+    #[Override]
+    public function formatar($servidores, $alteracao = false)
     {
         $retorno = [];
 
@@ -77,8 +83,8 @@ class AlteracaoDadosServidorFormatter extends ServidorFormatter
     /**
      * @param  $servidor
      * @return mixed
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function processamento($servidor)
     {
@@ -142,9 +148,9 @@ class AlteracaoDadosServidorFormatter extends ServidorFormatter
         $dados->sexo      = $this->servidorAtual->getSexo();
         $dados->racaCor   = $this->deParaRacaCor[$this->servidorAtual->getRacaCor()];
         $dados->estCiv    = $this->deParaEstadoCivil[$this->servidorAtual->getEstadoCivil()];
-        $dados->grauInstr = str_pad($this->servidorAtual->getGrauInstrucao(), 2, '0', STR_PAD_LEFT);
+        $dados->grauInstr = str_pad((string) $this->servidorAtual->getGrauInstrucao(), 2, '0', STR_PAD_LEFT);
 
-        if (array_key_exists($this->servidorAtual->getGrauInstrucao(), $this->deParaGrauInstrucao)) {
+        if (array_key_exists((string) $this->servidorAtual->getGrauInstrucao(), $this->deParaGrauInstrucao)) {
             $dados->grauInstr = $this->deParaGrauInstrucao[$this->servidorAtual->getGrauInstrucao()];
         }
 
@@ -189,13 +195,13 @@ class AlteracaoDadosServidorFormatter extends ServidorFormatter
     /**
      * Retorna Grupo Endereço
      * @return stdClass
-     * @throws \Exception
+     * @throws Exception
      */
     private function montaGrupoEndereco()
     {
         $dadosEndereco = new stdClass();
         $cgmServidor   = $this->servidorAtual->getCgm();
-        $endereco      = new \endereco($cgmServidor->getEnderecoPrimario());
+        $endereco      = new endereco($cgmServidor->getEnderecoPrimario());
 
         if (empty($cgmServidor->getCodigoPaisExterior())) {
             $dadosEndereco->brasil              = new stdClass();
@@ -207,7 +213,7 @@ class AlteracaoDadosServidorFormatter extends ServidorFormatter
             $dadosEndereco->brasil->cep         = $cgmServidor->getCep();
             $codigoMunicipio                    = $endereco->getCodigoSistemaExterno();
             if (empty($codigoMunicipio)) {
-                $codigoMunicipio = \endereco::getCodigoExternoSistemaByCep($cgmServidor->getCep());
+                $codigoMunicipio = endereco::getCodigoExternoSistemaByCep($cgmServidor->getCep());
             }
             $dadosEndereco->brasil->codMunic = $codigoMunicipio ? (int)$codigoMunicipio : null;
             $dadosEndereco->brasil->uf       = $cgmServidor->getUf();

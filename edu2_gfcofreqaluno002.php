@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -81,7 +81,7 @@ if($clturma->numrows>0){
     </td>
    </tr>
   </table>
-  <?
+  <?php 
   exit;
  }else{
   $disc_turma = "";
@@ -90,10 +90,10 @@ if($clturma->numrows>0){
   $sep = "";
   for($x=0;$x<$linhas1;$x++){
    db_fieldsmemory($result1,$x);
-   if(!strstr($periodo_turma,$periodos)){
+   if(!strstr($periodo_turma,(string) $periodos)){
     $periodo_turma  .= $sep.$periodos;
    }
-   if(!strstr($disc_turma,$disciplina)){
+   if(!strstr($disc_turma,(string) $disciplina)){
     $disc_turma   .= $sep.$abrev."|".$disciplina;
    }
    $freq_turma  .= $sep.$percent;
@@ -136,7 +136,7 @@ if($clturma->numrows>0){
   $laranja = ImageColorAllocate($imagem, 255, 128, 0);
   $rosa = ImageColorAllocate($imagem, 255, 0, 255);
   $amarelo = ImageColorAllocate($imagem, 232, 232, 0);
-  $cores_colunas = array($azul,$verde,$amarelo,$vermelho,$rosa,$laranja);
+  $cores_colunas = [$azul,$verde,$amarelo,$vermelho,$rosa,$laranja];
 
   $texto_linha = explode(",",$periodo_turma);
   for($x=0;$x<sizeof($texto_linha);$x++){
@@ -155,7 +155,7 @@ if($clturma->numrows>0){
 
   // ------ calcula o intervalo de variação entre os pontos de y ----------
 
-  $fator = pow (10, strlen(intval($y_maximo))-1);
+  $fator = 10 ** (strlen(intval($y_maximo)) - 1);
 
   if($y_maximo<1)
       $variacao=0.1;
@@ -194,9 +194,9 @@ if($clturma->numrows>0){
 
   for($i=0 ; $i<=$num_pontos_eixo_y; $i++)
   {
-      $posx = $inicio_grafico_x - (strlen($valor)+2)*6; // 6 da largura da fonte + 2 espaços
+      $posx = $inicio_grafico_x - (strlen((string) $valor)+2)*6; // 6 da largura da fonte + 2 espaços
 
-      ImageString($imagem, 2, $posx, $posy-7, $valor, $preto);
+      ImageString($imagem, 2, $posx, $posy-7, (string) $valor, $preto);
       ImageLine($imagem, $inicio_grafico_x-6, $posy, $inicio_grafico_x+$largura_eixo_x, $posy, $cinza);
       $valor += $variacao;
       $posy -= $dist_entre_pontos;
@@ -300,7 +300,6 @@ if($clturma->numrows>0){
          }
         </script>
        ";
-  ImageDestroy($imagem);
  }
 }
 ?>

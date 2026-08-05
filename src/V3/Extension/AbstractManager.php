@@ -17,7 +17,7 @@ abstract class AbstractManager {
   /**
    * @param Container $container
    */
-  public function __construct(Container $container = null)  {
+  public function __construct(?Container $container = null)  {
   
     if ($container !== null) {
       return $this->container = $container;
@@ -25,9 +25,7 @@ abstract class AbstractManager {
 
     $this->container = new Container();
 
-    $this->container->register('logger', function() {
-      return new Logger();
-    }); 
+    $this->container->register('logger', fn() => new Logger()); 
   }
 
   public function setup() {}

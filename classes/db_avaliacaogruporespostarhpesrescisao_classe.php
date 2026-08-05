@@ -49,7 +49,7 @@ class cl_avaliacaogruporespostarhpesrescisao extends DAOBasica
      * @param null $otherInstructions
      * @return string
      */
-    public function sql_query_formulario($fields = array('*'), $where = array(), $groupBy)
+    public function sql_query_formulario($fields = ['*'], $where = [], $groupBy = null)
     {
 
         $fields = implode(', ', $fields);
@@ -116,7 +116,7 @@ SQL_PREENCHIMENTO_FORMULARIO;
         return $sql;
     }
 
-    public function avaliacaoPreenchida(array $campos = array('*'), array $where = array(), $outrosComandos = null)
+    public function avaliacaoPreenchida(array $campos = ['*'], array $where = [], $outrosComandos = null)
     {
         $sql = " select " . implode(', ', $campos);
         $sql .= "  from avaliacaogruporespostarhpesrescisao";

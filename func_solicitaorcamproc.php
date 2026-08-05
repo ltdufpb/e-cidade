@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("classes/db_solicita_classe.php"));
 include(modification("classes/db_pcorcamitemsol_classe.php"));
 include(modification("classes/db_pcorcamitemproc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsolicita = new cl_solicita;
 $clpcorcamitemsol = new cl_pcorcamitemsol;
 $clpcorcamitemproc= new cl_pcorcamitemproc;
@@ -58,7 +59,7 @@ $clsolicita->rotulo->label("pc10_data");
               <?=$Lpc10_numero?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc10_numero",10,$Ipc10_numero,true,"text",4,"","chave_pc10_numero");
 		       ?>
             </td>
@@ -68,7 +69,7 @@ $clsolicita->rotulo->label("pc10_data");
               <?=$Lpc10_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc10_data",10,$Ipc10_data,true,"text",4,"","chave_pc10_data");
 		       ?>
             </td>
@@ -86,7 +87,7 @@ $clsolicita->rotulo->label("pc10_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(isset($orc) && !isset($proc)){
 	$result_itemsol = $clpcorcamitemsol->sql_record($clpcorcamitemsol->sql_query_solicitem(null,null,"distinct pc11_numero as chave_pc10_numero",""," pc22_codorc=$orc"));
 	if($clpcorcamitemsol->numrows>0){
@@ -133,12 +134,12 @@ $clsolicita->rotulo->label("pc10_data");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

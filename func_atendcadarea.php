@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_atendcadarea_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clatendcadarea = new cl_atendcadarea;
 $clatendcadarea->rotulo->label("at26_sequencial");
 $clatendcadarea->rotulo->label("at25_descr");
@@ -54,7 +55,7 @@ $clatendcadarea->rotulo->label("at25_descr");
               <?=$Lat26_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at26_sequencial",10,$Iat26_sequencial,true,"text",4,"","chave_at26_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clatendcadarea->rotulo->label("at25_descr");
               <?=$Lat25_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at25_descr",30,$Iat25_descr,true,"text",4,"","chave_at25_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clatendcadarea->rotulo->label("at25_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_atendcadarea.php")==true){
@@ -122,12 +123,12 @@ $clatendcadarea->rotulo->label("at25_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

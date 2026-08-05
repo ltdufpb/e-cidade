@@ -45,9 +45,9 @@ class ProfissionalEscolaRepository extends Repository
      * @return ProfissionalEscola[]
      * @throws Exception
      */
-    public function getProfissionaisAtivos(Escola $escola, DBDate $dataLimiteCenso = null)
+    public function getProfissionaisAtivos(Escola $escola, ?DBDate $dataLimiteCenso = null)
     {
-        $where = array();
+        $where = [];
         if ($dataLimiteCenso) {
             $where[] = "(ed75_d_ingresso <= '{$dataLimiteCenso->getDate()}')";
             $where[] = "(ed75_i_saidaescola is null or ed75_i_saidaescola >= '{$dataLimiteCenso->getDate()}')";
@@ -61,10 +61,10 @@ class ProfissionalEscolaRepository extends Repository
         }
 
         if (pg_num_rows($rs) === 0) {
-            return array();
+            return [];
         }
 
-        $profissionais = array();
+        $profissionais = [];
         while ($state = pg_fetch_array($rs)) {
             $profissionais[] = ProfissionalEscola::fromState($state);
         }
@@ -100,7 +100,7 @@ class ProfissionalEscolaRepository extends Repository
      * Filtra os profissionais que não tem ausencia até a data informada
      * @param DBDate $date
      */
-    public function scopeDocentePresente(DBDate $date = null)
+    public function scopeDocentePresente(?DBDate $date = null)
     {
         if (is_null($date)) {
             $this->scopes['docente_presente'] = "

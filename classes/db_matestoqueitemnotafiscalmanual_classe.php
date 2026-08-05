@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ class cl_matestoqueitemnotafiscalmanual {
                  m79_data = date = Data da Nota 
                  ";
    //funcao construtor da classe 
-   function cl_matestoqueitemnotafiscalmanual() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matestoqueitemnotafiscalmanual"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

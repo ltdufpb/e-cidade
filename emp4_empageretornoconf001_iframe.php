@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -65,7 +65,7 @@ $clrotulo->label("e80_data");
     <script type="text/javascript" src="scripts/prototype.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
     <style>
-        <?$cor ="#999999 "?>.bordas {
+        <?php $cor ="#999999 "?>.bordas {
             border: 1px solid #cccccc;
             border-top-color: <?=$cor?>;
             border-right-color: <?=$cor?>;
@@ -112,7 +112,7 @@ $clrotulo->label("e80_data");
         <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
             <form name="form1" method="post" action="">
                 <table align="center" border='7' height="100%" width="100%">
-                    <?
+                    <?php 
                     $totalmovs = 0;
                     $valormovs = 0;
                     $valordebs = 0;

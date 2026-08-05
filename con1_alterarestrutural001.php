@@ -61,7 +61,7 @@ $clrotulo->label("c61_reduz");
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
 
-<?
+<?php 
   db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js, widgets/dbtextFieldData.widget.js");
   db_app::load("widgets/messageboard.widget.js, widgets/windowAux.widget.js, widgets/dbtextField.widget.js");
   db_app::load("estilos.css, grid.style.css");
@@ -86,7 +86,7 @@ $clrotulo->label("c61_reduz");
         <?=@$Lc60_estrut?>
       </td>
       <td>
-        <?PHP
+        <?php PHP
           db_input("c60_estrut",40, $Ic60_estrut,true,"text",4,"","chave_c60_estrut");
           db_input("c60_codcon",15,0,true,"hidden",3);
         ?> 

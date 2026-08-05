@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -34,7 +34,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_exemplar_classe.php"));
 include(modification("classes/db_biblioteca_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clexemplar   = new cl_exemplar;
 $clbiblioteca = new cl_biblioteca;
 $clrotulo     = new rotulocampo;
@@ -66,7 +67,7 @@ if($clbiblioteca->numrows!=0){
           <label for="chave_bi23_codigo"><?=$Lbi23_codigo?></label>
         </td>
         <td >
-         <?db_input("bi23_codigo",10,$Ibi23_codigo,true,"text",4,"","chave_bi23_codigo");?>
+         <?php db_input("bi23_codigo",10,$Ibi23_codigo,true,"text",4,"","chave_bi23_codigo");?>
         </td>
       </tr>
 
@@ -75,7 +76,7 @@ if($clbiblioteca->numrows!=0){
           <label for="chave_bi06_titulo"><?=$Lbi06_titulo?></label>
         </td>
         <td width="96%" align="left" nowrap>
-         <?db_input("bi06_titulo",50,$Ibi06_titulo,true,"text",4,"","chave_bi06_titulo");?>
+         <?php db_input("bi06_titulo",50,$Ibi06_titulo,true,"text",4,"","chave_bi06_titulo");?>
         </td>
       </tr>
 
@@ -84,7 +85,7 @@ if($clbiblioteca->numrows!=0){
           <label for="chave_bi06_subtitulo"><?=$Lbi06_subtitulo?></label>
         </td>
         <td >
-          <?db_input("bi06_subtitulo",50,$Ibi06_subtitulo,true,"text",4,"","chave_bi06_subtitulo");?>
+          <?php db_input("bi06_subtitulo",50,$Ibi06_subtitulo,true,"text",4,"","chave_bi06_subtitulo");?>
         </td>
       </tr>
 
@@ -93,7 +94,7 @@ if($clbiblioteca->numrows!=0){
           <label for="chave_bi06_titulooriginal"><?=$Lbi06_titulooriginal?></label>
         </td>
         <td >
-          <?db_input("bi06_titulooriginal",50,$Ibi06_titulooriginal,true,"text",4,"","chave_bi06_titulooriginal");?>
+          <?php db_input("bi06_titulooriginal",50,$Ibi06_titulooriginal,true,"text",4,"","chave_bi06_titulooriginal");?>
         </td>
       </tr>
     </table>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -36,7 +36,8 @@ require_once(modification("classes/db_solicitaregistropreco_classe.php"));
 
 $oGet  = db_utils::postMemory($_GET,0);
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsolicitaregistropreco = new cl_solicitaregistropreco;
 $clsolicitaregistropreco->rotulo->label("pc54_sequencial");
 $clsolicitaregistropreco->rotulo->label("pc54_sequencial");
@@ -58,7 +59,7 @@ $clsolicitaregistropreco->rotulo->label("pc54_sequencial");
               <?=$Lpc54_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("pc54_sequencial",10,$Ipc54_sequencial,true,"text",4,"","chave_pc54_sequencial");
 		       ?>
             </td>
@@ -68,7 +69,7 @@ $clsolicitaregistropreco->rotulo->label("pc54_sequencial");
              <b>Solicitação:</b>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("pc54_solicita",10,$Ipc54_sequencial,true,"text",4,"","chave_pc54_solicita");
 		       ?>
             </td>
@@ -86,7 +87,7 @@ $clsolicitaregistropreco->rotulo->label("pc54_sequencial");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       $sWhereInstituicao = "";
 
       if (!empty($oGet->lFiltraInstituicao) && $oGet->lFiltraInstituicao == true) {
@@ -228,12 +229,12 @@ $clsolicitaregistropreco->rotulo->label("pc54_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

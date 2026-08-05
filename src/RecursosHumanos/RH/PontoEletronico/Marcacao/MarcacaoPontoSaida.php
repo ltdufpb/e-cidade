@@ -27,6 +27,9 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao;
 
+use Override;
+use DateTime;
+use DateInterval;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacaoPonto;
 
 /**
@@ -39,10 +42,11 @@ class MarcacaoPontoSaida extends MarcacaoPonto
 {
 
     /**
-     * @var \DateTime $oMarcacaoEntrada
+     * @var DateTime $oMarcacaoEntrada
      */
     private $oMarcacaoEntrada;
 
+    #[Override]
     public function __clone()
     {
         parent::__clone();
@@ -52,7 +56,7 @@ class MarcacaoPontoSaida extends MarcacaoPonto
     /**
      * Define a hora da marcação
      *
-     * @param \DateTime $oMarcacaoEntrada
+     * @param DateTime $oMarcacaoEntrada
      */
     public function setMarcacaoEntrada($oMarcacaoEntrada)
     {
@@ -62,7 +66,7 @@ class MarcacaoPontoSaida extends MarcacaoPonto
     /**
      * Retorna a hora da marcação
      *
-     * @return \DateTime $oMarcacaoEntrada
+     * @return DateTime $oMarcacaoEntrada
      */
     public function getMarcacaoEntrada()
     {
@@ -72,7 +76,7 @@ class MarcacaoPontoSaida extends MarcacaoPonto
     /**
      * Retorna o horário trabalhado
      *
-     * @return \DateInterval
+     * @return DateInterval
      */
     public function getHorarioTrabalhado()
     {
@@ -94,6 +98,7 @@ class MarcacaoPontoSaida extends MarcacaoPonto
         return $retorno;
     }
 
+    #[Override]
     public function isMarcacaoSaida()
     {
         return true;

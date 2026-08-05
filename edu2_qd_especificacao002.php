@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -56,7 +56,7 @@ if ($mes == 1 || $mes == 3 || $mes == 5 || $mes == 7 || $mes == 8 || $mes == 10 
   $dialimite = 28;
 }
 
-$datalimite = $ano_calendario."-".(strlen($mes)==1?"0".$mes:$mes)."-".$dialimite;
+$datalimite = $ano_calendario."-".(strlen((string) $mes)==1?"0".$mes:$mes)."-".$dialimite;
 
 $result_parametros = $cledu_parametros->sql_record($cledu_parametros->sql_query("",
                                                                                 "ed233_c_limitemov,ed233_c_database",
@@ -67,7 +67,7 @@ $result_parametros = $cledu_parametros->sql_record($cledu_parametros->sql_query(
 if ($cledu_parametros->numrows > 0) {
 
   db_fieldsmemory($result_parametros,0);
-  if (!strstr($ed233_c_database,"/")) {
+  if (!strstr((string) $ed233_c_database,"/")) {
 
     ?>
     <table width='100%'>
@@ -76,22 +76,22 @@ if ($cledu_parametros->numrows > 0) {
        <font color='#FF0000' face='arial'>
         <b>Parâmetro Data Base para Cálculo da Idade (Procedimentos->Parâmetros)<br>
            deve estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2)<br><br>
-           Valor atual do parâmetro: <?=trim($ed233_c_database)==""?"Não informado":$ed233_c_database?><br><br></b>
+           Valor atual do parâmetro: <?=trim((string) $ed233_c_database)==""?"Não informado":$ed233_c_database?><br><br></b>
         <input type='button' value='Fechar' onclick='window.close()'>
        </font>
       </td>
      </tr>
     </table>
-    <?
+    <?php 
     exit;
 
   }
 
-  $database     = explode("/",$ed233_c_database);
+  $database     = explode("/",(string) $ed233_c_database);
   $dia_database = $database[0];
   $mes_database = $database[1];
 
-  $limitemov     = explode("/",$ed233_c_limitemov);
+  $limitemov     = explode("/",(string) $ed233_c_limitemov);
   $dia_limitemov = $limitemov[0];
   $mes_limitemov = $limitemov[1];
 
@@ -112,7 +112,7 @@ if ($cledu_parametros->numrows > 0) {
       </td>
      </tr>
     </table>
-    <?
+    <?php 
     exit;
 
   }
@@ -152,14 +152,14 @@ if ($linhas == 0) {?>
     </td>
    </tr>
   </table>
-  <?
+  <?php 
   exit;
 
 }
 
 if ($diretor != "") {
 
-  $arr_assinatura = explode("-",$diretor);
+  $arr_assinatura = explode("-",(string) $diretor);
   $z01_nome       = $arr_assinatura[1];
   $funcao         = $arr_assinatura[0].":";
 
@@ -191,7 +191,7 @@ $head2      = "Mês: ".db_mes($mes,1);
 $head3      = "Calendário: ".$descr_calendario;
 $head4      = "Data Base calculo da idade: ".db_formatar($databasecalc,'d');
 $head5      = "Nível de ensino:";
-$codensinos = explode(",",$nivelensino);
+$codensinos = explode(",",(string) $nivelensino);
 
 for ($x = 0; $x < count($codensinos); $x++) {
 
@@ -203,7 +203,7 @@ for ($x = 0; $x < count($codensinos); $x++) {
                                    );
   db_fieldsmemory($result10,0);
   $cabecalho  = "head".($x+6);
-  $$cabecalho = "-> ".$codigo_ensino." - ".$descrensino;
+  ${$cabecalho} = "-> ".$codigo_ensino." - ".$descrensino;
 
 }
 
@@ -250,7 +250,7 @@ $sql_trans   .= " GROUP BY ed47_v_sexo,idadealuno,seriealuno ";
 $sql_trans   .= " ORDER BY idadealuno,seriealuno";
 $result_trans = db_query($sql_trans);
 $linhas_trans = pg_num_rows($result_trans);
-$primeiro     = pg_result($result1,0,'ed10_i_codigo');
+$primeiro     = pg_fetch_result($result1,0,'ed10_i_codigo');
 $pdf->cell($largura_colunas*$linhas1+28,4,"TRANSFERÊNCIAS",1,1,"C",$cor);
 $pdf->cell(20,5,"",1,0,"C",$cor);
 $cont = 0;
@@ -261,7 +261,7 @@ for ($x = 0; $x < $linhas1; $x++) {
 
   if ($primeiro != $ed10_i_codigo) {
 
-    $pdf->cell($largura_colunas*($cont-1),5,pg_result($result1,$x-1,'ed10_i_codigo'),1,0,"C",$cor);
+    $pdf->cell($largura_colunas*($cont-1),5,pg_fetch_result($result1,$x-1,'ed10_i_codigo'),1,0,"C",$cor);
     $primeiro = $ed10_i_codigo;
     $cont     = 1;
 
@@ -482,7 +482,7 @@ $sql_trans   .= " GROUP BY ed47_v_sexo,idadealuno,seriealuno ";
 $sql_trans   .= " ORDER BY idadealuno,seriealuno ";
 $result_trans = db_query($sql_trans);
 $linhas_trans = pg_num_rows($result_trans);
-$primeiro     = pg_result($result1,0,'ed10_i_codigo');
+$primeiro     = pg_fetch_result($result1,0,'ed10_i_codigo');
 $pdf->cell($largura_colunas*$linhas1+28,4,"EVASÃO / CANCELAMENTO / MATRICULA TRANCADA / MATRICULA INDEFERIDA",1,1,"C",$cor);
 $pdf->cell(20,5,"",1,0,"C",$cor);
 $cont = 0;
@@ -493,7 +493,7 @@ for ($x = 0; $x < $linhas1; $x++) {
 
   if ($primeiro != $ed10_i_codigo) {
 
-    $pdf->cell($largura_colunas*($cont-1),5,pg_result($result1,$x-1,'ed10_i_codigo'),1,0,"C",$cor);
+    $pdf->cell($largura_colunas*($cont-1),5,pg_fetch_result($result1,$x-1,'ed10_i_codigo'),1,0,"C",$cor);
     $primeiro = $ed10_i_codigo;
     $cont = 1;
 
@@ -713,7 +713,7 @@ $sql_trans   .= " GROUP BY ed47_v_sexo,idadealuno,seriealuno ";
 $sql_trans   .= " ORDER BY idadealuno,seriealuno";
 $result_trans = db_query($sql_trans);
 $linhas_trans = pg_num_rows($result_trans);
-$primeiro     = pg_result($result1,0,'ed10_i_codigo');
+$primeiro     = pg_fetch_result($result1,0,'ed10_i_codigo');
 $pdf->cell($largura_colunas*$linhas1+28,4,"FALECIMENTO",1,1,"C",$cor);
 $pdf->cell(20,5,"",1,0,"C",$cor);
 $cont = 0;
@@ -724,7 +724,7 @@ for ($x = 0; $x < $linhas1; $x++) {
   $cont++;
   if ($primeiro != $ed10_i_codigo) {
 
-    $pdf->cell($largura_colunas*($cont-1),5,pg_result($result1,$x-1,'ed10_i_codigo'),1,0,"C",$cor);
+    $pdf->cell($largura_colunas*($cont-1),5,pg_fetch_result($result1,$x-1,'ed10_i_codigo'),1,0,"C",$cor);
     $primeiro = $ed10_i_codigo;
     $cont = 1;
 
@@ -995,7 +995,7 @@ if ($imprimelista == "yes") {
     $pdf->setfont('arial','',7);
     $pdf->cell(10,4,$contador,0,0,"C",0);
     $pdf->cell(10,4,$idadealuno,0,0,"C",0);
-    $pdf->cell(15,4,trim($ed47_d_nasc)==""?"Nao Informado":db_formatar($ed47_d_nasc,'d'),0,0,"C",0);
+    $pdf->cell(15,4,trim((string) $ed47_d_nasc)==""?"Nao Informado":db_formatar($ed47_d_nasc,'d'),0,0,"C",0);
     $pdf->cell(10,4,$ed47_i_codigo,0,0,"C",0);
     $pdf->cell(60,4,$ed47_v_nome,0,0,"L",0);
     $pdf->cell(30,4,$ed60_c_situacao,0,0,"L",0);
@@ -1075,7 +1075,7 @@ if ($imprimelista == "yes") {
     $pdf->setfont('arial','',7);
     $pdf->cell(10,4,$contador,0,0,"C",0);
     $pdf->cell(10,4,$idadealuno,0,0,"C",0);
-    $pdf->cell(15,4,trim($ed47_d_nasc)==""?"Nao Informado":db_formatar($ed47_d_nasc,'d'),0,0,"C",0);
+    $pdf->cell(15,4,trim((string) $ed47_d_nasc)==""?"Nao Informado":db_formatar($ed47_d_nasc,'d'),0,0,"C",0);
     $pdf->cell(10,4,$ed47_i_codigo,0,0,"C",0);
     $pdf->cell(60,4,$ed47_v_nome,0,0,"L",0);
     $pdf->cell(30,4,$ed60_c_situacao,0,0,"L",0);
@@ -1154,7 +1154,7 @@ if ($imprimelista == "yes") {
     $pdf->setfont('arial','',7);
     $pdf->cell(10,4,$contador,0,0,"C",0);
     $pdf->cell(10,4,$idadealuno,0,0,"C",0);
-    $pdf->cell(15,4,trim($ed47_d_nasc)==""?"Nao Informado":db_formatar($ed47_d_nasc,'d'),0,0,"C",0);
+    $pdf->cell(15,4,trim((string) $ed47_d_nasc)==""?"Nao Informado":db_formatar($ed47_d_nasc,'d'),0,0,"C",0);
     $pdf->cell(10,4,$ed47_i_codigo,0,0,"C",0);
     $pdf->cell(60,4,$ed47_v_nome,0,0,"L",0);
     $pdf->cell(30,4,$ed60_c_situacao,0,0,"L",0);

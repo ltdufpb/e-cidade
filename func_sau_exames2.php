@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_exames_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsau_exames = new cl_sau_exames;
 $clsau_exames->rotulo->label("s108_i_codigo");
 $clsau_exames->rotulo->label("s108_c_exame");
@@ -54,7 +55,7 @@ $clsau_exames->rotulo->label("s108_c_exame");
               <?=$Ls108_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("s108_i_codigo",10,$Is108_i_codigo,true,"text",4,"","chave_s108_i_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clsau_exames->rotulo->label("s108_c_exame");
               <?=$Ls108_c_exame?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("s108_c_exame",25,$Is108_c_exame,true,"text",4,"","chave_s108_c_exame");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clsau_exames->rotulo->label("s108_c_exame");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $where = " exists ( select *
       							from sau_prestadorhorarios
       							inner join sau_prestadorvinculos on s111_i_codigo = s112_i_prestadorvinc
@@ -128,12 +129,12 @@ $clsau_exames->rotulo->label("s108_c_exame");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

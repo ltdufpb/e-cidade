@@ -1,4 +1,4 @@
-<?
+<?php 
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -6,7 +6,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_tabelavalorestipo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_tabelavalorestipo = new cl_db_tabelavalorestipo;
 $cldb_tabelavalorestipo->rotulo->label("db151_sequencial");
 $cldb_tabelavalorestipo->rotulo->label("db151_descricao");
@@ -24,11 +25,11 @@ $cldb_tabelavalorestipo->rotulo->label("db151_descricao");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Ldb151_sequencial?></label></td>
-          <td><? db_input("db151_sequencial",10,$Idb151_sequencial,true,"text",4,"","chave_db151_sequencial"); ?></td>
+          <td><?php  db_input("db151_sequencial",10,$Idb151_sequencial,true,"text",4,"","chave_db151_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Ldb151_descricao?></label></td>
-          <td><? db_input("db151_descricao",10,$Idb151_descricao,true,"text",4,"","chave_db151_descricao");?></td>
+          <td><?php  db_input("db151_descricao",10,$Idb151_descricao,true,"text",4,"","chave_db151_descricao");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +37,7 @@ $cldb_tabelavalorestipo->rotulo->label("db151_descricao");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_db_tabelavalorestipo.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_tabelavalorestipo.php")==true){
@@ -78,12 +79,12 @@ $cldb_tabelavalorestipo->rotulo->label("db151_descricao");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

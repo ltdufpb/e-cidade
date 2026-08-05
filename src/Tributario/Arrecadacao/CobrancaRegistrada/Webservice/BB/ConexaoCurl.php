@@ -28,6 +28,7 @@
 
 namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\BB;
 
+use stdClass;
 use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\BB\Arquivo\RequisicaoInterface;
 use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\BB\Arquivo\RetornoBoleto;
 use ECidade\Lib\Request\Curl;
@@ -44,14 +45,14 @@ abstract class ConexaoCurl
     /**
      * Objeto com os dados de retorno da requisição
      *
-     * @var \stdClass
+     * @var stdClass
      */
     protected $oRetornoCurl;
 
     /**
      * Processamos a requisição conforme informações disponibilizadas
      *
-     * @return \stdClass
+     * @return stdClass
      */
     public function processarRequisicao()
     {
@@ -62,11 +63,11 @@ abstract class ConexaoCurl
             $oDomDocument = $this->oRequisicao->getRequestXml();
             $sXml         = $oDomDocument->saveXML();
 
-            $aHeader = array(
+            $aHeader = [
                 "Content-Type: text/xml; charset=utf-8",
                 "Authorization: Bearer {$oRegistro->sAccessToken}",
                 "SOAPAction: registrarBoleto"
-            );
+            ];
 
             $sXml = str_replace("\\n", "", $sXml);
             $sXml = str_replace("<?xml version=\"1.0\"?>", "", $sXml);
@@ -80,7 +81,7 @@ abstract class ConexaoCurl
             fwrite($fileOpen, json_encode($sXml));
             fclose($fileOpen);
 
-            $aOpcoes = array(
+            $aOpcoes = [
                 CURLOPT_URL            => $oRegistro->sLocation,
                 CURLOPT_HEADER         => true,
                 CURLOPT_POST           => true,
@@ -93,7 +94,7 @@ abstract class ConexaoCurl
                 CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_TIMEOUT        => 20,
                 CURLOPT_MAXREDIRS      => 3
-            );
+            ];
 
             $curl = new Curl();
             $curl->setOptions($aOpcoes);
@@ -111,24 +112,24 @@ abstract class ConexaoCurl
      */
     protected function getAccessToken($sAtenticacao, $sAuth)
     {
-        $aHeader = array(
+        $aHeader = [
             "Content-Type: application/x-www-form-urlencoded",
             "Authorization: Basic {$sAtenticacao}"
-        );
+        ];
 
-        $aPayload = array(
+        $aPayload = [
             "grant_type" => "client_credentials",
             "scope"      => "cobranca.registro-boletos"
-        );
+        ];
 
-        $aOpcoes = array(
+        $aOpcoes = [
             CURLOPT_URL            => $sAuth,
             CURLOPT_HEADER         => true,
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => http_build_query($aPayload),
             CURLOPT_HTTPHEADER     => $aHeader,
             CURLOPT_RETURNTRANSFER => true
-        );
+        ];
 
         $curl = new Curl();
         $curl->setOptions($aOpcoes);

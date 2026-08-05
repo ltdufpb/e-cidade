@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhpesrescisao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhpesrescisao = new cl_rhpesrescisao;
 $clrhpesrescisao->rotulo->label("rh05_seqpes");
 $clrhpesrescisao->rotulo->label("rh05_recis");
@@ -54,7 +55,7 @@ $clrhpesrescisao->rotulo->label("rh05_recis");
               <?=$Lrh05_seqpes?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh05_seqpes",6,$Irh05_seqpes,true,"text",4,"","chave_rh05_seqpes");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clrhpesrescisao->rotulo->label("rh05_recis");
               <?=$Lrh05_recis?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh05_recis",8,$Irh05_recis,true,"text",4,"","chave_rh05_recis");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clrhpesrescisao->rotulo->label("rh05_recis");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhpesrescisao.php")==true){
@@ -118,12 +119,12 @@ $clrhpesrescisao->rotulo->label("rh05_recis");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

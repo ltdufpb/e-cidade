@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -33,8 +33,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 
 $resultedu = eduparametros(db_getsession("DB_coddepto"));
 $escola    = db_getsession("DB_coddepto");
@@ -67,7 +67,7 @@ $oDaoSerieEquiv        = db_utils::getdao('serieequiv');
     </td>
   </tr>
 </table>
-<?
+<?php 
 
 if (!isset($incluir)) {
 
@@ -99,7 +99,7 @@ if (!isset($incluir)) {
               <br><br>
             </td>
           </tr>
-          <?
+          <?php 
             $sCampos    = " ed60_i_aluno, ed221_i_serie as etapaorigem ";
             $sWhere     = " ed60_i_codigo = $matricula ";
             $sSql       = $oDaoMatricula->sql_query("", $sCampos, "", $sWhere);
@@ -131,7 +131,7 @@ if (!isset($incluir)) {
             $sSqlOrigem      = $oDaoRegencia->sql_query("", $sCamposOrigem, $sOrderByOrigem, $sWhereOrigem);
             $rsOrigem        = $oDaoRegencia->sql_record($sSqlOrigem);
 
-            $procorigem      = pg_result($rsOrigem, 0, 'procorigem');
+            $procorigem      = pg_fetch_result($rsOrigem, 0, 'procorigem');
             $linhas          = $oDaoRegencia->numrows;
 
             $sCamposDestino  = " ed59_i_codigo as regdestino,ed232_i_codigo as coddestino,ed232_c_descr as descrdestino, ";
@@ -142,23 +142,23 @@ if (!isset($incluir)) {
             $sSqlDestino     = $oDaoRegencia->sql_query("", $sCamposDestino, $sOrderByDestino, $sWhereDestino);
             $rsDestino       = $oDaoRegencia->sql_record($sSqlDestino);
 
-            $procdestino     = pg_result($rsDestino, 0, 'procdestino');
+            $procdestino     = pg_fetch_result($rsDestino, 0, 'procdestino');
             $linhas1         = $oDaoRegencia->numrows;
           ?>
           <tr>
             <td colspan="2" width="48%" valign="top" bgcolor="#CCCCCC">
-              <b>TURMA DE ORIGEM: ( <?=pg_result($rsOrigem, 0, 'ed57_c_descr')?>&nbsp;&nbsp;&nbsp;
-                 <?=pg_result($rsOrigem, 0, 'ed11_c_descr')?> - Escola: <?=pg_result($rsOrigem, 0, 'ed57_i_escola')?> )
+              <b>TURMA DE ORIGEM: ( <?=pg_fetch_result($rsOrigem, 0, 'ed57_c_descr')?>&nbsp;&nbsp;&nbsp;
+                 <?=pg_fetch_result($rsOrigem, 0, 'ed11_c_descr')?> - Escola: <?=pg_fetch_result($rsOrigem, 0, 'ed57_i_escola')?> )
               </b>
             </td>
             <td></td>
             <td colspan="2" width="48%" valign="top" bgcolor="#CCCCCC">
-              <b>TURMA ATUAL: ( <?=pg_result($result1,0,'ed57_c_descrdest')?>&nbsp;&nbsp;&nbsp;
-                 <?=pg_result($rsDestino, 0, 'ed11_c_descrdest')?> - Escola: <?=pg_result($rsDestino, 0, 'ed57_i_escoladest')?> )
+              <b>TURMA ATUAL: ( <?=pg_fetch_result($result1,0,'ed57_c_descrdest')?>&nbsp;&nbsp;&nbsp;
+                 <?=pg_fetch_result($rsDestino, 0, 'ed11_c_descrdest')?> - Escola: <?=pg_fetch_result($rsDestino, 0, 'ed57_i_escoladest')?> )
               </b>
             </td>
           </tr>
-          <?
+          <?php 
             $regmarcadas = "";
             $veraprovnulo = "";
 
@@ -174,7 +174,7 @@ if (!isset($incluir)) {
             <td width="33%">
               <table border="1" cellspacing="0" cellpadding="0">
                 <tr>
-                <?
+                <?php 
                   $sCamposDiario  = " ed09_c_abrev,ed72_i_valornota,ed72_c_valorconceito,ed72_t_parecer,ed37_c_tipo ";
                   $sOrderByDiario = " ed41_i_sequencia ASC ";
                   $sWhereDiario   = " ed95_i_aluno = $ed60_i_aluno AND ed95_i_regencia = $ed59_i_codigo ";
@@ -189,7 +189,7 @@ if (!isset($incluir)) {
                     for ($iCont = 0; $iCont < $oDaoDiarioAvaliacao->numrows; $iCont++) {
 
                       db_fieldsmemory($rsDiario, $iCont);
-                      if (trim($ed37_c_tipo) == "NOTA") {
+                      if (trim((string) $ed37_c_tipo) == "NOTA") {
 
                         if ($resultedu == 'S') {
                           $aproveitamento = $ed72_i_valornota != "" ? number_format($ed72_i_valornota, 2, ",", ".") : "";
@@ -197,7 +197,7 @@ if (!isset($incluir)) {
                           $aproveitamento = $ed72_i_valornota != "" ? number_format($ed72_i_valornota, 0) : "";
                         }
 
-                      } elseif (trim($ed37_c_tipo) == "NIVEL") {
+                      } elseif (trim((string) $ed37_c_tipo) == "NIVEL") {
                         $aproveitamento = $ed72_c_valorconceito;
                       } else {
                         $aproveitamento = "";
@@ -214,7 +214,7 @@ if (!isset($incluir)) {
             </td>
             <td align="center">--></td>
             <td width="15%">
-            <?
+            <?php 
               $temreg = false;
 
               for ($iCont = 0; $iCont < $linhas1; $iCont++) {
@@ -237,7 +237,7 @@ if (!isset($incluir)) {
                      readonly style="width:75px">
               <input name="regdestinodescr" type="text" value="<?=$regdestinodescr?>" size="30"
                      readonly style="width:140px">
-            <?
+            <?php 
               } else {
                 $sql2 = "select ed59_i_codigo as regsobra,trim(ed232_c_descr) as descrsobra
                               from regencia
@@ -258,7 +258,7 @@ if (!isset($incluir)) {
                       style="visibility:hidden;position:absolute;padding:0px;width:75px;height:16px;font-size:12px;"
                       onchange="js_eliminareg(this.value,<?=$t?>)">
                 <option value=""></option>
-            <?
+            <?php 
               if ($linhas == 1) {
                 echo "<option value='0'>TODAS</option>";
               }
@@ -274,7 +274,7 @@ if (!isset($incluir)) {
               <select name="regdestinodescr" style="padding:0px;width:140px;height:16px;font-size:12px;"
                       onchange="js_eliminareg(this.value,<?=$t?>)">
                 <option value=""></option>
-                <?
+                <?php 
                   if ($linhas == 1) {
                     echo "<option value='0'>TODAS</option>";
                   }
@@ -289,14 +289,14 @@ if (!isset($incluir)) {
               </select>
               <input type="hidden" name="combo" value="<?=$t?>">
               <input type="hidden" name="comboselect<?=$t?>" value="">
-              <?
+              <?php 
                 }
               ?>
             </td>
             <td width="33%">
               <table border="1" cellspacing="0" cellpadding="0">
                 <tr>
-                <?
+                <?php 
                   $sCampos  = " ed09_c_abrev,ed72_i_valornota,ed72_c_valorconceito,ed72_t_parecer,ed37_c_tipo ";
                   $sOrderBy = " ed41_i_sequencia ASC ";
                   $sWhere   = " ed95_i_aluno = $ed60_i_aluno AND ed95_i_regencia = ".
@@ -312,7 +312,7 @@ if (!isset($incluir)) {
 
                       db_fieldsmemory($rsDiario, $iCont);
 
-                      if (trim($ed37_c_tipo) == "NOTA") {
+                      if (trim((string) $ed37_c_tipo) == "NOTA") {
 
                         if ($resultedu == 'S') {
                           $aproveitamento = $ed72_i_valornota != "" ? number_format($ed72_i_valornota,2,",",".") : "";
@@ -320,7 +320,7 @@ if (!isset($incluir)) {
                           $aproveitamento = $ed72_i_valornota != "" ? number_format($ed72_i_valornota, 0) : "";
                         }
 
-                      } elseif (trim($ed37_c_tipo) == "NIVEL") {
+                      } elseif (trim((string) $ed37_c_tipo) == "NIVEL") {
                         $aproveitamento = $ed72_c_valorconceito;
                       } else {
                         $aproveitamento = "";
@@ -337,7 +337,7 @@ if (!isset($incluir)) {
               </table>
             </td>
           </tr>
-          <?
+          <?php 
             }
           ?>
         </table>
@@ -352,7 +352,7 @@ if (!isset($incluir)) {
             </td>
             <td></td>
           </tr>
-          <?
+          <?php 
             $sCampos1  = " ed41_i_codigo,ed09_i_codigo,ed09_c_descr,ed37_c_tipo,ed37_i_menorvalor,ed37_i_maiorvalor ";
             $sOrderBy1 = " ed41_i_sequencia ";
             $sWhere1   = " ed41_i_procedimento = $procorigem ";
@@ -383,7 +383,7 @@ if (!isset($incluir)) {
             </td>
             <td align="center">--></td>
             <td>
-            <?
+            <?php 
               $temper = false;
 
               for ($w = 0;$w < $linhas1; $w++) {
@@ -407,7 +407,7 @@ if (!isset($incluir)) {
                      readonly style="width:75px">
               <input name="perdestinodescr" type="text" value="<?=$perdestinodescr?>" size="30"
                      readonly style="width:180px">
-            <?
+            <?php 
               } else {
                 $sql2 = "select ed41_i_codigo as persobra,ed09_c_descr as descrsobra,ed37_c_tipo as tipodest,
                                 ed37_i_menorvalor as menordest,ed37_i_maiorvalor as maiordest
@@ -436,7 +436,7 @@ if (!isset($incluir)) {
                       style="padding:0px;width:75px;height:16px;font-size:12px;"
                       onchange="js_eliminaper(this.value,<?=$t?>)">
                 <option value=""></option>
-            <?
+            <?php 
               for ($w = 0;$w < $linhas2; $w++) {
 
                 db_fieldsmemory($result2, $w);
@@ -449,7 +449,7 @@ if (!isset($incluir)) {
                       style="padding:0px;width:180px;height:16px;font-size:12px;"
                       onchange="js_eliminaper(this.value,<?=$t?>)">
                 <option value=""></option>
-            <?
+            <?php 
               for ($w = 0; $w < $linhas2; $w++) {
 
                 db_fieldsmemory($result2, $w);
@@ -461,13 +461,13 @@ if (!isset($incluir)) {
               </select>
               <input type="hidden" name="pcombo" value="<?=$t?>">
               <input type="hidden" name="pcomboselect<?=$t?>" value="">
-            <?
+            <?php 
               }
             ?>
             </td>
             <td></td>
           </tr>
-          <?
+          <?php 
             }
           ?>
           <tr>
@@ -488,7 +488,7 @@ if (!isset($incluir)) {
     <form>
   </body>
 </html>
-<?
+<?php 
 
 if ($veraprovnulo == "") {
  ?>
@@ -496,13 +496,13 @@ if ($veraprovnulo == "") {
     document.form1.incluir.disabled = true;
     alert("Aluno não contém nenhum aproveitamento na turma de origem.\nImportação não permitida.");
   </script>
- <?
+ <?php 
 } else {
  ?>
   <script>
     document.form1.cancelar.disabled = true;
   </script>
- <?
+ <?php 
 }
 ?>
 
@@ -889,7 +889,7 @@ function js_processar() {
 
 }
 </script>
-<?
+<?php 
 
 }
 
@@ -920,7 +920,7 @@ if (isset($incluir)) {
   $result  = $oDaoTurma->sql_record($sSql);
 
   db_fieldsmemory($result,0);
-  $periodos = explode("X",$perequiv);
+  $periodos = explode("X",(string) $perequiv);
   $msg_conversao = "";
   $sep_conversao = "";
 
@@ -943,8 +943,8 @@ if (isset($incluir)) {
     $result_per1 = $oDaoProcAvaliacao->sql_record($sSql);
     db_fieldsmemory($result_per1,0);
 
-    if (trim($tipoorigem) != trim($tipodestino)
-        || (trim($tipoorigem) == trim($tipodestino)
+    if (trim((string) $tipoorigem) != trim((string) $tipodestino)
+        || (trim((string) $tipoorigem) == trim((string) $tipodestino)
         && $mvorigem != $mvdestino) ) {
 
       $msg_conversao .= $sep_conversao." ".$perdestdescricao;
@@ -958,7 +958,7 @@ if (isset($incluir)) {
     $result_fimper = $oDaoPeriodoCalendario->sql_record($sSql);
     db_fieldsmemory($result_fimper,0);
 
-    $regencias = explode("X",$regequiv);
+    $regencias = explode("X",(string) $regequiv);
 
     for ($r = 0; $r < count($regencias); $r++) {
 
@@ -1064,8 +1064,8 @@ if (isset($incluir)) {
 
       }
 
-      if (trim($tipoorigem) != trim($tipodestino)
-          || (trim($tipoorigem) == trim($tipodestino)
+      if (trim((string) $tipoorigem) != trim((string) $tipodestino)
+          || (trim((string) $tipoorigem) == trim((string) $tipodestino)
           && $mvorigem != $mvdestino) ) {
         $ed72_c_convertido = "S";
       } else {
@@ -1189,7 +1189,7 @@ if (isset($incluir)) {
     document.getElementById("tab_aguarde").style.visibility = "hidden";
   </script>
 
-  <?
+  <?php 
 
   if ($msg_conversao != "") {
 
@@ -1207,7 +1207,7 @@ if (isset($incluir)) {
   <script>
     location.href = "edu1_alunocurso001.php?ed56_i_aluno=<?=$ed56_i_aluno?>&ed47_v_nome=<?=$ed47_v_nome?>&desabilita";
   </script>
-  <?
+  <?php 
 
 }
 

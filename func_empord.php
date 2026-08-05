@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empord_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clempord = new cl_empord;
 $clempord->rotulo->label("e82_codmov");
 $clempord->rotulo->label("e82_codord");
@@ -55,7 +56,7 @@ $clempord->rotulo->label("e82_codmov");
               <?=$Le82_codmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e82_codmov",6,$Ie82_codmov,true,"text",4,"","chave_e82_codmov");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clempord->rotulo->label("e82_codmov");
               <?=$Le82_codord?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e82_codord",6,$Ie82_codord,true,"text",4,"","chave_e82_codord");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clempord->rotulo->label("e82_codmov");
               <?=$Le82_codmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e82_codmov",6,$Ie82_codmov,true,"text",4,"","chave_e82_codmov");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clempord->rotulo->label("e82_codmov");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empord.php")==true){
@@ -129,12 +130,12 @@ $clempord->rotulo->label("e82_codmov");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

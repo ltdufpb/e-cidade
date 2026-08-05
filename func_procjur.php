@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procjur_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clprocjur = new cl_procjur;
 $clprocjur->rotulo->label("v62_sequencial");
 $clprocjur->rotulo->label("v62_procjurtipo");
@@ -50,11 +51,11 @@ $clprocjur->rotulo->label("v62_procjurtipo");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lv62_sequencial?></label></td>
-          <td><? db_input("v62_sequencial",10,$Iv62_sequencial,true,"text",4,"","chave_v62_sequencial"); ?></td>
+          <td><?php  db_input("v62_sequencial",10,$Iv62_sequencial,true,"text",4,"","chave_v62_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lv62_procjurtipo?></label></td>
-          <td><? db_input("v62_procjurtipo",10,$Iv62_procjurtipo,true,"text",4,"","chave_v62_procjurtipo");?></td>
+          <td><?php  db_input("v62_procjurtipo",10,$Iv62_procjurtipo,true,"text",4,"","chave_v62_procjurtipo");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,7 +63,7 @@ $clprocjur->rotulo->label("v62_procjurtipo");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_procjur.hide();">
   </form>
-      <?
+      <?php 
       $sWhereInstit = "v62_instit = ". db_getsession("DB_instit");
 
       if(!isset($pesquisa_chave)){
@@ -114,12 +115,12 @@ $clprocjur->rotulo->label("v62_procjurtipo");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

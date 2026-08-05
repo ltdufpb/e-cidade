@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clissarquivoretencao = new cl_issarquivoretencao;
 $clissarquivoretencao->rotulo->label("q90_sequencial");
 $clissarquivoretencao->rotulo->label("q90_numeroremessa");
@@ -62,7 +63,7 @@ $clissarquivoretencao->rotulo->label("q90_numeroremessa");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_issarquivoretencao.hide();">
   </form>
-      <?
+      <?php 
 
       if (!isset($lProcessados)) {
         $lProcessados = false;
@@ -117,12 +118,12 @@ $clissarquivoretencao->rotulo->label("q90_numeroremessa");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

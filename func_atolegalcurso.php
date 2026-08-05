@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_atolegal_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clatolegal = new cl_atolegal;
 $clatolegal->rotulo->label("ed05_i_codigo");
 $clatolegal->rotulo->label("ed05_c_numero");
@@ -56,7 +57,7 @@ $clatolegal->rotulo->label("ed05_c_numero");
       <?=$Led05_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed05_i_codigo",10,$Ied05_i_codigo,true,"text",4,"","chave_ed05_i_codigo");?>
+      <?php db_input("ed05_i_codigo",10,$Ied05_i_codigo,true,"text",4,"","chave_ed05_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -64,7 +65,7 @@ $clatolegal->rotulo->label("ed05_c_numero");
       <?=$Led05_c_numero?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed05_i_codigo",10,$Ied05_c_numero,true,"text",4,"","chave_ed05_c_numero");?>
+      <?php db_input("ed05_i_codigo",10,$Ied05_c_numero,true,"text",4,"","chave_ed05_c_numero");?>
      </td>
     </tr>
     <tr>
@@ -80,7 +81,7 @@ $clatolegal->rotulo->label("ed05_c_numero");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $escola = db_getsession("DB_coddepto");
    $restricao = " AND not exists (select * from cursoato where ed215_i_atolegal = ed05_i_codigo AND ed215_i_cursoescola = $codcursoescola)";
    if(!isset($pesquisa_chave)){

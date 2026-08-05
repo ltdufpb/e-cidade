@@ -39,7 +39,7 @@ class SingletonRegraDocumentoContabil {
    * Lista de Documento Contabil
    * @var DocumentoContabil[]
    */
-  static private $aDocumento = array();
+  static private $aDocumento = [];
 
   private function __construct() {
 

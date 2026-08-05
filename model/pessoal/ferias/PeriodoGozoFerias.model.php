@@ -171,7 +171,7 @@ class PeriodoGozoFerias
             if ($oDaoFeriasPeriodo->numrows == "0") {
                 throw new BusinessException(_M(
                     PeriodoGozoFerias::MENSAGENS . 'erro_buscar_periodo_aquisitivo',
-                    (object)array('sErroBanco' => $oDaoFeriasPeriodo->erro_banco)
+                    (object)['sErroBanco' => $oDaoFeriasPeriodo->erro_banco]
                 ));
             }
             $this->setCodigoPeriodo($iCodigoPeriodo);
@@ -318,7 +318,7 @@ class PeriodoGozoFerias
         if (!$rsRhFeriasPeriodo) {
             throw new BusinessException(_M(
                 PeriodoGozoFerias::MENSAGENS . 'erro_buscar_periodo_aquisitivo',
-                (object)array('sErroBanco' => $oDaoRhFeriasPeriodo->erro_banco)
+                (object)['sErroBanco' => $oDaoRhFeriasPeriodo->erro_banco]
             ));
         }
         if (pg_num_rows($rsRhFeriasPeriodo) == "0") {
@@ -507,7 +507,7 @@ class PeriodoGozoFerias
                 if ($existIqualEnjoymentForDiffPeriod) {
                     throw new BusinessException(_M(
                         PeriodoGozoFerias::MENSAGENS . 'periodo_gozo_igual_outro_periodo_aquisitivo',
-                        (object)array('sErroBanco' => "(" . $this->getPeriodoInicial() . " - " . $this->getPeriodoFinal() . ")")
+                        (object)['sErroBanco' => "(" . $this->getPeriodoInicial() . " - " . $this->getPeriodoFinal() . ")"]
                     ));
                 }
             }
@@ -521,7 +521,7 @@ class PeriodoGozoFerias
                 throw new DBException(
                     _M(
                         PeriodoGozoFerias::MENSAGENS . 'erro_incluir_periodo',
-                        (object)array('sErroBanco' => $oDaoFeriasPeriodo->erro_msg)
+                        (object)['sErroBanco' => $oDaoFeriasPeriodo->erro_msg]
                     )
                 );
             }
@@ -536,7 +536,7 @@ class PeriodoGozoFerias
                 throw new DBException(
                     _M(
                         PeriodoGozoFerias::MENSAGENS . 'erro_alterar_periodo',
-                        (object)array('sErroBanco' => $oDaoFeriasPeriodo->erro_msg)
+                        (object)['sErroBanco' => $oDaoFeriasPeriodo->erro_msg]
                     )
                 );
             }
@@ -665,7 +665,7 @@ class PeriodoGozoFerias
         if (!$rsRhFeriasPeriodo) {
             throw new DBException(_M(
                 PeriodoGozoFerias::MENSAGENS . 'erro_executar_query_validacao_periodo_aquisitivo',
-                (object)array('sErroBanco' => pg_last_error())
+                (object)['sErroBanco' => pg_last_error()]
             ));
         }
         if (pg_num_rows($rsRhFeriasPeriodo) == "0") {
@@ -710,7 +710,7 @@ class PeriodoGozoFerias
         if (!$rsRhFeriasPeriodo) {
             throw new DBException(_M(
                 PeriodoGozoFerias::MENSAGENS . 'erro_executar_query_validacao_periodo_aquisitivo',
-                (object)array('sErroBanco' => pg_last_error())
+                (object)['sErroBanco' => pg_last_error()]
             ));
         }
         return (pg_num_rows($rsRhFeriasPeriodo) != "0");
@@ -788,7 +788,7 @@ class PeriodoGozoFerias
         $oDaoFeriasPeriodo = new cl_rhferiasperiodo();
         $oDaoFeriasPeriodo->excluir($this->getCodigoPeriodo());
         if ($oDaoFeriasPeriodo->erro_status == "0") {
-            $oMensagemErro = (object)array('sErroBanco' => $oDaoFeriasPeriodo->erro_banco);
+            $oMensagemErro = (object)['sErroBanco' => $oDaoFeriasPeriodo->erro_banco];
             throw new DBException(_M(PeriodoGozoFerias::MENSAGENS . 'erro_excluir_periodo', $oMensagemErro));
         }
         return true;
@@ -822,11 +822,11 @@ class PeriodoGozoFerias
         /**
          * Coleção de Rubricas que deverão ser calculadas
          */
-        $aRubricasCalculo = array();
+        $aRubricasCalculo = [];
         /**
          * Coleção de Cálculos das Rubricas
          */
-        $aCalculoMediaRubricas = array();
+        $aCalculoMediaRubricas = [];
         /**
          * Datas Base para Cálculo da Média das Rubricas
          */
@@ -842,7 +842,7 @@ class PeriodoGozoFerias
                     $oCompetencia->getAno(),
                     $oCompetencia->getMes()
                 );
-            } catch (BusinessException $eErro) {
+            } catch (BusinessException) {
                 //caso não exitsta servidor na competencia.
                 continue;
             }
@@ -924,14 +924,14 @@ class PeriodoGozoFerias
      * @throws ParameterException
      */
     public function getPeriodosGozo(
-        Servidor $oServidor = null,
-        DBDate $oPeriodoInicial = null,
-        DBDate $oPeriodoFinal = null,
-        $aCondicoes = array(),
+        ?Servidor $oServidor = null,
+        ?DBDate $oPeriodoInicial = null,
+        ?DBDate $oPeriodoFinal = null,
+        $aCondicoes = [],
         $AnoFolha = null,
         $MesFolha = null
     ) {
-        $aWhere = array();
+        $aWhere = [];
         if ($oServidor) {
             $aWhere[] = "rh109_regist = {$oServidor->getMatricula()}";
         }
@@ -969,7 +969,7 @@ class PeriodoGozoFerias
         if (!$rsRhFeriasPeriodo) {
             new DBException('Ocorreu um erro ao buscar os períodos aquisitivos.');
         }
-        $aPeriodos = array();
+        $aPeriodos = [];
         for ($iPeriodo = 0; $iPeriodo < pg_num_rows($rsRhFeriasPeriodo); $iPeriodo++) {
             $oDadosPeriodoGozo = db_utils::fieldsMemory($rsRhFeriasPeriodo, $iPeriodo);
             $aPeriodos[] = new PeriodoGozoFerias($oDadosPeriodoGozo->rh110_sequencial);
@@ -1139,13 +1139,13 @@ class PeriodoGozoFerias
         }
         $aValorRubricaUmTerco = $oCalculoCompetenciaPagamento->getEventosFinanceiros(
             null,
-            array($oRubricaTercoFerias->getCodigo())
+            [$oRubricaTercoFerias->getCodigo()]
         );
         if (count($aValorRubricaUmTerco) == 0) {
             $oCalculoCompetenciaPagamento = $oServidorCompetenciaPagamento->getCalculoFinanceiro(CalculoFolha::CALCULO_COMPLEMENTAR);
             $aValorRubricaUmTerco = $oCalculoCompetenciaPagamento->getEventosFinanceiros(
                 null,
-                array($oRubricaTercoFerias->getCodigo())
+                [$oRubricaTercoFerias->getCodigo()]
             );
             if (count($aValorRubricaUmTerco) == 0) {
                 return;
@@ -1216,7 +1216,7 @@ class PeriodoGozoFerias
         if ($daoGerffer->erro_status == '0') {
             throw new DBException('Erro ao excluir o ponto de férias do servidor.');
         }
-        $whereCadFeria = array();
+        $whereCadFeria = [];
         $whereCadFeria[] = "r30_anousu = {$this->iAnoPagamento}";
         $whereCadFeria[] = "r30_mesusu = {$this->iMesPagamento}";
         $whereCadFeria[] = "r30_regist = {$oServidor->getMatricula()}";
@@ -1287,11 +1287,9 @@ class PeriodoGozoFerias
             throw new DBException('Erro ao buscar o assentamento de autorização de férias.');
         }
         if (pg_num_rows($rsRhFeriasPeriodoAssentamento) > 0) {
-            return db_utils::makeCollectionFromRecord($rsRhFeriasPeriodoAssentamento, function ($retorno) {
-                return AssentamentoRepository::getInstanceByCodigo($retorno->rh169_assenta);
-            });
+            return db_utils::makeCollectionFromRecord($rsRhFeriasPeriodoAssentamento, fn($retorno) => AssentamentoRepository::getInstanceByCodigo($retorno->rh169_assenta));
         }
-        return array();
+        return [];
     }
     /**
      * @param bool $validaDireitoAbono
@@ -1307,7 +1305,7 @@ class PeriodoGozoFerias
     private function processarPecunia()
     {
         $oPeriodoAquisitivo = $this->getPeriodoAquisitivo();
-        $oCompetenciaPagamento = new \DBCompetencia($this->getAnoPagamento(), $this->getMesPagamento());
+        $oCompetenciaPagamento = new DBCompetencia($this->getAnoPagamento(), $this->getMesPagamento());
         if (empty($oCompetenciaPagamento)) {
             throw new BusinessException("Terço de férias não processadas");
         }

@@ -30,7 +30,6 @@ namespace ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial;
 use cl_rhpessoalprocessomudanca;
 use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\Mudanca as MudancaProcessual;
 use Exception;
-use DBDate;
 
 class MudancaRepository
 {
@@ -111,7 +110,7 @@ class MudancaRepository
      * @param MudancaProcessual|null $mudanca
      * @throws Exception
      */
-    public function delete(MudancaProcessual $mudanca = null)
+    public function delete(?MudancaProcessual $mudanca = null)
     {
         $id = $mudanca instanceof MudancaProcessual ? $mudanca->getSequencial() : null;
 
@@ -129,7 +128,7 @@ class MudancaRepository
      * @return bool|MudancaProcessual
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhpessoalprocessomudanca;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

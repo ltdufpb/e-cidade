@@ -36,12 +36,6 @@ class Formulario
 {
 
   /**
-   *    * Codigo do Formulário
-   * @var integer
-   */
-    protected $codigo;
-
-  /**
    * NOme do formulario
    * @var string
    */
@@ -74,15 +68,19 @@ class Formulario
   /**
    * @var \ECidade\Configuracao\Formulario\Model\Pergunta[]
    */
-    protected $perguntas = array();
+    protected $perguntas = [];
 
   /**
    * Formulario constructor.
    * @param int $codigo
    */
-    public function __construct($codigo = null)
+    public function __construct(
+        /**
+         *    * Codigo do Formulário
+         */
+        protected $codigo = null
+    )
     {
-        $this->codigo = $codigo;
     }
 
   /**
@@ -218,7 +216,7 @@ class Formulario
     {
     
         $perguntas = $this->getPerguntas();
-        $perguntasIdentificadoras = array();
+        $perguntasIdentificadoras = [];
         foreach ($perguntas as $pergunta) {
             if ($pergunta->isPerguntaIdentificadora()) {
                 $perguntasIdentificadoras[] = $pergunta;

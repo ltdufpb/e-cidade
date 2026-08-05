@@ -84,7 +84,7 @@ if(isset($excluir)){
   </div>
 </body>
 </html>
-<?
+<?php 
 if(isset($excluir)){
   if($clpropricemit->erro_status=="0"){
     $clpropricemit->erro(true,false);

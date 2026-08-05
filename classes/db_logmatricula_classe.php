@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE logmatricula
 class cl_logmatricula {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $ed248_i_codigo = 0;
-   var $ed248_i_usuario = 0;
-   var $ed248_i_motivo = 0;
-   var $ed248_i_aluno = 0;
-   var $ed248_t_origem = null;
-   var $ed248_t_obs = null;
-   var $ed248_d_data_dia = null;
-   var $ed248_d_data_mes = null;
-   var $ed248_d_data_ano = null;
-   var $ed248_d_data = null;
-   var $ed248_c_hora = null;
-   var $ed248_c_tipo = null;
+   public $ed248_i_codigo = 0;
+   public $ed248_i_usuario = 0;
+   public $ed248_i_motivo = 0;
+   public $ed248_i_aluno = 0;
+   public $ed248_t_origem = null;
+   public $ed248_t_obs = null;
+   public $ed248_d_data_dia = null;
+   public $ed248_d_data_mes = null;
+   public $ed248_d_data_ano = null;
+   public $ed248_d_data = null;
+   public $ed248_c_hora = null;
+   public $ed248_c_tipo = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  ed248_i_codigo = int8 = Código 
                  ed248_i_usuario = int8 = Usuário 
                  ed248_i_motivo = int8 = Motivo da Exclusão 
@@ -67,10 +67,10 @@ class cl_logmatricula {
                  ed248_c_tipo = char(1) = Tipo de Movimento 
                  ";
    //funcao construtor da classe
-   function cl_logmatricula() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("logmatricula");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -174,10 +174,10 @@ class cl_logmatricula {
          $this->erro_status = "0";
          return false;
        }
-       $this->ed248_i_codigo = pg_result($result,0,0);
+       $this->ed248_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from logmatricula_ed248_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed248_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed248_i_codigo)){
          $this->erro_sql = " Campo ed248_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -221,7 +221,7 @@ class cl_logmatricula {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Log de Exclusão de Matrículas ($this->ed248_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Log de Exclusão de Matrículas já Cadastrado";
@@ -245,18 +245,18 @@ class cl_logmatricula {
      $resaco = $this->sql_record($this->sql_query_file($this->ed248_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12005,'$this->ed248_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2077,12005,'','".AddSlashes(pg_result($resaco,0,'ed248_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2077,12008,'','".AddSlashes(pg_result($resaco,0,'ed248_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2077,12009,'','".AddSlashes(pg_result($resaco,0,'ed248_i_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2077,12011,'','".AddSlashes(pg_result($resaco,0,'ed248_i_aluno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2077,12010,'','".AddSlashes(pg_result($resaco,0,'ed248_t_origem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2077,12012,'','".AddSlashes(pg_result($resaco,0,'ed248_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2077,12013,'','".AddSlashes(pg_result($resaco,0,'ed248_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2077,12014,'','".AddSlashes(pg_result($resaco,0,'ed248_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2077,12353,'','".AddSlashes(pg_result($resaco,0,'ed248_c_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2077,12005,'','".AddSlashes(pg_fetch_result($resaco,0,'ed248_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2077,12008,'','".AddSlashes(pg_fetch_result($resaco,0,'ed248_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2077,12009,'','".AddSlashes(pg_fetch_result($resaco,0,'ed248_i_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2077,12011,'','".AddSlashes(pg_fetch_result($resaco,0,'ed248_i_aluno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2077,12010,'','".AddSlashes(pg_fetch_result($resaco,0,'ed248_t_origem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2077,12012,'','".AddSlashes(pg_fetch_result($resaco,0,'ed248_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2077,12013,'','".AddSlashes(pg_fetch_result($resaco,0,'ed248_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2077,12014,'','".AddSlashes(pg_fetch_result($resaco,0,'ed248_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2077,12353,'','".AddSlashes(pg_fetch_result($resaco,0,'ed248_c_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -265,10 +265,10 @@ class cl_logmatricula {
       $this->atualizacampos();
      $sql = " update logmatricula set ";
      $virgula = "";
-     if(trim($this->ed248_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed248_i_codigo"])){
+     if(trim((string) $this->ed248_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed248_i_codigo"])){
        $sql  .= $virgula." ed248_i_codigo = $this->ed248_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed248_i_codigo) == null ){
+       if(trim((string) $this->ed248_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed248_i_codigo";
          $this->erro_banco = "";
@@ -278,10 +278,10 @@ class cl_logmatricula {
          return false;
        }
      }
-     if(trim($this->ed248_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed248_i_usuario"])){
+     if(trim((string) $this->ed248_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed248_i_usuario"])){
        $sql  .= $virgula." ed248_i_usuario = $this->ed248_i_usuario ";
        $virgula = ",";
-       if(trim($this->ed248_i_usuario) == null ){
+       if(trim((string) $this->ed248_i_usuario) == null ){
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "ed248_i_usuario";
          $this->erro_banco = "";
@@ -291,17 +291,17 @@ class cl_logmatricula {
          return false;
        }
      }
-     if(trim($this->ed248_i_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed248_i_motivo"])){
-        if(trim($this->ed248_i_motivo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed248_i_motivo"])){
+     if(trim((string) $this->ed248_i_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed248_i_motivo"])){
+        if(trim((string) $this->ed248_i_motivo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed248_i_motivo"])){
            $this->ed248_i_motivo = "0" ;
         }
        $sql  .= $virgula." ed248_i_motivo = $this->ed248_i_motivo ";
        $virgula = ",";
      }
-     if(trim($this->ed248_i_aluno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed248_i_aluno"])){
+     if(trim((string) $this->ed248_i_aluno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed248_i_aluno"])){
        $sql  .= $virgula." ed248_i_aluno = $this->ed248_i_aluno ";
        $virgula = ",";
-       if(trim($this->ed248_i_aluno) == null ){
+       if(trim((string) $this->ed248_i_aluno) == null ){
          $this->erro_sql = " Campo Aluno nao Informado.";
          $this->erro_campo = "ed248_i_aluno";
          $this->erro_banco = "";
@@ -311,10 +311,10 @@ class cl_logmatricula {
          return false;
        }
      }
-     if(trim($this->ed248_t_origem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed248_t_origem"])){
+     if(trim((string) $this->ed248_t_origem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed248_t_origem"])){
        $sql  .= $virgula." ed248_t_origem = '$this->ed248_t_origem' ";
        $virgula = ",";
-       if(trim($this->ed248_t_origem) == null ){
+       if(trim((string) $this->ed248_t_origem) == null ){
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "ed248_t_origem";
          $this->erro_banco = "";
@@ -324,14 +324,14 @@ class cl_logmatricula {
          return false;
        }
      }
-     if(trim($this->ed248_t_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed248_t_obs"])){
+     if(trim((string) $this->ed248_t_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed248_t_obs"])){
        $sql  .= $virgula." ed248_t_obs = '$this->ed248_t_obs' ";
        $virgula = ",";
      }
-     if(trim($this->ed248_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed248_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ed248_d_data_dia"] !="") ){
+     if(trim((string) $this->ed248_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed248_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ed248_d_data_dia"] !="") ){
        $sql  .= $virgula." ed248_d_data = '$this->ed248_d_data' ";
        $virgula = ",";
-       if(trim($this->ed248_d_data) == null ){
+       if(trim((string) $this->ed248_d_data) == null ){
          $this->erro_sql = " Campo Data da Exclusão nao Informado.";
          $this->erro_campo = "ed248_d_data_dia";
          $this->erro_banco = "";
@@ -344,7 +344,7 @@ class cl_logmatricula {
        if(isset($GLOBALS["HTTP_POST_VARS"]["ed248_d_data_dia"])){
          $sql  .= $virgula." ed248_d_data = null ";
          $virgula = ",";
-         if(trim($this->ed248_d_data) == null ){
+         if(trim((string) $this->ed248_d_data) == null ){
            $this->erro_sql = " Campo Data da Exclusão nao Informado.";
            $this->erro_campo = "ed248_d_data_dia";
            $this->erro_banco = "";
@@ -355,10 +355,10 @@ class cl_logmatricula {
          }
        }
      }
-     if(trim($this->ed248_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed248_c_hora"])){
+     if(trim((string) $this->ed248_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed248_c_hora"])){
        $sql  .= $virgula." ed248_c_hora = '$this->ed248_c_hora' ";
        $virgula = ",";
-       if(trim($this->ed248_c_hora) == null ){
+       if(trim((string) $this->ed248_c_hora) == null ){
          $this->erro_sql = " Campo Hora da Exclusão nao Informado.";
          $this->erro_campo = "ed248_c_hora";
          $this->erro_banco = "";
@@ -368,10 +368,10 @@ class cl_logmatricula {
          return false;
        }
      }
-     if(trim($this->ed248_c_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed248_c_tipo"])){
+     if(trim((string) $this->ed248_c_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed248_c_tipo"])){
        $sql  .= $virgula." ed248_c_tipo = '$this->ed248_c_tipo' ";
        $virgula = ",";
-       if(trim($this->ed248_c_tipo) == null ){
+       if(trim((string) $this->ed248_c_tipo) == null ){
          $this->erro_sql = " Campo Tipo de Movimento nao Informado.";
          $this->erro_campo = "ed248_c_tipo";
          $this->erro_banco = "";
@@ -389,27 +389,27 @@ class cl_logmatricula {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12005,'$this->ed248_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed248_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,2077,12005,'".AddSlashes(pg_result($resaco,$conresaco,'ed248_i_codigo'))."','$this->ed248_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2077,12005,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed248_i_codigo'))."','$this->ed248_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed248_i_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,2077,12008,'".AddSlashes(pg_result($resaco,$conresaco,'ed248_i_usuario'))."','$this->ed248_i_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2077,12008,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed248_i_usuario'))."','$this->ed248_i_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed248_i_motivo"]))
-           $resac = db_query("insert into db_acount values($acount,2077,12009,'".AddSlashes(pg_result($resaco,$conresaco,'ed248_i_motivo'))."','$this->ed248_i_motivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2077,12009,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed248_i_motivo'))."','$this->ed248_i_motivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed248_i_aluno"]))
-           $resac = db_query("insert into db_acount values($acount,2077,12011,'".AddSlashes(pg_result($resaco,$conresaco,'ed248_i_aluno'))."','$this->ed248_i_aluno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2077,12011,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed248_i_aluno'))."','$this->ed248_i_aluno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed248_t_origem"]))
-           $resac = db_query("insert into db_acount values($acount,2077,12010,'".AddSlashes(pg_result($resaco,$conresaco,'ed248_t_origem'))."','$this->ed248_t_origem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2077,12010,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed248_t_origem'))."','$this->ed248_t_origem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed248_t_obs"]))
-           $resac = db_query("insert into db_acount values($acount,2077,12012,'".AddSlashes(pg_result($resaco,$conresaco,'ed248_t_obs'))."','$this->ed248_t_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2077,12012,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed248_t_obs'))."','$this->ed248_t_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed248_d_data"]))
-           $resac = db_query("insert into db_acount values($acount,2077,12013,'".AddSlashes(pg_result($resaco,$conresaco,'ed248_d_data'))."','$this->ed248_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2077,12013,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed248_d_data'))."','$this->ed248_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed248_c_hora"]))
-           $resac = db_query("insert into db_acount values($acount,2077,12014,'".AddSlashes(pg_result($resaco,$conresaco,'ed248_c_hora'))."','$this->ed248_c_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2077,12014,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed248_c_hora'))."','$this->ed248_c_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed248_c_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,2077,12353,'".AddSlashes(pg_result($resaco,$conresaco,'ed248_c_tipo'))."','$this->ed248_c_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2077,12353,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed248_c_tipo'))."','$this->ed248_c_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -454,18 +454,18 @@ class cl_logmatricula {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12005,'$ed248_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2077,12005,'','".AddSlashes(pg_result($resaco,$iresaco,'ed248_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2077,12008,'','".AddSlashes(pg_result($resaco,$iresaco,'ed248_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2077,12009,'','".AddSlashes(pg_result($resaco,$iresaco,'ed248_i_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2077,12011,'','".AddSlashes(pg_result($resaco,$iresaco,'ed248_i_aluno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2077,12010,'','".AddSlashes(pg_result($resaco,$iresaco,'ed248_t_origem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2077,12012,'','".AddSlashes(pg_result($resaco,$iresaco,'ed248_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2077,12013,'','".AddSlashes(pg_result($resaco,$iresaco,'ed248_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2077,12014,'','".AddSlashes(pg_result($resaco,$iresaco,'ed248_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2077,12353,'','".AddSlashes(pg_result($resaco,$iresaco,'ed248_c_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2077,12005,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed248_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2077,12008,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed248_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2077,12009,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed248_i_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2077,12011,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed248_i_aluno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2077,12010,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed248_t_origem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2077,12012,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed248_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2077,12013,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed248_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2077,12014,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed248_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2077,12353,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed248_c_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from logmatricula
@@ -525,7 +525,7 @@ class cl_logmatricula {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:logmatricula";
@@ -565,7 +565,7 @@ class cl_logmatricula {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -599,7 +599,7 @@ class cl_logmatricula {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

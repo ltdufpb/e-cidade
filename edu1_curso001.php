@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,7 @@ require_once(modification("classes/db_cursoedu_classe.php"));
 require_once(modification("classes/db_cursoescola_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcurso       = new cl_curso;
 $clcursoescola = new cl_cursoescola;
 $db_opcao      = 1;
@@ -64,7 +64,7 @@ if (isset($incluir)) {
       <br>
       <center>
       <fieldset style="width:90%"><legend><b>Inclusão de Curso</b></legend>
-        <?include(modification("forms/db_frmcursos.php"));?>
+        <?php include(modification("forms/db_frmcursos.php"));?>
       </fieldset>
      </center>
     </td>
@@ -72,7 +72,7 @@ if (isset($incluir)) {
   </table> 
  </body>
 </html>
-<?
+<?php 
 if (isset($incluir)) {
 	
   if ($clcurso->erro_status == "0") {
@@ -95,7 +95,7 @@ if (isset($incluir)) {
     <script>
      parent.iframe_a1.location.href='edu1_curso002.php?chavepesquisa=<?=$clcurso->ed29_i_codigo?>';
     </script>
-  <?
+  <?php 
   }
   
 }

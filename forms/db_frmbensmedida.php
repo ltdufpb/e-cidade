@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,10 +38,10 @@ $clbensmedida->rotulo->label();
 	<table border="0">
 	  <tr>
 	    <td nowrap title="<?=@$Tt67_sequencial?>">
-	       <?//=@$Lt67_sequencial?>
+	       <?php //=@$Lt67_sequencial?>
 	    </td>
 	    <td> 
-				<?
+				<?php 
 				db_input('t67_sequencial',10,$It67_sequencial,true,'hidden',$db_opcao,"")
 				?>
 	    </td>
@@ -51,7 +51,7 @@ $clbensmedida->rotulo->label();
 	       <?=@$Lt67_descricao?>
 	    </td>
 	    <td> 
-				<?
+				<?php 
 				db_input('t67_descricao',50,$It67_descricao,true,'text',$db_opcao,"")
 				?>
 	    </td>
@@ -71,7 +71,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_bensmedida.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

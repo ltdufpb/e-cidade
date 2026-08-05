@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -173,7 +173,7 @@ if (isset($excluir)) {
                                                                    )
                                        );
 
-    if (pg_result($result11,0,0) == "S") {
+    if (pg_fetch_result($result11,0,0) == "S") {
 
       $clregencia->erro_status = "0";
       $sMensagemErro = "Exclusão não permitida! Disciplina já foi encerrada para todos alunos nesta turma.";
@@ -341,7 +341,7 @@ if (isset($excluir)) {
       $iTotalLinhasDiario = $oDaoDiarioClasseRegenciaHorario->numrows;
       if ($iTotalLinhasDiario > 0) {
 
-        $aDiarioClasseExcluidos = array();
+        $aDiarioClasseExcluidos = [];
         for ($iDiario = 0; $iDiario < $iTotalLinhasDiario; $iDiario++) {
 
           $oDadosDiarioClasse       = db_utils::fieldsMemory($rsDiarioClasse, $iDiario);
@@ -423,7 +423,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Disciplinas da Turma <?=@$oGet->ed57_c_descr?> - Etapa <?=$oGet->ed11_c_descr?></b></legend>
-    <?include(modification("forms/db_frmregencia.php"));?>
+    <?php include(modification("forms/db_frmregencia.php"));?>
    </fieldset>
    </center>
   </td>
@@ -435,7 +435,7 @@ if (isset($excluir)) {
 js_tabulacaoforms("form1","ed59_i_disciplina",true,1,"ed59_i_disciplina",true);
 </script>
  <iframe name="iframe_nobase" src="" frameborder="0" width="200" height="200" style=""></iframe>
-<?
+<?php 
 
 if (isset($atualizar)) {
 
@@ -570,7 +570,7 @@ if (isset($atualizar)) {
 
     	db_msgbox($sMsgErro);
     	db_redireciona("edu1_regencia001.php?ed59_i_turma=$oGet->ed59_i_turma"
-    			                              ."&ed57_c_descr=".addslashes($oGet->ed57_c_descr)
+    			                              ."&ed57_c_descr=".addslashes((string) $oGet->ed57_c_descr)
     			                              ."&ed59_i_serie=$oGet->ed59_i_serie"
     			                              ."&ed11_c_descr=$oGet->ed11_c_descr"
     			                              ."&tipoturma=$oGet->tipoturma");
@@ -611,7 +611,7 @@ if (isset($atualizar)) {
       msg += "Deseja excluir esta(s) disciplina(s) e alterar a grade de horário / vínculo da turma?";
        if (confirm(msg)) {
 
-         <?
+         <?php 
            $lConfirmaExclusao = true;
          ?>
          iframe_nobase.location.href="edu1_regencia002.php?ed59_i_turma=<?=$oGet->ed59_i_turma?>"+
@@ -629,7 +629,7 @@ if (isset($atualizar)) {
                                                                         +'&ed11_c_descr='+sEtapa;
        }
       </script>
-     <?
+     <?php 
 
       if ($lConfirmaExclusao) {
 
@@ -657,7 +657,7 @@ if (isset($atualizar)) {
 
       db_msgbox("Disciplinas atualizadas com sucesso!");
       db_redireciona("edu1_regencia001.php?ed59_i_turma=$oGet->ed59_i_turma"
-                                        ."&ed57_c_descr=".addslashes($oGet->ed57_c_descr)
+                                        ."&ed57_c_descr=".addslashes((string) $oGet->ed57_c_descr)
                                         ."&ed59_i_serie=$oGet->ed59_i_serie"
                                         ."&ed11_c_descr=$oGet->ed11_c_descr"
       		                              ."&tipoturma=$oGet->tipoturma");
@@ -666,7 +666,7 @@ if (isset($atualizar)) {
 
     db_msgbox("Nenhuma disciplina cadastrada na base curricular!");
     db_redireciona("edu1_regencia001.php?ed59_i_turma=$oGet->ed59_i_turma"
-    		                              ."&ed57_c_descr=".addslashes($oGet->ed57_c_descr)
+    		                              ."&ed57_c_descr=".addslashes((string) $oGet->ed57_c_descr)
     		                              ."&ed59_i_serie=$oGet->ed59_i_serie"
     		                              ."&ed11_c_descr=$oGet->ed11_c_descr"
     		                              ."&tipoturma=$oGet->tipoturma");
@@ -724,7 +724,7 @@ if (isset($excluir)) {
                                        "&ed59_i_serie=<?=$oGet->ed59_i_serie?>&ed57_c_descr=<?=$oGet->ed57_c_descr?>"+
                                        "&ed57_i_turno=<?=$ed57_i_turno?>&ed11_c_descr=<?=$oGet->ed11_c_descr?>";
    </script>
-   <?
+   <?php 
    $clregencia->erro(true,true);
   }
 }

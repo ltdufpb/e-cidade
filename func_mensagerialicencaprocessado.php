@@ -1,4 +1,4 @@
-<?
+<?php 
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -6,7 +6,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mensagerialicencaprocessado_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmensagerialicencaprocessado = new cl_mensagerialicencaprocessado;
 $clmensagerialicencaprocessado->rotulo->label("am15_sequencial");
 $clmensagerialicencaprocessado->rotulo->label("am15_licencaempreendimento");
@@ -24,11 +25,11 @@ $clmensagerialicencaprocessado->rotulo->label("am15_licencaempreendimento");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lam15_sequencial?></label></td>
-          <td><? db_input("am15_sequencial",10,$Iam15_sequencial,true,"text",4,"","chave_am15_sequencial"); ?></td>
+          <td><?php  db_input("am15_sequencial",10,$Iam15_sequencial,true,"text",4,"","chave_am15_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lam15_licencaempreendimento?></label></td>
-          <td><? db_input("am15_licencaempreendimento",10,$Iam15_licencaempreendimento,true,"text",4,"","chave_am15_licencaempreendimento");?></td>
+          <td><?php  db_input("am15_licencaempreendimento",10,$Iam15_licencaempreendimento,true,"text",4,"","chave_am15_licencaempreendimento");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +37,7 @@ $clmensagerialicencaprocessado->rotulo->label("am15_licencaempreendimento");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_mensagerialicencaprocessado.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_mensagerialicencaprocessado.php")==true){
@@ -78,12 +79,12 @@ $clmensagerialicencaprocessado->rotulo->label("am15_licencaempreendimento");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

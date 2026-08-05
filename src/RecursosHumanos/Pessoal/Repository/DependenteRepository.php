@@ -45,12 +45,12 @@ class DependenteRepository
     /**
      * @var array
      */
-    protected $scopes = array();
+    protected $scopes = [];
 
     /**
      * @var array
      */
-    protected $order = array();
+    protected $order = [];
 
     /**
      * @param bool $useJoin
@@ -67,7 +67,7 @@ class DependenteRepository
      */
     public function resetScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
 
         return $this;
     }
@@ -78,7 +78,7 @@ class DependenteRepository
      */
     public function removeScope($key)
     {
-        if (array_key_exists($key, $this->scopes)) {
+        if (array_key_exists((string) $key, $this->scopes)) {
             unset($this->scopes[$key]);
         }
 
@@ -119,7 +119,7 @@ class DependenteRepository
      * @return bool|Dependente
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_rhdepend();
         $sql = $dao->sql_query($id, implode(', ', $columns));
@@ -154,7 +154,7 @@ class DependenteRepository
      * @return Dependente[]
      * @throws Exception
      */
-    public function get($columns = array('*'))
+    public function get($columns = ['*'])
     {
         $dao = new cl_rhdepend();
 
@@ -175,7 +175,7 @@ class DependenteRepository
             throw new Exception("Não foi possível buscar os dependentes.\nContate o suporte.");
         }
 
-        $registros = array();
+        $registros = [];
 
         if (pg_num_rows($resultado) === 0) {
             return $registros;

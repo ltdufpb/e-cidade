@@ -43,7 +43,7 @@ class Mudanca
     private $naturezaAtividade;
 
     /**
-     * @var \DBDate | null
+     * @var DBDate|null
      */
     private $dataMudancaCategoria;
 
@@ -146,7 +146,7 @@ class Mudanca
     /**
      * Get | null
      *
-     * @return  \DBDate
+     * @return DBDate
      */
     public function getDataMudancaCategoria()
     {
@@ -156,8 +156,7 @@ class Mudanca
     /**
      * Set | null
      *
-     * @param  \DBDate  $dataMudancaCategoria  | null
-     *
+     * @param DBDate $dataMudancaCategoria | null
      */
     public function setDataMudancaCategoria($dataMudancaCategoria)
     {

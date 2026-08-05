@@ -44,39 +44,14 @@ use ServidorRepository;
 class ControleRubricasCalculoService
 {
     /**
-     * @var ControleRubricasMatriculasRepository
-     */
-    private $repositoryMatriculas;
-    /**
-     * @var ControleRubricasParametrosRepository
-     */
-    private $repositoryParametros;
-    /**
-     * @var ControleRubricasParametrosRubricasRepository
-     */
-    private $repositoryRubricas;
-    /**
-     * @var HourHelper
-     */
-    private $hourHelper;
-
-    /**
      * ControleHorasExtrasCalculo constructor.
      * @param ControleRubricasMatriculasRepository $repositoryMatriculas
      * @param ControleRubricasParametrosRepository $repositoryParametros
      * @param ControleRubricasParametrosRubricasRepository $repositoryRubricas
      * @param HourHelper $hourHelper
      */
-    public function __construct(
-        ControleRubricasMatriculasRepository $repositoryMatriculas,
-        ControleRubricasParametrosRepository $repositoryParametros,
-        ControleRubricasParametrosRubricasRepository $repositoryRubricas,
-        HourHelper $hourHelper
-    ) {
-        $this->repositoryMatriculas = $repositoryMatriculas;
-        $this->repositoryParametros = $repositoryParametros;
-        $this->repositoryRubricas = $repositoryRubricas;
-        $this->hourHelper = $hourHelper;
+    public function __construct(private readonly ControleRubricasMatriculasRepository $repositoryMatriculas, private readonly ControleRubricasParametrosRepository $repositoryParametros, private readonly ControleRubricasParametrosRubricasRepository $repositoryRubricas, private readonly HourHelper $hourHelper)
+    {
     }
 
     /**

@@ -75,11 +75,11 @@ class RelatorioPeriodo
      */
     public function toArray()
     {
-        return array(
+        return [
             'sequencial' => $this->getSequencial(),
             'relatorio' => $this->getRelatorio() instanceof Relatorio ? $this->getRelatorio()->getSequencial() : null,
             'periodo' => $this->getPeriodo() instanceof Periodo ? $this->getPeriodo()->toArray() : null,
-        );
+        ];
     }
 
     /**

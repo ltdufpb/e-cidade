@@ -54,13 +54,13 @@ class Pergunta
     private $campoCarga;
     private $identificadorCampo;
 
-    private $respostas = array();
+    private $respostas = [];
 
     /**
      * opções de Resposta da pergunta
      * @var array
      */
-    private $opcoes = array();
+    private $opcoes = [];
 
     /**
      * @return mixed
@@ -297,7 +297,7 @@ class Pergunta
 
     /**
      * Retorna as opçcoes das Respostas Objetivas e Multipla Escolha
-     * @return \ECidade\Configuracao\Formulario\Model\Opcao[]
+     * @return Opcao[]
      */
     public function getOpcoes()
     {
@@ -309,7 +309,7 @@ class Pergunta
     }
 
     /**
-     * @param \ECidade\Configuracao\Formulario\Model\Opcao[] $opcoes
+     * @param Opcao[] $opcoes
      */
     public function setOpcoes(array $opcoes)
     {

@@ -27,12 +27,7 @@
 
 namespace ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Services;
 
-use App\Domain\Patrimonial\Licitacoes\Models\LicitacaoTramita;
-use cl_cflicita;
-use cl_liclicita;
-use cl_pctipocompra;
 use DateTime;
-use db_utils;
 use Dotacao;
 use ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Model\Autorizacao;
 use ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Repository\AutorizacaoRepository;
@@ -44,7 +39,6 @@ use fornecedor;
 use Instituicao;
 use DBDepartamento;
 use JSON;
-use InstituicaoRepository;
 
 /**
  * Class ServidorOperadoraSaudeDependenteService
@@ -52,15 +46,12 @@ use InstituicaoRepository;
  */
 class AutorizacaoService
 {
-    private $repositorio;
-
     /**
      * AutorizacaoService constructor.
      * @param AutorizacaoRepository $repositorio
      */
-    public function __construct(AutorizacaoRepository $repositorio)
+    public function __construct(private readonly AutorizacaoRepository $repositorio)
     {
-        $this->repositorio = $repositorio;
     }
 
     /**
@@ -102,10 +93,10 @@ class AutorizacaoService
 
         $mensagem = 'Fornecedor com débito.';
 
-        return array(
+        return [
             'statusFornecedor' => $statusBloqueio,
             'mensagem' => $statusBloqueio == 1 ? '' : $mensagem
-        );
+        ];
     }
 
     /**
@@ -223,7 +214,7 @@ class AutorizacaoService
             $itens = JSON::create()->parse($parametros->e55_itens);
 
             if ($itens) {
-                $arrayItens = array();
+                $arrayItens = [];
                 foreach ($itens as $item) {
                     $arrayItens[] = Item::fromState((array)$item);
                 }
@@ -237,7 +228,7 @@ class AutorizacaoService
 
         try {
             $autorizacao = $this->repositorio->salvar($autorizacao, $numeroProcesso, $autorizacaoImportada);
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception('Não foi possível incluir a Autorização.');
         }
 

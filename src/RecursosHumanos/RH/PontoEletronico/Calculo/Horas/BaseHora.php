@@ -27,6 +27,11 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas;
 
+use DateTime;
+use stdClass;
+use DateInterval;
+use ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\ParametrosLotacao;
+use DBDate;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacaoPonto;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacoesPontoCollection;
@@ -78,17 +83,17 @@ class BaseHora {
     private $oHoraintervalo;
 
     /**
-     * @var \ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\ParametrosLotacao
+     * @var ParametrosLotacao
      */
     private $oConfiguracoesLotacao;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $oHorasTrabalhadas;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $oHoraZerada;
 
@@ -116,7 +121,7 @@ class BaseHora {
         }
 
         $this->oConfiguracoesLotacao = $this->oDiaTrabalho->getConfiguracoesLotacao();
-        $this->oHoraZerada           = new \DateTime($this->getDiaTrabalho()->getData()->getDate() . ' 00:00');
+        $this->oHoraZerada           = new DateTime($this->getDiaTrabalho()->getData()->getDate() . ' 00:00');
         $this->aMarcacoesCollection  = $this->oDiaTrabalho->getMarcacoesSemAlteracao();
 
         if(($this instanceof Trabalho || $this instanceof AdicionalNoturno)) {
@@ -127,7 +132,7 @@ class BaseHora {
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getHoraZerada() {
         return clone $this->oHoraZerada;
@@ -148,7 +153,7 @@ class BaseHora {
     }
 
     /**
-     * @param \ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\ParametrosLotacao $oConfiguracoesLotacao
+     * @param ParametrosLotacao $oConfiguracoesLotacao
      */
     public function setConfiguracoesLotacao($oConfiguracoesLotacao) {
         $this->oConfiguracoesLotacao = $oConfiguracoesLotacao;
@@ -157,7 +162,7 @@ class BaseHora {
     /**
      * Define as horas trabalhadas
      *
-     * @param \DateTime $oHorasTrabalhadas
+     * @param DateTime $oHorasTrabalhadas
      */
     public function setHorasTrabalhadas($oHorasTrabalhadas) {
         $this->oHorasTrabalhadas = $oHorasTrabalhadas;
@@ -167,7 +172,7 @@ class BaseHora {
     /**
      * Retorna as horas trabalhadas
      *
-     * @return \DateTime $oHorasTrabalhadas
+     * @return DateTime $oHorasTrabalhadas
      */
     public function getHorasTrabalhadas() {
         return $this->oHorasTrabalhadas;
@@ -190,14 +195,14 @@ class BaseHora {
     }
 
     /**
-     * @return \DBDate
+     * @return DBDate
      */
     public function getDataPonto() {
         return $this->oDiaTrabalho->getData();
     }
 
     /**
-     * @return \ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\ParametrosLotacao|mixed|null
+     * @return ParametrosLotacao|mixed|null
      */
     public function getConfiguracoesLotacao() {
         return $this->oConfiguracoesLotacao;
@@ -211,12 +216,12 @@ class BaseHora {
     public function getHoraJornada($iPosicao = 0) {
 
         $aHorasJornada = $this->oDiaTrabalho->getJornada()->getHoras();
-        return new \DateTime($aHorasJornada[$iPosicao]->oHora->format('Y-m-d H:i'));
+        return new DateTime($aHorasJornada[$iPosicao]->oHora->format('Y-m-d H:i'));
     }
 
     /**
      * Retorna instâncias de DateTime da hora de marcação e da hora da jornada
-     * @return \stdClass
+     * @return stdClass
      */
     public function getPrimeirasHoras() {
 
@@ -227,7 +232,7 @@ class BaseHora {
             $oHoraMarcacao = null;
         }
 
-        $oDadosHoras                = new \stdClass();
+        $oDadosHoras                = new stdClass();
         $oDadosHoras->oHoraMarcacao = $oHoraMarcacao;
         $oDadosHoras->oHoraJornada  = $this->getHoraJornada();
 
@@ -236,7 +241,7 @@ class BaseHora {
 
     /**
      * Retorna instâncias de DateTime da hora de marcação e da hora da jornada
-     * @return \stdClass
+     * @return stdClass
      */
     public function getUltimasHoras() {
 
@@ -263,7 +268,7 @@ class BaseHora {
             }
         }
 
-        $oDadosHoras                = new \stdClass();
+        $oDadosHoras                = new stdClass();
         $oDadosHoras->oHoraMarcacao = $oHoraMarcacao;
         $oDadosHoras->oHoraJornada  = $this->getHoraJornada($iUltimaPosicaoHorasJornada);
 
@@ -276,34 +281,34 @@ class BaseHora {
 
     /**
      * Retorna a diferença entre 2 horas
-     * @param \DateTime $oHora1
-     * @param \DateTime $oHora2
-     * @return bool|\DateInterval
+     * @param DateTime $oHora1
+     * @param DateTime $oHora2
+     * @return bool|DateInterval
      */
-    public function getDiferencaHoras(\DateTime $oHora1, \DateTime $oHora2) {
+    public function getDiferencaHoras(DateTime $oHora1, DateTime $oHora2) {
         return $oHora1->diff($oHora2);
     }
 
     /**
      * Soma as horas de 2 DateTime
-     * @param \DateTime $oHora1 - DateTime que receberá o valor somado
-     * @param \DateTime $oHora2 - DateTime com o valor a ser somado
-     * @return \DateTime
+     * @param DateTime $oHora1 - DateTime que receberá o valor somado
+     * @param DateTime $oHora2 - DateTime com o valor a ser somado
+     * @return DateTime
      */
-    protected function somaHoras(\DateTime $oHora1, \DateTime $oHora2) {
+    protected function somaHoras(DateTime $oHora1, DateTime $oHora2) {
 
         $iHora   = $oHora2->format('H');
         $iMinuto = $oHora2->format('i');
 
-        $oDateInterval   = new \DateInterval("PT{$iHora}H{$iMinuto}M");
-        $oHoraExtraTotal = new \DateTime($oHora1->format('Y-m-d H:i'));
+        $oDateInterval   = new DateInterval("PT{$iHora}H{$iMinuto}M");
+        $oHoraExtraTotal = new DateTime($oHora1->format('Y-m-d H:i'));
 
         return $oHoraExtraTotal->add($oDateInterval);
     }
 
     /**
      * Retorna as Horas de Intervalo do servidor
-     * @return bool|\DateInterval
+     * @return bool|DateInterval
      */
     protected function getHorasIntervalo() {
 
@@ -325,7 +330,7 @@ class BaseHora {
         }
 
         if(is_null($this->oHoraintervalo)) {
-            $this->oHoraintervalo = new \DateInterval("PT0H0M");
+            $this->oHoraintervalo = new DateInterval("PT0H0M");
         }
 
         return $this->oHoraintervalo;
@@ -334,13 +339,13 @@ class BaseHora {
     /**
      * Calcula o total de horas de trabalho na jornada
      * @param bool $lComIntervalo
-     * @return \DateTime
+     * @return DateTime
      */
     public function totalHorasJornada($lComIntervalo = true) {
 
         $oPrimeirasHora  = $this->getPrimeirasHoras();
         $oUltimasHoras   = $this->getUltimasHoras();
-        $oHoraTotal      = new \DateTime('00:00');
+        $oHoraTotal      = new DateTime('00:00');
         $oHoraTotal->setDate(
           $this->getDiaTrabalho()->getData()->getAno(),
           $this->getDiaTrabalho()->getData()->getMes(),
@@ -359,10 +364,10 @@ class BaseHora {
 
     /**
      * Converte o intervalo em minutos
-     * @param \DateInterval $dateInterval
+     * @param DateInterval $dateInterval
      * @return float
      */
-    public static function converterIntervaloEmMinutos (\DateInterval $dateInterval) {
+    public static function converterIntervaloEmMinutos (DateInterval $dateInterval) {
 
         $segundos = ($dateInterval->y * 365 * 24 * 60 * 60) +
           ($dateInterval->m * 30 * 24 * 60 * 60) +
@@ -378,13 +383,13 @@ class BaseHora {
      * Método alterado para retornar de self::verificaHoraEstaNoIntervalo, pois é algo que deve ser acessado não apenas
      * para quem extend BaseHora
      *
-     * @param \DateTime $oHoraVerificar
-     * @param \DateTime $oHoraInicio
-     * @param \DateTime $oHoraFim
+     * @param DateTime $oHoraVerificar
+     * @param DateTime $oHoraInicio
+     * @param DateTime $oHoraFim
      *
      * @return boolean
      */
-    protected function horaEstaNoIntervalo(\DateTime $oHoraVerificar, \DateTime $oHoraInicio, \DateTime $oHoraFim) {
+    protected function horaEstaNoIntervalo(DateTime $oHoraVerificar, DateTime $oHoraInicio, DateTime $oHoraFim) {
         return self::verificaHoraEstaNoIntervalo($oHoraVerificar, $oHoraInicio, $oHoraFim);
     }
 
@@ -409,25 +414,25 @@ class BaseHora {
     /**
      *
      * @param $stringHora
-     * @return \DateTime
+     * @return DateTime
      */
     public static function converterStringHoraEmDateTime($stringHora) {
 
-        list($hora, $minuto) = explode(":", $stringHora);
-        return \DateTime::createFromFormat('H:i', "{$hora}:{$minuto}");
+        [$hora, $minuto] = explode(":", (string) $stringHora);
+        return DateTime::createFromFormat('H:i', "{$hora}:{$minuto}");
     }
 
     /**
      *
      * @param $iMinutos
-     * @return \DateInterval
+     * @return DateInterval
      */
     public static function converterStringHoraEmDateInterval($stringHora) {
 
-        list($hora, $minuto) = explode(":", $stringHora);
+        [$hora, $minuto] = explode(":", (string) $stringHora);
 
         $intervalo  = "PT{$hora}H{$minuto}M";
-        return new \DateInterval($intervalo);
+        return new DateInterval($intervalo);
     }
 
 
@@ -435,7 +440,7 @@ class BaseHora {
     /**
      *
      * @param $iMinutos
-     * @return \DateInterval
+     * @return DateInterval
      */
     public static function converterMinutosEmInterval($iMinutos) {
 
@@ -443,7 +448,7 @@ class BaseHora {
 
         $minutos = $iMinutos % 60;
         $intervalo  = "PT{$horas}H{$minutos}M";
-        return new \DateInterval($intervalo);
+        return new DateInterval($intervalo);
     }
 
     /**
@@ -451,9 +456,9 @@ class BaseHora {
      * @param $iMinutos
      * @return int
      */
-    public static function converterDateTimeEmMinutos(\DateTime $dateTime) {
+    public static function converterDateTimeEmMinutos(DateTime $dateTime) {
 
-        $intervalo  = new \DateInterval("PT{$dateTime->format("H")}H{$dateTime->format("i")}M");
+        $intervalo  = new DateInterval("PT{$dateTime->format("H")}H{$dateTime->format("i")}M");
         return self::converterIntervaloEmMinutos($intervalo);
     }
 
@@ -483,7 +488,7 @@ class BaseHora {
      */
     protected function marcacaoEstaNaTolerancia($marcacao, $tolerancia, $tipoMarcacaoComparar = null) {
 
-        $tipoMarcacaoComparar = $tipoMarcacaoComparar !== null ? $tipoMarcacaoComparar : $marcacao->getTipo();
+        $tipoMarcacaoComparar ??= $marcacao->getTipo();
         $horasDaJornada = $this->getDiaTrabalho()->getJornada()->getHoras();
         $horaJornada    = !empty($horasDaJornada[$tipoMarcacaoComparar - 1]) ? $horasDaJornada[$tipoMarcacaoComparar - 1] : null;
 
@@ -501,7 +506,7 @@ class BaseHora {
 
     public static function converterEmHorasNoturnas($sHorasCalculadas)
     {
-        list($quantidadehora, $quantidademinutos) = explode(':', $sHorasCalculadas);
+        [$quantidadehora, $quantidademinutos] = explode(':', $sHorasCalculadas);
 
         $totalminutos = round( ( ( $quantidadehora * 60 ) + $quantidademinutos), 2);
         $totalminutos = ($totalminutos * 60 / 52.5 );
@@ -529,12 +534,12 @@ class BaseHora {
     }
 
     /**
-     * @param \DateTime $oHoraVerificar
-     * @param \DateTime $oHoraInicio
-     * @param \DateTime $oHoraFim
+     * @param DateTime $oHoraVerificar
+     * @param DateTime $oHoraInicio
+     * @param DateTime $oHoraFim
      * @return bool
      */
-    public static function verificaHoraEstaNoIntervalo(\DateTime $oHoraVerificar, \DateTime $oHoraInicio, \DateTime $oHoraFim) {
+    public static function verificaHoraEstaNoIntervalo(DateTime $oHoraVerificar, DateTime $oHoraInicio, DateTime $oHoraFim) {
 
         if($oHoraVerificar->diff($oHoraInicio)->invert || ($oHoraVerificar->format('H:i') == $oHoraInicio->format('H:i'))) {
             if($oHoraFim->diff($oHoraVerificar)->invert || ($oHoraVerificar->format('H:i') == $oHoraFim->format('H:i'))) {
@@ -546,13 +551,13 @@ class BaseHora {
     }
 
     /**
-     * @param \DateTime $primeiraMarcacao
-     * @param \DateTime $segundaMarcacao
-     * @return \stdClass
+     * @param DateTime $primeiraMarcacao
+     * @param DateTime $segundaMarcacao
+     * @return stdClass
      */
-    public function percorreMinutoAMinuto(\DateTime $primeiraMarcacao, \DateTime $segundaMarcacao)
+    public function percorreMinutoAMinuto(DateTime $primeiraMarcacao, DateTime $segundaMarcacao)
     {
-        $minutos = new \stdClass();
+        $minutos = new stdClass();
 
         $horaCalculada = clone $this->getHoraZerada();
         $horaAtual = clone $primeiraMarcacao;

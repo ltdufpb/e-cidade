@@ -27,6 +27,8 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Arquivo\Registro;
 
+use DBDate;
+use Servidor;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Arquivo\Registro\Cabecalho as CabecalhoRegistro;
 
 /**
@@ -44,12 +46,12 @@ class Marcacao {
   private $oCabecalho;
 
   /**
-   * @var \DBDate
+   * @var DBDate
    */
   private $oData;
 
   /**
-   * @var \DBDate
+   * @var DBDate
    */
   private $oDataVinculo;
 
@@ -64,7 +66,7 @@ class Marcacao {
   private $sPIS;
 
   /**
-   * @var \Servidor
+   * @var Servidor
    */
   private $oServidor;
 
@@ -103,7 +105,7 @@ class Marcacao {
   }
 
   /**
-   * @return \DBDate
+   * @return DBDate
    */
   public function getData() {
     return $this->oData;
@@ -124,14 +126,14 @@ class Marcacao {
   }
 
   /**
-   * @return \Servidor
+   * @return Servidor
    */
   public function getServidor() {
     return $this->oServidor;
   }
 
   /**
-   * @return \DBDate
+   * @return DBDate
    */
   public function getDataVinculo() {
     return $this->oDataVinculo;
@@ -159,9 +161,9 @@ class Marcacao {
   }
 
   /**
-   * @param \DBDate $oData
+   * @param DBDate $oData
    */
-  public function setData(\DBDate $oData) {
+  public function setData(DBDate $oData) {
     $this->oData = $oData;
   }
 
@@ -180,16 +182,16 @@ class Marcacao {
   }
 
   /**
-   * @param \Servidor $oServidor
+   * @param Servidor $oServidor
    */
-  public function setServidor(\Servidor $oServidor) {
+  public function setServidor(Servidor $oServidor) {
     $this->oServidor = $oServidor;
   }
 
   /**
-   * @param \DBDate $oDataVinculo
+   * @param DBDate $oDataVinculo
    */
-  public function setDataVinculo(\DBDate $oDataVinculo) {
+  public function setDataVinculo(DBDate $oDataVinculo) {
     $this->oDataVinculo = $oDataVinculo;
   }
 

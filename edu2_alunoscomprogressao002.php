@@ -39,7 +39,7 @@ require_once(modification("model/educacao/avaliacao/iElementoAvaliacao.interface
 $oGet = db_utils::postMemory($_GET);
 
 $lModuloEscola = db_getsession("DB_modulo") == 1100747 ? true : false;
-$aEscolas      = array();
+$aEscolas      = [];
 
 /**
  * Verificamos as escolas que iremos imprimir
@@ -80,7 +80,7 @@ $lProgressaoHabilitadaEscola = db_utils::fieldsMemory($rsSecParam, 0)->ed290_con
 /**
  * Buscamos as configuracoes dos parametros das escolas
  */
-$aParametrosConfiguracao = array();
+$aParametrosConfiguracao = [];
 
 foreach ($aEscolas as $oEscola) {
   $aParametrosConfiguracao[$oEscola->getCodigo()] = ProgressaoParcialParametroRepository::getProgressaoParcialParametroByCodigo($oEscola->getCodigo());
@@ -89,7 +89,7 @@ foreach ($aEscolas as $oEscola) {
 /**
  * Buscamos os Alunos das escolas configuradas para impressao
  */
-$aAlunosProgressao  = array();
+$aAlunosProgressao  = [];
 
 foreach ($aEscolas as $oEscola) {
 
@@ -115,20 +115,20 @@ foreach ($aEscolas as $oEscola) {
       $oAluno->iCodigo       = $oProgressaoAluno->getAluno()->getCodigoAluno();
       $oAluno->sNome         = $oProgressaoAluno->getAluno()->getNome();
       $oAluno->sTurma        = $oDadosProgressao->turma;
-      $oAluno->aDisciplina   = array();
+      $oAluno->aDisciplina   = [];
       $oAluno->aDisciplina[] = $oProgressaoAluno->getDisciplina()->getAbreviatura();
 
       if (!isset($aAlunosProgressao[$oEscola->getCodigo()])) {
-        $aAlunosProgressao[$oEscola->getCodigo()] = array();
+        $aAlunosProgressao[$oEscola->getCodigo()] = [];
       }
       if (!isset($aAlunosProgressao[$oEscola->getCodigo()][$oEnsino->getEnsino()->getCodigo()])) {
-        $aAlunosProgressao[$oEscola->getCodigo()][$oEnsino->getEnsino()->getCodigo()] = array();
+        $aAlunosProgressao[$oEscola->getCodigo()][$oEnsino->getEnsino()->getCodigo()] = [];
       }
       if (!isset($aAlunosProgressao[$oEscola->getCodigo()]
                                    [$oEnsino->getEnsino()->getCodigo()]
                                    [$oDadosProgressao->ed114_serie])) {
         $aAlunosProgressao[$oEscola->getCodigo()][$oEnsino->getEnsino()->getCodigo()]
-                          [$oDadosProgressao->ed114_serie] = array();
+                          [$oDadosProgressao->ed114_serie] = [];
 
       }
 

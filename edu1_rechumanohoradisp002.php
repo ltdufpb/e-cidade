@@ -48,8 +48,8 @@ $result_per          = $clperiodoescola->sql_record($clperiodoescola->sql_query(
                                                                                )
                                                    );
 db_fieldsmemory($result_per,0);
-$hora1         = (int)substr($menorhorario,0,2);
-$hora2         = (int)substr($maiorhorario,0,2)+1;
+$hora1         = (int)substr((string) $menorhorario,0,2);
+$hora2         = (int)substr((string) $maiorhorario,0,2)+1;
 $horainicial   = $hora1*100;
 $horafinal     = $hora2*100;
 $tempo_ini     = mktime($hora1,0,0,date("m"),date("d"),date("Y"));
@@ -116,18 +116,18 @@ if ($oPost->sAction == 'BuscaOutrosDias') {
 if ($oPost->sAction == 'IncluirPeriodo') {
   $oRetorno                = new stdClass();
   $oRetorno->lVinculoAtivo = true;
-  $aMensagem               = array();
+  $aMensagem               = [];
 
   try {
-    $aPeriodosInformados        =  explode(",",$oPost->periodos);
+    $aPeriodosInformados        =  explode(",",(string) $oPost->periodos);
     $oProfissionalEscola        = ProfissionalEscolaRepository::getByCodigo( $oPost->rechumanoescola );
-    $aAgenda                    = array();
-    $aDiasSemana                = explode(",", $oPost->diasemana);
-    $aAgendaProfissionalValida  = array();
+    $aAgenda                    = [];
+    $aDiasSemana                = explode(",", (string) $oPost->diasemana);
+    $aAgendaProfissionalValida  = [];
     $lErro                      = false;
     $lInclusao                  = false;
     $oRetorno->lVinculoAtivo    = false;
-    $aPeriodosInclusos          = array();
+    $aPeriodosInclusos          = [];
     $sMensagemTipoHora          = '';
     $sMensagemTurno             = '';
 
@@ -265,7 +265,7 @@ if ($oPost->sAction == 'IncluirPeriodo') {
       $aMensagem[]             = _M( MENSAGEM_RECHUMANOHORADISP002 . "incluido_demais_periodos");
       $oRetorno->lVinculoAtivo = true;
     } else if ( !$lInclusao ) {
-      $aPeriodosInclusos = array();
+      $aPeriodosInclusos = [];
       $aMensagem[] = $sMensagemTurno;
     }
   } catch ( Exception $oErro ) {
@@ -274,7 +274,7 @@ if ($oPost->sAction == 'IncluirPeriodo') {
     $aMensagem[] = $oErro->getMessage();
   }
 
-  $oRetorno->aRetorno   = array();
+  $oRetorno->aRetorno   = [];
   $oRetorno->aRetorno[] = implode( ",", $aPeriodosInclusos );
 
   $aMensagem      = array_filter($aMensagem);
@@ -303,7 +303,7 @@ if ($oPost->sAction == 'IncluirOutrosPeriodos') {
 
   for ($dd = 0; $dd < $cldiasemana->numrows; $dd++) {
     db_fieldsmemory($result_day,$dd);
-    $quebra_periodos = explode(",",$oPost->periodos);
+    $quebra_periodos = explode(",",(string) $oPost->periodos);
 
     for ($x = 0; $x < count($quebra_periodos); $x++) {
         $sCampos = "ed17_h_inicio as hrinicio,ed17_h_fim as hrfim,ed15_c_nome as descrturno,ed08_c_descr as descrperiodo";
@@ -381,7 +381,7 @@ if ($oPost->sAction == 'IncluirOutrosPeriodos') {
   } else if ($inclusao == false) {
     $pk_periodo = "0";
   }
-  $retorno    = array();
+  $retorno    = [];
   $retorno[]  = $pk_periodo;
   $retorno[] = $mensagem;
   $oJson      = new services_json();
@@ -392,8 +392,8 @@ if ($oPost->sAction == 'IncluirOutrosPeriodos') {
 if ($oPost->sAction == 'MontaGrade') {
 
   unset($_SESSION["sess_cordisp"]);
-  $array_cores  = array("#FFCC99","#CCCCFF","#99FFCC","#CCFF66","#CC9933","#FF99FF","#996699","#66CC99","#FFCCCC","#9999FF");
-  $sess_cordisp = array();
+  $array_cores  = ["#FFCC99","#CCCCFF","#99FFCC","#CCFF66","#CC9933","#FF99FF","#996699","#66CC99","#FFCCCC","#9999FF"];
+  $sess_cordisp = [];
   $sCampos    = " DISTINCT ed18_i_codigo,ed18_c_nome,case when ed20_i_tiposervidor = 1 then";
   $sCampos   .= " cgmrh.z01_numcgm else cgmcgm.z01_numcgm end as z01_numcgm";
   $result_cor = $clrechumanohoradisp->sql_record($clrechumanohoradisp->sql_query_disponibilidade("",
@@ -438,17 +438,17 @@ if ($oPost->sAction == 'MontaGrade') {
     for ($t = $horainicial; $t <= $horafinal; $t+=1) {
 
       $hora = strlen($t) == 3?"0".$t:$t;
-      $hora = substr($hora,0,2).":".substr($hora,2,2);
+      $hora = substr((string) $hora,0,2).":".substr((string) $hora,2,2);
 
       if ($clrechumanohoradisp->numrows > 0) {
 
         for ($y = 0; $y < $clrechumanohoradisp->numrows; $y++) {
 
           db_fieldsmemory($result1,$y);
-          if (trim($hora) == trim($ed17_h_inicio)) {
+          if (trim($hora) == trim((string) $ed17_h_inicio)) {
 
-            $tempo_ini = mktime(substr($ed17_h_inicio,0,2),substr($ed17_h_inicio,3,2),0,1,1,1999);
-            $tempo_fim = mktime(substr($ed17_h_fim,0,2),substr($ed17_h_fim,3,2),0,1,1,1999);
+            $tempo_ini = mktime(substr((string) $ed17_h_inicio,0,2),substr((string) $ed17_h_inicio,3,2),0,1,1,1999);
+            $tempo_fim = mktime(substr((string) $ed17_h_fim,0,2),substr((string) $ed17_h_fim,3,2),0,1,1,1999);
             $difermin  = ($tempo_fim-$tempo_ini)/60;
             $difer     = ceil($difermin/2);
             $sHtml    .= '<table id="tab'.$ed33_i_codigo.'" width="'.$larg_dia.'" border="0" bgcolor="#CCCCCC" ';

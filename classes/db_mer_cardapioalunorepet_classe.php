@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ class cl_mer_cardapioalunorepet {
                  me40_i_turma = int4 = turma
                  ";
    //funcao construtor da classe 
-   function cl_mer_cardapioalunorepet() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_cardapioalunorepet"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

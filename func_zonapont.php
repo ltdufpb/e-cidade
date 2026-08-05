@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_zonapont_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clzonapont = new cl_zonapont;
 $clzonapont->rotulo->label("q26_zona");
 $clzonapont->rotulo->label("q26_pontuacao");
@@ -54,7 +55,7 @@ $clzonapont->rotulo->label("q26_pontuacao");
               <?=$Lq26_zona?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q26_zona",10,$Iq26_zona,true,"text",4,"","chave_q26_zona");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clzonapont->rotulo->label("q26_pontuacao");
               <?=$Lq26_pontuacao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q26_pontuacao",15,$Iq26_pontuacao,true,"text",4,"","chave_q26_pontuacao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clzonapont->rotulo->label("q26_pontuacao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_zonapont.php")==true){
@@ -122,12 +123,12 @@ $clzonapont->rotulo->label("q26_pontuacao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

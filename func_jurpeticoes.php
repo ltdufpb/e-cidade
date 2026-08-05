@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_jurpeticoes_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cljurpeticoes = new cl_jurpeticoes;
 $cljurpeticoes->rotulo->label("v60_peticao");
 $cljurpeticoes->rotulo->label("v60_inicial");
@@ -54,7 +55,7 @@ $cljurpeticoes->rotulo->label("v60_inicial");
               <?=$Lv60_peticao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v60_peticao",10,$Iv60_peticao,true,"text",4,"","chave_v60_peticao");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cljurpeticoes->rotulo->label("v60_inicial");
               <?=$Lv60_inicial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v60_inicial",10,$Iv60_inicial,true,"text",4,"","chave_v60_inicial");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cljurpeticoes->rotulo->label("v60_inicial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $where="";
       if (isset($tipo)&&$tipo!=""){
       	if ($tipo=='p'){
@@ -130,12 +131,12 @@ $cljurpeticoes->rotulo->label("v60_inicial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

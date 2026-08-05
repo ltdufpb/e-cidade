@@ -89,7 +89,7 @@ $oImpressao->setIp($sIp);
 	bgcolor="#CCCCCC" style="padding-top: 20px;">
 	<tr>
 		<td>
-			<?
+			<?php 
 			db_criatermometro('termometro','Concluído','blue',1);
 			echo "<br><br>";
 			$oGet 				= db_utils::postMemory($_GET);
@@ -160,7 +160,7 @@ $oImpressao->setIp($sIp);
 </form>
 </body>
 </html>
-<? 
+<?php  
   if($erro_msg != ""){
   	
   	db_msgbox($erro_msg);

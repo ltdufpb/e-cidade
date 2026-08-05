@@ -75,7 +75,7 @@ class cl_evolucaodividaativa {
                  v30_instituicao = int4 = Instituição
                  ";
    //funcao construtor da classe
-   function cl_evolucaodividaativa() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("evolucaodividaativa");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

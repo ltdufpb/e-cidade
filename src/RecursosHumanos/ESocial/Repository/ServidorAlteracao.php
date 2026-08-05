@@ -1,6 +1,7 @@
 <?php
 namespace ECidade\RecursosHumanos\ESocial\Repository;
 
+use BaseClassRepository;
 use InstituicaoRepository;
 use ServidorRepository;
 use BusinessException;
@@ -10,7 +11,7 @@ use DBDate;
 use ECidade\RecursosHumanos\ESocial\Model\ServidorAlteracao as ServidorModel;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 
-class ServidorAlteracao extends \BaseClassRepository
+class ServidorAlteracao extends BaseClassRepository
 {
 
     /**
@@ -78,7 +79,7 @@ class ServidorAlteracao extends \BaseClassRepository
         if (!$rs) {
             throw new DBException("Erro ao buscar informações de datas de alteração da matícula {$matricula}.");
         }
-        $total = pg_numrows($rs);
+        $total = pg_num_rows($rs);
         $retorno = [];
         for ($i = 0; $i < $total; $i++) {
             $retorno[] = self::get(db_utils::fieldsMemory($rs, $i)->eso38_sequencial);
@@ -115,23 +116,23 @@ class ServidorAlteracao extends \BaseClassRepository
         $alteracaoServidor->setCodigo($dados->eso38_sequencial);
         $alteracaoServidor->setMatricula($dados->eso38_matricula);
         if (!empty($dados->eso38_s2205data)) {
-            $alteracaoServidor->setDataS2205(new \DBDate($dados->eso38_s2205data));
+            $alteracaoServidor->setDataS2205(new DBDate($dados->eso38_s2205data));
         }
         $alteracaoServidor->setProcessamentoS2205($dados->eso38_s2205processado);
         if (!empty($dados->eso38_s2206data)) {
-            $alteracaoServidor->setDataS2206(new \DBDate($dados->eso38_s2206data));
+            $alteracaoServidor->setDataS2206(new DBDate($dados->eso38_s2206data));
         }
         $alteracaoServidor->setProcessamentoS2206($dados->eso38_s2206processado);
         if (!empty($dados->eso38_s2306data)) {
-            $alteracaoServidor->setDataS2306(new \DBDate($dados->eso38_s2306data));
+            $alteracaoServidor->setDataS2306(new DBDate($dados->eso38_s2306data));
         }
         $alteracaoServidor->setProcessamentoS2306($dados->eso38_s2306processado);
         if (!empty($dados->eso38_s2405data)) {
-            $alteracaoServidor->setDataS2405(new \DBDate($dados->eso38_s2405data));
+            $alteracaoServidor->setDataS2405(new DBDate($dados->eso38_s2405data));
         }
         $alteracaoServidor->setProcessamentoS2405($dados->eso38_s2405processado);
         if (!empty($dados->eso38_s2416data)) {
-            $alteracaoServidor->setDataS2416(new \DBDate($dados->eso38_s2416data));
+            $alteracaoServidor->setDataS2416(new DBDate($dados->eso38_s2416data));
         }
         $alteracaoServidor->setProcessamentoS2416($dados->eso38_s2416processado);
 
@@ -205,9 +206,7 @@ class ServidorAlteracao extends \BaseClassRepository
             throw new DBException('Erro ao buscar os servidores da competência alteração.');
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oRetorno) {
-            return ServidorRepository::getInstanciaByCodigo($oRetorno->eso38_matricula);
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oRetorno) => ServidorRepository::getInstanciaByCodigo($oRetorno->eso38_matricula));
     }
 
 
@@ -237,7 +236,7 @@ class ServidorAlteracao extends \BaseClassRepository
             if (!empty($dtEf)) {
                 $altContratual['dtEf'] = $dtEf;
             }
-            $dscAlt = substr(db_utils::fieldsMemory($resultado, 0)->eso39_descricao, 0, 149);
+            $dscAlt = substr((string) db_utils::fieldsMemory($resultado, 0)->eso39_descricao, 0, 149);
             if (!empty($dscAlt)) {
                 $altContratual['dscAlt'] = $dscAlt;
             }

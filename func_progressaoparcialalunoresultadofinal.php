@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_progressaoparcialalunoresultadofinal_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clprogressaoparcialalunoresultadofinal = new cl_progressaoparcialalunoresultadofinal;
 $clprogressaoparcialalunoresultadofinal->rotulo->label("ed121_sequencial");
 $clprogressaoparcialalunoresultadofinal->rotulo->label("ed121_progressaoparcialalunomatricula");
@@ -54,7 +55,7 @@ $clprogressaoparcialalunoresultadofinal->rotulo->label("ed121_progressaoparciala
               <?=$Led121_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ed121_sequencial",10,$Ied121_sequencial,true,"text",4,"","chave_ed121_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clprogressaoparcialalunoresultadofinal->rotulo->label("ed121_progressaoparciala
               <?=$Led121_progressaoparcialalunomatricula?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ed121_progressaoparcialalunomatricula",10,$Ied121_progressaoparcialalunomatricula,true,"text",4,"","chave_ed121_progressaoparcialalunomatricula");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clprogressaoparcialalunoresultadofinal->rotulo->label("ed121_progressaoparciala
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_progressaoparcialalunoresultadofinal.php")==true){
@@ -122,12 +123,12 @@ $clprogressaoparcialalunoresultadofinal->rotulo->label("ed121_progressaoparciala
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

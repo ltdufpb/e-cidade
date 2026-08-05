@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,8 +33,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_aluno_classe.php"));
 include(modification("classes/db_alunocurso_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 $claluno = new cl_aluno;
 $clalunocurso = new cl_alunocurso;
 $db_opcao = 2;
@@ -44,11 +44,11 @@ if(isset($alterar)){
  $db_opcao = 2;
  $db_opcao1 = 3;
  $db_botao = true;
- $ed47_c_foto = @trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
- $ed47_o_oid = "tmp/".@trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
+ $ed47_c_foto = @trim((string) $GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
+ $ed47_o_oid = "tmp/".@trim((string) $GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
  db_inicio_transacao();
  if($ed47_c_foto!=""){
-  $oid_imagem = pg_loimport($conn,$ed47_o_oid) or die("Erro(15) importando imagem");
+  $oid_imagem = pg_lo_import($conn,$ed47_o_oid) or die("Erro(15) importando imagem");
   $ed47_o_oid = $oid_imagem;
  }else{
   $oid_imagem = "0";
@@ -89,7 +89,7 @@ if(isset($chavepesquisa)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Outros Dados</b></legend>
-    <?include(modification("forms/db_frmforaaluno.php"));?>
+    <?php include(modification("forms/db_frmforaaluno.php"));?>
    </fieldset>
    </center>
   </td>
@@ -97,7 +97,7 @@ if(isset($chavepesquisa)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar)){
  if($claluno->erro_status=="0"){
   $claluno->erro(true,false);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veicparam_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clveicparam = new cl_veicparam;
 $clveicparam->rotulo->label("ve50_codigo");
 $clveicparam->rotulo->label("ve50_codigo");
@@ -54,7 +55,7 @@ $clveicparam->rotulo->label("ve50_codigo");
               <?=$Lve50_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ve50_codigo",10,$Ive50_codigo,true,"text",4,"","chave_ve50_codigo");
 		       ?>
             </td>
@@ -72,7 +73,7 @@ $clveicparam->rotulo->label("ve50_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veicparam.php")==true){
@@ -110,12 +111,12 @@ $clveicparam->rotulo->label("ve50_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

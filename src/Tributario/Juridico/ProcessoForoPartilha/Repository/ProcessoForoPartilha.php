@@ -27,7 +27,11 @@
 
 namespace ECidade\Tributario\Juridico\ProcessoForoPartilha\Repository;
 
-use ECidade\Tributario\Arrecadacao\Custas\Interfaces;
+use BaseClassRepository;
+use ECidade\Tributario\Arrecadacao\Custas\Interfaces\CalculaParcelamentoHonorario;
+use Exception;
+use Taxa;
+use stdClass;
 use cl_processoforopartilha;
 use DateTime;
 use db_utils;
@@ -43,7 +47,7 @@ use ECidade\Tributario\Juridico\ProcessoForoPartilha\Repository\ProcessoForoPart
  *
  * @method static ProcessoForoPartilha getInstance()
  */
-class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\CalculaParcelamentoHonorario
+class ProcessoForoPartilha extends BaseClassRepository implements CalculaParcelamentoHonorario
 {
     const TIPO_LANCAMENTO_PAGAMENTO_MANUAL = 2;
 
@@ -111,7 +115,7 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
     }
 
     /**
-     * @param \stdClass $oDados
+     * @param stdClass $oDados
      * @return ProcessoForoPartilhaEntity|null
      */
     protected function make($oDados)
@@ -147,11 +151,11 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
      */
     private function makeCollection($rsResult)
     {
-        $aCollection = array();
+        $aCollection = [];
         $aResult = pg_fetch_all($rsResult);
 
         if (empty($aResult)) {
-            return array();
+            return [];
         }
 
         foreach ($aResult as $oResult) {
@@ -277,11 +281,11 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
         $result = db_query($sql);
 
         if (!$result) {
-            throw new \Exception('Erro ao consultar as partilhas pelo numnov: ' . $numnov);
+            throw new Exception('Erro ao consultar as partilhas pelo numnov: ' . $numnov);
         }
 
         if (!pg_num_rows($result)) {
-            return array();
+            return [];
         }
 
         return db_utils::getCollectionByRecord($result);
@@ -290,7 +294,7 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
     /**
      * @param $iNumnov
      * @param integer|null $codigoProcesso
-     * @return \stdClass[]
+     * @return stdClass[]
      * @throws DBException
      */
     public function getDadosRecibo($iNumnov, $codigoProcesso = null)
@@ -315,12 +319,12 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
      * @return array|ProcessoForoPartilhaEntity
      *
      * @throws DBException
-     * @throws \Exception
+     * @throws Exception
      */
     public function getPartilhaByProcessoSemRecibo($processo)
     {
         if (empty($processo)) {
-            throw new \Exception("Processo não informado.");
+            throw new Exception("Processo não informado.");
         }
         $sql = "select distinct processoforopartilha.* ";
         $sql .= "  from processoforopartilha ";
@@ -335,7 +339,7 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
         }
 
         if (pg_num_rows($rs) == 0) {
-            return array();
+            return [];
         }
 
         $partilhas = $this->makeCollection($rs);
@@ -367,7 +371,7 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
         return $partilhas;
     }
 
-    public function getParcelasPaga(\Taxa $taxa, $processoForo)
+    public function getParcelasPaga(Taxa $taxa, $processoForo)
     {
         $dao = new cl_processoforopartilha();
         $sql = $dao->sql_parcelas_pagas($taxa->getCodigoTaxa(), $processoForo->getCodigo());
@@ -378,9 +382,7 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
             throw new DBException("Erro ao buscar as parcelas pagas dos honorários.");
         }
 
-        return \db_utils::makeCollectionFromRecord($result, function ($parcela) {
-            return $parcela->k00_numpar;
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($parcela) => $parcela->k00_numpar);
     }
 
     /**
@@ -425,7 +427,7 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
      * @return mixed
      * @throws DBException
      */
-    public function getValorPago(\Taxa $taxa, ProcessoForo $processoForo, \DateTime $data = null)
+    public function getValorPago(Taxa $taxa, ProcessoForo $processoForo, ?DateTime $data = null)
     {
         $sql  = "select v77_valor ";
         $sql .= "  from processoforopartilha ";
@@ -449,20 +451,18 @@ class ProcessoForoPartilha extends \BaseClassRepository implements Interfaces\Ca
             return 0;
         }
 
-        $resultado = \db_utils::makeCollectionFromRecord($rs, function ($taxa) {
-            return round($taxa->v77_valor, 2);
-        });
+        $resultado = db_utils::makeCollectionFromRecord($rs, fn($taxa) => round($taxa->v77_valor, 2));
 
         return array_sum($resultado);
     }
 
     /**
-     * @param \Taxa $taxa
+     * @param Taxa $taxa
      * @param ProcessoForo $processoForo
      * @return bool
      * @throws DBException
      */
-    public function hasPagamentoInicial(\Taxa $taxa, ProcessoForo $processoForo)
+    public function hasPagamentoInicial(Taxa $taxa, ProcessoForo $processoForo)
     {
         $dao = new cl_processoforopartilha();
         $sql = $dao->sql_parcelas_pagas_inicial($taxa->getCodigoTaxa(), $processoForo->getCodigo());

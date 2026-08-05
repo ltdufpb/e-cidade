@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pontofr_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpontofr = new cl_pontofr;
 $clpontofr->rotulo->label("r19_anousu");
 $clpontofr->rotulo->label("r19_mesusu");
@@ -58,7 +59,7 @@ $clpontofr->rotulo->label("r19_regist");
               <?=$Lr19_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r19_mesusu",2,$Ir19_mesusu,true,"text",4,"","chave_r19_mesusu");
 		       ?>
             </td>
@@ -68,7 +69,7 @@ $clpontofr->rotulo->label("r19_regist");
               <?=$Lr19_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r19_regist",6,$Ir19_regist,true,"text",4,"","chave_r19_regist");
 		       ?>
             </td>
@@ -78,7 +79,7 @@ $clpontofr->rotulo->label("r19_regist");
               <?=$Lr19_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r19_rubric",4,$Ir19_rubric,true,"text",4,"","chave_r19_rubric");
 		       ?>
             </td>
@@ -88,7 +89,7 @@ $clpontofr->rotulo->label("r19_regist");
               <?=$Lr19_tpp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r19_tpp",1,$Ir19_tpp,true,"text",4,"","chave_r19_tpp");
 		       ?>
             </td>
@@ -98,7 +99,7 @@ $clpontofr->rotulo->label("r19_regist");
               <?=$Lr19_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r19_regist",6,$Ir19_regist,true,"text",4,"","chave_r19_regist");
 		       ?>
             </td>
@@ -116,7 +117,7 @@ $clpontofr->rotulo->label("r19_regist");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pontofr.php")==true){
@@ -152,12 +153,12 @@ $clpontofr->rotulo->label("r19_regist");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

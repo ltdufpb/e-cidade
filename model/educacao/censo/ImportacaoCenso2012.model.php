@@ -36,7 +36,7 @@ class ImportacaoCenso2012 extends importacaoCenso
     /**
      *
      */
-    function __construct($iAnoEscolhido, $iCodigoInepEscola = null, $iCodigoLayout)
+    function __construct($iAnoEscolhido, $iCodigoInepEscola = null, $iCodigoLayout = null)
     {
         parent::__construct($iAnoEscolhido, $iCodigoInepEscola, $iCodigoLayout);
     }
@@ -46,6 +46,7 @@ class ImportacaoCenso2012 extends importacaoCenso
      *
      * @param DB $oLinha
      */
+    #[Override]
     function atualizaDadosDocente($oLinha)
     {
 
@@ -61,7 +62,7 @@ class ImportacaoCenso2012 extends importacaoCenso
 
             foreach ($aDadosRechumano as $oDocente) {
 
-                if (trim($oDocente->vinculo_escola) != trim($this->iCodigoInepEscola)) {
+                if (trim((string) $oDocente->vinculo_escola) != trim($this->iCodigoInepEscola)) {
 
                     $sMsg = "Recurso Humano [" . $oDocente->ed20_i_codigoinep . "] " . $oDocente->z01_nome;
                     $sMsg .= ": Recurso Humano não está mais vinculado a esta escola.\n";
@@ -97,10 +98,11 @@ class ImportacaoCenso2012 extends importacaoCenso
      * @param object $oLinha com os campos contidos em uma linha de importacao (conforme seu tipo de registro)
      * @return object com os dados do rechumano caso tiver registro, caso contrario retorna null
      */
+    #[Override]
     function getMatriculasRechumano($oLinha)
     {
 
-        $iCodDocenteEsc = trim($oLinha->codigo_docente_entidade_escola);
+        $iCodDocenteEsc = trim((string) $oLinha->codigo_docente_entidade_escola);
 
         $oDaoRechumano = new cl_rechumano();
         $sCampos = 'rechumano.*, ed228_i_paisonu, escola.ed18_c_codigoinep as vinculo_escola, ';
@@ -136,9 +138,9 @@ class ImportacaoCenso2012 extends importacaoCenso
           && isset($oLinha->data_nascimento) && isset($oLinha->nome_completo_mae)
         ) {
 
-            $sNomeDocenteCensoNovo = str_replace(array('ª', 'º'), array('', ''), $oLinha->nome_completo);
+            $sNomeDocenteCensoNovo = str_replace(['ª', 'º'], ['', ''], $oLinha->nome_completo);
             $dNascDocente = $this->formataData($oLinha->data_nascimento);
-            $sMaeDocenteCenso = str_replace(array('ª', 'º'), array('', ''), $oLinha->nome_completo_mae);
+            $sMaeDocenteCenso = str_replace(['ª', 'º'], ['', ''], $oLinha->nome_completo_mae);
             $sWhereRechumano = " ed18_c_codigoinep = '" . $this->iCodigoInepEscola . "'";
             $sWhereRechumano .= " AND ( ";
             $sWhereRechumano .= " ( (to_ascii(case when ed20_i_tiposervidor = 1 then cgmrh.z01_nome else ";
@@ -175,6 +177,7 @@ class ImportacaoCenso2012 extends importacaoCenso
     /**
      * Atualiza os dados de endereco do docente
      */
+    #[Override]
     public function atualizaEnderecoDocente($oLinha)
     {
 
@@ -195,6 +198,7 @@ class ImportacaoCenso2012 extends importacaoCenso
     /**
      * Atualiza os dados da escolaridade do docente.
      */
+    #[Override]
     public function atualizaEscolaridadeDocente($oLinha)
     {
 
@@ -255,6 +259,7 @@ class ImportacaoCenso2012 extends importacaoCenso
      *
      * @param DBLayoutLinha $oLinha
      */
+    #[Override]
     public function atualizaDadosEscola(DBLayoutLinha $oLinha)
     {
 
@@ -272,6 +277,7 @@ class ImportacaoCenso2012 extends importacaoCenso
      * @param DBLayoutLinha $oLinha
      * @return unknown
      */
+    #[Override]
     function getDadosEscola(DBLayoutLinha $oLinha)
     {
 
@@ -293,6 +299,7 @@ class ImportacaoCenso2012 extends importacaoCenso
      *
      * @param DBLayoutLinha $oLinha
      */
+    #[Override]
     public function atualizaDadosEscolaEstrutura(DBLayoutLinha $oLinha)
     {
 
@@ -319,6 +326,7 @@ class ImportacaoCenso2012 extends importacaoCenso
     /**
      * Atualiza os dos alunos com posição no arquivo de Retorno do censo
      */
+    #[Override]
     public function atualizaDadosAluno(DBLayoutLinha $oLinha)
     {
 
@@ -333,7 +341,7 @@ class ImportacaoCenso2012 extends importacaoCenso
 
                 if ($this->lImportarAlunoAtivo) {
 
-                    if (trim($oDadosAluno->vinculo_escola) != trim($this->iCodigoInepEscola)) {
+                    if (trim((string) $oDadosAluno->vinculo_escola) != trim($this->iCodigoInepEscola)) {
 
                         if ($this->lInepEscola) {
 
@@ -347,7 +355,7 @@ class ImportacaoCenso2012 extends importacaoCenso
                     }
                 }
                 $oAlunoCenso = new DadosCensoAluno($oDadosAluno->ed47_i_codigo, null);
-                $oAlunoCenso->atualizarDados($oLinha, $oDadosAluno);
+                $oAlunoCenso->atualizarDados($oLinha);
             }
         } else {
 
@@ -367,6 +375,7 @@ class ImportacaoCenso2012 extends importacaoCenso
      * @param DBLayoutLinha $oLinha linha com os dados do registro 60 do censo escolar
      * @return stdClass
      */
+    #[Override]
     public function getDadosAluno(DBLayoutLinha $oLinha, $lPesquisaInep = false, $lValidaCodigo = true)
     {
 
@@ -396,7 +405,7 @@ class ImportacaoCenso2012 extends importacaoCenso
 
         if (isset($oLinha->nome_completo) && !empty($oLinha->nome_completo)) {
 
-            $sNomeAlunoCensoNovo = str_replace(array('ª', 'º'), array('', ''), $oLinha->nome_completo);
+            $sNomeAlunoCensoNovo = str_replace(['ª', 'º'], ['', ''], $oLinha->nome_completo);
             $sWhereAluno .= (empty($sWhereAluno) ? '' : ' AND ');
             $sWhereAluno .= " to_ascii(translate(ed47_v_nome, '´`', '') ,'LATIN1') = '" . $sNomeAlunoCensoNovo . "'";
 
@@ -418,6 +427,7 @@ class ImportacaoCenso2012 extends importacaoCenso
         }
     }
 
+    #[Override]
     public function atualizaEnderecoDocumentosAluno($oLinha)
     {
 
@@ -435,6 +445,7 @@ class ImportacaoCenso2012 extends importacaoCenso
         }
     }
 
+    #[Override]
     public function atualizaDadosEscolarizacaoAluno($oLinha)
     {
 
@@ -457,12 +468,13 @@ class ImportacaoCenso2012 extends importacaoCenso
      * e atualiza os se forem diferentes dos encontrados no banco de dados
      * @param object $oLinha com os campos contidos em uma linha de importacao (conforme seu tipo de registro)
      */
-    function atualizaDadosTurma($oLinha, $iAnoCenso)
+    #[Override]
+    function atualizaDadosTurma($oLinha, $iAnoCenso = null)
     {
 
         $sNomeTurmaCensoNovo = $oLinha->nome_turma;
-        $iCodigoInepTurma = trim($oLinha->codigo_turma_inep);
-        $iTipoAtendimento = trim($oLinha->tipo_atendimento);
+        $iCodigoInepTurma = trim((string) $oLinha->codigo_turma_inep);
+        $iTipoAtendimento = trim((string) $oLinha->tipo_atendimento);
 
         $sWhereTurma = '';
         if ($iTipoAtendimento == 0 || $iTipoAtendimento == 1
@@ -486,7 +498,7 @@ class ImportacaoCenso2012 extends importacaoCenso
             if (isset($oLinha->modalidade_turma) && !empty($oLinha->modalidade_turma)) {
 
                 $sWhereTurma .= (empty($sWhereTurma) ? "" : " AND ");
-                $sWhereTurma .= "      ed10_i_tipoensino = " . trim($oLinha->modalidade_turma);
+                $sWhereTurma .= "      ed10_i_tipoensino = " . trim((string) $oLinha->modalidade_turma);
             }
             if ($sWhereTurma != "") {
                 $sWhereTurma .= " and ";

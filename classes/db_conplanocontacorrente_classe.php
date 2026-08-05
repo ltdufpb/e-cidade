@@ -30,25 +30,25 @@
 class cl_conplanocontacorrente
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $c18_sequencial = 0;
-    var $c18_codcon = 0;
-    var $c18_anousu = 0;
-    var $c18_contacorrente = 0;
+    public $c18_sequencial = 0;
+    public $c18_codcon = 0;
+    public $c18_anousu = 0;
+    public $c18_contacorrente = 0;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  c18_sequencial = int4 = Código
                  c18_codcon = int4 = Conta PCASP
                  c18_anousu = int4 = Ano
@@ -56,11 +56,11 @@ class cl_conplanocontacorrente
                  ";
 
     //funcao construtor da classe
-    function cl_conplanocontacorrente()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("conplanocontacorrente");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -136,10 +136,10 @@ class cl_conplanocontacorrente
 
                 return false;
             }
-            $this->c18_sequencial = pg_result($result, 0, 0);
+            $this->c18_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from conplanocontacorrente_c18_sequencial_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $c18_sequencial)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $c18_sequencial)) {
                 $this->erro_sql = " Campo c18_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -177,7 +177,7 @@ class cl_conplanocontacorrente
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Vinculo PCASP com conta corrente ($this->c18_sequencial) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Vinculo PCASP com conta corrente já Cadastrado";
@@ -213,10 +213,10 @@ class cl_conplanocontacorrente
         $this->atualizacampos();
         $sql = " update conplanocontacorrente set ";
         $virgula = "";
-        if (trim($this->c18_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c18_sequencial"])) {
+        if (trim((string) $this->c18_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c18_sequencial"])) {
             $sql .= $virgula . " c18_sequencial = $this->c18_sequencial ";
             $virgula = ",";
-            if (trim($this->c18_sequencial) == null) {
+            if (trim((string) $this->c18_sequencial) == null) {
                 $this->erro_sql = " Campo Código nao Informado.";
                 $this->erro_campo = "c18_sequencial";
                 $this->erro_banco = "";
@@ -228,10 +228,10 @@ class cl_conplanocontacorrente
                 return false;
             }
         }
-        if (trim($this->c18_codcon) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c18_codcon"])) {
+        if (trim((string) $this->c18_codcon) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c18_codcon"])) {
             $sql .= $virgula . " c18_codcon = $this->c18_codcon ";
             $virgula = ",";
-            if (trim($this->c18_codcon) == null) {
+            if (trim((string) $this->c18_codcon) == null) {
                 $this->erro_sql = " Campo Conta PCASP nao Informado.";
                 $this->erro_campo = "c18_codcon";
                 $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_conplanocontacorrente
                 return false;
             }
         }
-        if (trim($this->c18_anousu) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c18_anousu"])) {
+        if (trim((string) $this->c18_anousu) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c18_anousu"])) {
             $sql .= $virgula . " c18_anousu = $this->c18_anousu ";
             $virgula = ",";
-            if (trim($this->c18_anousu) == null) {
+            if (trim((string) $this->c18_anousu) == null) {
                 $this->erro_sql = " Campo Ano nao Informado.";
                 $this->erro_campo = "c18_anousu";
                 $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_conplanocontacorrente
                 return false;
             }
         }
-        if (trim($this->c18_contacorrente) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c18_contacorrente"])) {
+        if (trim((string) $this->c18_contacorrente) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c18_contacorrente"])) {
             $sql .= $virgula . " c18_contacorrente = $this->c18_contacorrente ";
             $virgula = ",";
-            if (trim($this->c18_contacorrente) == null) {
+            if (trim((string) $this->c18_contacorrente) == null) {
                 $this->erro_sql = " Campo Conta Corrente nao Informado.";
                 $this->erro_campo = "c18_contacorrente";
                 $this->erro_banco = "";
@@ -392,7 +392,7 @@ class cl_conplanocontacorrente
 
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:conplanocontacorrente";
@@ -440,7 +440,7 @@ class cl_conplanocontacorrente
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -483,7 +483,7 @@ class cl_conplanocontacorrente
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -522,7 +522,7 @@ class cl_conplanocontacorrente
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

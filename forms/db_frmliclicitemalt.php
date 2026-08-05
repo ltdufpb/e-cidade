@@ -40,7 +40,7 @@ $clrotulo->label("nome");
   </tr>
   <tr colspan=2 >
     <td align="center">
-    <?
+    <?php 
     if (isset($licitacao)&&$licitacao!=""){
       $result_cods=$clliclicitem->sql_record($clliclicitem->sql_query_file(null,"*",null,"l21_codliclicita=$licitacao"));
       if ($clliclicitem->numrows>0){
@@ -65,7 +65,7 @@ $clrotulo->label("nome");
     </td>
   </tr>
   <tr>
-   <?
+   <?php 
       db_input('cods',10,'',true,'hidden',3);
       db_input('licitacao',10,'',true,'hidden',3);
       db_input("tipojulg",1,"",true,"hidden",3);

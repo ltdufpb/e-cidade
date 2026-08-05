@@ -2,6 +2,8 @@
 
 namespace ECidade\Educacao\Escola\Censo\SituacaoAluno\Dados;
 
+use DadosCenso;
+use DBString;
 use stdClass;
 
 /**
@@ -17,7 +19,7 @@ class DadosEscola2016 implements DadosInterface
     private $iCargo;
     private $sEmail;
 
-    private $aErros = array();
+    private $aErros = [];
 
     public function popular(stdClass $oDados)
     {
@@ -34,7 +36,7 @@ class DadosEscola2016 implements DadosInterface
      */
     public function transformarStdClass()
     {
-        $oValidacao = new \DadosCenso();
+        $oValidacao = new DadosCenso();
         $oDados = new stdClass();
 
         $oDados->tipo_registro = 89;
@@ -73,12 +75,12 @@ class DadosEscola2016 implements DadosInterface
         }
 
         // campo 2 - regra 2
-        if (strlen($this->iInep) < 8) {
+        if (strlen((string) $this->iInep) < 8) {
             $this->aErros[] = 'O campo "Código de escola - INEP" está com tamanho diferente do especificado.';
         }
 
         // campo 2 - regra 3
-        if (!\DBString::isSomenteNumero($this->iInep)) {
+        if (!DBString::isSomenteNumero($this->iInep)) {
             $this->aErros[] = 'O campo "Código de escola - INEP" foi preenchido com valor inválido.';
         }
     }
@@ -94,17 +96,17 @@ class DadosEscola2016 implements DadosInterface
         }
 
         // campo 3 - regra 2
-        if (strlen($this->sCpf) != 11) {
+        if (strlen((string) $this->sCpf) != 11) {
             $this->aErros[] = 'O campo "Número do CPF do Gestor Escolar" está com tamanho diferente do especificado.';
         }
 
         // campo 3 - regra 3
-        if (!\DBString::isSomenteNumero($this->sCpf)) {
+        if (!DBString::isSomenteNumero($this->sCpf)) {
             $this->aErros[] = 'O campo "Número do CPF do Gestor Escolar" foi preenchido com valor inválido.';
         }
 
         // campo 3 - regra 4
-        if (in_array($this->sCpf, array('00000000191', '00000000000'))) {
+        if (in_array($this->sCpf, ['00000000191', '00000000000'])) {
             $this->aErros[] = 'O campo "Número do CPF do Gestor Escolar" foi preenchido com valor inválido.';
         }
     }
@@ -120,7 +122,7 @@ class DadosEscola2016 implements DadosInterface
         }
 
         //campo 4 - regra 2
-        if (!\DBString::validarTamanhoMaximo($this->sNome, 100)) {
+        if (!DBString::validarTamanhoMaximo($this->sNome, 100)) {
             $this->aErros[] = 'O campo "Nome do Gestor Escolar" está maior que o especificado.';
         }
     }
@@ -136,7 +138,7 @@ class DadosEscola2016 implements DadosInterface
         }
 
         // campo 5 - regra 2
-        if (!in_array($this->iCargo, array(1, 2))) {
+        if (!in_array($this->iCargo, [1, 2])) {
             $this->aErros[] = 'Somente aceita os seguintes caracteres entre parêntesis: (1 2).';
         }
     }
@@ -152,12 +154,12 @@ class DadosEscola2016 implements DadosInterface
         }
 
         // campo 6 - regra 2
-        if (!\DBString::validarTamanhoMaximo($this->sEmail, 50)) {
+        if (!DBString::validarTamanhoMaximo($this->sEmail, 50)) {
             $this->aErros[] = 'O campo "Endereço eletrônico (e-mail) do Gestor Escolar" está maior que o especificado.';
         }
 
         // campo 6 - regra 3
-        if (!\DBString::isEmail($this->sEmail)) {
+        if (!DBString::isEmail($this->sEmail)) {
             $this->aErros[] = 'O campo "Endereço eletrônico (e-mail) do Gestor Escolar" está maior que o especificado.';
         }
     }

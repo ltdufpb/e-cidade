@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE solicitemprot
 class cl_solicitemprot { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $pc49_solicitem = 0; 
-   var $pc49_protprocesso = 0; 
+   public $pc49_solicitem = 0; 
+   public $pc49_protprocesso = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  pc49_solicitem = int8 = Código Item da Solicitação 
                  pc49_protprocesso = int4 = Código do processo 
                  ";
    //funcao construtor da classe 
-   function cl_solicitemprot() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("solicitemprot"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,7 +105,7 @@ class cl_solicitemprot {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Processos   para os itens ($this->pc49_solicitem) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Processos   para os itens já Cadastrado";
@@ -129,11 +129,11 @@ class cl_solicitemprot {
      $resaco = $this->sql_record($this->sql_query_file($this->pc49_solicitem));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7832,'$this->pc49_solicitem','I')");
-       $resac = db_query("insert into db_acount values($acount,1311,7832,'','".AddSlashes(pg_result($resaco,0,'pc49_solicitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1311,7833,'','".AddSlashes(pg_result($resaco,0,'pc49_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1311,7832,'','".AddSlashes(pg_fetch_result($resaco,0,'pc49_solicitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1311,7833,'','".AddSlashes(pg_fetch_result($resaco,0,'pc49_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -142,10 +142,10 @@ class cl_solicitemprot {
       $this->atualizacampos();
      $sql = " update solicitemprot set ";
      $virgula = "";
-     if(trim($this->pc49_solicitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc49_solicitem"])){ 
+     if(trim((string) $this->pc49_solicitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc49_solicitem"])){ 
        $sql  .= $virgula." pc49_solicitem = $this->pc49_solicitem ";
        $virgula = ",";
-       if(trim($this->pc49_solicitem) == null ){ 
+       if(trim((string) $this->pc49_solicitem) == null ){ 
          $this->erro_sql = " Campo Código Item da Solicitação nao Informado.";
          $this->erro_campo = "pc49_solicitem";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_solicitemprot {
          return false;
        }
      }
-     if(trim($this->pc49_protprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc49_protprocesso"])){ 
+     if(trim((string) $this->pc49_protprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc49_protprocesso"])){ 
        $sql  .= $virgula." pc49_protprocesso = $this->pc49_protprocesso ";
        $virgula = ",";
-       if(trim($this->pc49_protprocesso) == null ){ 
+       if(trim((string) $this->pc49_protprocesso) == null ){ 
          $this->erro_sql = " Campo Código do processo nao Informado.";
          $this->erro_campo = "pc49_protprocesso";
          $this->erro_banco = "";
@@ -176,13 +176,13 @@ class cl_solicitemprot {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7832,'$this->pc49_solicitem','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc49_solicitem"]))
-           $resac = db_query("insert into db_acount values($acount,1311,7832,'".AddSlashes(pg_result($resaco,$conresaco,'pc49_solicitem'))."','$this->pc49_solicitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1311,7832,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc49_solicitem'))."','$this->pc49_solicitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc49_protprocesso"]))
-           $resac = db_query("insert into db_acount values($acount,1311,7833,'".AddSlashes(pg_result($resaco,$conresaco,'pc49_protprocesso'))."','$this->pc49_protprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1311,7833,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc49_protprocesso'))."','$this->pc49_protprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -227,11 +227,11 @@ class cl_solicitemprot {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7832,'$pc49_solicitem','E')");
-         $resac = db_query("insert into db_acount values($acount,1311,7832,'','".AddSlashes(pg_result($resaco,$iresaco,'pc49_solicitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1311,7833,'','".AddSlashes(pg_result($resaco,$iresaco,'pc49_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1311,7832,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc49_solicitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1311,7833,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc49_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from solicitemprot
@@ -291,7 +291,7 @@ class cl_solicitemprot {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:solicitemprot";
@@ -305,7 +305,7 @@ class cl_solicitemprot {
    function sql_query ( $pc49_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -333,7 +333,7 @@ class cl_solicitemprot {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -345,7 +345,7 @@ class cl_solicitemprot {
    function sql_query_and ( $pc49_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -375,7 +375,7 @@ class cl_solicitemprot {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -387,7 +387,7 @@ class cl_solicitemprot {
    function sql_query_andam ( $pc49_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,7 +415,7 @@ class cl_solicitemprot {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -427,7 +427,7 @@ class cl_solicitemprot {
    function sql_query_file ( $pc49_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -448,7 +448,7 @@ class cl_solicitemprot {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -460,7 +460,7 @@ class cl_solicitemprot {
    function sql_query_transf ( $pc49_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -485,7 +485,7 @@ class cl_solicitemprot {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

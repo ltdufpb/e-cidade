@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cfautent_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcfautent = new cl_cfautent;
 $clcfautent->rotulo->label("k11_id");
 $clcfautent->rotulo->label("k11_local");
@@ -54,7 +55,7 @@ $clcfautent->rotulo->label("k11_local");
               <?=$Lk11_id?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k11_id",5,$Ik11_id,true,"text",4,"","chave_k11_id");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcfautent->rotulo->label("k11_local");
               <?=$Lk11_local?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k11_local",30,$Ik11_local,true,"text",4,"","chave_k11_local");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clcfautent->rotulo->label("k11_local");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?      
+      <?php       
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cfautent.php")==true){
@@ -118,12 +119,12 @@ $clcfautent->rotulo->label("k11_local");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

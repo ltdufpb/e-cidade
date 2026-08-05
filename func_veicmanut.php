@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -33,7 +33,8 @@ require_once(modification("classes/db_veicmanut_classe.php"));
 require_once(modification("classes/db_veiccadcentraldepart_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clveicmanut            = new cl_veicmanut;
 $clveiccadcentraldepart = new cl_veiccadcentraldepart;
@@ -204,12 +205,12 @@ $clveiccadcentraldepart->rotulo->label("ve37_veiccadcentral");
   </div>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

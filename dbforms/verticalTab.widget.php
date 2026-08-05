@@ -31,7 +31,7 @@
  * @revision $Revision: 1.7 $
  */
 
-class verticalTab {
+class verticalTab implements Stringable {
 
 
   /**
@@ -41,22 +41,10 @@ class verticalTab {
   private $sName = "tabview1";
 
   /**
-   * tamanho da tabviem;
-   * @var integer
-   */
-  private $iHeight = 300;
-
-  /**
-   * Width da coluna de Opções em % (percentual)
-   * @var integer
-   */
-  private $iWidthColunaOpcoes = 20;
-
-  /**
    * conjunto de abas que irao fazer parte da tabview
    * @var array
    */
-  private $aTabs  = array();
+  private $aTabs  = [];
   /**
    *Controla a renderização do objeto;
   */
@@ -69,15 +57,19 @@ class verticalTab {
    * @return void;
    */
 
-  function __construct($sName = "tabview1", $iHeight = 300, $iWidthColunaOpcoes = 20) {
+  function __construct($sName = "tabview1", /**
+   * tamanho da tabviem;
+   */
+  private $iHeight = 300, /**
+   * Width da coluna de Opções em % (percentual)
+   */
+  private $iWidthColunaOpcoes = 20) {
 
     if ($sName != '' ) {
       $this->sName = $sName;
     }else{
       die('<b>Erro:</b> parametro $sName nao pode ser vazio. ');
     }
-    $this->iHeight = $iHeight;
-    $this->iWidthColunaOpcoes = $iWidthColunaOpcoes;
   }
   /**
    * adiciona nova aba.
@@ -113,13 +105,13 @@ class verticalTab {
            } else {
              $sLabel = "Aba {$i}";
            }
-           $lActive  = isset($aAbas["lActive"])?$aAbas["lActive"]:true;
-           $this->aAbas[] = array(
+           $lActive  = $aAbas["lActive"] ?? true;
+           $this->aAbas[] = [
                                   "sName"   => $aAbas["sName"],
                                   "sUrl"    => $aAbas["sUrl"],
                                   "sLabel"  => $sLabel,
                                   "lActive" => $lActive
-                                 );
+                                 ];
 
         }
         $i++;
@@ -127,12 +119,12 @@ class verticalTab {
 
     } else {
      //o usuario passou todos os paramentos.
-      $this->aAbas[] = array(
+      $this->aAbas[] = [
                              "sName"   => $saName,
                              "sUrl"    => $sUrl,
                              "sLabel"  => $sLabel,
                              "lActive" => $lActive
-                             );
+                             ];
     }
     return true;
   }
@@ -199,8 +191,8 @@ class verticalTab {
      return $this->sRender;
   }
 
-  function __tostring(){
-    return  $this->create();
+  function __tostring(): string{
+    return  (string) $this->create();
   }
 
   function show() {

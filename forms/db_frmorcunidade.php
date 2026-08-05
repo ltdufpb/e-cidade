@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -48,7 +48,7 @@ $db_opcaoinstit = $db_opcao;
      <?=$Lo41_anousu?>
     </td>
     <td>
-<?
+<?php 
   if (!isset($o41_anousu)) {
     $o41_anousu = db_getsession('DB_anousu');
 	}
@@ -58,15 +58,15 @@ $db_opcaoinstit = $db_opcao;
   </tr>
   <tr>
     <td nowrap title="<?=@$To41_orgao?>">
-       <?
+       <?php 
        db_ancora(@$Lo41_orgao,"js_pesquisao41_orgao(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
+<?php 
 db_input('o41_orgao',5,$Io41_orgao,true,'text',$db_opcao," onchange='js_pesquisao41_orgao(false);'")
 ?>
-       <?
+       <?php 
 db_input('o40_descr',50,$Io40_descr,true,'text',3,'');
        ?>
     </td>
@@ -77,7 +77,7 @@ db_input('o40_descr',50,$Io40_descr,true,'text',3,'');
        <?=@$Lo41_unidade?>
     </td>
     <td>
-    <?
+    <?php 
       db_input('o41_unidade',5,$Io41_unidade,true,'text',$db_opcao,"")
     ?>
     </td>
@@ -88,7 +88,7 @@ db_input('o40_descr',50,$Io40_descr,true,'text',3,'');
 		  <strong>Instituição:</strong>
     </td>
     <td>
-    <?
+    <?php 
 		 // busca a instituicao da prefeitura
 		 $rsI = db_query(" select codigo as iprefeitura from db_config where prefeitura is true ");
 		 db_fieldsmemory($rsI,0);
@@ -124,7 +124,7 @@ db_input('o40_descr',50,$Io40_descr,true,'text',3,'');
        <?=@$Lo41_codtri?>
     </td>
     <td>
-<?
+<?php 
 db_input('o41_codtri',5,$Io41_codtri,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -134,7 +134,7 @@ db_input('o41_codtri',5,$Io41_codtri,true,'text',$db_opcao,"")
        <?=@$Lo41_descr?>
     </td>
     <td>
-<?
+<?php 
 db_input('o41_descr',50,$Io41_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -144,7 +144,7 @@ db_input('o41_descr',50,$Io41_descr,true,'text',$db_opcao,"")
        <?=@$Lo41_indent?>
     </td>
     <td>
-<?
+<?php 
 db_input('o41_indent',15,$Io41_indent,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -154,7 +154,7 @@ db_input('o41_indent',15,$Io41_indent,true,'text',$db_opcao,"")
        <?=@$Lo41_cnpj?>
     </td>
     <td>
-<?
+<?php 
 db_input('o41_cnpj',14,$Io41_cnpj,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -164,7 +164,7 @@ db_input('o41_cnpj',14,$Io41_cnpj,true,'text',$db_opcao,"")
        <?=@$Lo41_ident?>
     </td>
     <td>
-<?
+<?php 
 $x = array('01'=>'Prefeitura Municipal','02'=>'Câmara Municipal','03'=>'Secretaria da Educação','04'=>'Secretaria da Saúde','05'=>'RPPS (Exceto Autarquia)','06'=>'Autarquia (Exceto RPPS)','07'=>'Autarquia (RPPS)','08'=>'Fundação','09'=>'Empresa Estatal Dependente','10'=>'Empresa Estatal não Dependente','11'=>'Consórcio','12'=>'Outras');
 db_select('o41_ident',$x,true,$db_opcao,"");
 ?>
@@ -277,7 +277,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_orcunidade.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }

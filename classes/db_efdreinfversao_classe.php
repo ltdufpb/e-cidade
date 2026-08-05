@@ -27,7 +27,7 @@ class cl_efdreinfversao
     public function __construct()
     {
         $this->rotulo = new rotulo("efdreinfversao"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -72,10 +72,10 @@ class cl_efdreinfversao
          $this->erro_status = "0";
          return false; 
        }
-       $this->efd01_sequencial = pg_result($result,0,0); 
+       $this->efd01_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from efdreinfversao_efd01_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $efd01_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $efd01_sequencial)){
          $this->erro_sql = " Campo efd01_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -105,7 +105,7 @@ class cl_efdreinfversao
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Versão do efd ($this->efd01_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Versão do efd já Cadastrado";
@@ -134,11 +134,11 @@ class cl_efdreinfversao
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1010203,'$this->efd01_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1010358,1010203,'','".AddSlashes(pg_result($resaco,0,'efd01_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010358,1010204,'','".AddSlashes(pg_result($resaco,0,'efd01_versao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010358,1010203,'','".AddSlashes(pg_fetch_result($resaco,0,'efd01_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010358,1010204,'','".AddSlashes(pg_fetch_result($resaco,0,'efd01_versao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -149,10 +149,10 @@ class cl_efdreinfversao
       $this->atualizacampos();
      $sql = " update efdreinfversao set ";
      $virgula = "";
-     if(trim($this->efd01_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd01_sequencial"])){ 
+     if(trim((string) $this->efd01_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd01_sequencial"])){ 
        $sql  .= $virgula." efd01_sequencial = $this->efd01_sequencial ";
        $virgula = ",";
-       if(trim($this->efd01_sequencial) == null ){ 
+       if(trim((string) $this->efd01_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "efd01_sequencial";
          $this->erro_banco = "";
@@ -162,10 +162,10 @@ class cl_efdreinfversao
          return false;
        }
      }
-     if(trim($this->efd01_versao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd01_versao"])){ 
+     if(trim((string) $this->efd01_versao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd01_versao"])){ 
        $sql  .= $virgula." efd01_versao = '$this->efd01_versao' ";
        $virgula = ",";
-       if(trim($this->efd01_versao) == null ){ 
+       if(trim((string) $this->efd01_versao) == null ){ 
          $this->erro_sql = " Campo Versão não informado.";
          $this->erro_campo = "efd01_versao";
          $this->erro_banco = "";
@@ -189,13 +189,13 @@ class cl_efdreinfversao
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1010203,'$this->efd01_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["efd01_sequencial"]) || $this->efd01_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010358,1010203,'".AddSlashes(pg_result($resaco,$conresaco,'efd01_sequencial'))."','$this->efd01_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010358,1010203,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'efd01_sequencial'))."','$this->efd01_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["efd01_versao"]) || $this->efd01_versao != "")
-             $resac = db_query("insert into db_acount values($acount,1010358,1010204,'".AddSlashes(pg_result($resaco,$conresaco,'efd01_versao'))."','$this->efd01_versao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010358,1010204,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'efd01_versao'))."','$this->efd01_versao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -249,11 +249,11 @@ class cl_efdreinfversao
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1010203,'$efd01_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010358,1010203,'','".AddSlashes(pg_result($resaco,$iresaco,'efd01_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010358,1010204,'','".AddSlashes(pg_result($resaco,$iresaco,'efd01_versao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010358,1010203,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'efd01_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010358,1010204,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'efd01_versao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 $oDaoEfetividadeRh = db_utils::getdao("efetividaderh");
 $db_opcao          = 22;
 $db_opcao1         = 3;
@@ -60,7 +60,7 @@ if (isset($alterar)) {
   parent.document.formaba.a2.disabled = false;
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href='edu1_efetividade001.php?efetividaderh=<?=$ed98_i_codigo?>';
  </script>
- <?
+ <?php 
  
 }
 
@@ -82,7 +82,7 @@ if (isset($alterar)) {
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Informe a competência da efetividade:</b></legend>
-       <?include(modification("forms/db_frmefetividaderh.php"));?>
+       <?php include(modification("forms/db_frmefetividaderh.php"));?>
       </fieldset>
      </center>
     </td>
@@ -90,7 +90,7 @@ if (isset($alterar)) {
   </table>
  </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 	
   if ($oDaoEfetividadeRh->erro_status == "0") {
@@ -111,7 +111,7 @@ if (isset($alterar)) {
     <script>
      parent.iframe_a1.location.href = "edu1_efetividaderh002.php?chavepesquisa=<?=$ed98_i_codigo?>";
     </script>
-   <?
+   <?php 
    
   }
   

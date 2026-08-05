@@ -27,6 +27,16 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Evento\Model;
 
+use DateTime;
+use ParameterException;
+use Servidor;
+use DateInterval;
+use InstituicaoRepository;
+use Instituicao;
+use stdClass;
+use DBString;
+use DBDate;
+use Exception;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\BaseHora;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Evento\Repository\Evento as EventoRepository;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Validacao\Evento as EventoValidador;
@@ -44,14 +54,14 @@ class Evento
      * @var array
      */
     public static $horasExtrasPermitidas =
-      array(
+      [
         BaseHora::HORAS_EXTRA50,
         BaseHora::HORAS_EXTRA75,
         BaseHora::HORAS_EXTRA100,
         BaseHora::HORAS_EXTRA50_NOTURNA,
         BaseHora::HORAS_EXTRA75_NOTURNA,
         BaseHora::HORAS_EXTRA100_NOTURNA
-      );
+      ];
     /**
      * @var integer
      */
@@ -61,27 +71,27 @@ class Evento
      */
     protected $titulo;
     /**
-     * @var \DBDate
+     * @var DBDate
      */
     protected $dataInicial;
     /**
-     * @var \DBDate
+     * @var DBDate
      */
     protected $dataFinal;
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $entradaUm = null;
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $saidaUm = null;
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $entradaDois = null;
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $saidaDois = null;
     /**
@@ -93,11 +103,11 @@ class Evento
      */
     protected $tipoHoraExtraDois;
     /**
-     * @var \Servidor[]
+     * @var Servidor[]
      */
-    protected $servidores = array();
+    protected $servidores = [];
     /**
-     * @var \Instituicao
+     * @var Instituicao
      */
     protected $instituicao;
     /**
@@ -143,7 +153,7 @@ class Evento
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getEntradaUm()
     {
@@ -151,15 +161,15 @@ class Evento
     }
 
     /**
-     * @param \DateTime $entradaUm
+     * @param DateTime $entradaUm
      */
-    public function setEntradaUm(\DateTime $entradaUm)
+    public function setEntradaUm(DateTime $entradaUm)
     {
         $this->entradaUm = $entradaUm;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getSaidaUm()
     {
@@ -167,15 +177,15 @@ class Evento
     }
 
     /**
-     * @param \DateTime $saidaUm
+     * @param DateTime $saidaUm
      */
-    public function setSaidaUm(\DateTime $saidaUm)
+    public function setSaidaUm(DateTime $saidaUm)
     {
         $this->saidaUm = $saidaUm;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getEntradaDois()
     {
@@ -183,15 +193,15 @@ class Evento
     }
 
     /**
-     * @param \DateTime $entradaDois
+     * @param DateTime $entradaDois
      */
-    public function setEntradaDois(\DateTime $entradaDois)
+    public function setEntradaDois(DateTime $entradaDois)
     {
         $this->entradaDois = $entradaDois;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getSaidaDois()
     {
@@ -199,9 +209,9 @@ class Evento
     }
 
     /**
-     * @param \DateTime $saidaDois
+     * @param DateTime $saidaDois
      */
-    public function setSaidaDois(\DateTime $saidaDois)
+    public function setSaidaDois(DateTime $saidaDois)
     {
         $this->saidaDois = $saidaDois;
     }
@@ -216,13 +226,13 @@ class Evento
 
     /**
      * @param int $tipoHoraExtraUm
-     * @throws \ParameterException
+     * @throws ParameterException
      */
     public function setTipoHoraExtraUm($tipoHoraExtraUm)
     {
 
         if (!empty($tipoHoraExtraUm) && !in_array($tipoHoraExtraUm, self::$horasExtrasPermitidas)) {
-            throw new \ParameterException("Tipo de Hora Extra informada para o primeiro período é inválido.");
+            throw new ParameterException("Tipo de Hora Extra informada para o primeiro período é inválido.");
         }
         $this->tipoHoraExtraUm = $tipoHoraExtraUm;
     }
@@ -237,35 +247,35 @@ class Evento
 
     /**
      * @param int $tipoHoraExtraDois
-     * @throws \ParameterException
+     * @throws ParameterException
      */
     public function setTipoHoraExtraDois($tipoHoraExtraDois)
     {
 
         if (!empty($tipoHoraExtraDois) && !in_array($tipoHoraExtraDois, self::$horasExtrasPermitidas)) {
-            throw new \ParameterException("Tipo de Hora Extra informada para o primeiro período é inválido.");
+            throw new ParameterException("Tipo de Hora Extra informada para o primeiro período é inválido.");
         }
         $this->tipoHoraExtraDois = $tipoHoraExtraDois;
     }
 
     /**
-     * @param \Servidor $servidor
+     * @param Servidor $servidor
      */
-    public function adicionarServidor(\Servidor $servidor)
+    public function adicionarServidor(Servidor $servidor)
     {
         $this->servidores[$servidor->getMatricula()] = $servidor;
     }
 
     /**
-     * @param \Servidor $servidor
+     * @param Servidor $servidor
      */
-    public function removerServidor(\Servidor $servidor)
+    public function removerServidor(Servidor $servidor)
     {
         unset($this->servidores[$servidor->getMatricula()]);
     }
 
     /**
-     * @return \Servidor[]
+     * @return Servidor[]
      */
     public function getServidores()
     {
@@ -281,12 +291,12 @@ class Evento
     /**
      * Retorna o intervalo das horas no período 1
      *
-     * @return bool|\DateInterval
-     * @throws \Exception
+     * @return bool|DateInterval
+     * @throws Exception
      */
     public function getIntervaloUm()
     {
-        $intervalo = new \DateInterval('PT0H0M');
+        $intervalo = new DateInterval('PT0H0M');
 
         if (!empty($this->saidaUm) && !empty($this->entradaUm)) {
             $intervalo = $this->entradaUm->diff($this->saidaUm);
@@ -298,12 +308,12 @@ class Evento
     /**
      * Retorna o intervalo das horas no período 1
      *
-     * @return bool|\DateInterval
-     * @throws \Exception
+     * @return bool|DateInterval
+     * @throws Exception
      */
     public function getIntervaloDois()
     {
-        $intervalo = new \DateInterval('PT0H0M');
+        $intervalo = new DateInterval('PT0H0M');
 
         if (!empty($this->entradaDois) && !empty($this->saidaDois)) {
             $intervalo = $this->entradaDois->diff($this->saidaDois);
@@ -313,22 +323,22 @@ class Evento
     }
 
     /**
-     * @return \Instituicao
+     * @return Instituicao
      */
     public function getInstituicao()
     {
 
         if (empty($this->instituicao) && !empty($this->codigoInstituicao)) {
-            $this->setInstituicao(\InstituicaoRepository::getInstituicaoByCodigo($this->codigoInstituicao));
+            $this->setInstituicao(InstituicaoRepository::getInstituicaoByCodigo($this->codigoInstituicao));
         }
 
         return $this->instituicao;
     }
 
     /**
-     * @param \Instituicao $instituicao
+     * @param Instituicao $instituicao
      */
-    public function setInstituicao(\Instituicao $instituicao)
+    public function setInstituicao(Instituicao $instituicao)
     {
 
         $this->setCodigoInstituicao($instituicao->getCodigo());
@@ -365,10 +375,10 @@ class Evento
     public function validarServidores()
     {
 
-        $servidoresIgnorados = array();
+        $servidoresIgnorados = [];
 
         $nomeArquivo = 'tmp/servidores_inconsistencia.json';
-        $errosArquivo = array();
+        $errosArquivo = [];
 
         foreach ($this->servidores as $servidor) {
             $validador = EventoValidador::create();
@@ -379,14 +389,14 @@ class Evento
                 $servidoresIgnorados[] = $servidor->getMatricula();
                 foreach ($validador->getErros() as $codigoErro => $titulo) {
                     if (empty($errosArquivo[$codigoErro])) {
-                        $errosArquivo[$codigoErro] = new \stdClass();
+                        $errosArquivo[$codigoErro] = new stdClass();
                         $errosArquivo[$codigoErro]->titulo = $titulo;
-                        $errosArquivo[$codigoErro]->matriculas = array();
+                        $errosArquivo[$codigoErro]->matriculas = [];
                     }
-                    $errosArquivo[$codigoErro]->matriculas[] = (object)array(
+                    $errosArquivo[$codigoErro]->matriculas[] = (object)[
                       'matricula' => $servidor->getMatricula(),
                       'nome'      => $servidor->getCgm()->getNome()
-                    );
+                    ];
                 }
             }
         }
@@ -396,7 +406,7 @@ class Evento
         }
 
         if (count($errosArquivo) > 0) {
-            file_put_contents($nomeArquivo, json_encode(\DBString::utf8_encode_all($errosArquivo)));
+            file_put_contents($nomeArquivo, json_encode(DBString::utf8_encode_all($errosArquivo)));
         }
 
         return $servidoresIgnorados;
@@ -418,7 +428,7 @@ class Evento
     }
 
     /**
-     * @return \DBDate
+     * @return DBDate
      */
     public function getDataInicial()
     {
@@ -426,15 +436,15 @@ class Evento
     }
 
     /**
-     * @param \DBDate $dataInicial
+     * @param DBDate $dataInicial
      */
-    public function setDataInicial(\DBDate $dataInicial)
+    public function setDataInicial(DBDate $dataInicial)
     {
         $this->dataInicial = $dataInicial;
     }
 
     /**
-     * @return \DBDate
+     * @return DBDate
      */
     public function getDataFinal()
     {
@@ -442,9 +452,9 @@ class Evento
     }
 
     /**
-     * @param \DBDate $dataFinal
+     * @param DBDate $dataFinal
      */
-    public function setDataFinal(\DBDate $dataFinal)
+    public function setDataFinal(DBDate $dataFinal)
     {
         $this->dataFinal = $dataFinal;
     }

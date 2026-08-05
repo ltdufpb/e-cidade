@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -39,7 +39,7 @@ require_once (modification("classes/db_censolinguaindig_classe.php"));
 require_once (modification("classes/db_db_depart_classe.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 require_once (modification("libs/db_jsplibwebseller.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clescola           = new cl_escola;
 $clcensouf          = new cl_censouf;
 $clcensomunic       = new cl_censomunic;
@@ -126,7 +126,7 @@ if(isset($incluir)){
    parent.document.formaba.a2.style.color = "black";
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href='edu1_cursobase001.php?escola=<?=$ed18_i_codigo?>&ed18_c_nome=<?=$ed18_c_nome?>';
   </script>
-  <?
+  <?php 
  }else{
   $ed18_c_nome = $descrdepto;
   $db_opcao = 1;
@@ -148,7 +148,7 @@ if(isset($incluir)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Dados da Escola</b></legend>
-    <?include(modification("forms/db_frmescola.php"));?>
+    <?php include(modification("forms/db_frmescola.php"));?>
    </fieldset>
    </center>
   </td>
@@ -156,7 +156,7 @@ if(isset($incluir)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)){
  if($clescola->erro_status=="0"){
   $clescola->erro(true,false);
@@ -182,7 +182,7 @@ if(isset($incluir)){
    parent.document.formaba.a2.style.color = "black";
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href='edu1_cursobase001.php?escola=<?=$ed18_i_codigo?>&ed18_c_nome=<?=$ed18_c_nome?>';
   </script>
-  <?
+  <?php 
   $clescola->erro(true,true);
  }
 }

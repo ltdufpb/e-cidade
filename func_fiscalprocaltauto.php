@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_fiscalproc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clfiscalproc = new cl_fiscalproc;
 $clfiscalproc->rotulo->label("y29_codtipo");
 $clfiscalproc->rotulo->label("y29_descr");
@@ -54,7 +55,7 @@ $clfiscalproc->rotulo->label("y29_descr");
               <?=$Ly29_codtipo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("y29_codtipo",20,$Iy29_codtipo,true,"text",4,"","chave_y29_codtipo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clfiscalproc->rotulo->label("y29_descr");
               <?=$Ly29_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("y29_descr",50,$Iy29_descr,true,"text",4,"","chave_y29_descr");
 	       ?>
             </td>
@@ -82,7 +83,7 @@ $clfiscalproc->rotulo->label("y29_descr");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
 
       $w=" y29_coddepto = ".db_getsession("DB_coddepto")." and y29_tipoproced='A' and y29_tipofisc=$tipofisc ";
 
@@ -122,12 +123,12 @@ $clfiscalproc->rotulo->label("y29_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

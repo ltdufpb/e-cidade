@@ -107,7 +107,7 @@ $oDaoIptuEnder->rotulo->label();
   ?>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 
   if ($oDaoIptuEnder->erro_status=="0") {

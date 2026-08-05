@@ -43,7 +43,7 @@ class cl_matriz_saldo_contabil_lancamentos
     public function __construct()
     {
         $this->rotulo = new rotulo("matriz_saldo_contabil_lancamentos"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -167,10 +167,10 @@ class cl_matriz_saldo_contabil_lancamentos
          $this->erro_status = "0";
          return false; 
        }
-       $this->c133_sequencial = pg_result($result,0,0); 
+       $this->c133_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from matriz_saldo_contabil_lancamentos_c133_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c133_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c133_sequencial)){
          $this->erro_sql = " Campo c133_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -216,7 +216,7 @@ class cl_matriz_saldo_contabil_lancamentos
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Matriz Saldo Contábil Lançamentos ($this->c133_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Matriz Saldo Contábil Lançamentos já Cadastrado";
@@ -245,19 +245,19 @@ class cl_matriz_saldo_contabil_lancamentos
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1010465,'$this->c133_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1010445,1010472,'','".AddSlashes(pg_result($resaco,0,'c133_ending_balance'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010445,1010471,'','".AddSlashes(pg_result($resaco,0,'c133_period_change_credit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010445,1010470,'','".AddSlashes(pg_result($resaco,0,'c133_period_change_debit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010445,1010469,'','".AddSlashes(pg_result($resaco,0,'c133_beginning_balance'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010445,1010468,'','".AddSlashes(pg_result($resaco,0,'c133_atributos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010445,1010467,'','".AddSlashes(pg_result($resaco,0,'c133_estrutural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010445,1010466,'','".AddSlashes(pg_result($resaco,0,'c133_matriz_saldo_contabil'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010445,1010465,'','".AddSlashes(pg_result($resaco,0,'c133_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010445,1010473,'','".AddSlashes(pg_result($resaco,0,'c133_natureza'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010445,1010599,'','".AddSlashes(pg_result($resaco,0,'c133_natureza_final'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010445,1010472,'','".AddSlashes(pg_fetch_result($resaco,0,'c133_ending_balance'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010445,1010471,'','".AddSlashes(pg_fetch_result($resaco,0,'c133_period_change_credit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010445,1010470,'','".AddSlashes(pg_fetch_result($resaco,0,'c133_period_change_debit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010445,1010469,'','".AddSlashes(pg_fetch_result($resaco,0,'c133_beginning_balance'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010445,1010468,'','".AddSlashes(pg_fetch_result($resaco,0,'c133_atributos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010445,1010467,'','".AddSlashes(pg_fetch_result($resaco,0,'c133_estrutural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010445,1010466,'','".AddSlashes(pg_fetch_result($resaco,0,'c133_matriz_saldo_contabil'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010445,1010465,'','".AddSlashes(pg_fetch_result($resaco,0,'c133_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010445,1010473,'','".AddSlashes(pg_fetch_result($resaco,0,'c133_natureza'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010445,1010599,'','".AddSlashes(pg_fetch_result($resaco,0,'c133_natureza_final'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -268,10 +268,10 @@ class cl_matriz_saldo_contabil_lancamentos
       $this->atualizacampos();
      $sql = " update matriz_saldo_contabil_lancamentos set ";
      $virgula = "";
-     if(trim($this->c133_ending_balance)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_ending_balance"])){ 
+     if(trim((string) $this->c133_ending_balance)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_ending_balance"])){ 
        $sql  .= $virgula." c133_ending_balance = $this->c133_ending_balance ";
        $virgula = ",";
-       if(trim($this->c133_ending_balance) == null ){ 
+       if(trim((string) $this->c133_ending_balance) == null ){ 
          $this->erro_sql = " Campo Ending Balance não informado.";
          $this->erro_campo = "c133_ending_balance";
          $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_matriz_saldo_contabil_lancamentos
          return false;
        }
      }
-     if(trim($this->c133_period_change_credit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_period_change_credit"])){ 
+     if(trim((string) $this->c133_period_change_credit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_period_change_credit"])){ 
        $sql  .= $virgula." c133_period_change_credit = $this->c133_period_change_credit ";
        $virgula = ",";
-       if(trim($this->c133_period_change_credit) == null ){ 
+       if(trim((string) $this->c133_period_change_credit) == null ){ 
          $this->erro_sql = " Campo Period Change Credit não informado.";
          $this->erro_campo = "c133_period_change_credit";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_matriz_saldo_contabil_lancamentos
          return false;
        }
      }
-     if(trim($this->c133_period_change_debit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_period_change_debit"])){ 
+     if(trim((string) $this->c133_period_change_debit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_period_change_debit"])){ 
        $sql  .= $virgula." c133_period_change_debit = $this->c133_period_change_debit ";
        $virgula = ",";
-       if(trim($this->c133_period_change_debit) == null ){ 
+       if(trim((string) $this->c133_period_change_debit) == null ){ 
          $this->erro_sql = " Campo Period Change Debit não informado.";
          $this->erro_campo = "c133_period_change_debit";
          $this->erro_banco = "";
@@ -307,10 +307,10 @@ class cl_matriz_saldo_contabil_lancamentos
          return false;
        }
      }
-     if(trim($this->c133_beginning_balance)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_beginning_balance"])){ 
+     if(trim((string) $this->c133_beginning_balance)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_beginning_balance"])){ 
        $sql  .= $virgula." c133_beginning_balance = $this->c133_beginning_balance ";
        $virgula = ",";
-       if(trim($this->c133_beginning_balance) == null ){ 
+       if(trim((string) $this->c133_beginning_balance) == null ){ 
          $this->erro_sql = " Campo Beginning Balance não informado.";
          $this->erro_campo = "c133_beginning_balance";
          $this->erro_banco = "";
@@ -320,10 +320,10 @@ class cl_matriz_saldo_contabil_lancamentos
          return false;
        }
      }
-     if(trim($this->c133_atributos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_atributos"])){ 
+     if(trim((string) $this->c133_atributos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_atributos"])){ 
        $sql  .= $virgula." c133_atributos = '$this->c133_atributos' ";
        $virgula = ",";
-       if(trim($this->c133_atributos) == null ){ 
+       if(trim((string) $this->c133_atributos) == null ){ 
          $this->erro_sql = " Campo Atributos não informado.";
          $this->erro_campo = "c133_atributos";
          $this->erro_banco = "";
@@ -333,10 +333,10 @@ class cl_matriz_saldo_contabil_lancamentos
          return false;
        }
      }
-     if(trim($this->c133_estrutural)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_estrutural"])){ 
+     if(trim((string) $this->c133_estrutural)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_estrutural"])){ 
        $sql  .= $virgula." c133_estrutural = '$this->c133_estrutural' ";
        $virgula = ",";
-       if(trim($this->c133_estrutural) == null ){ 
+       if(trim((string) $this->c133_estrutural) == null ){ 
          $this->erro_sql = " Campo Estrutural não informado.";
          $this->erro_campo = "c133_estrutural";
          $this->erro_banco = "";
@@ -346,10 +346,10 @@ class cl_matriz_saldo_contabil_lancamentos
          return false;
        }
      }
-     if(trim($this->c133_matriz_saldo_contabil)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_matriz_saldo_contabil"])){ 
+     if(trim((string) $this->c133_matriz_saldo_contabil)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_matriz_saldo_contabil"])){ 
        $sql  .= $virgula." c133_matriz_saldo_contabil = $this->c133_matriz_saldo_contabil ";
        $virgula = ",";
-       if(trim($this->c133_matriz_saldo_contabil) == null ){ 
+       if(trim((string) $this->c133_matriz_saldo_contabil) == null ){ 
          $this->erro_sql = " Campo Matriz Saldo Contábil não informado.";
          $this->erro_campo = "c133_matriz_saldo_contabil";
          $this->erro_banco = "";
@@ -359,10 +359,10 @@ class cl_matriz_saldo_contabil_lancamentos
          return false;
        }
      }
-     if(trim($this->c133_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_sequencial"])){ 
+     if(trim((string) $this->c133_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_sequencial"])){ 
        $sql  .= $virgula." c133_sequencial = $this->c133_sequencial ";
        $virgula = ",";
-       if(trim($this->c133_sequencial) == null ){ 
+       if(trim((string) $this->c133_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "c133_sequencial";
          $this->erro_banco = "";
@@ -372,10 +372,10 @@ class cl_matriz_saldo_contabil_lancamentos
          return false;
        }
      }
-     if(trim($this->c133_natureza)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_natureza"])){ 
+     if(trim((string) $this->c133_natureza)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_natureza"])){ 
        $sql  .= $virgula." c133_natureza = '$this->c133_natureza' ";
        $virgula = ",";
-       if(trim($this->c133_natureza) == null ){ 
+       if(trim((string) $this->c133_natureza) == null ){ 
          $this->erro_sql = " Campo Natureza não informado.";
          $this->erro_campo = "c133_natureza";
          $this->erro_banco = "";
@@ -385,10 +385,10 @@ class cl_matriz_saldo_contabil_lancamentos
          return false;
        }
      }
-     if(trim($this->c133_natureza_final)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_natureza_final"])){ 
+     if(trim((string) $this->c133_natureza_final)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c133_natureza_final"])){ 
        $sql  .= $virgula." c133_natureza_final = '$this->c133_natureza_final' ";
        $virgula = ",";
-       if(trim($this->c133_natureza_final) == null ){ 
+       if(trim((string) $this->c133_natureza_final) == null ){ 
          $this->erro_sql = " Campo Natureza Final não informado.";
          $this->erro_campo = "c133_natureza_final";
          $this->erro_banco = "";
@@ -412,29 +412,29 @@ class cl_matriz_saldo_contabil_lancamentos
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1010465,'$this->c133_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c133_ending_balance"]) || $this->c133_ending_balance != "")
-             $resac = db_query("insert into db_acount values($acount,1010445,1010472,'".AddSlashes(pg_result($resaco,$conresaco,'c133_ending_balance'))."','$this->c133_ending_balance',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010445,1010472,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c133_ending_balance'))."','$this->c133_ending_balance',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c133_period_change_credit"]) || $this->c133_period_change_credit != "")
-             $resac = db_query("insert into db_acount values($acount,1010445,1010471,'".AddSlashes(pg_result($resaco,$conresaco,'c133_period_change_credit'))."','$this->c133_period_change_credit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010445,1010471,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c133_period_change_credit'))."','$this->c133_period_change_credit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c133_period_change_debit"]) || $this->c133_period_change_debit != "")
-             $resac = db_query("insert into db_acount values($acount,1010445,1010470,'".AddSlashes(pg_result($resaco,$conresaco,'c133_period_change_debit'))."','$this->c133_period_change_debit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010445,1010470,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c133_period_change_debit'))."','$this->c133_period_change_debit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c133_beginning_balance"]) || $this->c133_beginning_balance != "")
-             $resac = db_query("insert into db_acount values($acount,1010445,1010469,'".AddSlashes(pg_result($resaco,$conresaco,'c133_beginning_balance'))."','$this->c133_beginning_balance',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010445,1010469,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c133_beginning_balance'))."','$this->c133_beginning_balance',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c133_atributos"]) || $this->c133_atributos != "")
-             $resac = db_query("insert into db_acount values($acount,1010445,1010468,'".AddSlashes(pg_result($resaco,$conresaco,'c133_atributos'))."','$this->c133_atributos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010445,1010468,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c133_atributos'))."','$this->c133_atributos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c133_estrutural"]) || $this->c133_estrutural != "")
-             $resac = db_query("insert into db_acount values($acount,1010445,1010467,'".AddSlashes(pg_result($resaco,$conresaco,'c133_estrutural'))."','$this->c133_estrutural',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010445,1010467,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c133_estrutural'))."','$this->c133_estrutural',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c133_matriz_saldo_contabil"]) || $this->c133_matriz_saldo_contabil != "")
-             $resac = db_query("insert into db_acount values($acount,1010445,1010466,'".AddSlashes(pg_result($resaco,$conresaco,'c133_matriz_saldo_contabil'))."','$this->c133_matriz_saldo_contabil',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010445,1010466,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c133_matriz_saldo_contabil'))."','$this->c133_matriz_saldo_contabil',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c133_sequencial"]) || $this->c133_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010445,1010465,'".AddSlashes(pg_result($resaco,$conresaco,'c133_sequencial'))."','$this->c133_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010445,1010465,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c133_sequencial'))."','$this->c133_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c133_natureza"]) || $this->c133_natureza != "")
-             $resac = db_query("insert into db_acount values($acount,1010445,1010473,'".AddSlashes(pg_result($resaco,$conresaco,'c133_natureza'))."','$this->c133_natureza',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010445,1010473,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c133_natureza'))."','$this->c133_natureza',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c133_natureza_final"]) || $this->c133_natureza_final != "")
-             $resac = db_query("insert into db_acount values($acount,1010445,1010599,'".AddSlashes(pg_result($resaco,$conresaco,'c133_natureza_final'))."','$this->c133_natureza_final',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010445,1010599,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c133_natureza_final'))."','$this->c133_natureza_final',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -488,19 +488,19 @@ class cl_matriz_saldo_contabil_lancamentos
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1010465,'$c133_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010445,1010472,'','".AddSlashes(pg_result($resaco,$iresaco,'c133_ending_balance'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010445,1010471,'','".AddSlashes(pg_result($resaco,$iresaco,'c133_period_change_credit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010445,1010470,'','".AddSlashes(pg_result($resaco,$iresaco,'c133_period_change_debit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010445,1010469,'','".AddSlashes(pg_result($resaco,$iresaco,'c133_beginning_balance'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010445,1010468,'','".AddSlashes(pg_result($resaco,$iresaco,'c133_atributos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010445,1010467,'','".AddSlashes(pg_result($resaco,$iresaco,'c133_estrutural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010445,1010466,'','".AddSlashes(pg_result($resaco,$iresaco,'c133_matriz_saldo_contabil'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010445,1010465,'','".AddSlashes(pg_result($resaco,$iresaco,'c133_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010445,1010473,'','".AddSlashes(pg_result($resaco,$iresaco,'c133_natureza'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010445,1010599,'','".AddSlashes(pg_result($resaco,$iresaco,'c133_natureza_final'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010445,1010472,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c133_ending_balance'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010445,1010471,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c133_period_change_credit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010445,1010470,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c133_period_change_debit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010445,1010469,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c133_beginning_balance'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010445,1010468,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c133_atributos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010445,1010467,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c133_estrutural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010445,1010466,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c133_matriz_saldo_contabil'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010445,1010465,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c133_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010445,1010473,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c133_natureza'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010445,1010599,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c133_natureza_final'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -618,7 +618,7 @@ class cl_matriz_saldo_contabil_lancamentos
      * @param array $order
      * @return string
      */
-    public function sql($columns = array('*'), $where = array(), $order = array())
+    public function sql($columns = ['*'], $where = [], $order = [])
     {
         $columns = implode(', ', $columns);
         $where = $where ? 'WHERE ' . implode(' AND ', $where) : '';

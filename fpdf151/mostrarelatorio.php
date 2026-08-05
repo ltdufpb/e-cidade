@@ -1,4 +1,4 @@
-<?
+<?php 
 
 parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 define('FPDF_FONTPATH','font/');

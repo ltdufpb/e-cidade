@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itbicancela_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clitbicancela = new cl_itbicancela;
 $clitbicancela->rotulo->label("it16_guia");
 $clitbicancela->rotulo->label("it16_data");
@@ -54,7 +55,7 @@ $clitbicancela->rotulo->label("it16_data");
               <?=$Lit16_guia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("it16_guia",10,$Iit16_guia,true,"text",4,"","chave_it16_guia");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clitbicancela->rotulo->label("it16_data");
               <?=$Lit16_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("it16_data",10,$Iit16_data,true,"text",4,"","chave_it16_data");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clitbicancela->rotulo->label("it16_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbicancela.php")==true){
@@ -118,12 +119,12 @@ $clitbicancela->rotulo->label("it16_data");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

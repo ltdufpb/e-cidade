@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -36,16 +36,16 @@ require_once(modification("libs/db_app.utils.php"));
 require_once(modification("classes/db_edu_anexoatolegal_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 
 $oDaoAnexoAtoLegal = db_utils::getdao("edu_anexoatolegal");
 
 function validaNomeArquivo($sNome) {
 
   $sNome       = TiraAcento($sNome);
-  $aCaracteres = array(" ", "[", "]", "{", "}", "*", "/", "&",
-                       "\\", "$", "%", "#", "@", "!", "'");
+  $aCaracteres = [" ", "[", "]", "{", "}", "*", "/", "&",
+                       "\\", "$", "%", "#", "@", "!", "'"];
   $sNome       = str_replace($aCaracteres, "_", $sNome);
 
   return $sNome;
@@ -121,7 +121,7 @@ if (isset($alterar)) {
 
     <link href="estilos.css" rel="stylesheet" type="text/css">
 
-    <?
+    <?php 
       $sLib  = "scripts.js,prototype.js,webseller.js,strings.js,datagrid.widget.js,grid.style.css,";
       db_app::load($sLib);
     ?>
@@ -133,7 +133,7 @@ if (isset($alterar)) {
       <tr> 
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
           <center>
-	          <?
+	          <?php 
 	            include(modification("forms/db_frmedu_anexoatolegal.php"));
 	          ?>
           </center>
@@ -144,7 +144,7 @@ if (isset($alterar)) {
   </body>
 </html>
 
-<?
+<?php 
 
 if (isset($alterar)) {
   

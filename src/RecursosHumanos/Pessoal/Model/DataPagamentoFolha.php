@@ -26,6 +26,9 @@
 
 namespace ECidade\RecursosHumanos\Pessoal\Model;
 
+use Exception;
+use DBException;
+use ParameterException;
 use ECidade\RecursosHumanos\Pessoal\Repository\DataPagamentoFolhaRepository;
 
 use Instituicao;
@@ -61,7 +64,7 @@ class DataPagamentoFolha
     /**
      * DataPagamentoFolha constructor.
      * @param null $codigo
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct($codigo = null)
     {
@@ -78,8 +81,8 @@ class DataPagamentoFolha
     /**
      * @param array $state
      * @return DataPagamentoFolha
-     * @throws \DBException
-     * @throws \ParameterException
+     * @throws DBException
+     * @throws ParameterException
      */
     public static function fromState(array $state)
     {
@@ -113,13 +116,13 @@ class DataPagamentoFolha
      */
     public function toArray()
     {
-        return array(
+        return [
           'sequencial'       => $this->getSequencial(),
           'instituicao'      => $this->getInstituicao()->toArray(),
           'ano'              => $this->getAno(),
           'mes'              => $this->getMes(),
           'dataPagamento'    => $this->getDataPagamento()->getDate(DBDate::DATA_PTBR)
-        );
+        ];
     }
 
     public function getSequencial()

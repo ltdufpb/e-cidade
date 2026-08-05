@@ -3,7 +3,6 @@
 namespace ECidade\Tributario\Cadastro\Iptu\Arquivo\Repository;
 
 use ECidade\Tributario\Library\DataBaseRepository;
-use ECidade\Tributario\Cadastro\Iptu\Arquivo\Entity\Imovel;
 use ECidade\Tributario\Cadastro\Iptu\Arquivo\Entity\Taxa;
 
 final class TaxaRepository extends DataBaseRepository
@@ -56,7 +55,7 @@ final class TaxaRepository extends DataBaseRepository
             $quantTaxa = $object->j152_quant;
         }
 
-        $taxas = array();
+        $taxas = [];
 
         $taxa = new Taxa();
         $taxa->setValorTotal($valorIptu);

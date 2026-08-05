@@ -52,19 +52,19 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
            <b>Processo Principal:</b>
         </td>
         <td> 
-          <?
+          <?php 
             db_input('p58_codproc',12,$Ip58_codproc,true,'text',3,"");
           ?>
         </td>
       </tr>
       <tr>
         <td nowrap title="<?=@$Tp30_procapensado?>" align="right">
-          <?
+          <?php 
             db_ancora('<b>Processo à Apensar:</b>',"js_pesquisap30_procapensado(true);","");
           ?>
         </td>
         <td> 
-          <?
+          <?php 
             db_input('p30_procapensado',12,$Ip30_procapensado,true,'text',$db_opcao," onchange='js_pesquisap30_procapensado(false);'");
             db_input('z01_nome',40,$Iz01_nome,true,'text',3,"");
           ?>
@@ -81,7 +81,7 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
   </tr>    
   <tr>
     <td align="top" colspan="2">
-   <?   
+   <?php    
     $p58_codproc = (isset($p58_codproc)&&!empty($p58_codproc))?$p58_codproc:'null';
     $sSqlProcessoApensados = " select p30_procprincipal,
                                       p30_procapensado,
@@ -156,7 +156,7 @@ function js_imprimir_capa(){
   window.open('pro4_capaprocesso.php?codproc='+p58_codproc+'','','location=0');
 }
 </script>
-<?
+<?php 
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX    = 0;
 $func_iframe->posY    = 2;

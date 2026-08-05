@@ -45,7 +45,7 @@ class cl_avaliacaogruporespostatsveinicial extends DAOBasica
         if (empty($dbwhere)) {
 
             $sql2 .=" where ";
-            $aWhere = array();
+            $aWhere = [];
 
             if (!empty($iCodigoPergunta)) {
                 $aWhere[] = " db103_sequencial = {$iCodigoPergunta} ";
@@ -73,7 +73,7 @@ class cl_avaliacaogruporespostatsveinicial extends DAOBasica
         return $sql;
     }
 
-    public function sql_avaliacao_preenchida($campos = array("*"), $ordem = array(), $where = array(), $groupBy = array())
+    public function sql_avaliacao_preenchida($campos = ["*"], $ordem = [], $where = [], $groupBy = [])
     {
         $sql  = "select " . implode(', ', $campos);
         $sql .= "  from avaliacaogruporespostatsveinicial

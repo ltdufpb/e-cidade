@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_turmalogac_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clturmalogac = new cl_turmalogac;
 if(isset($turma)){
 
@@ -79,14 +80,14 @@ if(isset($turma)){
      Turmas Remanejadas
     </td>
    </tr>
-   <?if($clturmalogac->numrows > 0){?>
+   <?php if($clturmalogac->numrows > 0){?>
    <tr><td height='2' colspan='8' bgcolor='#444444'></td></tr>
    <tr bgcolor="#DBDBDB" align="center">
     <td><b>Código</b></td>
     <td><b>Turma</b></td>
     <td colspan="2"><b>Opções</b></td>      
    </tr>
-   <?   
+   <?php    
    for ($c = 0; $c < $clturmalogac->numrows; $c++) {
      db_fieldsmemory($result,$c); 
     ?>
@@ -97,7 +98,7 @@ if(isset($turma)){
      <td align="center"><a href="javascript:js_turmaac003(<?=$ed268_i_codigo?>)">Excluir</a></td>
     </td>
     </tr>
-    <?
+    <?php 
    }
    } else {
    	 echo "<tr><td align='center'>Nenhum registro encontrado!</td></tr>";
@@ -123,25 +124,25 @@ function js_turmaac002(ed268_i_codigo) {
 	
   top = ( screen.availHeight-710) / 2;
   left = ( screen.availWidth-800 ) / 2;   
-<?if (isset($ed268_i_codigo)) {?>
+<?php if (isset($ed268_i_codigo)) {?>
 	  
     js_OpenJanelaIframe("",
                         "db_iframe_remanejarturmaac",
                         "edu1_remanejarturmaac002.php?chavepesquisa="+ed268_i_codigo+"&tipoatendimento=<?=$ed268_i_tipoatend?>&abre=true",
                         "Alunos Matriculados na Turma",true,top, left, 900,400);
-<?}?>
+<?php }?>
 }
 
 function js_turmaac003(ed268_i_codigo) {
 	
 	  top = ( screen.availHeight-710) / 2;
 	  left = ( screen.availWidth-800 ) / 2;   
-	<?if (isset($ed268_i_codigo)) {?>
+	<?php if (isset($ed268_i_codigo)) {?>
 	    js_OpenJanelaIframe("",
 	                        "db_iframe_remanejarturmaac",
 	                        "edu1_remanejarturmaac003.php?chavepesquisa="+ed268_i_codigo+"&tipoatendimento=<?=$ed268_i_tipoatend?>&abre=true",
 	                        "Alunos Matriculados na Turma",true,top, left, 900,400);
-	<?}?>
+	<?php }?>
 }
 
 function js_novo() {

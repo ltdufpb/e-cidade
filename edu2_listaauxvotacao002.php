@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -45,7 +45,7 @@ $clEduParametros    = new cl_edu_parametros();
 $clEscola           = new cl_escola();
 
 
-$sDataVotacao       = substr($iData,6,4)."-".substr($iData,3,2)."-".substr($iData,0,2);
+$sDataVotacao       = substr((string) $iData,6,4)."-".substr((string) $iData,3,2)."-".substr((string) $iData,0,2);
 
 $sSqlDadosTelEscola = $clTelefoneEscola->sql_query("",
                                                    "ed26_i_ddd,ed26_i_numero,ed26_i_ramal",
@@ -112,7 +112,7 @@ if ($clMatricula->numrows == 0) {
     </td>
    </tr>
   </table>
-  <?
+  <?php 
   exit;
 }
 
@@ -143,7 +143,7 @@ $data         = date("Y-m-d",DB_getsession("DB_datausu"));
 $dia          = date("d");
 $mes          = date("m");
 $ano          = date("Y");
-$mes_extenso  = array("01"=>"janeiro",
+$mes_extenso  = ["01"=>"janeiro",
                       "02"=>"fevereiro",
                       "03"=>"março",
                       "04"=>"abril",
@@ -155,7 +155,7 @@ $mes_extenso  = array("01"=>"janeiro",
                       "10"=>"outubro",
                       "11"=>"novembro",
                       "12"=>"dezembro"
-                     );
+                     ];
 $data_extenso = $mun_escola.", ".$dia." de ".$mes_extenso[$mes]." de ".$ano.".";
 $fpdf->setXY(100,5);	
 $fpdf->setfont('times','b',8);
@@ -213,7 +213,7 @@ $iCount  = 0;
  	db_fieldsmemory($sResult,$x);
  	db_fieldsmemory($sResultParametros,0);
  	$fpdf->setfont('times','',7);
- 	$abrev = substr($ed11_c_abrev,3,4);       
+ 	$abrev = substr((string) $ed11_c_abrev,3,4);       
     if ($abrev == "A") {
   	  $letra = "a";
     } else {

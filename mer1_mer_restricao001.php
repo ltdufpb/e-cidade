@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -58,7 +58,7 @@ if (isset($incluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Restrição</b></legend>
-    <?include(modification("forms/db_frmmer_restricao.php"));?>
+    <?php include(modification("forms/db_frmmer_restricao.php"));?>
    </fieldset>
    </center>
   </td>
@@ -69,7 +69,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1","me24_i_aluno",true,1,"me24_i_aluno",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
 	
   if($clmer_restricao->erro_status=="0"){

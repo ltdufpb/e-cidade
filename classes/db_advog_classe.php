@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: juridico
 //CLASSE DA ENTIDADE advog
 class cl_advog { 
@@ -26,7 +26,7 @@ class cl_advog {
                  v57_matriculaadvogado = varchar(20) = Matrícula do Advogado 
                  ";
    //funcao construtor da classe 
-   function cl_advog() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("advog"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -34,7 +34,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 $ed31_c_ativo = '';
 
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 db_postmemory( $_POST );
 
 $clbase         = new cl_base;
@@ -108,7 +108,7 @@ if (lEscola) {
                                                            +'&ed31_c_descr=<?=$ed31_c_descr?>';
 }
 </script>
- <?
+ <?php 
 }
 
 ?>
@@ -303,7 +303,7 @@ if( isset( $alterar ) ) {
       (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a1.location.href = 'edu1_base002.php?chavepesquisa=<?=$ed31_i_codigo?>';
     }
     </script>
-    <?
+    <?php 
   }
 };
 

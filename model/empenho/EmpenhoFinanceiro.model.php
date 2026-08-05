@@ -1,4 +1,7 @@
 <?php
+
+use ECidade\Financeiro\Orcamento\Service\LancarComlementoService;
+
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -24,7 +27,6 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
 /**
  * Model para controle do Empenho
  * @author  Matheus Felini <matheus.felini@dbseller.com.br>
@@ -157,7 +159,7 @@ class EmpenhoFinanceiro {
    * Coleção de Itens
    * @var array EmpenhoItem
    */
-  protected $aItens = array();
+  protected $aItens = [];
 
   /**
    * Tipo do Evento (empprestatip)
@@ -199,12 +201,12 @@ class EmpenhoFinanceiro {
    * Cotas de pagamento Mensal
    * @var EmpenhoCotaMensal[]
    */
-  private $aCotasMensais  = array();
+  private $aCotasMensais  = [];
 
   /**
    * @type NotaLiquidacao[]
    */
-  private $aNotasLiquidadas = array();
+  private $aNotasLiquidadas = [];
 
   private $iNumeroLicitacao = null;
 
@@ -589,9 +591,9 @@ class EmpenhoFinanceiro {
 
   /**
    * Retorna o ano
-   * @deprecated
    * @see getAno()
    */
+  #[Deprecated]
   public function getAnoUso() {
     return $this->iAnoUso;
   }
@@ -606,9 +608,9 @@ class EmpenhoFinanceiro {
   /**
    * Seta o Ano
    * @param integer $iAnoUso
-   * @deprecated
    * @see setAno
    */
+  #[Deprecated]
   public function setAnoUso($iAnoUso) {
     $this->iAnoUso = $iAnoUso;
   }
@@ -903,7 +905,7 @@ class EmpenhoFinanceiro {
     ";
 
     $rs = db_query($sql);
-    if (pg_numrows($rs) > 0) {
+    if (pg_num_rows($rs) > 0) {
 
         $nValorPago = db_utils::fieldsMemory($rs, 0)->e53_vlrpag;
     }
@@ -962,7 +964,7 @@ class EmpenhoFinanceiro {
       $sSqlPrestacaContas = $oDaoPrestacaContas->sql_query_file(null, "*", null, "e45_numemp = {$this->iNumero}");
       $rsPrestacaContas   = $oDaoPrestacaContas->sql_record($sSqlPrestacaContas);
       $oDadosPrestacao =db_utils::fieldsMemory($rsPrestacaContas, 0);
-      $oDadosPrestacao->iTensPrestacao = array();
+      $oDadosPrestacao->iTensPrestacao = [];
       /*
         buscar os itens da prestacao
       */
@@ -971,7 +973,7 @@ class EmpenhoFinanceiro {
       $rsItem = $oDaoEmpprestaitem->sql_record($sqlItem);
       if ($oDaoEmpprestaitem->numrows > 0) {
 
-        $aItens = array();
+        $aItens = [];
         for($i = 0; $i < $oDaoEmpprestaitem->numrows; $i++){
 
             $oValorItem = db_utils::fieldsMemory($rsItem, $i);
@@ -1110,11 +1112,11 @@ class EmpenhoFinanceiro {
 
   /**
    * Verifica se o empenho financeiro se tornou um resto a pagar na virada do exercício.
-   * @deprecated quando quer saber se o empenho é um RP, mesmo que já tenha sido finalizado
    * @see isRP
    * @param integer $iAno ano da verificacao do resto a pagar
    * @return boolean
    */
+  #[Deprecated(message: 'quando quer saber se o empenho é um RP, mesmo que já tenha sido finalizado')]
   public function isRestoAPagar($iAno) {
 
     $oDaoEmpPresta        = new cl_empresto;
@@ -1278,7 +1280,7 @@ class EmpenhoFinanceiro {
     if (!$rsCotasMensais) {
       throw new BusinessException((_M("financeiro.empenho.EmpenhoFinanceiro.erro_retorno_cotas_mensais")));
     }
-    $aCotas       = array();
+    $aCotas       = [];
     $iTotalLinhas = pg_num_rows($rsCotasMensais);
     for ($iCota = 0; $iCota < $iTotalLinhas; $iCota++) {
 
@@ -1305,9 +1307,7 @@ class EmpenhoFinanceiro {
       $aCotas[] = $oCota;
     }
 
-    uasort($aCotas, function($oMes , $oProximoMes) {
-      return ($oProximoMes->getMes() > $oMes->getMes()) ? -1 : 1;
-    });
+    uasort($aCotas, fn($oMes, $oProximoMes) => ($oProximoMes->getMes() > $oMes->getMes()) ? -1 : 1);
     return $aCotas;
 
   }
@@ -1487,7 +1487,7 @@ class EmpenhoFinanceiro {
           $sqlEmpenho = $daoRHempenhofolha->sql_query_file(null, "rh76_numemp", null, $where);
           $rsEmpenho = db_query($sqlEmpenho);
           if (!$rsEmpenho) {
-              throw new \DBException("Erro ao verificar informacoes do vínculo do empenho {$this->getNumero()} com a folha de pagamento.");
+              throw new DBException("Erro ao verificar informacoes do vínculo do empenho {$this->getNumero()} com a folha de pagamento.");
           }
           $this->folhaPagamento = pg_num_rows($rsEmpenho) > 0;
       }
@@ -1502,7 +1502,7 @@ class EmpenhoFinanceiro {
     private function lancarComlementoRecurso()
     {
 
-        $lancar = new \ECidade\Financeiro\Orcamento\Service\LancarComlementoService();
+        $lancar = new LancarComlementoService();
         $lancar->complementoEmpenho($this->getDotacao(), $this->getNumero(), $this->complemento);
     }
 }

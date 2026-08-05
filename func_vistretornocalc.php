@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_vistretornocalc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clvistretornocalc = new cl_vistretornocalc;
 $clvistretornocalc->rotulo->label("y04_codmsg");
 $clvistretornocalc->rotulo->label("y04_msgretorno");
@@ -54,7 +55,7 @@ $clvistretornocalc->rotulo->label("y04_msgretorno");
               <?=$Ly04_codmsg?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y04_codmsg",10,$Iy04_codmsg,true,"text",4,"","chave_y04_codmsg");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clvistretornocalc->rotulo->label("y04_msgretorno");
               <?=$Ly04_msgretorno?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y04_msgretorno",150,$Iy04_msgretorno,true,"text",4,"","chave_y04_msgretorno");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clvistretornocalc->rotulo->label("y04_msgretorno");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_vistretornocalc.php")==true){
@@ -118,12 +119,12 @@ $clvistretornocalc->rotulo->label("y04_msgretorno");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

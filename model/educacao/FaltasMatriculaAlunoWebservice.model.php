@@ -37,7 +37,7 @@ class FaltasMatriculaAlunoWebservice {
   
   public function getFaltas() {
 
-    $aFaltas                     = array();
+    $aFaltas                     = [];
     $oDaoDiarioClasseAlunoFalta  = new cl_diarioclassealunofalta();
     $sCamposFalta  = " count(*) as total_faltas, ed300_datalancamento";
     $sCamposFalta .= ", ed232_c_descr as disciplina";

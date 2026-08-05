@@ -27,6 +27,8 @@
 
 namespace ECidade\RecursosHumanos\Pessoal\Model;
 
+use BusinessException;
+use DBException;
 use Instituicao;
 use Servidor;
 use ServidorRepository;
@@ -99,8 +101,8 @@ class ServidorProcessosJudiciaisFolha
     /**
      * @param array $state
      * @return ServidorProcessosJudiciaisFolha
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public static function fromState(array $state)
     {
@@ -147,7 +149,7 @@ class ServidorProcessosJudiciaisFolha
      */
     public function toArray()
     {
-        return array(
+        return [
           'sequencial'       => $this->getSequencial(),
           'tipoProcesso' => $this->getTipoProcesso(),
           'numeroProcesso'    => $this->getNumeroProcesso(),
@@ -156,7 +158,7 @@ class ServidorProcessosJudiciaisFolha
           'ano'              => $this->getAno(),
           'mes'              => $this->getMes(),
           'servidor'         => $this->getServidor()->toArray()
-        );
+        ];
     }
 
     /**

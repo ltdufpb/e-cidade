@@ -84,13 +84,13 @@ $oGet = db_utils::postMemory($_GET);
 	</style>
 </head>
 <body id="corpo" bgcolor="#cccccc" style="margin-top: 25px" onload="">
-<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <center>
   <div id='gridContainer'></div>
 </center>
 </body>
 </html>
-<?
+<?php 
   if (!isset($oGet->lDesabilitaMenu)) {
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -52,7 +52,7 @@ if ($cldiariofinal->numrows > 0) {
   <td colspan="3" align="center">
    <b>Observações</b>:
    <br>
-   <?db_textarea('ed74_t_obs',5,120,@$Ied74_t_obs,true,'text',$db_opcao,
+   <?php db_textarea('ed74_t_obs',5,120,@$Ied74_t_obs,true,'text',$db_opcao,
                   @$encerrado=="S"?"readonly onclick=\"alert('Aluno possui avaliações encerradas para esta disciplina!')\"":"")
     ?>   
   </td>

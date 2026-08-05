@@ -45,7 +45,7 @@ $dataSistema = date("d/m/Y", db_getsession("DB_datausu"));
   <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
-  <?
+  <?php 
     db_app::load("scripts.js, strings.js, prototype.js, DBDownload.widget.js");
     db_app::load("estilos.css, grid.style.css");
   ?>
@@ -60,12 +60,12 @@ $dataSistema = date("d/m/Y", db_getsession("DB_datausu"));
           <table class='form-container'>
             <tr>
               <td class="bold field-size4" nowrap="nowrap">
-              <?
+              <?php 
                 db_ancora("<b>Competência:</b>", "js_pesquisaCompetencia(true);", 1 );
               ?>
               </td>
               <td nowrap="nowrap">
-              <?
+              <?php 
                 db_input ('iCodigoFechamento', 2, '', true, 'hidden', 3, "" );
                 db_input("mesCompetencia", 3, 1, true, "text", 3, "");
                 echo " <b>/</b> ";
@@ -99,7 +99,7 @@ $dataSistema = date("d/m/Y", db_getsession("DB_datausu"));
         
         <fieldset class="separator">
           <legend>UPS</legend>
-          <?
+          <?php 
             $sSql       = $oDaoUnidades->sql_query("","sd02_i_codigo,descrdepto");
             $rsUnidades = $oDaoUnidades->sql_record($sSql);
             db_multiploselect("sd02_i_codigo", "descrdepto", "nSelecionados", "sSelecionados", $rsUnidades,
@@ -173,7 +173,7 @@ $dataSistema = date("d/m/Y", db_getsession("DB_datausu"));
       <input type="button" id='gerarRecibo'  name='gerarRecibo'  value='Gerar Recibo'  onclick="js_gerarRecibo();" disabled="disabled">
     </form>  
   </div>
-<?
+<?php 
  db_menu ( db_getsession ( "DB_id_usuario" ), 
            db_getsession ( "DB_modulo" ),
            db_getsession ( "DB_anousu" ),

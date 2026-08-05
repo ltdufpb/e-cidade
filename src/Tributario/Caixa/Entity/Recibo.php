@@ -2,8 +2,7 @@
 
 namespace ECidade\Tributario\Caixa\Entity;
 
-use recibo as ReciboLegacy;
-use Exception;
+use Deprecated;
 use DateTime;
 use ECidade\Tributario\Caixa\Entity\Debito;
 use ECidade\Tributario\Caixa\Enum\ArretipoEnum;
@@ -53,9 +52,9 @@ final class Recibo extends Entity
      *
      * @var array
      */
-    private $itensHistorico = array();
+    private $itensHistorico = [];
 
-    private $processosForo = array();
+    private $processosForo = [];
 
     public function __construct()
     {
@@ -198,7 +197,7 @@ final class Recibo extends Entity
             ->scopeNumpre($debito->getNumpre())
             ->first();
 
-        $parcelas = array();
+        $parcelas = [];
         foreach ($debito->getParcelas() as $parcela) {
             $parcelas[] = "{$parcela->getNumero()}/{$termo->getTotalParcelas()}";
         }
@@ -252,7 +251,6 @@ final class Recibo extends Entity
     /**
      * Retorna regra de desconto referente ao numpre e numpar de um débito
      *
-     * @deprecated Compatibilidade com código legado
      * @todo isolar método em um service separado
      *
      * @param integer $numpre - Numpre do débito
@@ -265,6 +263,7 @@ final class Recibo extends Entity
      * @return integer $regraDesconto - Inteiro indicando a regra de desconto que deve ser aplicada ao débito e parcela
      *                                            declarada.
      */
+    #[Deprecated(message: 'Compatibilidade com código legado')]
     public function reciboDesconto(
         $numpre,
         $numpar,
@@ -283,7 +282,7 @@ final class Recibo extends Entity
                where k00_numpre = $numpre
                  and k00_numpar = $numpar";
         $resultvenc = db_query($sqlvenc) or die($sqlvenc);
-        if (pg_numrows($resultvenc) == 0) {
+        if (pg_num_rows($resultvenc) == 0) {
             return 0;
         }
         db_fieldsmemory($resultvenc, 0);
@@ -306,7 +305,7 @@ final class Recibo extends Entity
                      and '$vencimentoRecibo' <= k41_vencfim ";
 
         $resulttipoparc = db_query($sqltipoparc);
-        if (pg_numrows($resulttipoparc) > 0) {
+        if (pg_num_rows($resulttipoparc) > 0) {
             db_fieldsmemory($resulttipoparc, 0);
         } else {
             $sqltipoparc = "select k40_codigo,
@@ -325,7 +324,7 @@ final class Recibo extends Entity
 
             $resulttipoparc = db_query($sqltipoparc);
 
-            if (pg_numrows($resulttipoparc) == 1) {
+            if (pg_num_rows($resulttipoparc) == 1) {
                 db_fieldsmemory($resulttipoparc, 0);
             } else {
                 $k40_todasmarc = false;
@@ -336,7 +335,7 @@ final class Recibo extends Entity
         $resulttipoparcdeb = db_query($sqltipoparcdeb);
         $passar = false;
 
-        if (pg_numrows($resulttipoparcdeb) == 0) {
+        if (pg_num_rows($resulttipoparcdeb) == 0) {
             $passar = true;
         } else {
             $sqltipoparcdeb = "select k40_codigo, k40_todasmarc
@@ -347,12 +346,12 @@ final class Recibo extends Entity
                        '$vencimentoRecibo' >= k41_vencini and
                        '$vencimentoRecibo' <= k41_vencfim ";
             $resulttipoparcdeb = db_query($sqltipoparcdeb) or die($sqltipoparcdeb);
-            if (pg_numrows($resulttipoparcdeb) > 0) {
+            if (pg_num_rows($resulttipoparcdeb) > 0) {
                 $passar = true;
             }
         }
 
-        if (pg_numrows($resulttipoparc) == 0
+        if (pg_num_rows($resulttipoparc) == 0
             || ($k40_todasmarc == 't' ? $totalregistrospassados <> $totregistros : false)
             || $passar == false
         ) {

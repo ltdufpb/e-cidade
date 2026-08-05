@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ $db_botao = true;
     <table border="0">
      <tr>
       <td>
-       <?db_input('arquivo',80,"",true,'file',$db_opcao,'')?><br><br>
+       <?php db_input('arquivo',80,"",true,'file',$db_opcao,'')?><br><br>
        <input type="button" value="Importar" name="processar" onclick="js_processar();">
       </td>
      </tr>
@@ -83,7 +83,7 @@ $db_botao = true;
     </table>
     <br><br>
     </form>
-    <?
+    <?php 
     if(isset($GLOBALS["_FILES"]["arquivo"]) && $GLOBALS["_FILES"]["arquivo"]!=""){
      set_time_limit(0);
      db_postmemory($GLOBALS["_FILES"]["arquivo"]);
@@ -98,9 +98,9 @@ $db_botao = true;
              where ed129_i_escola = $escola
             ";
      $result = db_query($sql);
-     $ultima_atualizacaose = trim(pg_result($result,0,'ed129_i_ultatualizse'));
-     $ultima_transacao = trim(pg_result($result,0,'ed129_c_ulttransacao'));
-     $array_arquivo = explode("_",$name);
+     $ultima_atualizacaose = trim(pg_fetch_result($result,0,'ed129_i_ultatualizse'));
+     $ultima_transacao = trim(pg_fetch_result($result,0,'ed129_c_ulttransacao'));
+     $array_arquivo = explode("_",(string) $name);
      $escola_arquivo = trim($array_arquivo[0]);
      $base_arquivo = trim($array_arquivo[1]);
      $base_destino = trim($array_arquivo[1]).date("dnY").date("Hi");
@@ -150,7 +150,7 @@ $db_botao = true;
        </tr>
      </table>
      <br><br>
-     <?
+     <?php 
      echo "Arquivo tmp/".$name." copiado com sucesso!<br>";
      system("bunzip2 tmp/".$name);
      system("tar -xvf tmp/".$arquivo_tar);
@@ -193,7 +193,7 @@ $db_botao = true;
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

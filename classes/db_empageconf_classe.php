@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE empageconf
 class cl_empageconf { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e86_codmov = 0; 
-   var $e86_data_dia = null; 
-   var $e86_data_mes = null; 
-   var $e86_data_ano = null; 
-   var $e86_data = null; 
-   var $e86_cheque = null; 
-   var $e86_correto = 'f'; 
+   public $e86_codmov = 0; 
+   public $e86_data_dia = null; 
+   public $e86_data_mes = null; 
+   public $e86_data_ano = null; 
+   public $e86_data = null; 
+   public $e86_cheque = null; 
+   public $e86_correto = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e86_codmov = int4 = Movimento 
                  e86_data = date = Data 
                  e86_cheque = varchar(20) = Cheque 
                  e86_correto = bool = Correto 
                  ";
    //funcao construtor da classe 
-   function cl_empageconf() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empageconf"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -143,7 +143,7 @@ class cl_empageconf {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "confirmacao ($this->e86_codmov) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "confirmacao já Cadastrado";
@@ -167,13 +167,13 @@ class cl_empageconf {
      $resaco = $this->sql_record($this->sql_query_file($this->e86_codmov));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6188,'$this->e86_codmov','I')");
-       $resac = db_query("insert into db_acount values($acount,1000,6188,'','".AddSlashes(pg_result($resaco,0,'e86_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1000,6189,'','".AddSlashes(pg_result($resaco,0,'e86_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1000,6190,'','".AddSlashes(pg_result($resaco,0,'e86_cheque'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1000,7312,'','".AddSlashes(pg_result($resaco,0,'e86_correto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1000,6188,'','".AddSlashes(pg_fetch_result($resaco,0,'e86_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1000,6189,'','".AddSlashes(pg_fetch_result($resaco,0,'e86_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1000,6190,'','".AddSlashes(pg_fetch_result($resaco,0,'e86_cheque'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1000,7312,'','".AddSlashes(pg_fetch_result($resaco,0,'e86_correto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -182,10 +182,10 @@ class cl_empageconf {
       $this->atualizacampos();
      $sql = " update empageconf set ";
      $virgula = "";
-     if(trim($this->e86_codmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e86_codmov"])){ 
+     if(trim((string) $this->e86_codmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e86_codmov"])){ 
        $sql  .= $virgula." e86_codmov = $this->e86_codmov ";
        $virgula = ",";
-       if(trim($this->e86_codmov) == null ){ 
+       if(trim((string) $this->e86_codmov) == null ){ 
          $this->erro_sql = " Campo Movimento nao Informado.";
          $this->erro_campo = "e86_codmov";
          $this->erro_banco = "";
@@ -195,10 +195,10 @@ class cl_empageconf {
          return false;
        }
      }
-     if(trim($this->e86_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e86_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["e86_data_dia"] !="") ){ 
+     if(trim((string) $this->e86_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e86_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["e86_data_dia"] !="") ){ 
        $sql  .= $virgula." e86_data = '$this->e86_data' ";
        $virgula = ",";
-       if(trim($this->e86_data) == null ){ 
+       if(trim((string) $this->e86_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "e86_data_dia";
          $this->erro_banco = "";
@@ -211,7 +211,7 @@ class cl_empageconf {
        if(isset($GLOBALS["HTTP_POST_VARS"]["e86_data_dia"])){ 
          $sql  .= $virgula." e86_data = null ";
          $virgula = ",";
-         if(trim($this->e86_data) == null ){ 
+         if(trim((string) $this->e86_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "e86_data_dia";
            $this->erro_banco = "";
@@ -222,10 +222,10 @@ class cl_empageconf {
          }
        }
      }
-     if(trim($this->e86_cheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e86_cheque"])){ 
+     if(trim((string) $this->e86_cheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e86_cheque"])){ 
        $sql  .= $virgula." e86_cheque = '$this->e86_cheque' ";
        $virgula = ",";
-       if(trim($this->e86_cheque) == null ){ 
+       if(trim((string) $this->e86_cheque) == null ){ 
          $this->erro_sql = " Campo Cheque nao Informado.";
          $this->erro_campo = "e86_cheque";
          $this->erro_banco = "";
@@ -235,10 +235,10 @@ class cl_empageconf {
          return false;
        }
      }
-     if(trim($this->e86_correto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e86_correto"])){ 
+     if(trim((string) $this->e86_correto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e86_correto"])){ 
        $sql  .= $virgula." e86_correto = '$this->e86_correto' ";
        $virgula = ",";
-       if(trim($this->e86_correto) == null ){ 
+       if(trim((string) $this->e86_correto) == null ){ 
          $this->erro_sql = " Campo Correto nao Informado.";
          $this->erro_campo = "e86_correto";
          $this->erro_banco = "";
@@ -256,17 +256,17 @@ class cl_empageconf {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6188,'$this->e86_codmov','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e86_codmov"]))
-           $resac = db_query("insert into db_acount values($acount,1000,6188,'".AddSlashes(pg_result($resaco,$conresaco,'e86_codmov'))."','$this->e86_codmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1000,6188,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e86_codmov'))."','$this->e86_codmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e86_data"]))
-           $resac = db_query("insert into db_acount values($acount,1000,6189,'".AddSlashes(pg_result($resaco,$conresaco,'e86_data'))."','$this->e86_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1000,6189,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e86_data'))."','$this->e86_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e86_cheque"]))
-           $resac = db_query("insert into db_acount values($acount,1000,6190,'".AddSlashes(pg_result($resaco,$conresaco,'e86_cheque'))."','$this->e86_cheque',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1000,6190,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e86_cheque'))."','$this->e86_cheque',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e86_correto"]))
-           $resac = db_query("insert into db_acount values($acount,1000,7312,'".AddSlashes(pg_result($resaco,$conresaco,'e86_correto'))."','$this->e86_correto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1000,7312,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e86_correto'))."','$this->e86_correto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -311,13 +311,13 @@ class cl_empageconf {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6188,'$e86_codmov','E')");
-         $resac = db_query("insert into db_acount values($acount,1000,6188,'','".AddSlashes(pg_result($resaco,$iresaco,'e86_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1000,6189,'','".AddSlashes(pg_result($resaco,$iresaco,'e86_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1000,6190,'','".AddSlashes(pg_result($resaco,$iresaco,'e86_cheque'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1000,7312,'','".AddSlashes(pg_result($resaco,$iresaco,'e86_correto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1000,6188,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e86_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1000,6189,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e86_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1000,6190,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e86_cheque'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1000,7312,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e86_correto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from empageconf
@@ -377,7 +377,7 @@ class cl_empageconf {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:empageconf";
@@ -391,7 +391,7 @@ class cl_empageconf {
    function sql_query ( $e86_codmov=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,7 +415,7 @@ class cl_empageconf {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -427,7 +427,7 @@ class cl_empageconf {
    function sql_query_canc ( $e86_codmov=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,7 +459,7 @@ class cl_empageconf {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -471,7 +471,7 @@ class cl_empageconf {
    function sql_query_cancslip ( $e86_codmov=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -511,7 +511,7 @@ class cl_empageconf {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -523,7 +523,7 @@ class cl_empageconf {
    function sql_query_file ( $e86_codmov=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -544,7 +544,7 @@ class cl_empageconf {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -556,7 +556,7 @@ class cl_empageconf {
    function sql_query_test ( $e86_codmov=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -579,7 +579,7 @@ class cl_empageconf {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

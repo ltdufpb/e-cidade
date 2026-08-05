@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_receita_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clreceita = new cl_receita;
 $clrotulo = new rotulocampo;
 $clreceita->rotulo->label("o08_reduz");
@@ -55,7 +56,7 @@ $clrotulo->label("o02_descr");
               <?=$Lo08_reduz?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
               db_input("o08_reduz",5,$Io08_reduz,true,"text",4,"","chave_o08_reduz");
 	      ?>
             </td>
@@ -65,7 +66,7 @@ $clrotulo->label("o02_descr");
               <?=$Lo02_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 	      db_input("o02_descr",0,$Io02_descr,true,"text",4,"","chave_o02_descr");
 	      ?>
             </td>
@@ -83,7 +84,7 @@ $clrotulo->label("o02_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($chave_o08_reduz) && (trim($chave_o08_reduz)!="") ){
 	  $sql = $clreceita->sql_query("","","o08_reduz#o02_codigo#o02_descr","o08_reduz"," o08_anousu = ".db_getsession("DB_anousu")." and o08_reduz = $chave_o08_reduz");
@@ -110,14 +111,14 @@ $clrotulo->label("o02_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_o08_anousu.focus();
 document.form2.chave_o08_anousu.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

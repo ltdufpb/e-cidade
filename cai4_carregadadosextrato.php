@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2014  DBSeller Servicos de Informatica
@@ -198,7 +198,7 @@ class ExtratoLinha {
   var $itemconciliacao  = '';
 
   // Construtor
-  function ExtratoLinha ( $pextratolinha    = null,
+  function __construct ( $pextratolinha    = null,
                           $pid              = null,
                           $pstatus          = null,
                           $pnumerodocumento = null,

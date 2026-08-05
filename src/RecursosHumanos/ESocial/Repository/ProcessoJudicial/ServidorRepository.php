@@ -27,6 +27,7 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial;
 
+use db_utils;
 use cl_rhpessoalprocessoservidor;
 use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\Servidor as ServidorProcesso;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\ContratoRepository;
@@ -48,7 +49,6 @@ use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\EstatutarioRepos
 use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
 use ECidade\RecursosHumanos\Pessoal\Repository\DataPagamentoFolhaRepository;
 use Exception;
-use DBDate;
 use cl_cgm;
 use cl_rhpessoal;
 use stdClass;
@@ -135,7 +135,7 @@ class ServidorRepository
      */
     public function removeScope($key)
     {
-        if (array_key_exists($key, $this->scopes)) {
+        if (array_key_exists((string) $key, $this->scopes)) {
             unset($this->scopes[$key]);
         }
 
@@ -166,7 +166,7 @@ class ServidorRepository
      * @param ServidorProcesso|null $processo
      * @throws Exception
      */
-    public function delete(ServidorProcesso $servidor = null)
+    public function delete(?ServidorProcesso $servidor = null)
     {
         $id = $servidor instanceof ServidorProcesso ? $servidor->getSequencial() : null;
         $dao = new cl_rhpessoalprocessoservidor;
@@ -184,7 +184,7 @@ class ServidorRepository
      * @return bool|ServidorProcesso
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_rhpessoalprocessoservidor;
         $sql = $dao->sql_query($id, implode(', ', $columns));
@@ -214,7 +214,7 @@ class ServidorRepository
         $sql = $dao->sql_query(null, implode(', ', $columns));
         $rs = db_query($sql);
 
-        $processo = array();
+        $processo = [];
 
         if (pg_num_rows($rs) === 0) {
             return $processo;
@@ -355,7 +355,7 @@ class ServidorRepository
 
         $resultado = [];
         for ($row = 0; $row < pg_num_rows($rs); $row++) {
-            $resultado[] = \db_utils::fieldsMemory($rs, $row);
+            $resultado[] = db_utils::fieldsMemory($rs, $row);
         }
 
         return $resultado;
@@ -634,7 +634,7 @@ class ServidorRepository
             throw new Exception("CPF {$cpf} não encontrado.");
         }
 
-        $cgm = \db_utils::fieldsMemory($rsCgm, 0)->cgm;
+        $cgm = db_utils::fieldsMemory($rsCgm, 0)->cgm;
         
         $daoPessoal = new cl_rhpessoal();
         $whereMatricula = "rh01_numcgm = {$cgm}";
@@ -642,7 +642,7 @@ class ServidorRepository
         $rsMatricula = db_query($sqlMatricula);
 
         for ($row = 0; $row < pg_num_rows($rsMatricula); $row++) {
-            $matricula[] = \db_utils::fieldsMemory($rsMatricula, $row)->matricula;
+            $matricula[] = db_utils::fieldsMemory($rsMatricula, $row)->matricula;
         }
 
         $daoProcesso = new cl_rhpessoalprocessoservidor;
@@ -674,8 +674,8 @@ class ServidorRepository
      */
     private function truncate($val, $f = "0")
     {
-        if (($p = strpos($val, '.')) !== false) {
-            $val = floatval(substr($val, 0, $p + 1 + $f));
+        if (($p = strpos((string) $val, '.')) !== false) {
+            $val = floatval(substr((string) $val, 0, $p + 1 + $f));
         }
         return $val;
     }

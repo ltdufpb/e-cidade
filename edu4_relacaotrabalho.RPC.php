@@ -64,7 +64,7 @@ try {
 
       $oDaoRelacao = new cl_relacaotrabalho();
 
-      $aCampos = array(
+      $aCampos = [
         'ed23_i_codigo   as codigo',
         'ed24_i_codigo   as regime_codigo',
         'ed24_c_descr    as regime',
@@ -78,7 +78,7 @@ try {
         'ed128_descricao as tipo_hora',
         'ed22_i_codigo   as funcao_codigo',
         'ed01_c_descr    as funcao'
-      );
+      ];
 
       $sWhere = "ed23_i_rechumanoescola = {$oParam->iVinculoEscola}";
       $sSql   = $oDaoRelacao->sql_query_relacaotrabalho(null, implode(', ', $aCampos), null, $sWhere);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rhresponsavel_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clrhresponsavel = new cl_rhresponsavel;
 $clrhresponsavel->rotulo->label("rh107_sequencial");
@@ -56,7 +57,7 @@ $clrhresponsavel->rotulo->label("rh107_nome");
               <?=$Lrh107_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		            db_input("rh107_sequencial",10,$Irh107_sequencial,true,"text",4,"","chave_rh107_sequencial");
 		          ?>
             </td>
@@ -66,7 +67,7 @@ $clrhresponsavel->rotulo->label("rh107_nome");
               <?=$Lrh107_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                 db_input("rh107_nome",40,$Irh107_nome,true,"text",4,"","chave_rh107_nome");
               ?>
             </td>
@@ -84,7 +85,7 @@ $clrhresponsavel->rotulo->label("rh107_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhresponsavel.php")==true){
@@ -124,12 +125,12 @@ $clrhresponsavel->rotulo->label("rh107_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -63,7 +63,7 @@ $clcriaabas = new cl_criaabas;
             <?=$Lvc07_i_vacina?>
           </td>
           <td> 
-            <?
+            <?php 
             db_input('vc07_i_vacina',10,$Ivc07_i_vacina,true,'text',3,"");
             db_input('vc06_c_descr',30,$Ivc06_c_descr,true,'text',3,"")
             ?>
@@ -74,7 +74,7 @@ $clcriaabas = new cl_criaabas;
   </tr>
   <tr>
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
-      <?
+      <?php 
       $clcriaabas->identifica    = array("a1"=>"Doses da Vacina",
                                          "a2"=>"Limites",
                                          "a3"=>"Restrições",

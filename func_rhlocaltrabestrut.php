@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhlocaltrab_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhlocaltrab = new cl_rhlocaltrab;
 $clrhlocaltrab->rotulo->label("rh55_codigo");
 $clrhlocaltrab->rotulo->label("rh55_estrut");
@@ -55,7 +56,7 @@ $clrhlocaltrab->rotulo->label("rh55_descr");
               <?=$Lrh55_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh55_codigo",10,$Irh55_codigo,true,"text",4,"","chave_rh55_codigo");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clrhlocaltrab->rotulo->label("rh55_descr");
               <?=$Lrh55_estrut?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh55_estrut",10,$Irh55_estrut,true,"text",4,"","chave_rh55_estrut");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clrhlocaltrab->rotulo->label("rh55_descr");
               <?=$Lrh55_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh55_descr",40,$Irh55_descr,true,"text",4,"","chave_rh55_descr");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clrhlocaltrab->rotulo->label("rh55_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhlocaltrab.php")==true){
@@ -135,12 +136,12 @@ $clrhlocaltrab->rotulo->label("rh55_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

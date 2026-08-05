@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -387,7 +387,7 @@ if (isset($lancar) || isset($estornar)) {
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php 
     db_app::load("scripts.js, strings.js, prototype.js");
     db_app::load("estilos.css, grid.style.css");
     ?>
@@ -420,19 +420,19 @@ if (isset($lancar) || isset($estornar)) {
     <tr>
       <td valign="top" bgcolor="#CCCCCC">
         <center>
-          <?
+          <?php 
           include(modification("forms/db_frmreceitaarre.php"));
           ?>
         </center>
       </td>
     </tr>
   </table>
-  <?
+  <?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
   ?>
   </body>
   </html>
-<?
+<?php 
 if($msg_erro!=''){
 
   db_msgbox($msg_erro);

@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: acordos
 //CLASSE DA ENTIDADE mensageriaacordoprocessados
 class cl_mensageriaacordoprocessados { 
@@ -26,7 +26,7 @@ class cl_mensageriaacordoprocessados {
                  ac53_acordo = int4 = Acordo 
                  ";
    //funcao construtor da classe 
-   function cl_mensageriaacordoprocessados() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mensageriaacordoprocessados"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

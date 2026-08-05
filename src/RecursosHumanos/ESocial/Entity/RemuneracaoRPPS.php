@@ -26,6 +26,8 @@
  */
 namespace ECidade\RecursosHumanos\ESocial\Entity;
 
+use stdClass;
+use Servidor;
 use ECidade\RecursosHumanos\Pessoal\Model\ServidorOperadoraSaude;
 use ECidade\RecursosHumanos\Pessoal\Model\ServidorOutrosVinculos;
 use ECidade\RecursosHumanos\Pessoal\Model\ServidorProcessosJudiciaisFolha;
@@ -44,7 +46,7 @@ class RemuneracaoRPPS
     /**
      * @var ServidorOutrosVinculos[]
      */
-    private $servidorOutrosVinculos = array();
+    private $servidorOutrosVinculos = [];
 
     /**
      * @var ServidorOperadoraSaude[]
@@ -54,27 +56,27 @@ class RemuneracaoRPPS
     /**
      * @var array
      */
-    private $pagamentos = array();
+    private $pagamentos = [];
 
     /**
-     * @var \stdClass
+     * @var stdClass
      */
     private $dadosTrabalhador;
 
     /**
-     * @var \Servidor
+     * @var Servidor
      */
     private $servidor;
 
     /**
      * @var ServidorProcessosJudiciaisFolha[]
      */
-    private $pocessosJudiciais = array();
+    private $pocessosJudiciais = [];
 
     /**
      * @var TrabalhoIntermitente[]
      */
-    private $trabalhadoresIntermitente = array();
+    private $trabalhadoresIntermitente = [];
 
     /**
      * @return ServidorOutrosVinculos[]
@@ -126,7 +128,7 @@ class RemuneracaoRPPS
     }
 
     /**
-     * @return \stdClass
+     * @return stdClass
      */
     public function getDadosTrabalhador()
     {
@@ -134,23 +136,23 @@ class RemuneracaoRPPS
     }
 
     /**
-     * @param \stdClass $dadosTrabalhador
+     * @param stdClass $dadosTrabalhador
      */
-    public function setDadosTrabalhador(\stdClass $dadosTrabalhador)
+    public function setDadosTrabalhador(stdClass $dadosTrabalhador)
     {
         $this->dadosTrabalhador = $dadosTrabalhador;
     }
 
     /**
-     * @param \Servidor $servidor
+     * @param Servidor $servidor
      */
-    public function setServidor(\Servidor $servidor)
+    public function setServidor(Servidor $servidor)
     {
         $this->servidor = $servidor;
     }
 
     /**
-     * @return \Servidor
+     * @return Servidor
      */
     public function getServidor()
     {

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -41,43 +41,43 @@ $db_opcao1=3;
    <?=@$Lme29_i_codigo?>
   </td>
   <td>
-  <?db_input('me29_i_codigo',4,$Ime29_i_codigo,true,'text',3,"")?>
+  <?php db_input('me29_i_codigo',4,$Ime29_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tme29_i_refeicao?>">
-   <?db_ancora(@$Lme29_i_refeicao,"js_pesquisame29_i_refeicao(true);",$db_opcao);?>
+   <?php db_ancora(@$Lme29_i_refeicao,"js_pesquisame29_i_refeicao(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('me29_i_refeicao',4,$Ime29_i_refeicao,true,'text',$db_opcao,
+   <?php db_input('me29_i_refeicao',4,$Ime29_i_refeicao,true,'text',$db_opcao,
               " onchange='js_pesquisame29_i_refeicao(false);'"
              )
    ?>
-   <?db_input('me01_c_nome',45,$Ime01_c_nome,true,'text',3,'')?>
+   <?php db_input('me01_c_nome',45,$Ime01_c_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tme29_i_alimentoorig?>">
-   <?db_ancora("<b>Alimento</b>","js_pesquisame29_i_alimentoorig(true);",$db_opcao);?>
+   <?php db_ancora("<b>Alimento</b>","js_pesquisame29_i_alimentoorig(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('me29_i_alimentoorig',4,@$Ime29_i_alimentoorig,true,'text',$db_opcao,
+   <?php db_input('me29_i_alimentoorig',4,@$Ime29_i_alimentoorig,true,'text',$db_opcao,
               " onchange='js_pesquisame29_i_alimentoorig(false);'"
              )
    ?>
-   <?db_input('me35_c_nomealimento',45,@$Ime35_c_nomealimento,true,'text',3,'')?>
+   <?php db_input('me35_c_nomealimento',45,@$Ime35_c_nomealimento,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tme29_i_alimentonovo?>">
-   <?db_ancora(@$Lme29_i_alimentonovo,"js_pesquisame29_i_alimentonovo(true);",$db_opcao);?>
+   <?php db_ancora(@$Lme29_i_alimentonovo,"js_pesquisame29_i_alimentonovo(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('me29_i_alimentonovo',4,$Ime29_i_alimentonovo,true,'text',$db_opcao,
+   <?php db_input('me29_i_alimentonovo',4,$Ime29_i_alimentonovo,true,'text',$db_opcao,
               " onchange='js_pesquisame29_i_alimentonovo(false);'"
              )
    ?>
-   <?db_input('me35_c_nomealimento2',45,@$Ime35_c_nomealimento,true,'text',3,'')?>
+   <?php db_input('me35_c_nomealimento2',45,@$Ime35_c_nomealimento,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -85,8 +85,8 @@ $db_opcao1=3;
    <?=@$Lme29_f_quantidade?>
   </td>
   <td>
-   <?db_input('me29_f_quantidade',8,$Ime29_f_quantidade,true,'text',$db_opcao,"")?>
-   <?db_input('unidade',41,"unidade",true,'text',3,"")?> 
+   <?php db_input('me29_f_quantidade',8,$Ime29_f_quantidade,true,'text',$db_opcao,"")?>
+   <?php db_input('unidade',41,"unidade",true,'text',3,"")?> 
   </td>
  </tr>
  <tr>
@@ -94,7 +94,7 @@ $db_opcao1=3;
    <?=@$Lme29_c_medidacaseira?>
   </td>
   <td>
-   <?db_input('me29_c_medidacaseira',50,$Ime29_c_medidacaseira,true,'text',$db_opcao,"")?>
+   <?php db_input('me29_c_medidacaseira',50,$Ime29_c_medidacaseira,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -102,7 +102,7 @@ $db_opcao1=3;
    <?=@$Lme29_d_inicio?>
   </td>
   <td>
-   <? if (!isset($me29_d_inicio)) {
+   <?php  if (!isset($me29_d_inicio)) {
         $me29_d_inicio=date("d/m/Y",db_getsession("DB_datausu"));
         $me29_d_inicio_dia=date("d",db_getsession("DB_datausu"));
         $me29_d_inicio_mes=date("m",db_getsession("DB_datausu"));
@@ -113,7 +113,7 @@ $db_opcao1=3;
                          );
    ?>
    <b>á</b>
-   <?
+   <?php 
       db_inputdatamerenda('me29_d_fim',@$me29_d_fim_dia,@$me29_d_fim_mes,@$me29_d_fim_ano,true,'text',$db_opcao,
                           "onchange=\"js_validadata(1);\"","",""," parent.js_validadata(1);"
                          );
@@ -127,7 +127,7 @@ $db_opcao1=3;
    <?=@$Lme29_t_obs?>
   </td>
   <td>
-   <?db_textarea('me29_t_obs',2,50,$Ime29_t_obs,true,'text',$db_opcao,"")?>
+   <?php db_textarea('me29_t_obs',2,50,$Ime29_t_obs,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -143,7 +143,7 @@ $db_opcao1=3;
        value="Cancelar" <?=($db_opcao==1?"disabled":"")?> 
        onClick='location.href="mer4_mer_subitens001.php?cancelar"'>
 <br><br>
-<?
+<?php 
   $chavepri= array("me29_i_codigo"=>@$me29_i_codigo);
   $cliframe_alterar_excluir->chavepri=$chavepri;
   $campos2  = " me29_i_codigo,me01_c_nome,me01_f_versao,";
@@ -350,7 +350,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 	
   db_iframe_mer_subitem.hide();
-  <?
+  <?php 
   if ($db_opcao != 1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

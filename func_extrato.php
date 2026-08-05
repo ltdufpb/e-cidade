@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_extrato_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clextrato = new cl_extrato;
 $clextrato->rotulo->label("k85_sequencial");
 $clextrato->rotulo->label("k85_nomearq");
@@ -54,7 +55,7 @@ $clextrato->rotulo->label("k85_nomearq");
               <?=$Lk85_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k85_sequencial",10,$Ik85_sequencial,true,"text",4,"","chave_k85_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clextrato->rotulo->label("k85_nomearq");
               <?=$Lk85_nomearq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k85_nomearq",50,$Ik85_nomearq,true,"text",4,"","chave_k85_nomearq");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clextrato->rotulo->label("k85_nomearq");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_extrato.php")==true){
@@ -122,12 +123,12 @@ $clextrato->rotulo->label("k85_nomearq");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

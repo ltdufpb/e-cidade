@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_classepont_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clclassepont = new cl_classepont;
 $clclassepont->rotulo->label("q25_classe");
 $clclassepont->rotulo->label("q25_pontuacao");
@@ -54,7 +55,7 @@ $clclassepont->rotulo->label("q25_pontuacao");
               <?=$Lq25_classe?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q25_classe",10,$Iq25_classe,true,"text",4,"","chave_q25_classe");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clclassepont->rotulo->label("q25_pontuacao");
               <?=$Lq25_pontuacao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q25_pontuacao",15,$Iq25_pontuacao,true,"text",4,"","chave_q25_pontuacao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clclassepont->rotulo->label("q25_pontuacao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_classepont.php")==true){
@@ -122,12 +123,12 @@ $clclassepont->rotulo->label("q25_pontuacao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

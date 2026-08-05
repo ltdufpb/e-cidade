@@ -26,6 +26,9 @@
  */
 namespace ECidade\RecursosHumanos\RH\Assentamento\Model;
 
+use cl_monitoramentosaude;
+use db_utils;
+use DBException;
 use BusinessException;
 use ECidade\RecursosHumanos\RH\Assentamento\Model\ControleMedicoExame;
 
@@ -336,7 +339,7 @@ class ControleMedico
     public function __construct($codigoAssentamento = null)
     {
         if (!empty($codigoAssentamento)) {
-            $dao = new \cl_monitoramentosaude();
+            $dao = new cl_monitoramentosaude();
             $where = "h26_assenta = {$codigoAssentamento} ";
             $sql = $dao->sql_query(null, "*", null, $where);
             $rs = db_query($sql);
@@ -346,7 +349,7 @@ class ControleMedico
                 throw new BusinessException($msg);
             }
             if (pg_num_rows($rs) >= 1) {
-                $controleMedico = \db_utils::fieldsMemory($rs, 0);
+                $controleMedico = db_utils::fieldsMemory($rs, 0);
                 $this->setCodigo($controleMedico->h26_sequencial);
                 $this->setCodigoAssentamento($controleMedico->h26_assenta);
                 $this->setTipoExameOcupacional($controleMedico->h26_tipoexameocupacional);
@@ -369,7 +372,7 @@ class ControleMedico
         if (empty($this->codigoAssentamento)) {
             throw new BusinessException("Código de Assentamento não informado.");
         }
-        $dao = new \cl_monitoramentosaude();
+        $dao = new cl_monitoramentosaude();
         $where = "h26_assenta = {$this->codigoAssentamento} ";
         $sql = $dao->sql_query(null, "h26_sequencial", null, $where);
         $rs = db_query($sql);
@@ -379,13 +382,13 @@ class ControleMedico
         }
 
         if (pg_num_rows($rs) >= 1) {
-            $controleMedico = \db_utils::fieldsMemory($rs, 0);
+            $controleMedico = db_utils::fieldsMemory($rs, 0);
             if ($this->getCodigo() != $controleMedico->h26_sequencial) {
                 throw new BusinessException("Código de controle incompativel com a alteração.");
             }
         }
 
-        $dao = new \cl_monitoramentosaude();
+        $dao = new cl_monitoramentosaude();
 
         $dao->h26_sequencial = $this->codigo;
         $dao->h26_assenta = $this->codigoAssentamento;
@@ -407,7 +410,7 @@ class ControleMedico
         }
 
         if ($dao->erro_status == 2) {
-            throw new \DBException($dao->erro_msg);
+            throw new DBException($dao->erro_msg);
         }
         $this->setCodigo($dao->h26_sequencial);
         $this->salvarExames();
@@ -421,13 +424,13 @@ class ControleMedico
     public function salvarExames()
     {
         if (empty($this->codigo)) {
-            throw new \BusinessException("O Controle médico não está salvo no momento.");
+            throw new BusinessException("O Controle médico não está salvo no momento.");
         }
         // deletamos todos os exames e re-adicionamos
         $sql = "delete from recursoshumanos.monitoramentosaudeexame where h27_monitoriamentosaude = {$this->codigo}";
         $rs = \db_query($sql);
         if (!$rs) {
-            throw new \DBException("Houve algum problema ao excluir os exames.");
+            throw new DBException("Houve algum problema ao excluir os exames.");
         }
         foreach ($this->exames as $exame) {
             $exame->setCodigoMonitoramentoSaude($this->codigo);
@@ -448,16 +451,16 @@ class ControleMedico
 
         if (!$rs) {
             $msg = "Houve um erro ao buscar os exames do Assentamento Código:{$this->getCodigoAssentamento()} .";
-            throw new \DBException($msg);
+            throw new DBException($msg);
         }
 
         if (pg_num_rows($rs) == 0) {
             $msg = "Nenhum exame encontrado para o Assentamento Código:{$this->getCodigoAssentamento()} .";
-            throw new \BusinessException($msg);
+            throw new BusinessException($msg);
         }
         $totalExames = pg_num_rows($rs);
         for ($i = 0; $i < $totalExames; $i++) {
-            $codigoExame = \db_utils::fieldsMemory($rs, $i)->h27_sequencial;
+            $codigoExame = db_utils::fieldsMemory($rs, $i)->h27_sequencial;
             $exame = new ControleMedicoExame($codigoExame);
             $this->addExame($exame);
         }

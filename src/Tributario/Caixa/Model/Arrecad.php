@@ -2,6 +2,7 @@
 
 namespace ECidade\Tributario\Caixa\Model;
 
+use DateTime;
 use ECidade\Tributario\Library\Model;
 
 final class Arrecad extends Model
@@ -60,7 +61,7 @@ final class Arrecad extends Model
         return $this->numcgm;
     }
 
-    public function setDtoper(\DateTime $dtoper)
+    public function setDtoper(DateTime $dtoper)
     {
         $this->dtoper = $dtoper;
     }
@@ -100,7 +101,7 @@ final class Arrecad extends Model
         return $this->valor;
     }
 
-    public function setDtvenc(\DateTime $dtvenc)
+    public function setDtvenc(DateTime $dtvenc)
     {
         $this->dtvenc = $dtvenc;
     }

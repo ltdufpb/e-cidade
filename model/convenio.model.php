@@ -72,8 +72,8 @@ class convenio {
   private $vencimento     = null;
 
 
-  function __construct($iCodConvenio="",$iNumpre,$iNumpar,$sValor,$sVlrbar,$dDataVenc,$iTercDig, $dataVencimento = null) {
-    $this->custasHonorarios = (boolean) Registry::get('app.config')->get('custas_honorarios');
+  function __construct($iCodConvenio="",$iNumpre = null,$iNumpar = null,$sValor = null,$sVlrbar = null,$dDataVenc = null,$iTercDig = null, $dataVencimento = null) {
+    $this->custasHonorarios = (bool) Registry::get('app.config')->get('custas_honorarios');
     $oConvenio = new RegistroConvenio($iCodConvenio);
 
 	  $this->iModalidadeConvenio  = $oConvenio->getModalidadeConvenio();
@@ -102,21 +102,21 @@ class convenio {
 
   private function geraLinhaBarra($iNumpre,$iNumpar,$sValor,$sVlrbar,$dDataVenc,$iTercDig,$dataVencimento = null) {
     if ($dataVencimento != null) {
-      $dataSelecionada = new \DBDate($dDataVenc);
-      $dataSelecionada = $dataSelecionada->convertTo(\DBDate::DATA_EN);
-      $dataVencimento = new \DBDate($dataVencimento);
-      $dataVencimento = $dataVencimento->convertTo(\DBDate::DATA_EN);
+      $dataSelecionada = new DBDate($dDataVenc);
+      $dataSelecionada = $dataSelecionada->convertTo(DBDate::DATA_EN);
+      $dataVencimento = new DBDate($dataVencimento);
+      $dataVencimento = $dataVencimento->convertTo(DBDate::DATA_EN);
       $data = $dataVencimento >= $dataSelecionada ? $dataVencimento : $dataSelecionada;
 
-      $dataVencimento = new \DBDate($data);
-      $dDataVenc = $dataVencimento->convertTo(\DBDate::DATA_PTBR);
+      $dataVencimento = new DBDate($data);
+      $dDataVenc = $dataVencimento->convertTo(DBDate::DATA_PTBR);
     }else{
       $data = $dDataVenc;
       $data = str_replace("/","",$data);
     }
     $sDataVencimento = str_replace("-","",$data);
 
-    $this->vencimento = new \DBDate($dDataVenc);
+    $this->vencimento = new DBDate($dDataVenc);
 
     if ($this->iModalidadeConvenio == 1) {
 
@@ -167,12 +167,12 @@ class convenio {
         throw new Exception("Erro ao gerar código de barras(2)");
       }
 
-      $this->sCodigoBarra     = substr($oFebraban->fc_febraban,0,strpos($oFebraban->fc_febraban, ','));
-      $this->sLinhaDigitavel  = substr($oFebraban->fc_febraban, strpos($oFebraban->fc_febraban, ',') + 1);
+      $this->sCodigoBarra     = substr((string) $oFebraban->fc_febraban,0,strpos((string) $oFebraban->fc_febraban, ','));
+      $this->sLinhaDigitavel  = substr((string) $oFebraban->fc_febraban, strpos((string) $oFebraban->fc_febraban, ',') + 1);
     } else {
 
-      $this->sCodigoBarra     = str_pad($iNumpre, 8, '0', STR_PAD_LEFT).str_pad($iNumpar, 3, '0', STR_PAD_LEFT);
-      $this->sLinhaDigitavel  = str_pad($iNumpre, 8, '0', STR_PAD_LEFT).str_pad($iNumpar, 3, '0', STR_PAD_LEFT);
+      $this->sCodigoBarra     = str_pad((string) $iNumpre, 8, '0', STR_PAD_LEFT).str_pad((string) $iNumpar, 3, '0', STR_PAD_LEFT);
+      $this->sLinhaDigitavel  = str_pad((string) $iNumpre, 8, '0', STR_PAD_LEFT).str_pad((string) $iNumpar, 3, '0', STR_PAD_LEFT);
     }
 
     /**
@@ -254,7 +254,7 @@ class convenio {
 
       //Ajustado transações para poder gerar recibo a partir da API do Laravel
       if (is_null($conn)) {
-          \DB::beginTransaction();
+          DB::beginTransaction();
       } else {
           db_query($conn, "begin");
       }
@@ -264,7 +264,7 @@ class convenio {
 	    pg_lo_export  ( "$oBanco->db90_logo",$sCaminho);
 
         if (is_null($conn)) {
-            \DB::commit();
+            DB::commit();
         } else {
             db_query($conn, "commit");
         }
@@ -349,7 +349,7 @@ class convenio {
         $sAgenciaCedente = $this->getCodAgencia()."/".$sCedente;
       break;
     	default:
-        $sCedente        = substr($this->getCedente(),0,strlen($this->getCedente())-1)."-". substr($this->getCedente(),strlen($this->getCedente())-1,1);
+        $sCedente        = substr((string) $this->getCedente(),0,strlen((string) $this->getCedente())-1)."-". substr((string) $this->getCedente(),strlen((string) $this->getCedente())-1,1);
         $sAgenciaCedente = $this->getCodAgencia()."/".$sCedente;
     	break;
     }

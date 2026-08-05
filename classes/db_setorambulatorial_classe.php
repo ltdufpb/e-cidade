@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE setorambulatorial
 class cl_setorambulatorial { 
@@ -28,7 +28,7 @@ class cl_setorambulatorial {
                  sd91_local = int4 = Local 
                  ";
    //funcao construtor da classe 
-   function cl_setorambulatorial() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("setorambulatorial"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

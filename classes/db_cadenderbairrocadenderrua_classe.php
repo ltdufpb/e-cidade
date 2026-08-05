@@ -54,7 +54,7 @@ class cl_cadenderbairrocadenderrua
                  ";
 
     //funcao construtor da classe
-    function cl_cadenderbairrocadenderrua()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("cadenderbairrocadenderrua");

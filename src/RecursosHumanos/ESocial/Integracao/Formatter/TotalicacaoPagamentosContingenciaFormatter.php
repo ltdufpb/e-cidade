@@ -27,6 +27,8 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+
 class TotalicacaoPagamentosContingenciaFormatter extends Formatter
 {
     /**
@@ -35,6 +37,7 @@ class TotalicacaoPagamentosContingenciaFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[Override]
     public function formatar($dados)
     {
         /**

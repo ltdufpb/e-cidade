@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_biblioteca_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbiblioteca = new cl_biblioteca;
 $clbiblioteca->rotulo->label("bi17_codigo");
 $clbiblioteca->rotulo->label("bi17_nome");
@@ -55,7 +56,7 @@ $clbiblioteca->rotulo->label("bi17_nome");
       <?=$Lbi17_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("bi17_codigo",10,$Ibi17_codigo,true,"text",4,"","chave_bi17_codigo");?>
+      <?php db_input("bi17_codigo",10,$Ibi17_codigo,true,"text",4,"","chave_bi17_codigo");?>
      </td>
     </tr>
     <tr>
@@ -63,7 +64,7 @@ $clbiblioteca->rotulo->label("bi17_nome");
       <?=$Lbi17_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("bi17_nome",100,$Ibi17_nome,true,"text",4,"","chave_bi17_nome");?>
+      <?php db_input("bi17_nome",100,$Ibi17_nome,true,"text",4,"","chave_bi17_nome");?>
      </td>
     </tr>
     <tr>
@@ -79,7 +80,7 @@ $clbiblioteca->rotulo->label("bi17_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $depto = db_getsession("DB_coddepto");
    $where = " bi17_coddepto = $depto AND";
    $where1 = " bi17_coddepto = $depto";

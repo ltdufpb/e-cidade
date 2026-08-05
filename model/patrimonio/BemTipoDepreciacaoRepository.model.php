@@ -33,7 +33,7 @@ class BemTipoDepreciacaoRepository {
   /**
    * @var array
    */
-  private static $aItens = array();
+  private static $aItens = [];
 
   /** */
   private function __construct() {}

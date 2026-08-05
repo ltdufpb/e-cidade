@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_orciniciativa_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clorciniciativa = new cl_orciniciativa;
 $clorciniciativa->rotulo->label("o147_sequencial");
@@ -56,7 +57,7 @@ $clorciniciativa->rotulo->label("o147_descricao");
               <?=$Lo147_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("o147_sequencial",10,$Io147_sequencial,true,"text",4,"","chave_o147_sequencial");
 		       ?>
             </td>
@@ -66,7 +67,7 @@ $clorciniciativa->rotulo->label("o147_descricao");
               <?=$Lo147_descricao?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("o147_descricao",40,$Io147_descricao,true,"text",4,"","chave_o147_descricao");
 		       ?>
             </td>
@@ -84,7 +85,7 @@ $clorciniciativa->rotulo->label("o147_descricao");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orciniciativa.php")==true){
@@ -127,12 +128,12 @@ $clorciniciativa->rotulo->label("o147_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -27,6 +27,9 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas;
 
+use DateTime;
+use DateInterval;
+use Exception;
 use ECidade\RecursosHumanos\RH\Assentamento\AssentamentoAbonoFalta;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacaoPonto;
@@ -78,7 +81,7 @@ class Falta extends BaseHora implements Horas
     /**
      * Calcula o número de horas falta em determinado dia
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     public function calcular()
     {
@@ -87,7 +90,7 @@ class Falta extends BaseHora implements Horas
 
         $horasFalta = $this->calcularHorasFalta();
 
-        $debug = "-- Hora Falta Calculada....: ". (($horasFalta instanceof \DateTime) ? $horasFalta->format('H:i') : '_:__');
+        $debug = "-- Hora Falta Calculada....: ". (($horasFalta instanceof DateTime) ? $horasFalta->format('H:i') : '_:__');
         $this->logger->debug($debug);
 
         $horasFalta = $this->posCalcular($horasFalta);
@@ -97,8 +100,8 @@ class Falta extends BaseHora implements Horas
     }
 
     /**
-     * @return \DateTime
-     * @throws \Exception
+     * @return DateTime
+     * @throws Exception
      */
     protected function calcularHorasFalta()
     {
@@ -112,8 +115,8 @@ class Falta extends BaseHora implements Horas
             $this->getDiaTrabalho()->getData()->getDia()
         );
 
-        $this->logger->debug("-- Horas Trabalhadas.......: "    . ($horasTrabalhadas instanceof \DateTime   ? $horasTrabalhadas->format('H:i') : ''));
-        $this->logger->debug("-- Carga Horária...........: "    . ($cargaHoraria instanceof \DateTime       ? $cargaHoraria->format('H:i')     : ''));
+        $this->logger->debug("-- Horas Trabalhadas.......: "    . ($horasTrabalhadas instanceof DateTime   ? $horasTrabalhadas->format('H:i') : ''));
+        $this->logger->debug("-- Carga Horária...........: "    . ($cargaHoraria instanceof DateTime       ? $cargaHoraria->format('H:i')     : ''));
 
         /**
          * Horas trabalhadas são maiores que as horas da Jornada, nao existe falta;
@@ -140,9 +143,8 @@ class Falta extends BaseHora implements Horas
         if($this->getDiaTrabalho()->getJornada()->isDSR() || $this->getDiaTrabalho()->getJornada()->isFolga()) {
 
             $this->logger->debug("-- SEM falta, data nao eh dia de trabalho. ");
-            $msgDia = $this->getDiaTrabalho()->getJornada()->isDSR() ? 'Data eh um DSR.'
-                : $this->getDiaTrabalho()->getJornada()->isFolga() ? 'Data eh uma FOLGA'
-                    : $this->getDiaTrabalho()->getFeriado() ? 'Data eh um FERIADO' : '';
+            $msgDia = ($this->getDiaTrabalho()->getJornada()->isDSR() ? 'Data eh um DSR.'
+                : $this->getDiaTrabalho()->getJornada()->isFolga() ? 'Data eh uma FOLGA' : $this->getDiaTrabalho()->getFeriado()) ? 'Data eh um FERIADO' : '';
             $this->logger->debug("-- {$msgDia}");
 
             return $this->getHoraZerada();
@@ -185,16 +187,16 @@ class Falta extends BaseHora implements Horas
     /**
      * @param $horasFalta
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     protected function posCalcular($horasFalta)
     {
 
         if (!$this->assentamentoAbonoFaltaGeraFalta) {
-            if (!empty($this->horaAssentamentoAbonoFalta) && preg_match('/\d+\:\d+/', $this->horaAssentamentoAbonoFalta)) {
-                list($hora, $minuto) = explode(':', $this->horaAssentamentoAbonoFalta);
-                $intervaloSubtrair = new \DateInterval("PT{$hora}H{$minuto}M");
-                $horasSubtrair = \DateTime::createFromFormat('H:i', "{$hora}:{$minuto}");
+            if (!empty($this->horaAssentamentoAbonoFalta) && preg_match('/\d+\:\d+/', (string) $this->horaAssentamentoAbonoFalta)) {
+                [$hora, $minuto] = explode(':', (string) $this->horaAssentamentoAbonoFalta);
+                $intervaloSubtrair = new DateInterval("PT{$hora}H{$minuto}M");
+                $horasSubtrair = DateTime::createFromFormat('H:i', "{$hora}:{$minuto}");
                 $horasSubtrair->setDate(
                     $this->getDiaTrabalho()->getData()->getAno(),
                     $this->getDiaTrabalho()->getData()->getMes(),
@@ -213,7 +215,7 @@ class Falta extends BaseHora implements Horas
 
         $this->logger->debug("-- POS CALCULO DE FALTAS    ");
 
-        $debug = "-- Hora Falta..............: ". (($horasFalta instanceof \DateTime) ? $horasFalta->format('H:i') : '_:__');
+        $debug = "-- Hora Falta..............: ". (($horasFalta instanceof DateTime) ? $horasFalta->format('H:i') : '_:__');
         $this->logger->debug($debug);
 
         return $horasFalta;
@@ -221,7 +223,7 @@ class Falta extends BaseHora implements Horas
 
     /**
      * @param $cargaHoraria
-     * @return \DateTime
+     * @return DateTime
      */
     private function diaDeTrabalhoComJustificativa($cargaHoraria)
     {
@@ -262,7 +264,7 @@ class Falta extends BaseHora implements Horas
             }
         }
 
-        $this->logger->debug("-- Faltas calculadas..................: ". ( $this->oDiaFalta instanceof \DateTime ? $this->oDiaFalta->format('H:i') : ''));
+        $this->logger->debug("-- Faltas calculadas..................: ". ( $this->oDiaFalta instanceof DateTime ? $this->oDiaFalta->format('H:i') : ''));
 
     }
 
@@ -296,7 +298,7 @@ class Falta extends BaseHora implements Horas
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     protected function calcularHorasFaltaNoturna()
     {
@@ -321,7 +323,7 @@ class Falta extends BaseHora implements Horas
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getHorasFaltaNoturna()
     {

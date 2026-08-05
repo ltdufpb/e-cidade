@@ -27,18 +27,20 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
-use ECidade\RecursosHumanos\ESocial\Entity\Servidor;
-use ECidade\RecursosHumanos\ESocial\Service\ServidorService;
-use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
-
+use Servidor;
+use Override;
+use endereco;
+use DBPessoal;
+use Exception;
+use Assentamento;
+use DBException;
 use stdClass;
-use DBDate;
 use CgmJuridico;
 
 class CadastroBeneficiarioFormatter extends Formatter
 {
     /**
-     * @var \Servidor
+     * @var Servidor
      */
     private $servidorAtual;
 
@@ -49,9 +51,10 @@ class CadastroBeneficiarioFormatter extends Formatter
 
     /**
      * @param array $dados
-     * @return array|\Assentamento[]
-     * @throws \DBException
+     * @return array|Assentamento[]
+     * @throws DBException
      */
+    #[Override]
     public function formatar($dados)
     {
         $dadosServidor = [];
@@ -66,7 +69,7 @@ class CadastroBeneficiarioFormatter extends Formatter
 
     private function processar($servidor)
     {
-        $dadoServidor = new \stdClass();
+        $dadoServidor = new stdClass();
         $dadoServidor->inscricao_empregador = $this->getEmpregador()->getCnpj();
         $this->formatarDados($dadoServidor);
 
@@ -102,12 +105,12 @@ class CadastroBeneficiarioFormatter extends Formatter
 
     private function montarGrupoEndereco()
     {
-        $retornoEndereco = array();
+        $retornoEndereco = [];
         $cgmServidor = $this->servidorAtual->getCgm();
-        $endereco = new \endereco($cgmServidor->getEnderecoPrimario());
+        $endereco = new endereco($cgmServidor->getEnderecoPrimario());
 
         if (empty($cgmServidor->getCodigoPaisExterior())) {
-            $enderecoBrasil = new \stdClass();
+            $enderecoBrasil = new stdClass();
             $enderecoBrasil->tpLograd = $endereco->getSiglaRua();
             $enderecoBrasil->dscLograd = $cgmServidor->getLogradouro();
             $enderecoBrasil->nrLograd = $cgmServidor->getNumero();
@@ -120,14 +123,14 @@ class CadastroBeneficiarioFormatter extends Formatter
             $enderecoBrasil->cep = $cgmServidor->getCep();
             $codigoMunicipio = $endereco->getCodigoSistemaExterno();
             if (empty($codigoMunicipio)) {
-                $codigoMunicipio = \endereco::getCodigoExternoSistemaByCep($cgmServidor->getCep());
+                $codigoMunicipio = endereco::getCodigoExternoSistemaByCep($cgmServidor->getCep());
             }
             $enderecoBrasil->codMunic = $codigoMunicipio;
             $enderecoBrasil->uf = $cgmServidor->getUf();
 
             $retornoEndereco['brasil'] = $enderecoBrasil;
         } else {
-            $enderecoExterior = new \stdClass();
+            $enderecoExterior = new stdClass();
             $enderecoExterior->paisResid   = $cgmServidor->getCodigoPaisExterior();
             $enderecoExterior->dscLograd   = $cgmServidor->getLogradouroExterior();
             $enderecoExterior->nrLograd    = $cgmServidor->getNumeroExterior();
@@ -145,9 +148,9 @@ class CadastroBeneficiarioFormatter extends Formatter
     private function montarGrupoDependente()
     {
 
-        $retornoDependentes = array();
+        $retornoDependentes = [];
         foreach ($this->servidorAtual->getDependentes() as $dados) {
-            $dependente = array();
+            $dependente = [];
             $tpDep = $this->deParaTipoDependente($dados->getGrauParentesco());
             if ($tpDep) {
                 $dependente["tpDep"] = $tpDep;
@@ -201,13 +204,13 @@ class CadastroBeneficiarioFormatter extends Formatter
          * A-Avó(ô),
          * O-Outros.
          */
-        $dePara = array( "A" => "09",
+        $dePara = [ "A" => "09",
             "C" => "01",
             "F" => "03",
             "M" => "09",
             "P" => "09",
             "O" => "99"
-        );
+        ];
         $retorno = $dePara[$vinculoDependente];
         if (empty($retorno)) {
             return false;
@@ -223,7 +226,7 @@ class CadastroBeneficiarioFormatter extends Formatter
          *  Se valor: 0 preencher N-Não
          *  Se valor: 1;2;3;4;5;6;7 e 8 preencher com S-Sim
          */
-        $dePara = array(
+        $dePara = [
             "0" => "N",
             "1" => "S",
             "2" => "S",
@@ -234,7 +237,7 @@ class CadastroBeneficiarioFormatter extends Formatter
             "7" => "S",
             "8" => "S",
             ""  => null
-        );
+        ];
         $retorno = $dePara[$irrf];
         if (empty($retorno)) {
             return false;
@@ -250,10 +253,10 @@ class CadastroBeneficiarioFormatter extends Formatter
          *  Se valor: N preencher N-Não
          *  Se valor: C e S preencher com S-Sim
          */
-        $dePara = array( "N" => "N",
+        $dePara = [ "N" => "N",
             "C" => "S",
             "S" => "S"
-        );
+        ];
         $retorno = $dePara[$condicao];
         if (empty($retorno)) {
             return false;
@@ -282,13 +285,13 @@ class CadastroBeneficiarioFormatter extends Formatter
          * 8 - Parda
          * 9 - Não informado
          */
-        $dePara = array( "1" => "5",
+        $dePara = [ "1" => "5",
             "2" => "1",
             "4" => "2",
             "6" => "4",
             "8" => "3",
             "9" => "6",
-        );
+        ];
         $retorno = $dePara[$codigo];
         if (empty($retorno)) {
             $retorno = 9;
@@ -315,7 +318,7 @@ class CadastroBeneficiarioFormatter extends Formatter
          * 5 - Divorciado
          * 6 - Uniao estavel
          */
-        $dePara = array(
+        $dePara = [
             1 => 1,
             2 => 2,
             3 => 5,
@@ -323,7 +326,7 @@ class CadastroBeneficiarioFormatter extends Formatter
             5 => 3,
             6 => 2,
             8 => null
-        );
+        ];
         $retorno = $dePara[$codigo];
         if (empty($retorno)) {
             return false;
@@ -356,12 +359,12 @@ class CadastroBeneficiarioFormatter extends Formatter
     private function verificaDataAdmissao()
     {
 
-        $dataObrigatoriedade = \DBPessoal::getDataFaseEsocial(2);
+        $dataObrigatoriedade = DBPessoal::getDataFaseEsocial(2);
         if (empty($dataObrigatoriedade)) {
             $msg  = "Campo Fase 02 (Eventos Não Periódicos) não configurado.\n";
             $msg .= "Verifique o cadastro 'Dados Datas Envios eSocial' acessando o ";
             $msg .= "menu DB:RECURSOSHUMANOS > Pessoal > Procedimentos > Manutenção de Parâmetros > Gerais";
-            throw new \Exception($msg);
+            throw new Exception($msg);
         }
         $dataAdmissao = $this->servidorAtual->getDataAdmissao();
         if ($dataAdmissao->getTimeStamp() < $dataObrigatoriedade->getTimeStamp()) {
@@ -375,6 +378,7 @@ class CadastroBeneficiarioFormatter extends Formatter
      *
      * @return  CgmJuridico
      */
+    #[Override]
     public function getEmpregador()
     {
         return $this->empregador;
@@ -387,6 +391,7 @@ class CadastroBeneficiarioFormatter extends Formatter
      *
      * @return  self
      */
+    #[Override]
     public function setEmpregador(CgmJuridico $empregador)
     {
         $this->empregador = $empregador;

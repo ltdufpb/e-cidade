@@ -276,7 +276,7 @@ class ServidorOperadoraSaude
      */
     public function toArray()
     {
-        $retorno = array(
+        $retorno = [
             'sequencial' => $this->getSequencial(),
             'valor' => $this->getValor(),
             'ano' => $this->getAno(),
@@ -285,8 +285,8 @@ class ServidorOperadoraSaude
             'operadoraSaude' => $this->getOperadoraSaude()->toArray(),
             'servidor' => $this->getServidor()->toArray(),
             'rubrica' => $this->getRubrica()->toArray(),
-            'servidorOperadoraSaudeDependentes' => array()
-        );
+            'servidorOperadoraSaudeDependentes' => []
+        ];
         $dependentes = $this->getServidorOperadoraSaudeDependente();
         if(count($dependentes) > 0){
             foreach($dependentes as $dependente) {

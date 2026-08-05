@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_divold_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldivold = new cl_divold;
 $cldivold->rotulo->label("k10_sequencial");
 $cldivold->rotulo->label("k10_coddiv");
@@ -54,7 +55,7 @@ $cldivold->rotulo->label("k10_coddiv");
               <?=$Lk10_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k10_sequencial",10,$Ik10_sequencial,true,"text",4,"","chave_k10_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldivold->rotulo->label("k10_coddiv");
               <?=$Lk10_coddiv?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k10_coddiv",10,$Ik10_coddiv,true,"text",4,"","chave_k10_coddiv");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldivold->rotulo->label("k10_coddiv");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_divold.php")==true){
@@ -122,12 +123,12 @@ $cldivold->rotulo->label("k10_coddiv");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

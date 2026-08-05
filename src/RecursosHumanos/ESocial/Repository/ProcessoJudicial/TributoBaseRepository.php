@@ -32,14 +32,7 @@ use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\TributoBase;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\ServidorRepository as ServidorRepositoryProcesso;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\TributoContribuicaoRepository;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\TributoIRRFRepository;
-use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\ProcessoJudicialRepository;
-use ECidade\RecursosHumanos\ESocial\Integracao\ESocial;
-use ECidade\RecursosHumanos\ESocial\Integracao\Recurso;
-use ECidade\V3\Extension\Registry;
 use Exception;
-use DBDate;
-use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\DeducaoSuspensa;
-use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\ValorRetencao;
 use stdClass;
 
 class TributoBaseRepository
@@ -160,7 +153,7 @@ class TributoBaseRepository
      * @param TributoBase|null $tributoBase
      * @throws Exception
      */
-    public function delete(TributoBase $tributoBase = null)
+    public function delete(?TributoBase $tributoBase = null)
     {
         $id = $tributoBase instanceof TributoBase ? $tributoBase->getSequencial() : null;
 
@@ -179,7 +172,7 @@ class TributoBaseRepository
      * @return bool|TributoBase
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhprocessotributobase;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);
@@ -366,8 +359,8 @@ class TributoBaseRepository
             // Identificação do período e da base de cálculo dos tributos.
             $dadosCalcTrib = new stdClass();
             $dadosCalcTrib->perRef = $tributoBase->getCompetencia();
-            $dadosCalcTrib->vrBcCpMensal = (double) $tributoBase->getValorBaseMensal();
-            $dadosCalcTrib->vrBcCp13 = (double) $tributoBase->getValorBaseMensal13();
+            $dadosCalcTrib->vrBcCpMensal = (float) $tributoBase->getValorBaseMensal();
+            $dadosCalcTrib->vrBcCp13 = (float) $tributoBase->getValorBaseMensal13();
             $dadosTributosProcesso->ideTrab[$indiceSevidor]->calcTrib[$indiceBase] = $dadosCalcTrib;
             
             $tributoContribuicaoRepository = new TributoContribuicaoRepository();
@@ -378,7 +371,7 @@ class TributoBaseRepository
                 // Informações das contribuições sociais devidas à Previdência Social e Outras Entidades e Fundos ...
                 $dadosContribuicao = new stdClass();
                 $dadosContribuicao->tpCR = $tributoContribuicao->getCodigoReceita();
-                $dadosContribuicao->vrCR = (double) $tributoContribuicao->getValorContribuicao();
+                $dadosContribuicao->vrCR = (float) $tributoContribuicao->getValorContribuicao();
                 $dadosTributosProcesso
                     ->ideTrab[$indiceSevidor]
                     ->calcTrib[$indiceBase]
@@ -394,17 +387,17 @@ class TributoBaseRepository
                 // Informações de Imposto de Renda, por Código de Receita - CR.
                 $dadosIRRF = new stdClass();
                 $dadosIRRF->tpCR = str_pad($tributoIRRF->getCodigoReceita(), 6, '0', STR_PAD_LEFT);
-                $dadosIRRF->vrCR = (double) $tributoIRRF->getValorIRRF();
+                $dadosIRRF->vrCR = (float) $tributoIRRF->getValorIRRF();
                 // Informações complementares, vinculadas ao infoCRIRRF/tpCR ...
                 $dadosIRRF->infoIR = new stdClass();
-                $dadosIRRF->infoIR->vrRendTrib = (double) $tributoIRRF->getValorRendimentoTributavel();
-                $dadosIRRF->infoIR->vrRendTrib13 = (double) $tributoIRRF->getValorRendimentoTributavel13();
-                $dadosIRRF->infoIR->vrRendMoleGrave = (double) $tributoIRRF->getValorRendimentoMolestia();
-                $dadosIRRF->infoIR->vrRendIsen65 = (double) $tributoIRRF->getValorIsenta65();
-                $dadosIRRF->infoIR->vrJurosMora = (double) $tributoIRRF->getValorJurosMora();
-                $dadosIRRF->infoIR->vrRendIsenNTrib = (double) $tributoIRRF->getValorRendimentoIsento();
+                $dadosIRRF->infoIR->vrRendTrib = (float) $tributoIRRF->getValorRendimentoTributavel();
+                $dadosIRRF->infoIR->vrRendTrib13 = (float) $tributoIRRF->getValorRendimentoTributavel13();
+                $dadosIRRF->infoIR->vrRendMoleGrave = (float) $tributoIRRF->getValorRendimentoMolestia();
+                $dadosIRRF->infoIR->vrRendIsen65 = (float) $tributoIRRF->getValorIsenta65();
+                $dadosIRRF->infoIR->vrJurosMora = (float) $tributoIRRF->getValorJurosMora();
+                $dadosIRRF->infoIR->vrRendIsenNTrib = (float) $tributoIRRF->getValorRendimentoIsento();
                 $dadosIRRF->infoIR->descIsenNTrib = $tributoIRRF->getDescricaoIsento();
-                $dadosIRRF->infoIR->vrPrevOficial = (double) $tributoIRRF->getValorPrevidenciaOficial();
+                $dadosIRRF->infoIR->vrPrevOficial = (float) $tributoIRRF->getValorPrevidenciaOficial();
                 // Informações complementares relativas a Rendimentos Recebidos Acumuladamente - RRA.
                 $dadosIRRF->infoIR->infoRRA = new stdClass();
                 $dadosIRRF->infoIR->infoRRA->descRRA = $tributoIRRF->getDescricaoRendimentoAcumula();
@@ -412,9 +405,9 @@ class TributoBaseRepository
                 // Detalhamento das despesas com processo judicial.
                 $dadosIRRF->infoIR->infoRRA->despProcJud = new stdClass();
                 $dadosIRRF->infoIR->infoRRA->despProcJud->vlrDespCustas =
-                    (double) $tributoIRRF->getValorDespesaCusta();
+                    (float) $tributoIRRF->getValorDespesaCusta();
                 $dadosIRRF->infoIR->infoRRA->despProcJud->vlrDespAdvogados =
-                    (double) $tributoIRRF->getValorDespesaAdvogados();
+                    (float) $tributoIRRF->getValorDespesaAdvogados();
 
                 // Identificação dos advogados.
                 $advogadoRepository = new AdvogadoRepository();
@@ -425,7 +418,7 @@ class TributoBaseRepository
                     $dadosIRRF->infoIR->ideAdv[$indiceAdvogado] = new stdClass();
                     $dadosIRRF->infoIR->ideAdv[$indiceAdvogado]->tpInsc = (int) $advogado->getTipoInscricao();
                     $dadosIRRF->infoIR->ideAdv[$indiceAdvogado]->nrInsc = $advogado->getNumeroInscricao();
-                    $dadosIRRF->infoIR->ideAdv[$indiceAdvogado]->vlrAdv = (double) $advogado->getValorDespesa();
+                    $dadosIRRF->infoIR->ideAdv[$indiceAdvogado]->vlrAdv = (float) $advogado->getValorDespesa();
                 }
 
                 // Dedução do rendimento tributável relativa a dependentes.
@@ -440,7 +433,7 @@ class TributoBaseRepository
                     $dadosIRRF->infoIR->idedDepen[$indiceDependente]->cpfDep =
                         $dependente->getCpfDependente();
                     $dadosIRRF->infoIR->idedDepen[$indiceDependente]->vlrDeducao =
-                        (double) $dependente->getValorDeducao();
+                        (float) $dependente->getValorDeducao();
                 }
 
                 // Informação dos beneficiários da pensão alimentícia.
@@ -452,7 +445,7 @@ class TributoBaseRepository
                     $dadosIRRF->infoIR->penAlim[$indicePensao] = new stdClass();
                     $dadosIRRF->infoIR->penAlim[$indicePensao]->tpRend = (int) $pensao->getTipoRendimento();
                     $dadosIRRF->infoIR->penAlim[$indicePensao]->cpfDep = $pensao->getCpfPensao();
-                    $dadosIRRF->infoIR->penAlim[$indicePensao]->vlrPensao = (double) $pensao->getValorPensao();
+                    $dadosIRRF->infoIR->penAlim[$indicePensao]->vlrPensao = (float) $pensao->getValorPensao();
                 }
 
                 // Informações de processos relacionados a não retenção de tributos ou a depósitos judiciais.
@@ -491,31 +484,31 @@ class TributoBaseRepository
                             ->infoProcRet[$indiceRetencao]
                             ->infoValores[$indiceValorRetencao]
                             ->vlrNRetido =
-                                (double) $valorRetencao->getValorRetencao();
+                                (float) $valorRetencao->getValorRetencao();
                         $dadosIRRF
                             ->infoIR
                             ->infoProcRet[$indiceRetencao]
                             ->infoValores[$indiceValorRetencao]
                             ->vlrDepJud =
-                                (double) $valorRetencao->getValorDepositoJudicial();
+                                (float) $valorRetencao->getValorDepositoJudicial();
                         $dadosIRRF
                             ->infoIR
                             ->infoProcRet[$indiceRetencao]
                             ->infoValores[$indiceValorRetencao]
                             ->vlrCmpAnoCal =
-                                (double) $valorRetencao->getValorCompensacaoAno();
+                                (float) $valorRetencao->getValorCompensacaoAno();
                         $dadosIRRF
                             ->infoIR
                             ->infoProcRet[$indiceRetencao]
                             ->infoValores[$indiceValorRetencao]
                             ->vlrCmpAnoAnt =
-                                (double) $valorRetencao->getValorCompensacaoAnoAnterior();
+                                (float) $valorRetencao->getValorCompensacaoAnoAnterior();
                         $dadosIRRF
                             ->infoIR
                             ->infoProcRet[$indiceRetencao]
                             ->infoValores[$indiceValorRetencao]
                             ->vlrRendSusp =
-                                (double) $valorRetencao->getValorRendimentoSuspenso();
+                                (float) $valorRetencao->getValorRendimentoSuspenso();
                         // Detalhamento das deduções com exigibilidade suspensa.
                         $deducaoSuspensaRepository = new DeducaoSuspensaRepository();
                         $deducoesSuspensa = $deducaoSuspensaRepository
@@ -541,7 +534,7 @@ class TributoBaseRepository
                                 ->infoValores[$indiceValorRetencao]
                                 ->dedSusp[$indiceDeducaoSuspensa]
                                 ->vlrDedSusp =
-                                    (double) $deducaoSuspensa->getTipoDeducao();
+                                    (float) $deducaoSuspensa->getTipoDeducao();
 
                             //Informação das deduções suspensas por dependentes e beneficiários da pensão alimentícia
                             $suspensaoPensaoRepository = new SuspensaoPensaoRepository();
@@ -571,7 +564,7 @@ class TributoBaseRepository
                                     ->dedSusp[$indiceDeducaoSuspensa]
                                     ->benefPen[$indiceSuspensaoPensao]
                                     ->vlrDepenSusp =
-                                        (double) $suspensaoPensao->getCpfDependente();
+                                        (float) $suspensaoPensao->getCpfDependente();
                             }
                         }
                     }

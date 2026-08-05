@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,8 +36,8 @@ $clunidades->rotulo->label();
    <?=@$Lsd02_i_codigo?>
   </td>
   <td>
-   <?db_input('sd02_i_codigo',10,$Isd02_i_codigo,true,'text',3,"")?>
-   <?db_input('descrdepto',50,@$Idescrdepto,true,'text',3,"")?>
+   <?php db_input('sd02_i_codigo',10,$Isd02_i_codigo,true,'text',3,"")?>
+   <?php db_input('descrdepto',50,@$Idescrdepto,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -45,7 +45,7 @@ $clunidades->rotulo->label();
    <?=$Lsd02_v_num_alvara?>
   </td>
   <td>
-   <?db_input('sd02_v_num_alvara',60,$Isd02_v_num_alvara,true,'text',$db_opcao,"")?>
+   <?php db_input('sd02_v_num_alvara',60,$Isd02_v_num_alvara,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -53,7 +53,7 @@ $clunidades->rotulo->label();
    <?=$Lsd02_d_data_exped?>
   </td>
   <td>
-   <?db_inputdata('sd02_d_data_exped',@$sd02_d_data_exped_dia,@$sd02_d_data_exped_mes,@$sd02_d_data_exped_ano,true,'text',$db_opcao,"")?>
+   <?php db_inputdata('sd02_d_data_exped',@$sd02_d_data_exped_dia,@$sd02_d_data_exped_mes,@$sd02_d_data_exped_ano,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -61,7 +61,7 @@ $clunidades->rotulo->label();
    <?=$Lsd02_v_ind_orgexp?>
   </td>
   <td>
-   <?
+   <?php 
    $x = array(''=>'','1'=>'SES','2'=>'SMS');
    db_select('sd02_v_ind_orgexp',$x,true,$db_opcao,"");
    ?>

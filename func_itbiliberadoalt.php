@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itbi_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clitbi = new cl_itbi;
 $clitbi->rotulo->label("it01_guia");
 $clitbi->rotulo->label("it01_guia");
@@ -55,7 +56,7 @@ $clitbi->rotulo->label("it01_guia");
               <?=$Lit01_guia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("it01_guia",10,$Iit01_guia,true,"text",4,"","chave_it01_guia");
 		       ?>
             </td>
@@ -73,7 +74,7 @@ $clitbi->rotulo->label("it01_guia");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $campos = "it01_guia,it01_data,it01_areaterreno,c.it03_nome as dl_comprador, t.it03_nome as dl_transmitente  ";
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -155,12 +156,12 @@ $clitbi->rotulo->label("it01_guia");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

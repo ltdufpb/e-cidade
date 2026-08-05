@@ -24,7 +24,7 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
+use ECidade\V3\Extension\Registry;
 use ECidade\Configuracao\Formulario\Identifier;
 
 class AvaliacaoPergunta
@@ -56,12 +56,12 @@ class AvaliacaoPergunta
      * Stdclass com as opções de respostas e informação se foi respondida
      * @var stdClass[]
      */
-    protected $aOpcoesResposta = array();
+    protected $aOpcoesResposta = [];
 
     /**
      * @var array
      */
-    protected $aResposta = array();
+    protected $aResposta = [];
 
     /**
      * @var bool
@@ -158,7 +158,7 @@ class AvaliacaoPergunta
      * Opções de resposta da pergunta ()
      * @var AvaliacaoPerguntaOpcao[]
      */
-    private $aOpcoes = array();
+    private $aOpcoes = [];
 
     /**
      * @var bool
@@ -338,9 +338,9 @@ class AvaliacaoPergunta
      * @throws BusinessException
      * @throws DBException
      */
-    public static function getAvaliacacoesComResposta($iCodigo, array $aRespostasDissertativas = null)
+    public static function getAvaliacacoesComResposta($iCodigo, ?array $aRespostasDissertativas = null)
     {
-        $aAvaliacoes = array();
+        $aAvaliacoes = [];
         $sWhere = "db106_avaliacaoperguntaopcao={$iCodigo}";
         if (!empty($aRespostasDissertativas) && count($aRespostasDissertativas) > 0) {
             $sRespostas = implode("','", $aRespostasDissertativas);
@@ -549,9 +549,9 @@ class AvaliacaoPergunta
      * Define o codigo do preenchimento(resposta)
      * tabela: avaliacaogruporesposta
      * @param integer $iAvaliacao
-     * @deprecated
      * @see self::setPreenchimento
      */
+    #[Deprecated]
     public function setAvaliacao($iAvaliacao)
     {
         $this->setPreenchimento($iAvaliacao);
@@ -666,7 +666,7 @@ class AvaliacaoPergunta
 
         foreach ($this->aResposta as $oResposta) {
             $oDaoAvaliacaoResposta->db106_avaliacaoperguntaopcao = $oResposta->codigoresposta;
-            $oDaoAvaliacaoResposta->db106_resposta = "" . addslashes(utf8_decode(db_stdClass::db_stripTagsJson($oResposta->textoresposta))) . "";
+            $oDaoAvaliacaoResposta->db106_resposta = "" . addslashes(mb_convert_encoding(db_stdClass::db_stripTagsJson($oResposta->textoresposta), 'ISO-8859-1')) . "";
             $oDaoAvaliacaoResposta->incluir(null);
 
             if ($oDaoAvaliacaoResposta->erro_status == 0) {
@@ -716,7 +716,7 @@ class AvaliacaoPergunta
     public function setRespostasPorLayout(DBLayoutLinha $oLinhaLayout, $iAno = null)
     {
         $aVinculos = $this->getVinculosComLayout($iAno);
-        $aRespostas = array();
+        $aRespostas = [];
 
         foreach ($aVinculos as $oVinculo) {
             $sTextoResposta = '';
@@ -792,7 +792,7 @@ class AvaliacaoPergunta
     }
 
     /**
-     * @throws \DBException
+     * @throws DBException
      * @return string|null
      */
     public function getFormulaVinculada()
@@ -829,7 +829,7 @@ class AvaliacaoPergunta
             $this->sIdentificador = $identifier->slugify($this->sDescricao);
         } else {
             if (!$identifier->validate($this->sIdentificador)) {
-                throw new \DBException("Identificador da pergunta já cadastrado: '$this->sIdentificador'");
+                throw new DBException("Identificador da pergunta já cadastrado: '$this->sIdentificador'");
             }
         }
 
@@ -854,7 +854,7 @@ class AvaliacaoPergunta
             $oDao->incluir(null);
 
             if ($this->iTipo == 2 && empty($this->aOpcoes)) {
-                $option = new \AvaliacaoPerguntaOpcao();
+                $option = new AvaliacaoPerguntaOpcao();
                 $option->setAceitaTexto(true);
                 $option->setIdentificadorCampo($this->sIdentificadorCampo);
                 $this->addOpcao($option);
@@ -864,7 +864,7 @@ class AvaliacaoPergunta
         }
 
         if ($oDao->erro_status == 0) {
-            $logger = \ECidade\V3\Extension\Registry::get('app.container')->get('app.logger');
+            $logger = Registry::get('app.container')->get('app.logger');
             $logger->debug("Pergunta: " . $this->sDescricao);
             $logger->debug($oDao->erro_msg);
             throw new DBException("Erro ao salvar perguntas.");
@@ -898,7 +898,7 @@ class AvaliacaoPergunta
      */
     private function removerFormula()
     {
-        $oDao = new \cl_avaliacaoperguntadb_formulas;
+        $oDao = new cl_avaliacaoperguntadb_formulas;
         $oDao->excluir(null, "eso01_avaliacaopergunta = $this->iPergunta");
 
         if ($oDao->erro_status == 0) {
@@ -915,13 +915,13 @@ class AvaliacaoPergunta
      */
     private function salvarFormula($iFormula)
     {
-        $oDao = new \cl_avaliacaoperguntadb_formulas;
+        $oDao = new cl_avaliacaoperguntadb_formulas;
         $oDao->eso01_db_formulas = $iFormula;
         $oDao->eso01_avaliacaopergunta = $this->iPergunta;
         $oDao->incluir(null);
 
         if ($oDao->erro_status == 0) {
-            $logger = \ECidade\V3\Extension\Registry::get('app.container')->get('app.logger');
+            $logger = Registry::get('app.container')->get('app.logger');
             $logger->debug("Pergunta: " . $this->sDescricao);
             $logger->debug($oDao->erro_msg);
             throw new DBException("Erro ao vincular fórmula.");
@@ -977,9 +977,7 @@ class AvaliacaoPergunta
             $instancia = $this;
             if (pg_num_rows($rs) > 0) {
 
-                $this->aOpcoes = db_utils::makeCollectionFromRecord($rs, function ($oDado) use ($instancia) {
-                    return AvaliacaoPerguntaOpcao::make($oDado, $instancia);
-                });
+                $this->aOpcoes = db_utils::makeCollectionFromRecord($rs, fn($oDado) => AvaliacaoPerguntaOpcao::make($oDado, $instancia));
             }
         }
 

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 $oDaoEfetividadeRh = db_utils::getdao("efetividaderh");
 $oDaoEfetividade   = db_utils::getdao("efetividade");
 $db_botao          = false;
@@ -75,7 +75,7 @@ if (isset($excluir)) {
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Informe a competência da efetividade:</b></legend>
-       <?include(modification("forms/db_frmefetividaderh.php"));?>
+       <?php include(modification("forms/db_frmefetividaderh.php"));?>
       </fieldset>
      </center>
     </td>
@@ -83,7 +83,7 @@ if (isset($excluir)) {
   </table>
  </body>
 </html>
-<?
+<?php 
 if (isset($excluir)) {
   if ($oDaoEfetividadeRh->erro_status == "0") {
     $oDaoEfetividadeRh->erro(true,false);

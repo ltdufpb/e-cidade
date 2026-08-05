@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -45,7 +45,7 @@ class PostgreSQLUtils {
 		return $this->_numrows;
 	}
 
-	function PostgreSQLUtils($conexao=null) {
+	function __construct($conexao=null) {
 		$this->_conexao = $conexao;
 		$this->_numrows = 0;
 		$this->_sql     = "";

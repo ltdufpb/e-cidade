@@ -26,7 +26,7 @@
  */
 
 
-use ECidade\Educacao\Escola\Registry\AlunoRegistry;
+
 
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_app.utils.php"));
@@ -82,12 +82,12 @@ try {
             }
 
             db_fim_transacao();
-            $oRetorno->sMensagem = urlencode(_M(URL_MENSAGEM_TURMAAC_RPC . "profissional_vinculado"));
+            $oRetorno->sMensagem = urlencode((string) _M(URL_MENSAGEM_TURMAAC_RPC . "profissional_vinculado"));
 
             break;
 
         case 'vincularHorarioSemProfissional':
-            $aMapaDias = array(1 => 'DOMINGO', 2 => 'SEGUNDA', 3 => 'TERÇA', 4 => 'QUARTA', 5 => 'QUINTA', 6 => 'SEXTA', 7 => 'SABADO');
+            $aMapaDias = [1 => 'DOMINGO', 2 => 'SEGUNDA', 3 => 'TERÇA', 4 => 'QUARTA', 5 => 'QUINTA', 6 => 'SEXTA', 7 => 'SABADO'];
 
             $oDaoTurmaAc = new cl_turmaac();
             $sSqlAno = $oDaoTurmaAc->sql_query($oParam->iTurmaAc, " ed52_i_ano, ed268_i_escola ");
@@ -95,7 +95,7 @@ try {
             $iAnoTurma = db_utils::fieldsMemory($rsAno, 0)->ed52_i_ano;
             $iEscolaTurma = db_utils::fieldsMemory($rsAno, 0)->ed268_i_escola;
 
-            $aWhere = array();
+            $aWhere = [];
             $aWhere[] = " ed52_i_ano = {$iAnoTurma} ";
             $aWhere[] = " ed268_i_escola = {$iEscolaTurma} ";
             $aWhere[] = " (('{$oParam->sHoraInicial}'::time, '{$oParam->sHoraFinal}'::time) overlaps (ed176_horainicial::time, ed176_horafinal::time)) ";
@@ -104,7 +104,7 @@ try {
             $oDaoTurmaHorarioProfissionalSemRec = new cl_turmaachorarioprofissionalsemrec();
 
             $lTemConflito = false;
-            $aDiasConflito = array();
+            $aDiasConflito = [];
             db_inicio_transacao();
 
             foreach ($oParam->aDiaSemana as $iDiaSemana) {
@@ -138,16 +138,16 @@ try {
             }
 
             db_fim_transacao();
-            $oRetorno->sMensagem = urlencode(_M(URL_MENSAGEM_TURMAAC_RPC . "profissional_vinculado"));
+            $oRetorno->sMensagem = urlencode((string) _M(URL_MENSAGEM_TURMAAC_RPC . "profissional_vinculado"));
 
             if ($lTemConflito) {
-                $aDias = array();
+                $aDias = [];
                 foreach ($aDiasConflito as $iDia) {
                     $aDias[] = $aMapaDias[$iDia];
                 }
                 $oMsg = new stdClass();
                 $oMsg->sDiasConflitados = implode(", ", $aDias);
-                $oRetorno->sMensagem = urlencode(_M(URL_MENSAGEM_TURMAAC_RPC . "profissional_vinculado_outras_turmas", $oMsg));
+                $oRetorno->sMensagem = urlencode((string) _M(URL_MENSAGEM_TURMAAC_RPC . "profissional_vinculado_outras_turmas", $oMsg));
             }
             break;
 
@@ -159,7 +159,7 @@ try {
 
             $iLinhas = $oDaoFuncaoAtividade->numrows;
 
-            $oRetorno->aFuncoes = array();
+            $oRetorno->aFuncoes = [];
             for ($i = 0; $i < $iLinhas; $i++) {
                 $oDados = db_utils::fieldsMemory($rsFuncaoAtividade, $i, true);
 
@@ -198,18 +198,18 @@ try {
             $rsVinculos = $oDaoTurmaHorarioProfissional->sql_record($sSqlVinculos);
             $iLinhas = $oDaoTurmaHorarioProfissional->numrows;
 
-            $oRetorno->aVinculados = array();
+            $oRetorno->aVinculados = [];
 
             for ($i = 0; $i < $iLinhas; $i++) {
                 $oDados = db_utils::fieldsMemory($rsVinculos, $i);
                 $oProfissional = new stdClass();
                 $oProfissional->iCodigo = $oDados->ed346_sequencial;
                 $oProfissional->iRecHumano = $oDados->ed20_i_codigo;
-                $oProfissional->sRecHumano = urlencode($oDados->profissional);
+                $oProfissional->sRecHumano = urlencode((string) $oDados->profissional);
                 $oProfissional->iAtividade = $oDados->ed119_sequencial;
-                $oProfissional->sAtividade = urlencode($oDados->ed119_descricao);
+                $oProfissional->sAtividade = urlencode((string) $oDados->ed119_descricao);
                 $oProfissional->iDia = $oDados->ed32_i_codigo;
-                $oProfissional->sDia = urlencode($oDados->ed32_c_descr);
+                $oProfissional->sDia = urlencode((string) $oDados->ed32_c_descr);
                 $oProfissional->sHoraInicial = $oDados->ed346_horainicial;
                 $oProfissional->sHoraFinal = $oDados->ed346_horafinal;
 
@@ -239,7 +239,7 @@ try {
                 throw new DBException(_M(URL_MENSAGEM_TURMAAC_RPC . "erro_desvincular_profissional"));
             }
             db_fim_transacao();
-            $oRetorno->sMensagem = urlencode(_M(URL_MENSAGEM_TURMAAC_RPC . "vinculo_removido"));
+            $oRetorno->sMensagem = urlencode((string) _M(URL_MENSAGEM_TURMAAC_RPC . "vinculo_removido"));
 
             break;
         case 'validaTurnoTurma':

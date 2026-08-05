@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadvenc_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clcadvenc = new cl_cadvenc;
 $clcadvenc->rotulo->label("q82_codigo");
@@ -57,7 +58,7 @@ $clcadvenc->rotulo->label("q82_desc");
 	              <?=$Lq82_codigo?>
 	            </td>
 	            <td width="96%" align="left" nowrap> 
-	              <?
+	              <?php 
 			            db_input("q82_codigo",4,$Iq82_codigo,true,"text",4,"","chave_q82_codigo");
 			          ?>
 	            </td>
@@ -67,7 +68,7 @@ $clcadvenc->rotulo->label("q82_desc");
 	              <?=$Lq82_parc?>
 	            </td>
 	            <td width="96%" align="left" nowrap> 
-	              <?
+	              <?php 
 			            db_input("q82_parc",4,$Iq82_parc,true,"text",4,"","chave_q82_parc");
 			          ?>
 	            </td>
@@ -77,7 +78,7 @@ $clcadvenc->rotulo->label("q82_desc");
 	              <?=$Lq82_desc?>
 	            </td>
 	            <td width="96%" align="left" nowrap> 
-	              <?
+	              <?php 
 			           db_input("q82_desc",20,$Iq82_desc,true,"text",4,"","chave_q82_desc");
 			          ?>
 	            </td>
@@ -95,7 +96,7 @@ $clcadvenc->rotulo->label("q82_desc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos) == false) {
@@ -144,12 +145,12 @@ $clcadvenc->rotulo->label("q82_desc");
 </table>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

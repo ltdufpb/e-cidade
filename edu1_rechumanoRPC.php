@@ -49,7 +49,7 @@ if($oPost->sAction == 'VerificaMatricula') {
   $matricula = $oPost->matricula;
  }
  $oJson = new services_json();
- echo $oJson->encode(array($retorno,$matricula));
+ echo $oJson->encode([$retorno,$matricula]);
 }
 
 if($oPost->sAction == 'VerificaCGM') {
@@ -62,7 +62,7 @@ if($oPost->sAction == 'VerificaCGM') {
   $cgm = $oPost->cgm;
  }
  $oJson = new services_json();
- echo $oJson->encode(array($retorno,$cgm));
+ echo $oJson->encode([$retorno,$cgm]);
 }
 
 ?>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -64,19 +64,19 @@ db_postmemory($HTTP_POST_VARS);
                   <b>Período:</b>
                 </td>
                 <td style="padding-bottom: 8px;"> 
-                  <?db_inputdata('dataini',@$dataini_dia,@$dataini_mes,@$dataini_ano,true,'text',1,"")?>
+                  <?php db_inputdata('dataini',@$dataini_dia,@$dataini_mes,@$dataini_ano,true,'text',1,"")?>
                   <b>Até:</b>
-                  <?db_inputdata('datafim',@$datafim_dia,@$datafim_mes,@$datafim_ano,true,'text',1,"")?>
+                  <?php db_inputdata('datafim',@$datafim_dia,@$datafim_mes,@$datafim_ano,true,'text',1,"")?>
                 </td>
               </tr>
               <tr>
                 <td width='15%' align='right'>
-                  <?
+                  <?php 
                   db_ancora('<b>Origem:</b>', 'js_pesquisaorigem(true);', '');
                   ?>
                 </td>
                 <td nowrap>
-                  <?
+                  <?php 
                   db_input('fa40_i_codigo',10,'',true,'text',1," onchange='js_pesquisaorigem(false);'");
                   db_input('fa40_c_descr',50,'',true,'text',3,'');
                   ?>
@@ -110,7 +110,7 @@ db_postmemory($HTTP_POST_VARS);
   </center>
 </form>
 </center>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

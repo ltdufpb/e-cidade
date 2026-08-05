@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 ?>
@@ -55,18 +55,18 @@ $db_botao = true;
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td align="center" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <form name="form1" method="post" action="" onsubmit="return check();">
    <fieldset style="width:95%"><legend><b>Consulta de Logs</b></legend>
     <table width="100%" border="0" cellspacing="2" cellpadding="0">
      <tr>
       <td width="10%" nowrap title="<?=@$Ted90_c_tabela?>">
-       <?db_ancora("<b>Tabela:</b>","js_pesquisaed90_c_tabela();",$db_opcao);?>
+       <?php db_ancora("<b>Tabela:</b>","js_pesquisaed90_c_tabela();",$db_opcao);?>
       </td>
       <td>
-       <?db_input('ed90_c_tabela',30,@$Ied90_c_tabela,true,'text',3,"")?>
-       <?db_input('ed90_c_modulo',40,@$Ied90_c_modulo,true,'text',3,"")?>
+       <?php db_input('ed90_c_tabela',30,@$Ied90_c_tabela,true,'text',3,"")?>
+       <?php db_input('ed90_c_modulo',40,@$Ied90_c_modulo,true,'text',3,"")?>
       </td>
      </tr>
      <tr>
@@ -74,13 +74,13 @@ $db_botao = true;
        <b>Tipo de Ação:</b>
       </td>
       <td>
-       <?
-       $x = array(''=>'','I'=>'INCLUSÃO','A'=>'ALTERAÇÃO','E'=>'EXCLUSÃO');
+       <?php 
+       $x = [''=>'','I'=>'INCLUSÃO','A'=>'ALTERAÇÃO','E'=>'EXCLUSÃO'];
        db_select('actipo',$x,true,$db_opcao," onchange='js_registros(this.value)'");
        ?>
        <span id="reg">
        <b>Registro:</b>
-       <?db_input('registro',20,@$Iregistro,true,'text',$db_opcao,"")?>
+       <?php db_input('registro',20,@$Iregistro,true,'text',$db_opcao,"")?>
        </span>
       </td>
      </tr>
@@ -95,7 +95,7 @@ $db_botao = true;
   </td>
  </tr>
 </table>
-<?
+<?php 
  if(isset($ed90_c_tabela)){
  $where = "";
  $where .= $actipo==""?"":" AND db_acountkey.actipo = '$actipo'";
@@ -136,11 +136,11 @@ $db_botao = true;
     <td>Atual</td>
     <td>Tipo</td>
    </tr>
-  <?
+  <?php 
   for($x=0;$x<$linhas;$x++){
    db_fieldsmemory($result,$x);
-   $data = date("d/m/Y",trim($datahr));
-   $hora = date("H:i:s",trim($datahr));
+   $data = date("d/m/Y",trim((string) $datahr));
+   $hora = date("H:i:s",trim((string) $datahr));
    if($data!=$datainicial){
     ?>
     <tr bgcolor="#444444" style="color:#DEB887">
@@ -148,7 +148,7 @@ $db_botao = true;
       <b>Data: <?=$data?></b>
      </td>
     </tr>
-    <?
+    <?php 
     $datainicial = $data;
    }
    if($campotext!=$codigoinicial){
@@ -158,7 +158,7 @@ $db_botao = true;
       <b>Registro:</b> <?=$campotext?> <?=Registro($ed90_c_tabela,$campotext)?>
      </td>
     </tr>
-    <?
+    <?php 
     $codigoinicial = $campotext;
    }
    if($id_acount!=$idinicial){
@@ -169,23 +169,23 @@ $db_botao = true;
       <b>Código:</b> <?=$id_acount?> <b>Usuário:</b> <?=$nome?>
      </td>
     </tr>
-    <?
+    <?php 
     $idinicial = $id_acount;
    }
    ?>
    <tr bgcolor="#f3f3f3">
     <td>&nbsp;</td>
     <td style="font-size:9px;"><?=$descricao?></td>
-    <td bgcolor="#CCFFCC" style="font-size:9px;"><?=$contant==""?"&nbsp;":trim($contant)?></td>
-    <td bgcolor="#CCFFCC" style="font-size:9px;"><?=$contatu==""?"&nbsp;":trim($contatu)?></td>
+    <td bgcolor="#CCFFCC" style="font-size:9px;"><?=$contant==""?"&nbsp;":trim((string) $contant)?></td>
+    <td bgcolor="#CCFFCC" style="font-size:9px;"><?=$contatu==""?"&nbsp;":trim((string) $contatu)?></td>
     <td style="font-size:9px;"><?=($actipo=="I")?"INCLUSÃO":($actipo=="A"?"ALTERAÇÃO":"EXCLUSÃO")?></td>
    </tr>
-   <?
+   <?php 
   }
   ?>
   </table>
   <br><br>
-  <?
+  <?php 
  }else{
   ?>
   <table align="center" width="760" border="1" cellspacing="0" cellpadding="0">
@@ -195,10 +195,10 @@ $db_botao = true;
     </td>
    </tr>
   </table>
-  <?
+  <?php 
  }
 }?>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -228,16 +228,16 @@ function js_registros(valor){
  }
 }
 </script>
-<?
+<?php 
 function Registro($tabela,$valor){
- if(trim($tabela)=="regencia"){
+ if(trim((string) $tabela)=="regencia"){
   $sql = "SELECT ed232_c_descr, ed18_c_nome FROM regencia
            inner join disciplina on ed12_i_codigo = ed59_i_disciplina
            inner join caddisciplina on ed232_i_codigo= ed12_i_caddisciplina
            inner join turma on ed57_i_codigo = ed59_i_turma
            inner join escola on ed18_i_codigo = ed57_i_escola
           WHERE ed59_i_codigo = $valor";
- }elseif(trim($tabela)=="parecer"){
+ }elseif(trim((string) $tabela)=="parecer"){
   $sql = "SELECT ed92_c_descr FROM $tabela
           WHERE ed92_i_codigo = $valor
          ";
@@ -252,7 +252,7 @@ function Registro($tabela,$valor){
    $retorno = "";
    $sep = "";
    for($x=0;$x<$ncampos;$x++){
-    $retorno .= $sep.pg_result($result,0,$x);
+    $retorno .= $sep.pg_fetch_result($result,0,$x);
     $sep = " - ";
    }
    return $retorno;

@@ -66,7 +66,7 @@ class cl_iptuender {
                  j43_cxpost = int4 = caixa postal
                  ";
    //funcao construtor da classe
-   function cl_iptuender() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptuender");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

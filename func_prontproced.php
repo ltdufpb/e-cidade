@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_prontproced_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clprontproced = new cl_prontproced;
 $clprontproced->rotulo->label("sd29_i_codigo");
 $clprontproced->rotulo->label("sd29_i_prontuario");
@@ -54,7 +55,7 @@ $clprontproced->rotulo->label("sd29_i_prontuario");
               <?=$Lsd29_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("sd29_i_codigo",10,$Isd29_i_codigo,true,"text",4,"","chave_sd29_i_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clprontproced->rotulo->label("sd29_i_prontuario");
               <?=$Lsd29_i_prontuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("sd29_i_prontuario",10,$Isd29_i_prontuario,true,"text",4,"","chave_sd29_i_prontuario");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clprontproced->rotulo->label("sd29_i_prontuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_prontproced.php")==true){
@@ -122,12 +123,12 @@ $clprontproced->rotulo->label("sd29_i_prontuario");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

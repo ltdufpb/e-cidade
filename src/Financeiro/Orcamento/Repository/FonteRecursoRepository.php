@@ -3,6 +3,7 @@
 
 namespace ECidade\Financeiro\Orcamento\Repository;
 
+use cl_orctiporec;
 use ECidade\Educacao\Escola\Repository\Repository;
 use ECidade\Financeiro\Orcamento\Mappers\DeComplementoParaFonteRecursos;
 use ECidade\Financeiro\Orcamento\Mappers\DeRecursoParaFonteRecursos;
@@ -13,7 +14,7 @@ class FonteRecursoRepository extends Repository
 {
     public function get()
     {
-        $dao = new \cl_orctiporec();
+        $dao = new cl_orctiporec();
         $sql = $dao->sql_query_file(null, '*', null, implode(' and ', $this->scopes));
         $rs = db_query($sql);
 

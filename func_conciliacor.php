@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conciliacor_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clconciliacor = new cl_conciliacor;
 $clconciliacor->rotulo->label("k84_sequencial");
 $clconciliacor->rotulo->label("k84_conciliaitem");
@@ -54,7 +55,7 @@ $clconciliacor->rotulo->label("k84_conciliaitem");
               <?=$Lk84_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k84_sequencial",10,$Ik84_sequencial,true,"text",4,"","chave_k84_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clconciliacor->rotulo->label("k84_conciliaitem");
               <?=$Lk84_conciliaitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k84_conciliaitem",10,$Ik84_conciliaitem,true,"text",4,"","chave_k84_conciliaitem");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clconciliacor->rotulo->label("k84_conciliaitem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conciliacor.php")==true){
@@ -122,12 +123,12 @@ $clconciliacor->rotulo->label("k84_conciliaitem");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

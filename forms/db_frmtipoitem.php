@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -53,7 +53,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lbi05_codigo?>
   </td>
   <td>
-   <?db_input('bi05_codigo',10,$Ibi05_codigo,true,'text',3,"")?>
+   <?php db_input('bi05_codigo',10,$Ibi05_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -61,7 +61,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Lbi05_nome?>
   </td>
   <td>
-   <?db_input('bi05_nome',50,$Ibi05_nome,true,'text',$db_opcao,"")?>
+   <?php db_input('bi05_nome',50,$Ibi05_nome,true,'text',$db_opcao,"")?>
   </td>
  </tr>
 </table>
@@ -70,7 +70,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table>
  <tr>
   <td valign="top">
-  <?
+  <?php 
    $chavepri= array("bi05_codigo"=>@$bi05_codigo,"bi05_nome"=>@$bi05_nome);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $cltipoitem->sql_query("","*","bi05_nome");

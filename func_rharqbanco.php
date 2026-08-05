@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rharqbanco_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oGet         = db_utils::postMemory($_GET);
 $clrharqbanco = new cl_rharqbanco;
@@ -69,7 +70,7 @@ if( !empty($ativas) ) {
             <?php echo $Lrh34_codarq; ?>
           </td>
           <td> 
-          <?
+          <?php 
           db_input("rh34_codarq",6,$Irh34_codarq,true,"text",4,"","chave_rh34_codarq");
           ?>
           </td>
@@ -79,7 +80,7 @@ if( !empty($ativas) ) {
             Descrição:
           </td>
           <td> 
-          <?
+          <?php 
           db_input("rh34_descr",40,$Irh34_descr,true,"text",4,"","chave_rh34_descr");
           ?>
           </td>
@@ -157,7 +158,7 @@ if( !empty($ativas) ) {
     </div>
   </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
 ?>
 <script>
@@ -177,7 +178,7 @@ if(!isset($pesquisa_chave)){
 
    })();
 </script>
-<?
+<?php 
 }
 ?>
 

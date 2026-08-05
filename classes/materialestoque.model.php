@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
-use ECidade\Patrimonial\Material\Helpers\Material;
+
 
 require_once(modification("model/contabilidade/planoconta/SistemaConta.model.php"));
 require_once(modification("model/contabilidade/planoconta/SubSistemaConta.model.php"));
@@ -193,7 +193,7 @@ class materialEstoque {
       return false;
 
     }
-    $aItens = array ();
+    $aItens =  [];
 
     $oItem = $this->getDados ();
     /**
@@ -572,7 +572,7 @@ class materialEstoque {
      * @throws DBException
      * @throws ParameterException
      */
-  function saidaMaterial($nQuantidade, $sObservacao = null, $lServico = false, TipoMovimentacaoEstoque $oMovimentacao = null, $processaDoc404 = true) {
+  function saidaMaterial($nQuantidade, $sObservacao = null, $lServico = false, ?TipoMovimentacaoEstoque $oMovimentacao = null, $processaDoc404 = true) {
 
     if (empty($nQuantidade) || $nQuantidade <= 0) {
       throw new Exception("Parametro nQuantidade inválido");

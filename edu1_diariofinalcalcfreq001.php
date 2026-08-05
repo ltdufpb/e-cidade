@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -96,7 +96,7 @@ $iAno   = $oTurma->getCalendario()->getAnoExecucao();
 <table valign="top" marginwidth="0" width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td align="left" valign="top" bgcolor="#CCCCCC">
-   <fieldset><legend><b>Quadro Geral Cálculo Frequência - <?=pg_result($result1,0,'ed47_i_codigo')?> - <?=pg_result($result1,0,'ed47_v_nome')?></b></legend>
+   <fieldset><legend><b>Quadro Geral Cálculo Frequência - <?=pg_fetch_result($result1,0,'ed47_i_codigo')?> - <?=pg_fetch_result($result1,0,'ed47_v_nome')?></b></legend>
     <table width="100%" border="1" cellspacing="0" cellpadding="0">
      <tr align="center">
       <td class="titulo">Disciplina</td>
@@ -105,7 +105,7 @@ $iAno   = $oTurma->getCalendario()->getAnoExecucao();
       <td class="titulo">N° Abonos</td>
       <td class="titulo">Percentual por Disciplina</td>
      </tr>
-     <?
+     <?php 
      $soma_aulas = 0;
      $soma_faltas = 0;
      $soma_abonos = 0;
@@ -116,13 +116,13 @@ $iAno   = $oTurma->getCalendario()->getAnoExecucao();
       $soma_abonos += $abonos;
       ?>
       <tr class="aluno" bgcolor="#f3f3f3">
-       <td><?=trim($ed232_c_descr)?></td>
+       <td><?=trim((string) $ed232_c_descr)?></td>
        <td align="center"><?=$aulasdadas?></td>
        <td align="center"><?=$faltas?></td>
        <td align="center"><?=$abonos?></td>
        <td align="right"><?=ArredondamentoFrequencia::arredondar($perc_disciplina, $iAno)?>%</td>
       </tr>
-      <?
+      <?php 
      }
      ?>
      <tr class="cabec1">

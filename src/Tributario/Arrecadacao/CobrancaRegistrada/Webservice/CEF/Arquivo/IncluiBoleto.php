@@ -27,6 +27,8 @@
 
 namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\CEF\Arquivo;
 
+use stdClass;
+use DBString;
 use DOMDocument;
 
 /**
@@ -39,7 +41,6 @@ class IncluiBoleto implements RequisicaoInterface
   const VERSAO         = "1.5";
 
   private $oXml;
-  private $oRegistro;
   private $sOperacao;
 
   /**
@@ -47,10 +48,9 @@ class IncluiBoleto implements RequisicaoInterface
    *
    * @param stdClass $oRegistro
    */
-  public function __construct(\stdClass $oRegistro)
+  public function __construct(private readonly stdClass $oRegistro)
   {
     $this->oXml      = new DOMDocument("1.0", "utf-8");
-    $this->oRegistro = $oRegistro;
     $this->sOperacao = "INCLUI_BOLETO";
   }
 
@@ -162,14 +162,14 @@ class IncluiBoleto implements RequisicaoInterface
     $oPagador     = $this->oXml->createElement("PAGADOR");
 
     $oCpfCnpj = $this->oXml->createElement("CNPJ", $this->oRegistro->cpfcnpj);
-    $oNome    = $this->oXml->createElement("RAZAO_SOCIAL", htmlspecialchars(utf8_encode($this->oRegistro->nome)));
+    $oNome    = $this->oXml->createElement("RAZAO_SOCIAL", htmlspecialchars(mb_convert_encoding($this->oRegistro->nome, 'UTF-8', 'ISO-8859-1')));
 
-    if ( strlen($this->oRegistro->cpfcnpj) == 11 ) {
+    if ( strlen((string) $this->oRegistro->cpfcnpj) == 11 ) {
       $oCpfCnpj  = $this->oXml->createElement("CPF", $this->oRegistro->cpfcnpj);
-      $oNome     = $this->oXml->createElement("NOME", htmlspecialchars(utf8_encode($this->oRegistro->nome)));
+      $oNome     = $this->oXml->createElement("NOME", htmlspecialchars(mb_convert_encoding($this->oRegistro->nome, 'UTF-8', 'ISO-8859-1')));
     }
 
-    $mensagemRecibo = \DBString::removerAcentuacao(\DBString::removerCaracteresEspeciais($this->oRegistro->mensagemRecibo));
+    $mensagemRecibo = DBString::removerAcentuacao(DBString::removerCaracteresEspeciais($this->oRegistro->mensagemRecibo));
     
     if (!empty($mensagemRecibo)) {
       

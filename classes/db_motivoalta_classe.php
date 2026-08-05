@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: ambulatorial
 //CLASSE DA ENTIDADE motivoalta
 class cl_motivoalta { 
@@ -28,7 +28,7 @@ class cl_motivoalta {
                  sd01_finalizaatendimento = bool = Finaliza Atendimento 
                  ";
    //funcao construtor da classe 
-   function cl_motivoalta() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("motivoalta"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

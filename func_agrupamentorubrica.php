@@ -36,7 +36,8 @@ use ECidade\RecursosHumanos\Pessoal\Repository\TipoAgrupamentoRubricaRepository;
 
 db_postmemory($HTTP_POST_VARS);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clagrupamentorubrica = new cl_agrupamentorubrica;
 $clagrupamentorubrica->rotulo->label("rh113_sequencial");
@@ -191,12 +192,12 @@ $aTipo    = array(''  => 'Todos',
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

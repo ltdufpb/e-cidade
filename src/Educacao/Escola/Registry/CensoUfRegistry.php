@@ -36,7 +36,7 @@ class CensoUfRegistry
     /**
      * @var CensoUf[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param CensoUf $censoUf

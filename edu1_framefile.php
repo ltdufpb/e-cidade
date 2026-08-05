@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -44,7 +44,7 @@ include(modification("dbforms/db_funcoes.php"));
   <form method="POST" target="frame_imagem" name="form3" action="edu4_mostraimagem.php" enctype="multipart/form-data">
   <tr>
    <td>
-    <?db_input('ed47_o_oid',55,"",true,'file',1,"onChange='document.form3.submit();'")?>
+    <?php db_input('ed47_o_oid',55,"",true,'file',1,"onChange='document.form3.submit();'")?>
    </td>
   </tr>
   </form>

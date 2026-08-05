@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,7 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrotulo = new rotulocampo;
 $lFail    = false;
 if(isset($uploadfile)) {
@@ -89,7 +90,7 @@ function js_testacampo(){
 </body>
 </html>
 <script>
-<? if (isset($_GET["clone"]) && !isset($href)) {
+<?php  if (isset($_GET["clone"]) && !isset($href)) {
   echo "var cloneFormulario='{$_GET["clone"]}';\n";
  ?>
   
@@ -98,7 +99,7 @@ function js_testacampo(){
    $('teste').appendChild(formteste);
    formteste.submit();
  }
- <?} 
+ <?php } 
   if (isset($href)) {
     
     if (!$lFail) {

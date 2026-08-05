@@ -36,7 +36,7 @@
      * Collection de Regencia
      * @var array
      */
-    private $aRegencia = array();
+    private $aRegencia = [];
 
     /**
      * Instancia da classe
@@ -58,7 +58,7 @@
      */
     public static function getRegenciaByCodigo($iCodigoRegencia) {
 
-      if (!array_key_exists($iCodigoRegencia, RegenciaRepository::getInstance()->aRegencia)) {
+      if (!array_key_exists((string) $iCodigoRegencia, RegenciaRepository::getInstance()->aRegencia)) {
         RegenciaRepository::getInstance()->aRegencia[$iCodigoRegencia] = new Regencia($iCodigoRegencia);
       }
       return RegenciaRepository::getInstance()->aRegencia[$iCodigoRegencia];
@@ -167,7 +167,7 @@
     public static function removeAll() {
 
       unset(RegenciaRepository::getInstance()->aRegencia);
-      RegenciaRepository::getInstance()->aRegencia = array();
+      RegenciaRepository::getInstance()->aRegencia = [];
       return true;
     }
 
@@ -189,7 +189,7 @@
         throw new DBException("Erro buscar regencias.\n".pg_last_error());
       }
 
-      $aRegencias = array();
+      $aRegencias = [];
       $iLinhas    = pg_num_rows($rs);
       for ($i=0; $i < $iLinhas; $i++) {
         $aRegencias[] = self::getRegenciaByCodigo( db_utils::fieldsMemory($rs, $i)->ed59_i_codigo );

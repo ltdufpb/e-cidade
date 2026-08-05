@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -32,7 +32,8 @@ require_once (modification("libs/db_usuariosonline.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 require_once (modification("classes/db_ppaversao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clppaversao = new cl_ppaversao;
 $clppaversao->rotulo->label("o119_sequencial");
 $clppaversao->rotulo->label("o119_versao");
@@ -54,7 +55,7 @@ $clppaversao->rotulo->label("o119_versao");
               <?=$Lo119_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("o119_sequencial",10,$Io119_sequencial,true,"text",4,"","chave_o119_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clppaversao->rotulo->label("o119_versao");
               <?=$Lo119_versao?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("o119_versao",10,$Io119_versao,true,"text",4,"","chave_o119_versao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clppaversao->rotulo->label("o119_versao");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       $sWhere = "1=1 and o119_versaofinal is true";
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -125,12 +126,12 @@ $clppaversao->rotulo->label("o119_versao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

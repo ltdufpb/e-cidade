@@ -81,7 +81,7 @@ if(isset($excluir)){
 </div>
 </body>
 </html>
-<?
+<?php 
 if(isset($excluir)){
   if($clretencaotiporec->erro_status=="0"){
     $clretencaotiporec->erro(true,false);

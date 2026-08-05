@@ -70,6 +70,7 @@ final class OcorrenciaFalta extends Ocorrencia {
   /**
    * salva os dados da ocorrencia
    */
+  #[Override]
   public function salvar() {
     
     parent::salvar();

@@ -37,7 +37,7 @@ class TurmaRepository
      * Array com instancias de Turma
      * @var array
      */
-    private $aTurma = array();
+    private $aTurma = [];
     private static $oInstance;
 
     private function __construct()
@@ -82,7 +82,7 @@ class TurmaRepository
      */
     public static function getTurmaByEscola($iCodigoEscola)
     {
-        $aTurmasEscola = array();
+        $aTurmasEscola = [];
         $oDaoTurma = new cl_turma();
 
         $sWhere = " ed57_i_escola = {$iCodigoEscola} ";
@@ -139,7 +139,7 @@ class TurmaRepository
     public static function getTurmaByDocente($iCodigoDocente)
     {
 
-        $aTurmaDocente = array();
+        $aTurmaDocente = [];
         $oDaoRegenciaHorario = db_utils::getDao("regenciahorario");
         $sCamposRegenciaHorario = " ed58_i_codigo, ed57_i_codigo, ed57_c_descr ";
         $sWhereRegenciaHorario = " ed58_i_rechumano = {$iCodigoDocente} ";
@@ -185,7 +185,7 @@ class TurmaRepository
     public static function getTurmaPorCalendarioEscola(Escola $oEscola, Calendario $oCalendario)
     {
 
-        $aTurmas = array();
+        $aTurmas = [];
         $oDaoTurma = new cl_turma();
         $sCamposTurma = "ed57_i_codigo";
         $sWhereTurma = "ed57_i_escola = {$oEscola->getCodigo()} AND ed57_i_calendario = {$oCalendario->getCodigo()}";
@@ -244,7 +244,7 @@ class TurmaRepository
     public static function getTurmaEspecialPorCalendarioEscola(Escola $oEscola, Calendario $oCalendario)
     {
 
-        $aTurmas = array();
+        $aTurmas = [];
         $oDaoTurma = new cl_turma();
         $sCamposTurma = "ed57_i_codigo";
         $sWhereTurma = "ed57_i_escola = {$oEscola->getCodigo()} AND ed57_i_calendario = {$oCalendario->getCodigo()} AND ed10_i_codigo in (7, 8, 10)";
@@ -307,7 +307,7 @@ class TurmaRepository
     public static function getTurmaByEscolaEtapaDisciplina($iCodigoEscola, $iCodigoEtapa, $iCodigoDisciplina)
     {
         $anoAtual = date("Y");
-        $aTurmasEscolaEtapa = array();
+        $aTurmasEscolaEtapa = [];
         $oDaoTurma = new cl_turma();
         $sWhere = " ed57_i_escola = {$iCodigoEscola} and ed52_i_ano = {$anoAtual} and ed11_i_codigo = {$iCodigoEtapa}";
 
@@ -335,7 +335,7 @@ class TurmaRepository
     {
 
         unset(TurmaRepository::getInstance()->aTurma);
-        TurmaRepository::getInstance()->aTurma = array();
+        TurmaRepository::getInstance()->aTurma = [];
         return true;
     }
 
@@ -345,7 +345,7 @@ class TurmaRepository
      */
     public static function getTurmasByAnoAtual($iEscola = null)
     {
-        $aTurmasEscola = array();
+        $aTurmasEscola = [];
         $oDaoTurma = new cl_turma();
 
         $anoAtual = date("Y");
@@ -361,7 +361,7 @@ class TurmaRepository
             null,
             'ed57_i_codigo, ed11_i_sequencia, ed57_c_descr',
             'ed52_i_ano,ed31_i_codigo, ed11_i_sequencia, ed57_c_descr',
-            implode($where, " AND ")
+            implode(" AND ", $where)
         );
 
         $rsTurma = $oDaoTurma->sql_record($sSqlTurma);

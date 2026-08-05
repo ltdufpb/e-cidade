@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bensplaca_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbensplaca = new cl_bensplaca;
 $clbensplaca->rotulo->label("t41_codigo");
 $clbensplaca->rotulo->label("t41_codigo");
@@ -60,7 +61,7 @@ $clbensplaca->rotulo->label("t41_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         $sql     = $clbensplaca->sql_query("","distinct t41_placa","","t41_placa!=''");
         $repassa = array();        
@@ -84,12 +85,12 @@ $clbensplaca->rotulo->label("t41_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

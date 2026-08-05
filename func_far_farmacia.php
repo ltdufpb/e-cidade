@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_farmacia_classe.php"));
 db_postmemory($_POST);
 db_postmemory($_GET);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clfar_farmacia = new cl_far_farmacia;
 $clfar_farmacia->rotulo->label("fa13_i_codigo");
 $clfar_farmacia->rotulo->label("fa13_i_codigo");
@@ -55,7 +56,7 @@ $clfar_farmacia->rotulo->label("fa13_i_codigo");
               <?=$Lfa13_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("fa13_i_codigo",5,$Ifa13_i_codigo,true,"text",4,"","chave_fa13_i_codigo");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clfar_farmacia->rotulo->label("fa13_i_codigo");
               <?=$Lfa13_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("fa13_i_codigo",5,$Ifa13_i_codigo,true,"text",4,"","chave_fa13_i_codigo");
 		       ?>
             </td>
@@ -83,7 +84,7 @@ $clfar_farmacia->rotulo->label("fa13_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)) {
 
         if(isset($campos)==false) {
@@ -143,12 +144,12 @@ $clfar_farmacia->rotulo->label("fa13_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

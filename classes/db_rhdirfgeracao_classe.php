@@ -59,7 +59,7 @@ class cl_rhdirfgeracao {
                  rh95_fontepagadora = varchar(100) = Fonte pagadora
                  ";
    //funcao construtor da classe
-   function cl_rhdirfgeracao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhdirfgeracao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

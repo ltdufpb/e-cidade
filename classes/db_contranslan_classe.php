@@ -29,30 +29,30 @@
 class cl_contranslan
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $c46_seqtranslan = 0;
-    var $c46_seqtrans = 0;
-    var $c46_codhist = 0;
-    var $c46_obs = null;
-    var $c46_valor = 0;
-    var $c46_obrigatorio = 'f';
-    var $c46_evento = 0;
-    var $c46_descricao = null;
-    var $c46_ordem = 0;
+    public $c46_seqtranslan = 0;
+    public $c46_seqtrans = 0;
+    public $c46_codhist = 0;
+    public $c46_obs = null;
+    public $c46_valor = 0;
+    public $c46_obrigatorio = 'f';
+    public $c46_evento = 0;
+    public $c46_descricao = null;
+    public $c46_ordem = 0;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  c46_seqtranslan = int4 = Sequência 
                  c46_seqtrans = int4 = Cód. Contrans 
                  c46_codhist = int4 = Histórico 
@@ -69,7 +69,7 @@ class cl_contranslan
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("contranslan");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -168,10 +168,10 @@ class cl_contranslan
 
                 return false;
             }
-            $this->c46_seqtranslan = pg_result($result, 0, 0);
+            $this->c46_seqtranslan = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from contranslan_c46_seqtranslan_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $c46_seqtranslan)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $c46_seqtranslan)) {
                 $this->erro_sql = " Campo c46_seqtranslan maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -219,7 +219,7 @@ class cl_contranslan
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Lançamentos Automáticos ($this->c46_seqtranslan) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Lançamentos Automáticos já Cadastrado";
@@ -247,26 +247,26 @@ class cl_contranslan
         $resaco = $this->sql_record($this->sql_query_file($this->c46_seqtranslan));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,6020,'$this->c46_seqtranslan','I')");
-            $resac = db_query("insert into db_acount values($acount,815,6020,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,815,6020,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'c46_seqtranslan')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,815,5485,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,815,5485,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'c46_seqtrans')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,815,5490,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,815,5490,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'c46_codhist')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,815,6021,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,815,6021,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'c46_obs')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,815,6213,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,815,6213,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'c46_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,815,6520,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,815,6520,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'c46_obrigatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,815,7404,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,815,7404,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'c46_evento')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,815,18895,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,815,18895,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'c46_descricao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,815,18894,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,815,18894,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'c46_ordem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
 
@@ -279,10 +279,10 @@ class cl_contranslan
         $this->atualizacampos();
         $sql = " update contranslan set ";
         $virgula = "";
-        if (trim($this->c46_seqtranslan) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c46_seqtranslan"])) {
+        if (trim((string) $this->c46_seqtranslan) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c46_seqtranslan"])) {
             $sql .= $virgula . " c46_seqtranslan = $this->c46_seqtranslan ";
             $virgula = ",";
-            if (trim($this->c46_seqtranslan) == null) {
+            if (trim((string) $this->c46_seqtranslan) == null) {
                 $this->erro_sql = " Campo Sequência nao Informado.";
                 $this->erro_campo = "c46_seqtranslan";
                 $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_contranslan
                 return false;
             }
         }
-        if (trim($this->c46_seqtrans) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c46_seqtrans"])) {
+        if (trim((string) $this->c46_seqtrans) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c46_seqtrans"])) {
             $sql .= $virgula . " c46_seqtrans = $this->c46_seqtrans ";
             $virgula = ",";
-            if (trim($this->c46_seqtrans) == null) {
+            if (trim((string) $this->c46_seqtrans) == null) {
                 $this->erro_sql = " Campo Cód. Contrans nao Informado.";
                 $this->erro_campo = "c46_seqtrans";
                 $this->erro_banco = "";
@@ -309,10 +309,10 @@ class cl_contranslan
                 return false;
             }
         }
-        if (trim($this->c46_codhist) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c46_codhist"])) {
+        if (trim((string) $this->c46_codhist) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c46_codhist"])) {
             $sql .= $virgula . " c46_codhist = $this->c46_codhist ";
             $virgula = ",";
-            if (trim($this->c46_codhist) == null) {
+            if (trim((string) $this->c46_codhist) == null) {
                 $this->erro_sql = " Campo Histórico nao Informado.";
                 $this->erro_campo = "c46_codhist";
                 $this->erro_banco = "";
@@ -324,10 +324,10 @@ class cl_contranslan
                 return false;
             }
         }
-        if (trim($this->c46_obs) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c46_obs"])) {
+        if (trim((string) $this->c46_obs) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c46_obs"])) {
             $sql .= $virgula . " c46_obs = '$this->c46_obs' ";
             $virgula = ",";
-            if (trim($this->c46_obs) == null) {
+            if (trim((string) $this->c46_obs) == null) {
                 $this->erro_sql = " Campo Observações nao Informado.";
                 $this->erro_campo = "c46_obs";
                 $this->erro_banco = "";
@@ -339,17 +339,17 @@ class cl_contranslan
                 return false;
             }
         }
-        if (trim($this->c46_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c46_valor"])) {
-            if (trim($this->c46_valor) == "" && isset($GLOBALS["HTTP_POST_VARS"]["c46_valor"])) {
+        if (trim((string) $this->c46_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c46_valor"])) {
+            if (trim((string) $this->c46_valor) == "" && isset($GLOBALS["HTTP_POST_VARS"]["c46_valor"])) {
                 $this->c46_valor = "0";
             }
             $sql .= $virgula . " c46_valor = $this->c46_valor ";
             $virgula = ",";
         }
-        if (trim($this->c46_obrigatorio) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c46_obrigatorio"])) {
+        if (trim((string) $this->c46_obrigatorio) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c46_obrigatorio"])) {
             $sql .= $virgula . " c46_obrigatorio = '$this->c46_obrigatorio' ";
             $virgula = ",";
-            if (trim($this->c46_obrigatorio) == null) {
+            if (trim((string) $this->c46_obrigatorio) == null) {
                 $this->erro_sql = " Campo Obrigatório nao Informado.";
                 $this->erro_campo = "c46_obrigatorio";
                 $this->erro_banco = "";
@@ -361,21 +361,21 @@ class cl_contranslan
                 return false;
             }
         }
-        if (trim($this->c46_evento) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c46_evento"])) {
-            if (trim($this->c46_evento) == "" && isset($GLOBALS["HTTP_POST_VARS"]["c46_evento"])) {
+        if (trim((string) $this->c46_evento) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c46_evento"])) {
+            if (trim((string) $this->c46_evento) == "" && isset($GLOBALS["HTTP_POST_VARS"]["c46_evento"])) {
                 $this->c46_evento = "0";
             }
             $sql .= $virgula . " c46_evento = $this->c46_evento ";
             $virgula = ",";
         }
-        if (trim($this->c46_descricao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c46_descricao"])) {
+        if (trim((string) $this->c46_descricao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c46_descricao"])) {
             $sql .= $virgula . " c46_descricao = '$this->c46_descricao' ";
             $virgula = ",";
         }
-        if (trim($this->c46_ordem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c46_ordem"])) {
+        if (trim((string) $this->c46_ordem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["c46_ordem"])) {
             $sql .= $virgula . " c46_ordem = $this->c46_ordem ";
             $virgula = ",";
-            if (trim($this->c46_ordem) == null) {
+            if (trim((string) $this->c46_ordem) == null) {
                 $this->erro_sql = " Campo Ordem nao Informado.";
                 $this->erro_campo = "c46_ordem";
                 $this->erro_banco = "";
@@ -395,51 +395,51 @@ class cl_contranslan
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,6020,'$this->c46_seqtranslan','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["c46_seqtranslan"])) {
-                    $resac = db_query("insert into db_acount values($acount,815,6020,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,815,6020,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'c46_seqtranslan')) . "','$this->c46_seqtranslan'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["c46_seqtrans"])) {
-                    $resac = db_query("insert into db_acount values($acount,815,5485,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,815,5485,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'c46_seqtrans')) . "','$this->c46_seqtrans'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["c46_codhist"])) {
-                    $resac = db_query("insert into db_acount values($acount,815,5490,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,815,5490,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'c46_codhist')) . "','$this->c46_codhist'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["c46_obs"])) {
-                    $resac = db_query("insert into db_acount values($acount,815,6021,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,815,6021,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'c46_obs')) . "','$this->c46_obs'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["c46_valor"])) {
-                    $resac = db_query("insert into db_acount values($acount,815,6213,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,815,6213,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'c46_valor')) . "','$this->c46_valor'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["c46_obrigatorio"])) {
-                    $resac = db_query("insert into db_acount values($acount,815,6520,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,815,6520,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'c46_obrigatorio')) . "','$this->c46_obrigatorio'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["c46_evento"])) {
-                    $resac = db_query("insert into db_acount values($acount,815,7404,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,815,7404,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'c46_evento')) . "','$this->c46_evento'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["c46_descricao"])) {
-                    $resac = db_query("insert into db_acount values($acount,815,18895,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,815,18895,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'c46_descricao')) . "','$this->c46_descricao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["c46_ordem"])) {
-                    $resac = db_query("insert into db_acount values($acount,815,18894,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,815,18894,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'c46_ordem')) . "','$this->c46_ordem'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -495,34 +495,34 @@ class cl_contranslan
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,6020,'$c46_seqtranslan','E')");
-                $resac = db_query("insert into db_acount values($acount,815,6020,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,815,6020,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'c46_seqtranslan')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,815,5485,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,815,5485,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'c46_seqtrans')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,815,5490,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,815,5490,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'c46_codhist')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,815,6021,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,815,6021,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'c46_obs')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,815,6213,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,815,6213,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'c46_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,815,6520,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,815,6520,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'c46_obrigatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,815,7404,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,815,7404,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'c46_evento')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,815,18895,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,815,18895,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'c46_descricao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,815,18894,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,815,18894,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'c46_ordem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -594,7 +594,7 @@ class cl_contranslan
 
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:contranslan";
@@ -640,7 +640,7 @@ class cl_contranslan
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -679,7 +679,7 @@ class cl_contranslan
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -736,7 +736,7 @@ class cl_contranslan
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -784,7 +784,7 @@ class cl_contranslan
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_aguacondominio_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $claguacondominio = new cl_aguacondominio;
 $claguacondominio->rotulo->label("x31_codcondominio");
 $claguacondominio->rotulo->label("x31_matric");
@@ -59,7 +60,7 @@ $clrotulo->label("z01_nome");
               <?=$Lx31_codcondominio?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x31_codcondominio",8,$Ix31_codcondominio,true,"text",4,"","chave_x31_codcondominio");
 		       ?>
             </td>
@@ -70,7 +71,7 @@ $clrotulo->label("z01_nome");
               <?=$Lx31_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x31_matric",10,$Ix31_matric,true,"text",4,"","chave_x31_matric");
 		       ?>
             </td>
@@ -81,7 +82,7 @@ $clrotulo->label("z01_nome");
               <?=$Lx01_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_x01_numcgm");
 		       ?>
             </td>
@@ -100,7 +101,7 @@ $clrotulo->label("z01_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguacondominio.php")==true){
@@ -139,12 +140,12 @@ $clrotulo->label("z01_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

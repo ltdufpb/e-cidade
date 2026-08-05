@@ -48,9 +48,8 @@ final class CensoOrgaoEmissorRG {
   
   /**
    * mensagens de erro
-   * @var string
    */
-  const CAMINHO_MENSAGENS = 'educacao.escola.CensoOrgaoEmissorRG';
+  const string CAMINHO_MENSAGENS = 'educacao.escola.CensoOrgaoEmissorRG';
   
   /**
    * Cria uma nova instância do orgao emissor

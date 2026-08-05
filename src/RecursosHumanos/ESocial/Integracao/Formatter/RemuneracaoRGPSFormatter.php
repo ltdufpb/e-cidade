@@ -2,12 +2,16 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use InstituicaoRepository;
+use Cedencia;
+use Instituicao;
+use BusinessException;
+use DBException;
 use App\Domain\RecursosHumanos\Pessoal\Repository\Helper\CompetenciaHelper;
 use ECidade\RecursosHumanos\ESocial\Entity\RemuneracaoRGPS;
 use ECidade\RecursosHumanos\ESocial\Repository\ESocialRubricasRepository;
 use ECidade\RecursosHumanos\ESocial\Service\RemuneracaoRGPSService;
-use ECidade\RecursosHumanos\ESocial\Repository\TrabalhadorSemVinculoInicio;
-use cl_avaliacaogruporespostarhpessoal;
 use cl_avaliacaogruporespostalotacao;
 use Rubrica;
 use RubricaRepository;
@@ -17,7 +21,6 @@ use db_utils;
 use CgmRepository;
 use ServidorRepository;
 use AdmissaoDado;
-use Lotacao;
 use CgmJuridico;
 
 /**
@@ -38,7 +41,7 @@ class RemuneracaoRGPSFormatter extends Formatter
 
     private $inscricaoEmpregador;
 
-    private $rubricas = array();
+    private $rubricas = [];
 
     private $anoCompetencia;
 
@@ -68,7 +71,7 @@ class RemuneracaoRGPSFormatter extends Formatter
     private $possuiNaturezaSaude;
 
     /**
-     * @var \Instituicao
+     * @var Instituicao
      */
     private $instituicao;
 
@@ -155,9 +158,10 @@ class RemuneracaoRGPSFormatter extends Formatter
      *
      * @param array $dados
      * @return array|stdClass[]
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
+    #[Override]
     public function formatar($dados)
     {
         $dados = (object) $dados;
@@ -166,7 +170,7 @@ class RemuneracaoRGPSFormatter extends Formatter
         $this->mesCompetencia = $dados->mesCompetencia;
         $this->rubricasRepository = new ESocialRubricasRepository();
         $this->rubricasValidas = $this->rubricasRepository->validarRubricas('1200');
-        $this->instituicao = \InstituicaoRepository::getInstituicaoSessao();
+        $this->instituicao = InstituicaoRepository::getInstituicaoSessao();
         $this->possuiNaturezaSaude = false;
         $this->competencia = CompetenciaHelper::get($this->anoCompetencia, $this->mesCompetencia);
         $this->rubricaDiferenca = $dados->rubricaDiferenca;
@@ -187,8 +191,8 @@ class RemuneracaoRGPSFormatter extends Formatter
     /**
      * @param $cgm
      * @return stdClass
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function buscarDadosECidade($cgm)
     {
@@ -203,7 +207,7 @@ class RemuneracaoRGPSFormatter extends Formatter
         $dadoFormatado = new stdClass();
         $dadoFormatado->dmDev = [];
         $dadoFormatado->referencia = $cgm . $this->remuneracaoRGPSService->getAnoCompetencia()
-            . str_pad($this->remuneracaoRGPSService->getMesCompetencia(), 2, '0', STR_PAD_LEFT);
+            . str_pad((string) $this->remuneracaoRGPSService->getMesCompetencia(), 2, '0', STR_PAD_LEFT);
 
         if ($this->isDecimoTerceiro) {
             $dadoFormatado->referencia .= '2';
@@ -425,13 +429,13 @@ class RemuneracaoRGPSFormatter extends Formatter
     {
         $dadoFormatado->ideTrabalhador->infoMV = new stdClass();
         $dadoFormatado->ideTrabalhador->infoMV->indMV = null;
-        $dadoFormatado->ideTrabalhador->infoMV->remunOutrEmpr = array();
+        $dadoFormatado->ideTrabalhador->infoMV->remunOutrEmpr = [];
     }
 
     /**
      * @param $dadoFormatado
      * @param $index
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     private function organizarDadosPagamentos(&$dadoFormatado, $folha, $index = 0, $indexDmDev = 0)
     {
@@ -450,7 +454,7 @@ class RemuneracaoRGPSFormatter extends Formatter
         // caso seja cedencia
         if (in_array($this->codigoCategoria, $categoriasAgentesNocivosOrigem)) {
             // buscamos os dados de cedencia
-            $cedencia = new \Cedencia($this->remuneracaoRGPS->getServidor()->getMatricula());
+            $cedencia = new Cedencia($this->remuneracaoRGPS->getServidor()->getMatricula());
             //validamos se a categoria de origem pertence a configuracao dos agentes nocivos
             if (in_array($cedencia->getCodCategoriaOrigem(), $categoriasAgentesNocivos)) {
                 $validaAgente = true;
@@ -462,7 +466,7 @@ class RemuneracaoRGPSFormatter extends Formatter
             foreach ($folha as $key => $pagamento) {
                 $item = new stdClass();
                 $item->codRubr = $pagamento->codigo;
-                if (!array_key_exists($pagamento->codigo, $this->rubricasValidas)) {
+                if (!array_key_exists((string) $pagamento->codigo, $this->rubricasValidas)) {
                     continue;
                 }
 
@@ -528,7 +532,7 @@ class RemuneracaoRGPSFormatter extends Formatter
                     ->itensRemun= $itensRemun;
                 if ($validaAgente) {
                     $agenteNocivo = (int) $this->remuneracaoRGPS->getServidor()->getTipoExposicaoAgentesNocivos();
-                    $agenteNocivo = in_array($agenteNocivo, array(0, 1, 5)) ? 1 : $agenteNocivo;
+                    $agenteNocivo = in_array($agenteNocivo, [0, 1, 5]) ? 1 : $agenteNocivo;
 
                     $dadoFormatado
                         ->dmDev[$indexDmDev]
@@ -561,7 +565,7 @@ class RemuneracaoRGPSFormatter extends Formatter
                     ->itensRemun= $itensRemunDiferenca;
                     if (in_array($this->codigoCategoria, $categoriasAgentesNocivos)) {
                         $agenteNocivo = (int) $this->remuneracaoRGPS->getServidor()->getTipoExposicaoAgentesNocivos();
-                        $agenteNocivo = in_array($agenteNocivo, array(0, 1, 5)) ? 1 : $agenteNocivo;
+                        $agenteNocivo = in_array($agenteNocivo, [0, 1, 5]) ? 1 : $agenteNocivo;
 
                         $dadoFormatado
                             ->dmDev[$indexDmDev]
@@ -590,7 +594,7 @@ class RemuneracaoRGPSFormatter extends Formatter
                     ->itensRemun = $itensRemun;
                 if ($validaAgente) {
                     $agenteNocivo = (int) $this->remuneracaoRGPS->getServidor()->getTipoExposicaoAgentesNocivos();
-                    $agenteNocivo = in_array($agenteNocivo, array(0, 1, 5)) ? 1 : $agenteNocivo;
+                    $agenteNocivo = in_array($agenteNocivo, [0, 1, 5]) ? 1 : $agenteNocivo;
 
                     $dadoFormatado->dmDev[$indexDmDev]
                         ->infoPerApur
@@ -612,7 +616,7 @@ class RemuneracaoRGPSFormatter extends Formatter
                 $item->codRubr = $pagamento->codigo;
                 $indiceLotacao = $this->retornaInidiceLotacao($pagamento->lotacao, $this->getListaLotacaoTributaria());
 
-                if (!array_key_exists($pagamento->codigo, $this->rubricasValidas)) {
+                if (!array_key_exists((string) $pagamento->codigo, $this->rubricasValidas)) {
                     continue;
                 }
 
@@ -679,7 +683,7 @@ class RemuneracaoRGPSFormatter extends Formatter
                         ->itensRemun= $itensRemun;
                     if ($validaAgente) {
                         $agenteNocivo = (int) $this->remuneracaoRGPS->getServidor()->getTipoExposicaoAgentesNocivos();
-                        $agenteNocivo = in_array($agenteNocivo, array(0, 1, 5)) ? 1 : $agenteNocivo;
+                        $agenteNocivo = in_array($agenteNocivo, [0, 1, 5]) ? 1 : $agenteNocivo;
 
                         $dadoFormatado
                             ->dmDev[$indexDmDev]
@@ -713,7 +717,7 @@ class RemuneracaoRGPSFormatter extends Formatter
                             $agenteNocivo = (int) $this->remuneracaoRGPS
                                 ->getServidor()
                                 ->getTipoExposicaoAgentesNocivos();
-                            $agenteNocivo = in_array($agenteNocivo, array(0, 1, 5)) ? 1 : $agenteNocivo;
+                            $agenteNocivo = in_array($agenteNocivo, [0, 1, 5]) ? 1 : $agenteNocivo;
 
                             $dadoFormatado
                                 ->dmDev[$indexDmDev]
@@ -744,7 +748,7 @@ class RemuneracaoRGPSFormatter extends Formatter
                     }
                     if ($validaAgente) {
                         $agenteNocivo = (int) $this->remuneracaoRGPS->getServidor()->getTipoExposicaoAgentesNocivos();
-                        $agenteNocivo = in_array($agenteNocivo, array(0, 1, 5)) ? 1 : $agenteNocivo;
+                        $agenteNocivo = in_array($agenteNocivo, [0, 1, 5]) ? 1 : $agenteNocivo;
 
                         $dadoFormatado
                             ->dmDev[$indexDmDev]
@@ -805,7 +809,7 @@ class RemuneracaoRGPSFormatter extends Formatter
         $anoMesCompetencia[1] = '';
         $anoMesCompetencia[0] = '';
         if (!empty($idePeriodo->perRef)) {
-            $anoMesCompetencia = explode('-', $idePeriodo->perRef);
+            $anoMesCompetencia = explode('-', (string) $idePeriodo->perRef);
         }
         $grupoIdeEstabLot =  $this->remuneracaoRGPSService
             ->buscarEstabelicimentoLotacao($matriculaInfoPerAnt, $anoMesCompetencia[1], $anoMesCompetencia[0]);
@@ -901,7 +905,7 @@ class RemuneracaoRGPSFormatter extends Formatter
 
         foreach ($this->remuneracaoRGPS->getProcessosJudiciais() as $indice => $processoJudicial) {
             if ($indice == 0) {
-                $dadoFormatado->ideTrabalhador->procJudTrab = array();
+                $dadoFormatado->ideTrabalhador->procJudTrab = [];
             }
 
             $procJudTrab = new stdClass();
@@ -1161,6 +1165,7 @@ class RemuneracaoRGPSFormatter extends Formatter
         }
     }
 
+    #[Override]
     public function truncar($valor)
     {
         $valor = abs(round($valor, 6));
@@ -1183,7 +1188,7 @@ class RemuneracaoRGPSFormatter extends Formatter
         $dadoAdmissao = new AdmissaoDado($servidor->getMatricula());
         if (!empty($dadoAdmissao->getMesDataBase())) {
             $this->dataBaseServidor =
-                '01/' . str_pad($dadoAdmissao->getMesDataBase(), 2, '0', STR_PAD_LEFT) . '/' . $ano;
+                '01/' . str_pad((string) $dadoAdmissao->getMesDataBase(), 2, '0', STR_PAD_LEFT) . '/' . $ano;
         }
     }
 

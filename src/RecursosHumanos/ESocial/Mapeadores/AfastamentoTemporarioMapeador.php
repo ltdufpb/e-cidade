@@ -27,12 +27,15 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Mapeadores;
 
+use cl_assentadb_cadattdinamicovalorgrupo;
+use db_utils;
+use cl_assenta;
 use Avaliacao;
 use Exception;
 
 class AfastamentoTemporarioMapeador extends AvaliacaoMapeador
 {
-    private $camposDinamicos = array(
+    private $camposDinamicos = [
         "cnpj_entidade_esocial" => "cnpjCess",
         "cnpj_sindicato_esocial" => "cnpjSind",
         "motivo_esocial" => "codMotAfast",
@@ -44,9 +47,9 @@ class AfastamentoTemporarioMapeador extends AvaliacaoMapeador
         "dtFim_esocial" => "dtFim",
         "indRemunCargo_esocial" => "indRemunCargo",
         "cnpjMandElet_esocial" => "cnpjMandElet",
-    );
+    ];
 
-    private $campos = array(
+    private $campos = [
         "z01_cgccpf" => "cpfTrab",
         "h16_regist" => "matricula",
         "h16_dtconc" => "dtIniAfast",
@@ -54,28 +57,22 @@ class AfastamentoTemporarioMapeador extends AvaliacaoMapeador
         "rh220_origemretificacao" => "origRetif",
         "rh220_tipoprocesso" => "tpProc",
         "rh220_numeroprocesso" => "nrProc"
-    );
-
-
-    /**
-     * @var integer
-     */
-    private $assentamentoId;
+    ];
 
     /**
      * AfastamentoTemporarioMapeador constructor.
      * @param Avaliacao $avaliacao
      * @param int $assetamentoId
+     * @param int $assentamentoId
      */
-    public function __construct(Avaliacao $avaliacao, $assentamentoId)
+    public function __construct(Avaliacao $avaliacao, private $assentamentoId)
     {
-        $this->assentamentoId = $assentamentoId;
         $this->avaliacao = $avaliacao;
     }
 
     private function parseCamposDinamicos()
     {
-        $dao = new \cl_assentadb_cadattdinamicovalorgrupo();
+        $dao = new cl_assentadb_cadattdinamicovalorgrupo();
         $sql = $dao->sql_campos_dinamicos_por_assentamento($this->assentamentoId);
         $rs = db_query($sql);
 
@@ -83,7 +80,7 @@ class AfastamentoTemporarioMapeador extends AvaliacaoMapeador
             throw new Exception("Não foi possível buscar os atributos dinâmicos.");
         }
 
-        $valoresDinamicos = \db_utils::getCollectionByRecord($rs);
+        $valoresDinamicos = db_utils::getCollectionByRecord($rs);
 
         foreach ($valoresDinamicos as $item) {
             if (!empty($item->campo)) {
@@ -95,7 +92,7 @@ class AfastamentoTemporarioMapeador extends AvaliacaoMapeador
 
     private function parseAssentamento()
     {
-        $dao = new \cl_assenta();
+        $dao = new cl_assenta();
         $rs = db_query($dao->sql_dados_afastamento_temporario($this->assentamentoId));
 
         if (!$rs) {
@@ -144,14 +141,14 @@ class AfastamentoTemporarioMapeador extends AvaliacaoMapeador
     public function buscaMesmoMotivo()
     {
         $idMotivo = $this->getPropriedadeDePara("codMotAfast", "codMotAfast");
-        if (!in_array($idMotivo, array(1, 3))) {
+        if (!in_array($idMotivo, [1, 3])) {
             return;
         }
 
         $matricula = $this->getPropriedadeDePara("matricula", "matricula");
         $dataInicio = $this->getPropriedadeDePara("dtIniAfast", "dtIniAfast");
 
-        $dao = new \cl_assentadb_cadattdinamicovalorgrupo();
+        $dao = new cl_assentadb_cadattdinamicovalorgrupo();
         $where = "h16_codigo <> {$this->assentamentoId}";
         $where .= " AND h16_regist = {$matricula}";
         $where .= " AND db109_nome = 'motivo_esocial'";

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -54,7 +54,7 @@ class cl_orcparamseqfiltrousuario {
                  o72_filtro = text = Filtro
                  ";
    //funcao construtor da classe
-   function cl_orcparamseqfiltrousuario() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcparamseqfiltrousuario");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

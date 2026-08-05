@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -54,7 +54,7 @@ class cl_matestoquedevitemmei {
                  m47_quantdev = float8 = Quant. Devolvida 
                  ";
    //funcao construtor da classe 
-   function cl_matestoquedevitemmei() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matestoquedevitemmei"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

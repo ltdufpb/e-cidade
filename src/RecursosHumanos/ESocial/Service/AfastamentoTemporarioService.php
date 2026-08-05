@@ -27,6 +27,11 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Service;
 
+use cl_afastamentoservidoresocial;
+use cl_avaliacaogruporespostaafastamentoesocial;
+use Avaliacao;
+use BusinessException;
+use DBException;
 use AvaliacaoESocial;
 use AvaliacaoRepository;
 use db_utils;
@@ -40,11 +45,8 @@ use ParameterException;
 
 class AfastamentoTemporarioService
 {
-    private $servidorId;
-    private $assentamentoId;
-
     /**
-     * @var \Avaliacao
+     * @var Avaliacao
      */
     private $avaliacao;
 
@@ -53,10 +55,8 @@ class AfastamentoTemporarioService
      * @param $servidorId
      * @param $assentamentoId
      */
-    public function __construct($servidorId, $assentamentoId)
+    public function __construct(private $servidorId, private $assentamentoId)
     {
-        $this->servidorId = $servidorId;
-        $this->assentamentoId = $assentamentoId;
     }
 
     /**
@@ -71,7 +71,7 @@ class AfastamentoTemporarioService
     }
 
     /**
-     * @return \Avaliacao
+     * @return Avaliacao
      * @throws Exception
      */
     private function getAvaliacao()
@@ -91,7 +91,7 @@ class AfastamentoTemporarioService
      */
     private function getVinculo()
     {
-        $dao = new \cl_afastamentoservidoresocial();
+        $dao = new cl_afastamentoservidoresocial();
         $sql = $dao->sql_query_file(
             null,
             "eso12_sequencial",
@@ -114,7 +114,7 @@ class AfastamentoTemporarioService
 
     private function saveVinculo()
     {
-        $dao = new \cl_afastamentoservidoresocial();
+        $dao = new cl_afastamentoservidoresocial();
         $dao->eso12_sequencial = null;
         $dao->eso12_assenta = $this->assentamentoId;
         $dao->eso12_rhpessoal = $this->servidorId;
@@ -137,7 +137,7 @@ class AfastamentoTemporarioService
      */
     private function getPreenchimendo($vinculo)
     {
-        $dao = new \cl_avaliacaogruporespostaafastamentoesocial();
+        $dao = new cl_avaliacaogruporespostaafastamentoesocial();
         $sql = $dao->sql_query_file(null, "eso13_avaliacaogruporesposta", null, " eso13_afastamentoservidoresocial = $vinculo");
         $rs = db_query($sql);
 
@@ -147,7 +147,7 @@ class AfastamentoTemporarioService
 
         $codigoAvaliacaoGrupoResposta = null;
         if (pg_num_rows($rs) > 0) {
-            $codigoAvaliacaoGrupoResposta = \db_utils::fieldsMemory($rs, 0)->eso13_avaliacaogruporesposta;
+            $codigoAvaliacaoGrupoResposta = db_utils::fieldsMemory($rs, 0)->eso13_avaliacaogruporesposta;
         }
 
         $this->getAvaliacao()->setAvaliacaoGrupo($codigoAvaliacaoGrupoResposta);
@@ -163,11 +163,11 @@ class AfastamentoTemporarioService
 
         $this->getPreenchimendo($vinculo);
 
-        $parametros = array(
+        $parametros = [
             'iCodigoPreenchimento' => $this->getAvaliacao()->getAvaliacaoGrupo(),
             'vinculo' => $vinculo,
             'matricula' => $this->servidorId
-        );
+        ];
 
         $oAvaliacaoESocial = new AvaliacaoESocial();
         $oAvaliacaoESocial->setAvaliacao($this->getAvaliacao());
@@ -178,8 +178,8 @@ class AfastamentoTemporarioService
 
     /**
      * @throws ParameterException
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      * @throws Exception
      */
     public function excluirFormulario()
@@ -201,8 +201,8 @@ class AfastamentoTemporarioService
 
     private function excluirVinculoFormulario($vinculo)
     {
-        $daoVinculo = new \cl_afastamentoservidoresocial();
-        $daoPreenchimento = new \cl_avaliacaogruporespostaafastamentoesocial();
+        $daoVinculo = new cl_afastamentoservidoresocial();
+        $daoPreenchimento = new cl_avaliacaogruporespostaafastamentoesocial();
         $daoPreenchimento->excluir(null, "eso13_afastamentoservidoresocial = {$vinculo}");
         $daoVinculo->excluir($vinculo);
     }

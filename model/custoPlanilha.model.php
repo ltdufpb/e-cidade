@@ -39,26 +39,20 @@ class custoPlanilha {
    */
   protected  $iPlanilha = null;
   
-  /**
-   * mes da planilha
-   *
-   * @var integer
-   */
-  protected  $iMesUsu = null;
-  
-  /**
-   * ano da planilha
-   *
-   * @var integer
-   */
-  protected  $iAnoUsu = null;
-  
   protected $iSituacao = null;
   protected $sFiltros = "";
-  function __construct($iMesUsu, $iAnoUsu) {
+  /**
+   * @param int $iMesUsu
+   * @param int $iAnoUsu
+   */
+  function __construct(/**
+   * mes da planilha
+   */
+  protected $iMesUsu, /**
+   * ano da planilha
+   */
+  protected $iAnoUsu) {
 
-     $this->iAnoUsu = $iAnoUsu;
-     $this->iMesUsu = $iMesUsu;
      $oDaoPlanilha  = db_utils::getDao("custoplanilha");
      $sWhere        = " cc15_anousu = {$this->getAnoUsu()}";
      $sWhere       .= " and cc15_mesusu = {$this->getMesusu()}";
@@ -207,7 +201,7 @@ class custoPlanilha {
       $sWhere = " and {$this->getFiltros()}"; 
     }
 
-    $aCustos = array();
+    $aCustos = [];
     if (empty($this->iPlanilha)) {
       return $aCustos; 	
     }

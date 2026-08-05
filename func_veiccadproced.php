@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiccadproced_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clveiccadproced = new cl_veiccadproced;
 $clveiccadproced->rotulo->label("ve25_codigo");
 $clveiccadproced->rotulo->label("ve25_descr");
@@ -54,7 +55,7 @@ $clveiccadproced->rotulo->label("ve25_descr");
               <?=$Lve25_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ve25_codigo",10,$Ive25_codigo,true,"text",4,"","chave_ve25_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clveiccadproced->rotulo->label("ve25_descr");
               <?=$Lve25_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ve25_descr",10,$Ive25_descr,true,"text",4,"","chave_ve25_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clveiccadproced->rotulo->label("ve25_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veiccadproced.php")==true){
@@ -122,12 +123,12 @@ $clveiccadproced->rotulo->label("ve25_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

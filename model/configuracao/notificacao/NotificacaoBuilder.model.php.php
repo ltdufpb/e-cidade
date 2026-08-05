@@ -40,7 +40,7 @@ class NotificacaoBuilder {
    */
   static function getNotificacoesPorMensagem(NotificacaoMensagem $oNotificacaoMensagem) {
     
-    $aNotificacoes = array();
+    $aNotificacoes = [];
     
     if ($oNotificacaoMensagem->getEmailDestino() != "") {
 

@@ -40,16 +40,16 @@ class Registro20Builder
      * Modalidade/Tipo da turma na escola e como deve ir para o censo
      * @var array
      */
-    private static $deParaModalidadeTurma = array(
+    private static $deParaModalidadeTurma = [
         1 => 1,
         2 => 3,
         3 => 1,
         6 => 1,
         7 => 1,
-    );
+    ];
 
-    private static $etapasCursoProfissional = array(30, 31, 32, 33, 34, 39, 40, 64, 74);
-    private static $etapasInfantil = array(1, 2, 3);
+    private static $etapasCursoProfissional = [30, 31, 32, 33, 34, 39, 40, 64, 74];
+    private static $etapasInfantil = [1, 2, 3];
 
     /**
      * @var Registro20
@@ -60,7 +60,7 @@ class Registro20Builder
      * @var TurmaCensoVo
      */
     private $dadosTurma;
-    private $diasLetivo = array();
+    private $diasLetivo = [];
 
     /**
      * @param TurmaCensoVo $turma
@@ -159,7 +159,7 @@ class Registro20Builder
             $this->registro->setDomingo(0);
 
             foreach ($this->diasLetivo as $diaSemana) {
-                switch (mb_strtoupper($diaSemana)) {
+                switch (mb_strtoupper((string) $diaSemana)) {
                     case "SEGUNDA":
                         $this->registro->setSegundaFeira(1);
                         break;
@@ -316,7 +316,7 @@ class Registro20Builder
         }
 
         $tipoTurma = $this->dadosTurma->getTipoTurma();
-        if (array_key_exists($tipoTurma, self::$deParaModalidadeTurma)) {
+        if (array_key_exists((string) $tipoTurma, self::$deParaModalidadeTurma)) {
             $this->registro->setModalidade(self::$deParaModalidadeTurma[$tipoTurma]);
         }
         $codigoCurso = $this->dadosTurma->getCodigoCurso();
@@ -550,23 +550,23 @@ class Registro20Builder
     private function removerAcentuacao($sString)
     {
 
-        $sString = preg_replace("/[ÁÀÂÃ]/", "A", $sString);
-        $sString = preg_replace("/[áàâã]/", "a", $sString);
+        $sString = preg_replace("/[ÁÀÂÃ]/", "A", (string) $sString);
+        $sString = preg_replace("/[áàâã]/", "a", (string) $sString);
 
-        $sString = preg_replace("/[ÉÈÊ]/", "E", $sString);
-        $sString = preg_replace("/[éèê]/", "e", $sString);
+        $sString = preg_replace("/[ÉÈÊ]/", "E", (string) $sString);
+        $sString = preg_replace("/[éèê]/", "e", (string) $sString);
 
-        $sString = preg_replace("/[ÓÒÔÕÖ]/", "O", $sString);
-        $sString = preg_replace("/[óòôõö]/", "o", $sString);
+        $sString = preg_replace("/[ÓÒÔÕÖ]/", "O", (string) $sString);
+        $sString = preg_replace("/[óòôõö]/", "o", (string) $sString);
 
-        $sString = preg_replace("/[ÚÙÛÜ]/", "U", $sString);
-        $sString = preg_replace("/[úùûü]/", "u", $sString);
+        $sString = preg_replace("/[ÚÙÛÜ]/", "U", (string) $sString);
+        $sString = preg_replace("/[úùûü]/", "u", (string) $sString);
 
-        $sString = preg_replace("/[ÍÌÎ]/", "I", $sString);
-        $sString = preg_replace("/[íìî]/", "i", $sString);
+        $sString = preg_replace("/[ÍÌÎ]/", "I", (string) $sString);
+        $sString = preg_replace("/[íìî]/", "i", (string) $sString);
 
-        $sString = preg_replace("/Ç/", "C", $sString);
-        $sString = preg_replace("/ç/", "c", $sString);
+        $sString = preg_replace("/Ç/", "C", (string) $sString);
+        $sString = preg_replace("/ç/", "c", (string) $sString);
 
         return $sString;
     }

@@ -27,6 +27,7 @@
 
 namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\CEF;
 
+use stdClass;
 use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\CEF\Arquivo\RequisicaoInterface;
 use SoapClient;
 use ECidade\V3\Extension\Logger;
@@ -53,24 +54,24 @@ class Manutencao extends ConexaoSoap
    */
   public function __construct(RequisicaoInterface $oRequisicao)
   {
-    $oContext = stream_context_create(array(
-        'ssl' => array(
+    $oContext = stream_context_create([
+        'ssl' => [
             'verify_peer' => false,
             'verify_peer_name' => false,
             'allow_self_signed' => true
-        )
-    ));
+        ]
+    ]);
 
-    $aOpcoes = array("soap_version"   => SOAP_1_1,
+    $aOpcoes = ["soap_version"   => SOAP_1_1,
                      "stream_context" => $oContext,
                      "cache_wsdl"     => WSDL_CACHE_NONE,
-                     "trace"          => true);
+                     "trace"          => true];
 
     $oRegistro = $oRequisicao->getRegistro();
 
     $sWsdl = self::WSDL_PRODUCAO;
 
-    if (trim($oRegistro->usuarioServico) == self::USUARIO_HOMOLOGACAO) {
+    if (trim((string) $oRegistro->usuarioServico) == self::USUARIO_HOMOLOGACAO) {
       $sWsdl = self::WSDL_HOMOLOGACAO;
     }
 
@@ -81,7 +82,7 @@ class Manutencao extends ConexaoSoap
   /**
    * Processamos a requisição conforme informações disponibilizadas
    *
-   * @return \stdClass
+   * @return stdClass
    */
   public function processarRequisicao()
   {
@@ -97,12 +98,12 @@ class Manutencao extends ConexaoSoap
       $xml         = $domDocument->saveXML();
 
       $registro      = $this->oRequisicao->getRegistro();
-      $identificacao = (object)array(
+      $identificacao = (object)[
         'cpfcnpj'         => $registro->cpfcnpj,
         'nome'            => $registro->nome,
         'numeroDocumento' => $registro->numeroDocumento,
         'valor'           => $registro->valor
-      );
+      ];
 
       $path   = ECIDADE_PATH . 'tmp/.log/webservice_caixa/';
 
@@ -115,15 +116,15 @@ class Manutencao extends ConexaoSoap
 
       $cpfcnpj = $identificacao->cpfcnpj;
 
-      if(preg_match('/^(\d{3})(\d{3})(\d{3})(\d{2})$/', $cpfcnpj)) {
+      if(preg_match('/^(\d{3})(\d{3})(\d{3})(\d{2})$/', (string) $cpfcnpj)) {
         
         $replacement = "$1.$2.$3-$4";
-        $cpfcnpj = preg_replace('/^(\d{3})(\d{3})(\d{3})(\d{2})$/', $replacement, $cpfcnpj);
+        $cpfcnpj = preg_replace('/^(\d{3})(\d{3})(\d{3})(\d{2})$/', $replacement, (string) $cpfcnpj);
       
-      } else if(preg_match('/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/', $cpfcnpj)) {
+      } else if(preg_match('/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/', (string) $cpfcnpj)) {
 
         $replacement = "$1.$2.$3/$4-$5";
-        $cpfcnpj = preg_replace('/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/', $replacement, $cpfcnpj);
+        $cpfcnpj = preg_replace('/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/', $replacement, (string) $cpfcnpj);
       }
 
       $logger->debug('-------- Gerando XML para registro no webservice da Caixa  --------');

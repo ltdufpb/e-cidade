@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -27,7 +27,7 @@
 class subfunc {
    var $arq = null;
 
-  function subfunc($header){
+  function __construct($header){
      umask(74);
      $this->arq = fopen("tmp/SUBFUNC.TXT",'w+');
      fputs($this->arq,$header);

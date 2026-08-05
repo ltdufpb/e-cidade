@@ -48,7 +48,7 @@ unset($_SESSION["oCandidatoHabitacao"]);
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php 
       db_app::load("scripts.js, prototype.js, widgets/windowAux.widget.js,strings.js,widgets/dbtextField.widget.js,
                    dbmessageBoard.widget.js,dbautocomplete.widget.js,dbcomboBox.widget.js,
                    datagrid.widget.js");
@@ -65,10 +65,10 @@ unset($_SESSION["oCandidatoHabitacao"]);
                <table>
                  <tr>
                    <td>
-                     <?db_ancora($Lz01_nome, "js_pesquisacgm(true)", 1)?>
+                     <?php db_ancora($Lz01_nome, "js_pesquisacgm(true)", 1)?>
                    </td>
                    <td>
-                     <?
+                     <?php 
                       db_input("z01_numcgm", 10, $Iz01_numcgm, true, "text", 1, "onchange='js_pesquisacgm(false);situacaoCpf();'");
                       db_input("z01_nome", 40, $Iz01_nome, true, "text", 3);
                      ?>
@@ -81,7 +81,7 @@ unset($_SESSION["oCandidatoHabitacao"]);
                      <b>Situação CPF :</b>
                    </td>
                    <td>
-                     <?
+                     <?php 
                      
                        $aSituacaoCPF = array('0'=>'Selecione ...',
                                              '1'=>'Regular',
@@ -105,7 +105,7 @@ unset($_SESSION["oCandidatoHabitacao"]);
                 <table>
                   <tr>
                     <td>
-                     <?
+                     <?php 
                      
                        $oDaoHabitacaoGrupo = new cl_habitgrupoprograma;
                        
@@ -149,7 +149,7 @@ unset($_SESSION["oCandidatoHabitacao"]);
           </tr>
           <tr>
             <td colspan="2" style="text-align: center">
-              <? 
+              <?php  
                 if (isset($oGet->alteracao)) {
                   echo "<input type='button' value='Pesquisar Cadastro' onclick='js_pesquisarCandidatos()'>";
                 }

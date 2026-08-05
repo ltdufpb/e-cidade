@@ -2,6 +2,8 @@
 
 namespace ECidade\V3\Modification;
 
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use ArrayObject, Exception;
 use \ECidade\V3\Extension\Container;
 use \ECidade\V3\Modification\Manager;
@@ -21,12 +23,6 @@ class ManagerParseFiles
      * @var \ECidade\Extension\Container
      */
     private $container;
-
-    /**
-     * usuario atual
-     * @var string
-     */
-    private $user;
 
     /**
      * fila de operacoes por arquivo para processar
@@ -105,10 +101,12 @@ class ManagerParseFiles
      * @param Container $container
      * @param string $user
      */
-    public function __construct(Container $container, $user = null)
+    public function __construct(Container $container, /**
+     * usuario atual
+     */
+    private $user = null)
     {
         $this->container = $container;
-        $this->user = $user;
     }
 
     /**
@@ -137,9 +135,7 @@ class ManagerParseFiles
          * @param string $b
          * @return integer
          */
-        $globalSort = function($a, $b) {
-            return ($a === $b ? 0 : ($a == 'global' ? -1 : 1));
-        };
+        $globalSort = (fn($a, $b) => $a === $b ? 0 : ($a == 'global' ? -1 : 1));
 
         // itera o conteudo do arquivo file-type-modification.data
         // (que contem informacoes de arquivos e suas modificacao globais/usuarios)
@@ -172,8 +168,8 @@ class ManagerParseFiles
 
                 // verifica se a modificacao eh por usuario
                 $_user = null;
-                if (strpos($type, 'user:') === 0) {
-                    $_user = substr($type, 5);
+                if (str_starts_with((string) $type, 'user:')) {
+                    $_user = substr((string) $type, 5);
                     $this->users[$_user] = $_user;
                 }
 
@@ -219,8 +215,8 @@ class ManagerParseFiles
             $modifications = $iterator->current();
 
             $user = null;
-            if (strpos($type, 'user:') === 0) {
-                $user = substr($type, 5);
+            if (str_starts_with((string) $type, 'user:')) {
+                $user = substr((string) $type, 5);
             }
 
             // itera os operations do modification seguindo a ordem correto que veio do xml
@@ -361,7 +357,7 @@ class ManagerParseFiles
             }
 
             // limpa os erros para o arquivo atual
-            $dataModification->setFileError($path, array());
+            $dataModification->setFileError($path, []);
 
             $error = $this->parseFile($path, $id, $user);
 
@@ -606,10 +602,10 @@ class ManagerParseFiles
         $dataModification = $cacheDataModifications($modificationId);
 
         // adiciona mais um registro de erro para o arquivo
-        $dataModification->addFileError($path, array(
+        $dataModification->addFileError($path, [
             'message' => $message,
             'type' => $errorType
-        ));
+        ]);
 
         // loga o error de acordo com o tipo
         switch ($errorType) {
@@ -643,7 +639,7 @@ class ManagerParseFiles
 
             $abortModificationID = $iterator->key();
             $dataModification = $iterator->current();
-            $siblings = array();
+            $siblings = [];
 
             if ($dataModification->hasGroup()) {
                 $siblings = $group->get($dataModification->getGroup());
@@ -720,8 +716,8 @@ class ManagerParseFiles
         $logger = $this->container->get('logger');
         $logger->debug(' - removendo diretorio temporario: ' . str_replace(ECIDADE_PATH, null, $this->persistPath));
 
-        $directoryIterator = new \RecursiveDirectoryIterator($this->persistPath, \RecursiveDirectoryIterator::SKIP_DOTS);
-        $files = new \RecursiveIteratorIterator($directoryIterator, \RecursiveIteratorIterator::CHILD_FIRST);
+        $directoryIterator = new RecursiveDirectoryIterator($this->persistPath, RecursiveDirectoryIterator::SKIP_DOTS);
+        $files = new RecursiveIteratorIterator($directoryIterator, RecursiveIteratorIterator::CHILD_FIRST);
 
         foreach ($files as $fileinfo) {
             $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
@@ -777,7 +773,7 @@ class ManagerParseFiles
      * @param Manager $manager
      * @return boolean
      */
-    public function abortModifications(Manager $manager = null)
+    public function abortModifications(?Manager $manager = null)
     {
         if (count($this->abortModifications) == 0) {
             return false;
@@ -788,8 +784,8 @@ class ManagerParseFiles
         }
 
         // separa modificacoes globais e por usuario
-        $abortModificationsGlobal = array();
-        $abortModificationsUser = array();
+        $abortModificationsGlobal = [];
+        $abortModificationsUser = [];
 
         $abortModifications = $this->abortModifications;
         $logger = $this->container->get('logger');

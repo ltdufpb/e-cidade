@@ -36,7 +36,7 @@ class ColunaRegistry
     /**
      * @var Coluna[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param $key
@@ -45,7 +45,7 @@ class ColunaRegistry
      */
     public static function get($key)
     {
-        if (!array_key_exists($key, self::$storage)) {
+        if (!array_key_exists((string) $key, self::$storage)) {
             $resultado = ColunaRepositorio::find($key);
 
             if ($resultado) {

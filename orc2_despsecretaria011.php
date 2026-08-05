@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ db_postmemory($HTTP_POST_VARS);
       <table align="center" border="0">
         <tr>
           <td align="center" colspan="2">
-            <?
+            <?php 
               db_selinstit('parent.js_limpa',300,100);
             ?>
           </td>
@@ -71,7 +71,7 @@ db_postmemory($HTTP_POST_VARS);
         <tr>
           <td><strong>Fases da Despesa:</strong></td>
           <td>
-            <?
+            <?php 
               $aFasesDespesa = array('2'=>'Empenhado','3'=>'Liquidado','4'=>'Pago');
               db_select('tipo_balanco', $aFasesDespesa, true, 2);
             ?>
@@ -80,7 +80,7 @@ db_postmemory($HTTP_POST_VARS);
         <tr>
           <td><strong>Níveis:</strong></td>
           <td>
-            <?
+            <?php 
               $aNiveis = array('0' => 'Geral',
                                '3' => 'Função',
                                '4' => 'Subfunção',
@@ -96,7 +96,7 @@ db_postmemory($HTTP_POST_VARS);
         <tr>
           <td><strong>Agrupar:</strong></td>
           <td>
-            <?
+            <?php 
               $aTipoAgrupa = array('1' => 'Não',
                                    '2' => 'Órgão',
                                    '3' => 'Unidade');

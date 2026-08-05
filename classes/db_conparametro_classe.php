@@ -58,10 +58,10 @@ class cl_conparametro {
                  c90_confirmadata = bool = Confirma data antes da escrituração 
                  ";
 
-    public function cl_conparametro()
+    public function __construct()
     {
         $this->rotulo = new rotulo("conparametro"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -163,7 +163,7 @@ class cl_conparametro {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Parametro Contabilidade () não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Parametro Contabilidade já Cadastrado";
@@ -196,10 +196,10 @@ class cl_conparametro {
       $this->atualizacampos();
      $sql = " update conparametro set ";
      $virgula = "";
-     if(trim($this->c90_estrutsistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c90_estrutsistema"])){ 
+     if(trim((string) $this->c90_estrutsistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c90_estrutsistema"])){ 
        $sql  .= $virgula." c90_estrutsistema = '$this->c90_estrutsistema' ";
        $virgula = ",";
-       if(trim($this->c90_estrutsistema) == null ){ 
+       if(trim((string) $this->c90_estrutsistema) == null ){ 
          $this->erro_sql = " Campo Estrutural Sistema não informado.";
          $this->erro_campo = "c90_estrutsistema";
          $this->erro_banco = "";
@@ -209,10 +209,10 @@ class cl_conparametro {
          return false;
        }
      }
-     if(trim($this->c90_estrutcontabil)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c90_estrutcontabil"])){ 
+     if(trim((string) $this->c90_estrutcontabil)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c90_estrutcontabil"])){ 
        $sql  .= $virgula." c90_estrutcontabil = '$this->c90_estrutcontabil' ";
        $virgula = ",";
-       if(trim($this->c90_estrutcontabil) == null ){ 
+       if(trim((string) $this->c90_estrutcontabil) == null ){ 
          $this->erro_sql = " Campo Estrutural Contabilidade não informado.";
          $this->erro_campo = "c90_estrutcontabil";
          $this->erro_banco = "";
@@ -222,10 +222,10 @@ class cl_conparametro {
          return false;
        }
      }
-     if(trim($this->c90_codestrut)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c90_codestrut"])){ 
+     if(trim((string) $this->c90_codestrut)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c90_codestrut"])){ 
        $sql  .= $virgula." c90_codestrut = $this->c90_codestrut ";
        $virgula = ",";
-       if(trim($this->c90_codestrut) == null ){ 
+       if(trim((string) $this->c90_codestrut) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "c90_codestrut";
          $this->erro_banco = "";
@@ -235,10 +235,10 @@ class cl_conparametro {
          return false;
        }
      }
-     if(trim($this->c90_utilcontabancaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c90_utilcontabancaria"])){ 
+     if(trim((string) $this->c90_utilcontabancaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c90_utilcontabancaria"])){ 
        $sql  .= $virgula." c90_utilcontabancaria = '$this->c90_utilcontabancaria' ";
        $virgula = ",";
-       if(trim($this->c90_utilcontabancaria) == null ){ 
+       if(trim((string) $this->c90_utilcontabancaria) == null ){ 
          $this->erro_sql = " Campo Utiliza Conta Bancária não informado.";
          $this->erro_campo = "c90_utilcontabancaria";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_conparametro {
          return false;
        }
      }
-     if(trim($this->c90_usapcasp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c90_usapcasp"])){ 
+     if(trim((string) $this->c90_usapcasp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c90_usapcasp"])){ 
        $sql  .= $virgula." c90_usapcasp = '$this->c90_usapcasp' ";
        $virgula = ",";
-       if(trim($this->c90_usapcasp) == null ){ 
+       if(trim((string) $this->c90_usapcasp) == null ){ 
          $this->erro_sql = " Campo Usa PCASP não informado.";
          $this->erro_campo = "c90_usapcasp";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_conparametro {
          return false;
        }
      }
-     if(trim($this->c90_confirmadata)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c90_confirmadata"])){ 
+     if(trim((string) $this->c90_confirmadata)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c90_confirmadata"])){ 
        $sql  .= $virgula." c90_confirmadata = '$this->c90_confirmadata' ";
        $virgula = ",";
-       if(trim($this->c90_confirmadata) == null ){ 
+       if(trim((string) $this->c90_confirmadata) == null ){ 
          $this->erro_sql = " Campo Confirma data antes da escrituração não informado.";
          $this->erro_campo = "c90_confirmadata";
          $this->erro_banco = "";

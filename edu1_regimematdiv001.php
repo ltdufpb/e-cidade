@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,14 +32,14 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_regimematdiv_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clregimematdiv = new cl_regimematdiv;
 $db_opcao = 1;
 $db_botao = true;
 $clregimematdiv->pagina_retorno = "edu1_regimematdiv001.php?ed219_i_regimemat=$ed219_i_regimemat&ed218_c_nome=$ed218_c_nome";
 if(isset($incluir)){
  $result1 = $clregimematdiv->sql_record($clregimematdiv->sql_query("","max(ed219_i_ordenacao)",""," ed219_i_regimemat = $ed219_i_regimemat"));
- $proxima = trim(pg_result($result1,0,0))==""?1:pg_result($result1,0,0)+1;
+ $proxima = trim(pg_fetch_result($result1,0,0))==""?1:pg_fetch_result($result1,0,0)+1;
  db_inicio_transacao();
  $clregimematdiv->ed219_i_ordenacao = $proxima;
  $clregimematdiv->incluir($ed219_i_codigo);
@@ -81,11 +81,11 @@ if(isset($atualizar)){
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Divisões do Regime de Matrícula</b></legend>
-    <?include(modification("forms/db_frmregimematdiv.php"));?>
+    <?php include(modification("forms/db_frmregimematdiv.php"));?>
    </fieldset>
    </center>
   </td>
@@ -96,7 +96,7 @@ if(isset($atualizar)){
 <script>
 js_tabulacaoforms("form1","ed219_c_nome",true,1,"ed219_c_nome",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
  if($clregimematdiv->erro_status=="0"){
   $clregimematdiv->erro(true,false);

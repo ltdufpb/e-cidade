@@ -64,7 +64,7 @@ try {
 
       $oRetorno->sBase   = "";
       $oRetorno->iBase   = "";
-      $oRetorno->aEtapas = array();
+      $oRetorno->aEtapas = [];
       foreach ($aEtapas as $oEtapa) {
 
         $oDadoEtapa          = new stdClass();

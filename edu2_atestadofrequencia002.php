@@ -43,7 +43,7 @@ $oGet        = JSON::requestParameters();
 $oParametros->aMatriculas      = JSON::create()->parse($oGet->aMatriculas);
 
 
-$oGet->sDiretor                = base64_decode($oGet->sDiretor);
+$oGet->sDiretor                = base64_decode((string) $oGet->sDiretor);
 $aDiretor                      = explode('|', $oGet->sDiretor);
 $oParametros->sDiretor         = '';
 $oParametros->sCargo           = '';
@@ -66,12 +66,12 @@ $oParametros->iAlturaLinha     = 4;
 
 $oParametros->sObservacao = "";
 //dd(base64_decode($_GET) , base64_decode($oGet));
-if (trim($oGet->sObservacao) != '') {
-  $oParametros->sObservacao = trim(base64_decode($oGet->sObservacao));
+if (trim((string) $oGet->sObservacao) != '') {
+  $oParametros->sObservacao = trim(base64_decode((string) $oGet->sObservacao));
 }
 
 $oTurma = TurmaRepository::getTurmaByCodigo($oGet->iTurma);
-$aTurno = array();
+$aTurno = [];
 
 $aTurno[] = $oTurma->getTurno()->getCodigoTurno();
 if ($oTurma->temTurnoAdicional() != "") {
@@ -90,7 +90,7 @@ if ($oDaoPeriodoEscola->numrows == 0) {
 $oDadosHorarioTurno = db_utils::fieldsMemory($rsHorarioTurno, 0);
 
 
-$aGradeHorario = array();
+$aGradeHorario = [];
 
 if ($oParametros->lExibeGradeAluno) {
 
@@ -124,8 +124,8 @@ if ($oParametros->lExibeGradeAluno) {
 }
 
 
-$aParagrafos  = array();
-$aDadosAlunos = array();
+$aParagrafos  = [];
+$aDadosAlunos = [];
 
 foreach ($oParametros->aMatriculas as $oMat) {
 
@@ -140,14 +140,14 @@ foreach ($oParametros->aMatriculas as $oMat) {
     $oParagrafo->mes_extenso_nascimento = DBDate::getMesExtenso((int)$oDataNascimento->getMes());
     $oParagrafo->mes_numeral_nascimento = $oDataNascimento->getMes();
     $oParagrafo->ano_nascimento         = $oDataNascimento->getAno();
-  } catch( Exception $oErro ) {
+  } catch( Exception ) {
 
     $oParagrafo->dia_nascimento         = "";
     $oParagrafo->mes_extenso_nascimento = "";
     $oParagrafo->mes_numeral_nascimento = "";
     $oParagrafo->ano_nascimento         = "";
   }
-  $aFiliacao                          = array();
+  $aFiliacao                          = [];
 
   if ($oMatricula->getAluno()->getNomeMae() != '') {
     $aFiliacao[] = $oMatricula->getAluno()->getNomeMae();

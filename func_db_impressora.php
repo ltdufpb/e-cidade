@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_impressora_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_impressora = new cl_db_impressora;
 $cldb_impressora->rotulo->label("db64_sequencial");
 $cldb_impressora->rotulo->label("db64_nome");
@@ -54,7 +55,7 @@ $cldb_impressora->rotulo->label("db64_nome");
               <?=$Ldb64_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db64_sequencial",10,$Idb64_sequencial,true,"text",4,"","chave_db64_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_impressora->rotulo->label("db64_nome");
               <?=$Ldb64_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db64_nome",50,$Idb64_nome,true,"text",4,"","chave_db64_nome");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_impressora->rotulo->label("db64_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       
       $sWhere = " 1=1 ";
       
@@ -130,12 +131,12 @@ $cldb_impressora->rotulo->label("db64_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

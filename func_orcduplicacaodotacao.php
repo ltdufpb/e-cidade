@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcduplicacaodotacao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcduplicacaodotacao = new cl_orcduplicacaodotacao;
 $clorcduplicacaodotacao->rotulo->label("o76_sequencial");
 $clorcduplicacaodotacao->rotulo->label("o76_coddot");
@@ -54,7 +55,7 @@ $clorcduplicacaodotacao->rotulo->label("o76_coddot");
               <?=$Lo76_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o76_sequencial",4,$Io76_sequencial,true,"text",4,"","chave_o76_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clorcduplicacaodotacao->rotulo->label("o76_coddot");
               <?=$Lo76_coddot?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o76_coddot",4,$Io76_coddot,true,"text",4,"","chave_o76_coddot");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clorcduplicacaodotacao->rotulo->label("o76_coddot");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcduplicacaodotacao.php")==true){
@@ -122,12 +123,12 @@ $clorcduplicacaodotacao->rotulo->label("o76_coddot");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("classes/db_empelemento_classe.php"));
 include(modification("classes/db_pagordemele_classe.php"));
 include(modification("classes/db_pagordem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 
 $clpagordemele = new cl_pagordemele;
@@ -58,7 +59,7 @@ $clrotulo->label("o56_elemento");
     <input name='verificador' type='hidden' value='ok'>
     <center>
  <table border='1' cellspacing="0" cellpadding="0">   
- <?
+ <?php 
  if(isset($e50_codord) && $e50_codord!= ""){
       $result = $clpagordemele->sql_record($clpagordemele->sql_query($e50_codord));
       $numrows = $clpagordemele->numrows;

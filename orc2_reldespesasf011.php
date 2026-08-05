@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -70,7 +70,7 @@ function js_emite(){
       <tr>
         <td align="right" ><strong>Nível :</strong></td>
         <td>
-	  <?
+	  <?php 
 
 
 $xy = array ('1A' => 'Órgão Até o Nível', '1B' => 'Órgão só o Nível', '2A' => 'Unidade Até o Nível', '2B' => 'Unidade só o Nível', '3A' => 'Função Até o Nível', '3B' => 'Função só o Nível', '4A' => 'Subfunção Até o Nível', '4B' => 'Subfunção só o Nível', '5A' => 'Programa Até o Nível', '5B' => 'Programa só o Nível', '6A' => 'Proj/Ativ Até o Nível', '6B' => 'Proj/Ativ só o Nível', '7A' => 'Elemento Até o Nível', '7B' => 'Elemento só o Nível', '8A' => 'Recurso Até o Nível', '9A' => 'Recurso Até o Nível - Completo', '8B' => 'Recurso só o Nível');
@@ -86,7 +86,7 @@ db_input("db_selinstit",10,0,true,"hidden",3);
 	</td>
 	
         <td >
-	<?
+	<?php 
 
 
 $x = array ('N' => 'NÃO', 'S' => 'SIM');
@@ -99,7 +99,7 @@ db_select('quebra_orgao', $x, true, 2, "");
 	</td>
 	
         <td >
-	<?
+	<?php 
 
 
 $xx = array ('N' => 'NÃO', 'S' => 'SIM');
@@ -108,7 +108,7 @@ db_select('quebra_unidade', $xx, true, 2, "");
 	</td>
       </tr>
       <tr>
-        <?
+        <?php 
 
 
 $sql = "select o50_subelem from orcparametro where o50_anousu = ".db_getsession("DB_anousu");
@@ -120,14 +120,14 @@ if ($o50_subelem == 'f') {
           <td align="right"><strong>Listar Sub-elementos:</strong> 
   	  </td>
           <td >
-	  <?
+	  <?php 
 
 
 	$xx = array ('N' => 'NÃO', 'S' => 'SIM');
 	db_select('lista_subeleme', $xx, true, 2, "");
 ?>
 	  </td>
-        <?
+        <?php 
 
 
 } else {
@@ -135,7 +135,7 @@ if ($o50_subelem == 'f') {
           <td align="right"> 
   	  </td>
           <td>
-	  <?
+	  <?php 
 
 
 	global $lista_subeleme;
@@ -143,7 +143,7 @@ if ($o50_subelem == 'f') {
 	db_input("lista_subeleme", 15, 0, true, 'hidden', 3);
 ?>
           </td>
-	<?
+	<?php 
 
 }
 
@@ -170,14 +170,14 @@ if ($o50_subelem == 'f') {
      <tr>
     <td nowrap><b>  Período inicial </b></td>
       <td colspan="2">
-         <? db_inputdata('data_ini',@$data_ini_dia,@$data_ini_mes,@$data_ini_ano,true,'text',1);  ?>
+         <?php  db_inputdata('data_ini',@$data_ini_dia,@$data_ini_mes,@$data_ini_ano,true,'text',1);  ?>
       </td>
    </tr>
 
  <tr>
     <td nowrap><b>  Período final</b></td>
       <td colspan="2">
-         <? db_inputdata('data_fin',@$data_fin_dia,@$data_fin_mes,@$data_fin_ano,true,'text',1);  ?>
+         <?php  db_inputdata('data_fin',@$data_fin_dia,@$data_fin_mes,@$data_fin_ano,true,'text',1);  ?>
       </td>
    </tr>
 

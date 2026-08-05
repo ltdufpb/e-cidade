@@ -24,7 +24,7 @@ class HourHelper
      */
     public function convertHourToFloat($hourFormat)
     {
-        list($hour, $minutes) = explode(':', $hourFormat);
+        [$hour, $minutes] = explode(':', (string) $hourFormat);
         return $hour + round(($minutes / 60) * 100) / 100;
     }
 }

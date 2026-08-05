@@ -254,23 +254,34 @@ $clientSecret = Registry::get('app.config')->get('api.client.secret');
     }
   }
 
+  function js_acessar_jquery() {
+    var sLogin = $('#usu_login').val();
+    var sSenha = calcMD5($('#usu_senha').val());
+    var wname  = 'wname' + Math.floor(Math.random() * 10000);
+    $('#usu_senha').val('');
+    $('#usu_login').val('');
+    var sAuth = btoa("DB_login=" + sLogin + "&DB_senha=" + sSenha).urlEncode();
+    var sUrl  = 'abrir.php?sAuth=' + sAuth;
+    window.open(sUrl, wname, 'width=' + screen.availWidth + ',height=' + screen.availHeight);
+  }
+
   $(document).ready(function() {
 
     $('#btnlogar').on('click', function(event) {
-      js_acessar_dbportal();
+      js_acessar_jquery();
     });
 
     $('#usu_senha').on('keyup', function(event){
 
       if (event.keyCode == 13) {
-        js_acessar_dbportal();
+        js_acessar_jquery();
       }
     });
 
     $('#ct_captcha').on('keyup', function(event){
 
       if (event.keyCode == 13) {
-        js_acessar_dbportal();
+        js_acessar_jquery();
       }
     });
 

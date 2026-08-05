@@ -2,6 +2,7 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
 use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\Formatter;
 use Exception;
 use RubricaRepository;
@@ -21,6 +22,7 @@ class RubricaFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[Override]
     public function formatar($dados)
     {
         $rubricasValidas = [];
@@ -34,7 +36,7 @@ class RubricaFormatter extends Formatter
                             continue;
                         }
                         $rubricasValidas[] = $dadosRubrica;
-                    } catch (Exception $e) {
+                    } catch (Exception) {
                         $this->rubricasNaoProcessadas[$respostaRubrica] = "Rubrica provavelmente excluida do sistema.";
                     }
                 }
@@ -52,11 +54,11 @@ class RubricaFormatter extends Formatter
      */
     private function posProcessamento($dadosFormatado)
     {
-        $fieldsToArray = array(
+        $fieldsToArray = [
             'ideProcessoCP',
             'ideProcessoIRRF',
             'ideProcessoFGTS'
-        );
+        ];
 
         foreach ($dadosFormatado as $dados) {
             if (!isset($dados->ideRubrica->fimValid) || empty($dados->ideRubrica->fimValid)) {
@@ -84,10 +86,10 @@ class RubricaFormatter extends Formatter
                         return false;
                     });
 
-                    $dados->dadosRubrica->{$field} = array((object) $valorFiltrado);
+                    $dados->dadosRubrica->{$field} = [(object) $valorFiltrado];
 
                     if (empty($valorFiltrado)) {
-                        $dados->dadosRubrica->{$field} = array();
+                        $dados->dadosRubrica->{$field} = [];
                     }
                 }
             }

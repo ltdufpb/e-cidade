@@ -263,7 +263,7 @@ class FlagImages {
     var $iFlagData ;
     var $iOrdIdx=array();
 
-    function FlagImages($aSize=FLAGSIZE1) {
+    function __construct($aSize=FLAGSIZE1) {
 	switch($aSize) {
 	    case FLAGSIZE1 :
 	    case FLAGSIZE2 :

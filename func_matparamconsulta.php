@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matparamconsulta_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmatparamconsulta = new cl_matparamconsulta;
 $clmatparamconsulta->rotulo->label("m38_instit");
 $clmatparamconsulta->rotulo->label("m38_visualizacaoitens");
@@ -54,7 +55,7 @@ $clmatparamconsulta->rotulo->label("m38_visualizacaoitens");
               <?=$Lm38_instit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m38_instit",10,$Im38_instit,true,"text",4,"","chave_m38_instit");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clmatparamconsulta->rotulo->label("m38_visualizacaoitens");
               <?=$Lm38_visualizacaoitens?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m38_visualizacaoitens",10,$Im38_visualizacaoitens,true,"text",4,"","chave_m38_visualizacaoitens");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clmatparamconsulta->rotulo->label("m38_visualizacaoitens");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matparamconsulta.php")==true){
@@ -122,12 +123,12 @@ $clmatparamconsulta->rotulo->label("m38_visualizacaoitens");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

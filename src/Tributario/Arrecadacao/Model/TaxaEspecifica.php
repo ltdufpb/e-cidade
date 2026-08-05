@@ -2,6 +2,8 @@
 
 namespace ECidade\Tributario\Arrecadacao\Model;
 
+use DateTime;
+
 /**
  * Class TaxaEspecifica
  * @package ECidade\Tributario\Arrecadacao\Model
@@ -27,7 +29,7 @@ class TaxaEspecifica
     private $codigoSubReceita;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $dataCriacao;
 
@@ -85,7 +87,7 @@ class TaxaEspecifica
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDataCriacao()
     {
@@ -141,7 +143,7 @@ class TaxaEspecifica
     }
 
     /**
-     * @param \DateTime $dataCriacao
+     * @param DateTime $dataCriacao
      */
     public function setDataCriacao($dataCriacao)
     {

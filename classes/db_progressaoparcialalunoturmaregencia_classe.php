@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE progressaoparcialalunoturmaregencia
 class cl_progressaoparcialalunoturmaregencia {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $ed115_sequencial = 0;
-   var $ed115_progressaoparcialalunomatricula = 0;
-   var $ed115_regencia = 0;
-   var $ed115_datavinculo_dia = null;
-   var $ed115_datavinculo_mes = null;
-   var $ed115_datavinculo_ano = null;
-   var $ed115_datavinculo = null;
+   public $ed115_sequencial = 0;
+   public $ed115_progressaoparcialalunomatricula = 0;
+   public $ed115_regencia = 0;
+   public $ed115_datavinculo_dia = null;
+   public $ed115_datavinculo_mes = null;
+   public $ed115_datavinculo_ano = null;
+   public $ed115_datavinculo = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  ed115_sequencial = int4 = Código
                  ed115_progressaoparcialalunomatricula = int4 = Matricula Progressão Parcial
                  ed115_regencia = int4 = Regência
                  ed115_datavinculo = date = Data do Vínculo
                  ";
    //funcao construtor da classe
-   function cl_progressaoparcialalunoturmaregencia() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("progressaoparcialalunoturmaregencia");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -129,10 +129,10 @@ class cl_progressaoparcialalunoturmaregencia {
          $this->erro_status = "0";
          return false;
        }
-       $this->ed115_sequencial = pg_result($result,0,0);
+       $this->ed115_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from progressaoparcialalunoturmaregencia_ed115_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed115_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed115_sequencial)){
          $this->erro_sql = " Campo ed115_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,7 +166,7 @@ class cl_progressaoparcialalunoturmaregencia {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Vinculo do aluno com progressão parcial uma turma ($this->ed115_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Vinculo do aluno com progressão parcial uma turma já Cadastrado";
@@ -190,13 +190,13 @@ class cl_progressaoparcialalunoturmaregencia {
      $resaco = $this->sql_record($this->sql_query_file($this->ed115_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,19542,'$this->ed115_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3473,19542,'','".AddSlashes(pg_result($resaco,0,'ed115_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3473,19543,'','".AddSlashes(pg_result($resaco,0,'ed115_progressaoparcialalunomatricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3473,19544,'','".AddSlashes(pg_result($resaco,0,'ed115_regencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3473,19545,'','".AddSlashes(pg_result($resaco,0,'ed115_datavinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3473,19542,'','".AddSlashes(pg_fetch_result($resaco,0,'ed115_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3473,19543,'','".AddSlashes(pg_fetch_result($resaco,0,'ed115_progressaoparcialalunomatricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3473,19544,'','".AddSlashes(pg_fetch_result($resaco,0,'ed115_regencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3473,19545,'','".AddSlashes(pg_fetch_result($resaco,0,'ed115_datavinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -205,10 +205,10 @@ class cl_progressaoparcialalunoturmaregencia {
       $this->atualizacampos();
      $sql = " update progressaoparcialalunoturmaregencia set ";
      $virgula = "";
-     if(trim($this->ed115_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed115_sequencial"])){
+     if(trim((string) $this->ed115_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed115_sequencial"])){
        $sql  .= $virgula." ed115_sequencial = $this->ed115_sequencial ";
        $virgula = ",";
-       if(trim($this->ed115_sequencial) == null ){
+       if(trim((string) $this->ed115_sequencial) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed115_sequencial";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_progressaoparcialalunoturmaregencia {
          return false;
        }
      }
-     if(trim($this->ed115_progressaoparcialalunomatricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed115_progressaoparcialalunomatricula"])){
+     if(trim((string) $this->ed115_progressaoparcialalunomatricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed115_progressaoparcialalunomatricula"])){
        $sql  .= $virgula." ed115_progressaoparcialalunomatricula = $this->ed115_progressaoparcialalunomatricula ";
        $virgula = ",";
-       if(trim($this->ed115_progressaoparcialalunomatricula) == null ){
+       if(trim((string) $this->ed115_progressaoparcialalunomatricula) == null ){
          $this->erro_sql = " Campo Matricula Progressão Parcial nao Informado.";
          $this->erro_campo = "ed115_progressaoparcialalunomatricula";
          $this->erro_banco = "";
@@ -231,10 +231,10 @@ class cl_progressaoparcialalunoturmaregencia {
          return false;
        }
      }
-     if(trim($this->ed115_regencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed115_regencia"])){
+     if(trim((string) $this->ed115_regencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed115_regencia"])){
        $sql  .= $virgula." ed115_regencia = $this->ed115_regencia ";
        $virgula = ",";
-       if(trim($this->ed115_regencia) == null ){
+       if(trim((string) $this->ed115_regencia) == null ){
          $this->erro_sql = " Campo Regência nao Informado.";
          $this->erro_campo = "ed115_regencia";
          $this->erro_banco = "";
@@ -244,10 +244,10 @@ class cl_progressaoparcialalunoturmaregencia {
          return false;
        }
      }
-     if(trim($this->ed115_datavinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed115_datavinculo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ed115_datavinculo_dia"] !="") ){
+     if(trim((string) $this->ed115_datavinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed115_datavinculo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ed115_datavinculo_dia"] !="") ){
        $sql  .= $virgula." ed115_datavinculo = '$this->ed115_datavinculo' ";
        $virgula = ",";
-       if(trim($this->ed115_datavinculo) == null ){
+       if(trim((string) $this->ed115_datavinculo) == null ){
          $this->erro_sql = " Campo Data do Vínculo nao Informado.";
          $this->erro_campo = "ed115_datavinculo_dia";
          $this->erro_banco = "";
@@ -260,7 +260,7 @@ class cl_progressaoparcialalunoturmaregencia {
        if(isset($GLOBALS["HTTP_POST_VARS"]["ed115_datavinculo_dia"])){
          $sql  .= $virgula." ed115_datavinculo = null ";
          $virgula = ",";
-         if(trim($this->ed115_datavinculo) == null ){
+         if(trim((string) $this->ed115_datavinculo) == null ){
            $this->erro_sql = " Campo Data do Vínculo nao Informado.";
            $this->erro_campo = "ed115_datavinculo_dia";
            $this->erro_banco = "";
@@ -279,17 +279,17 @@ class cl_progressaoparcialalunoturmaregencia {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19542,'$this->ed115_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed115_sequencial"]) || $this->ed115_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3473,19542,'".AddSlashes(pg_result($resaco,$conresaco,'ed115_sequencial'))."','$this->ed115_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3473,19542,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed115_sequencial'))."','$this->ed115_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed115_progressaoparcialalunomatricula"]) || $this->ed115_progressaoparcialalunomatricula != "")
-           $resac = db_query("insert into db_acount values($acount,3473,19543,'".AddSlashes(pg_result($resaco,$conresaco,'ed115_progressaoparcialalunomatricula'))."','$this->ed115_progressaoparcialalunomatricula',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3473,19543,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed115_progressaoparcialalunomatricula'))."','$this->ed115_progressaoparcialalunomatricula',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed115_regencia"]) || $this->ed115_regencia != "")
-           $resac = db_query("insert into db_acount values($acount,3473,19544,'".AddSlashes(pg_result($resaco,$conresaco,'ed115_regencia'))."','$this->ed115_regencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3473,19544,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed115_regencia'))."','$this->ed115_regencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed115_datavinculo"]) || $this->ed115_datavinculo != "")
-           $resac = db_query("insert into db_acount values($acount,3473,19545,'".AddSlashes(pg_result($resaco,$conresaco,'ed115_datavinculo'))."','$this->ed115_datavinculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3473,19545,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed115_datavinculo'))."','$this->ed115_datavinculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -334,13 +334,13 @@ class cl_progressaoparcialalunoturmaregencia {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19542,'$ed115_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3473,19542,'','".AddSlashes(pg_result($resaco,$iresaco,'ed115_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3473,19543,'','".AddSlashes(pg_result($resaco,$iresaco,'ed115_progressaoparcialalunomatricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3473,19544,'','".AddSlashes(pg_result($resaco,$iresaco,'ed115_regencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3473,19545,'','".AddSlashes(pg_result($resaco,$iresaco,'ed115_datavinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3473,19542,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed115_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3473,19543,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed115_progressaoparcialalunomatricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3473,19544,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed115_regencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3473,19545,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed115_datavinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from progressaoparcialalunoturmaregencia
@@ -400,7 +400,7 @@ class cl_progressaoparcialalunoturmaregencia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:progressaoparcialalunoturmaregencia";
@@ -415,7 +415,7 @@ class cl_progressaoparcialalunoturmaregencia {
    function sql_query ( $ed115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -442,7 +442,7 @@ class cl_progressaoparcialalunoturmaregencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -455,7 +455,7 @@ class cl_progressaoparcialalunoturmaregencia {
    function sql_query_file ( $ed115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -476,7 +476,7 @@ class cl_progressaoparcialalunoturmaregencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -489,7 +489,7 @@ class cl_progressaoparcialalunoturmaregencia {
   function sql_query_matricula ( $ed115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -511,7 +511,7 @@ class cl_progressaoparcialalunoturmaregencia {
           $sql .= $sql2;
           if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = preg_split("#\\##m",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
               $sql .= $virgula.$campos_sql[$i];
@@ -524,7 +524,7 @@ class cl_progressaoparcialalunoturmaregencia {
   function sql_query_aluno ( $ed115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -554,7 +554,7 @@ class cl_progressaoparcialalunoturmaregencia {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

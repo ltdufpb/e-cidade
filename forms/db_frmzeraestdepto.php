@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -30,15 +30,15 @@
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tcoddepto?>">
-       <?
+       <?php 
        db_ancora(@$Lcoddepto,"js_pesquisacoddepto(true);",$db_opcao);
        ?>
     </td>
     <td colspan="3">
-       <?
+       <?php 
 db_input('coddepto',10,$Icoddepto,true,'text',$db_opcao," onchange='js_pesquisacoddepto(false);'")
        ?>
-       <?
+       <?php 
 db_input('descrdepto',40,$Idescrdepto,true,'text',3,'')
        ?>
     </td>

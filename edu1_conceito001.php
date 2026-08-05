@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_conceito_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clconceito = new cl_conceito;
 $db_opcao = 1;
 $db_botao = true;
@@ -78,13 +78,13 @@ if(isset($excluir)){
   <center>
     <div style="display: table;" id='divConceito'>
       <fieldset><legend><b>Cadastro de Níveis</b></legend>
-       <?include(modification("forms/db_frmconceito.php"));?>
+       <?php include(modification("forms/db_frmconceito.php"));?>
       </fieldset>
     </div>
   </center>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)){
  if($clconceito->erro_status=="0"){
   $clconceito->erro(true,false);
@@ -95,7 +95,7 @@ if(isset($incluir)){
    echo "<script> document.form1.".$clconceito->erro_campo.".focus();</script>";
   };
  }else{
-  ?><script>parent.location.href="edu1_formaavaliacao002.php?chavepesquisa=<?=$ed39_i_formaavaliacao?>";</script><?
+  ?><script>parent.location.href="edu1_formaavaliacao002.php?chavepesquisa=<?=$ed39_i_formaavaliacao?>";</script><?php 
  };
 };
 if(isset($alterar)){
@@ -108,18 +108,18 @@ if(isset($alterar)){
    echo "<script> document.form1.".$clconceito->erro_campo.".focus();</script>";
   };
  }else{
-  ?><script>parent.location.href="edu1_formaavaliacao002.php?chavepesquisa=<?=$ed39_i_formaavaliacao?>";</script><?
+  ?><script>parent.location.href="edu1_formaavaliacao002.php?chavepesquisa=<?=$ed39_i_formaavaliacao?>";</script><?php 
  };
 };
 if(isset($excluir)){
  if($clconceito->erro_status=="0"){
   $clconceito->erro(true,false);
  }else{
-  ?><script>parent.location.href="edu1_formaavaliacao002.php?chavepesquisa=<?=$ed39_i_formaavaliacao?>";</script><?
+  ?><script>parent.location.href="edu1_formaavaliacao002.php?chavepesquisa=<?=$ed39_i_formaavaliacao?>";</script><?php 
  };
 };
 if(isset($cancelar)){
- ?><script>parent.location.href="edu1_formaavaliacao002.php?chavepesquisa=<?=$ed39_i_formaavaliacao?>";</script><?
+ ?><script>parent.location.href="edu1_formaavaliacao002.php?chavepesquisa=<?=$ed39_i_formaavaliacao?>";</script><?php 
 }
 
 ?>

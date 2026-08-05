@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
@@ -6,7 +6,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_empagemovjustificativa_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clempagemovjustificativa = new cl_empagemovjustificativa;
 $clempagemovjustificativa->rotulo->label("e09_codmov");
 $clempagemovjustificativa->rotulo->label("e09_sequencial");
@@ -24,11 +25,11 @@ $clempagemovjustificativa->rotulo->label("e09_sequencial");
     <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
       <tr>
         <td><label><?=$Le09_sequencial?></label></td>
-        <td><? db_input("e09_sequencial",10,$Ie09_sequencial,true,"text",4,"","chave_e09_sequencial");?></td>
+        <td><?php  db_input("e09_sequencial",10,$Ie09_sequencial,true,"text",4,"","chave_e09_sequencial");?></td>
       </tr>
       <tr>
         <td><label><?=$Le09_codmov?></label></td>
-        <td><? db_input("e09_codmov",10,$Ie09_codmov,true,"text",4,"","chave_e09_codmov"); ?></td>
+        <td><?php  db_input("e09_codmov",10,$Ie09_codmov,true,"text",4,"","chave_e09_codmov"); ?></td>
       </tr>
     </table>
   </fieldset>
@@ -36,7 +37,7 @@ $clempagemovjustificativa->rotulo->label("e09_sequencial");
   <input name="limpar" type="reset" id="limpar" value="Limpar" >
   <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_empagemovjustificativa.hide();">
 </form>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
 
   $campos = "empagemovjustificativa.*";
@@ -74,12 +75,12 @@ if(!isset($pesquisa_chave)){
 ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

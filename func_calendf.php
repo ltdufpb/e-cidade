@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_calendf_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcalendf = new cl_calendf;
 $clcalendf->rotulo->label("r62_calend");
 $clcalendf->rotulo->label("r62_data");
@@ -55,7 +56,7 @@ $clcalendf->rotulo->label("r62_data");
               <?=$Lr62_calend?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r62_calend",2,$Ir62_calend,true,"text",4,"","chave_r62_calend");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clcalendf->rotulo->label("r62_data");
               <?=$Lr62_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r62_data",8,$Ir62_data,true,"text",4,"","chave_r62_data");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clcalendf->rotulo->label("r62_data");
               <?=$Lr62_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r62_data",8,$Ir62_data,true,"text",4,"","chave_r62_data");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clcalendf->rotulo->label("r62_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_calendf.php")==true){
@@ -133,12 +134,12 @@ $clcalendf->rotulo->label("r62_data");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

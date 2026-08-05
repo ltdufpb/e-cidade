@@ -2,6 +2,11 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Repository;
 
+use cl_esocialenvio;
+use stdClass;
+use DBDate;
+use Exception;
+use DateTime;
 use BusinessException;
 use CgmFactory;
 use DBException;
@@ -29,7 +34,7 @@ class ESocialEnvioRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * Tamanho maximo de consulta na api por particao
@@ -50,9 +55,9 @@ class ESocialEnvioRepository
      * @param array $columns
      * @return bool|ESocialEnvio
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
-        $dao = new \cl_esocialenvio();
+        $dao = new cl_esocialenvio();
         $sql = $dao->sql_query_status($id, implode(', ', $columns));
         $rs = db_query($sql);
         if (!$rs) {
@@ -73,9 +78,9 @@ class ESocialEnvioRepository
      * @param array $columns
      * @return bool|ESocialEnvio
      */
-    public static function getDados($id, $columns = array('*'))
+    public static function getDados($id, $columns = ['*'])
     {
-        $dao = new \cl_esocialenvio();
+        $dao = new cl_esocialenvio();
         $sql = $dao->sql_query_status($id, implode(', ', $columns));
         $rs = db_query($sql);
 
@@ -118,12 +123,12 @@ class ESocialEnvioRepository
         $exportacaoArquivo = false
     ) {
         $this->exportacaoArquivo = $exportacaoArquivo;
-        $consultaSituacao = new \stdClass();
+        $consultaSituacao = new stdClass();
         // Adicionado array de referencias e idEventos, pois iremos particionar a consulta
         $consultaSituacao->referencias = [];
         $consultaSituacao->idEventos = [];
 
-        $whereArray = array();
+        $whereArray = [];
         // adicionada variavel de campos para ecomonizar recurso de memoria em grande quantidade de registros
         $campos = "rh213_sequencial, rh213_evento, rh213_responsavelpreenchimento, rh213_data, rh214_sequencial, "
             . "rh214_descricao, rh214_situacao";
@@ -150,13 +155,13 @@ class ESocialEnvioRepository
 
         if (!empty($dataInicio)) {
             $whereArray[] = "rh213_data >= '{$dataInicio}'";
-            $dataInicio = new \DBDate(substr($dataInicio, 0, 10));
+            $dataInicio = new DBDate(substr((string) $dataInicio, 0, 10));
             $consultaSituacao->dataInicio = ($dataInicio->convertTo("Y-m-d")). ' 00:00';
         }
 
         if (!empty($dataFinal)) {
             $whereArray[] = "rh213_data <= '{$dataFinal}'";
-            $dataFinal = new \DBDate(substr($dataFinal, 0, 10));
+            $dataFinal = new DBDate(substr((string) $dataFinal, 0, 10));
             $consultaSituacao->dataFinal = ($dataFinal->convertTo("Y-m-d")). ' 23:59';
         }
 
@@ -186,7 +191,7 @@ class ESocialEnvioRepository
         $totalRegistros = pg_num_rows($rsEsocialEnvio);
 
         if (!$rsEsocialEnvio) {
-            throw new \Exception("Nenhum registro foi encontrado com os filtros informados.");
+            throw new Exception("Nenhum registro foi encontrado com os filtros informados.");
         }
         $esocialEnvios = [];
         for ($i = 0; $i < $totalRegistros; $i++) {
@@ -196,12 +201,12 @@ class ESocialEnvioRepository
 
 
         if (empty($esocialEnvios)) {
-            throw new \Exception("Nenhum registro foi encontrado com os filtros informados.");
+            throw new Exception("Nenhum registro foi encontrado com os filtros informados.");
         }
 
 
         // array de armazenagem de dados
-        $dados = array();
+        $dados = [];
         // variavel de controle de quantidade dentro da particao
         $contador = 0;
         // numero da particao
@@ -211,7 +216,7 @@ class ESocialEnvioRepository
             $esocialSituacao->setEvento($esocialEnvio->rh213_evento);
             $esocialSituacao->setResponsavelPreenchimento($esocialEnvio->rh213_responsavelpreenchimento);
             $esocialSituacao->setEmpregador($inscricaoEmpregador);
-            $esocialSituacao->setData(new \DateTime($esocialEnvio->rh213_data));
+            $esocialSituacao->setData(new DateTime($esocialEnvio->rh213_data));
 
             if (!empty($esocialEnvio->rh214_sequencial)) {
                 $esocialSituacao->setCodigo($esocialEnvio->rh214_sequencial);
@@ -255,7 +260,7 @@ class ESocialEnvioRepository
             $dados[$esocialSituacao->getEvento()][$esocialSituacao->getResponsavelPreenchimento()] = $esocialSituacao;
         }
         unset($esocialEnvios);
-        $dadosFiltrados = array();
+        $dadosFiltrados = [];
 
         $situacoes = [];
         $consultaSituacao->statusRecibo = $statusRecibo;
@@ -301,8 +306,8 @@ class ESocialEnvioRepository
                                         $errorFormatter = new FormatterError($dado->getEvento());
                                         $labels = $errorFormatter->extractLabels($ocorrencia->localizacao);
                                         $ocorrencia->localizacao = str_replace(
-                                            array("<br />", "</b>", "<b>"),
-                                            array("\n", "", ""),
+                                            ["<br />", "</b>", "<b>"],
+                                            ["\n", "", ""],
                                             $errorFormatter->formatLabels($labels, "%s")
                                         );
                                     }
@@ -335,7 +340,7 @@ class ESocialEnvioRepository
         }
 
         if (sizeof($dadosFiltrados) == 0) {
-            throw new \Exception("Nenhum registro foi encontrado com os filtros informados.");
+            throw new Exception("Nenhum registro foi encontrado com os filtros informados.");
         }
 
         return $dadosFiltrados;
@@ -383,7 +388,7 @@ class ESocialEnvioRepository
 
     public function get()
     {
-        $dao = new \cl_esocialenvio();
+        $dao = new cl_esocialenvio();
         $sql = $dao->sql_query_status(null, '*', null, implode(' AND ', $this->scopes));
         $rs = db_query($sql);
 
@@ -391,7 +396,7 @@ class ESocialEnvioRepository
             throw new Exception("Não foi possível os envios do esocial.\nContate o suporte.");
         }
 
-        $esocialEnvios = array();
+        $esocialEnvios = [];
 
         if (pg_num_rows($rs) === 0) {
             return $esocialEnvios;
@@ -406,7 +411,7 @@ class ESocialEnvioRepository
 
     public function atualizarEvento($sequencial, $situacao, $invalid = false)
     {
-        $dao = new \cl_esocialenvio();
+        $dao = new cl_esocialenvio();
         $dao->rh213_situacao = $situacao;
         $dao->rh213_sequencial = $sequencial;
 
@@ -417,7 +422,7 @@ class ESocialEnvioRepository
         $dao->alterar($sequencial);
 
         if ($dao->erro_status == 0) {
-            throw new \Exception("Não foi possível alterar situação da fila.");
+            throw new Exception("Não foi possível alterar situação da fila.");
         }
     }
 

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itbilogin_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clitbilogin = new cl_itbilogin;
 $clitbilogin->rotulo->label("it13_guia");
 $clitbilogin->rotulo->label("it13_id_usuario");
@@ -54,7 +55,7 @@ $clitbilogin->rotulo->label("it13_id_usuario");
               <?=$Lit13_guia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("it13_guia",10,$Iit13_guia,true,"text",4,"","chave_it13_guia");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clitbilogin->rotulo->label("it13_id_usuario");
               <?=$Lit13_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("it13_id_usuario",5,$Iit13_id_usuario,true,"text",4,"","chave_it13_id_usuario");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clitbilogin->rotulo->label("it13_id_usuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbilogin.php")==true){
@@ -118,12 +119,12 @@ $clitbilogin->rotulo->label("it13_id_usuario");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

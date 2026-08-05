@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,7 @@ include(modification("classes/db_mer_item_classe.php"));
 include(modification("classes/db_mer_itemunisaida_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_libdicionario.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clmer_item         = new cl_mer_item;
 $clmer_itemunisaida = new cl_mer_itemunisaida;
@@ -73,7 +73,7 @@ if (isset($alterar)) {
    parent.document.formaba.a2.style.color = "black";
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href      = 'mer1_mer_infnutricional001.php?meritem=<?=$me10_i_codigo?>';
   </script>
-<?
+<?php 
 
 }
 ?>
@@ -91,7 +91,7 @@ if (isset($alterar)) {
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:95%"><legend><b>Alteração Item</b></legend>
-	<? include(modification("forms/db_frmmer_item.php"));?>
+	<?php  include(modification("forms/db_frmmer_item.php"));?>
 	</fieldset>
 	</td>
   </tr>
@@ -99,7 +99,7 @@ if (isset($alterar)) {
 </center>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar)){
 	
   if($clmer_item->erro_status=="0"){
@@ -120,7 +120,7 @@ if(isset($alterar)){
     <script>
      parent.iframe_a1.location.href = "mer1_mer_item002.php?chavepesquisa=<?=$me10_i_codigo?>";
     </script>
-    <?
+    <?php 
     
   }
 }

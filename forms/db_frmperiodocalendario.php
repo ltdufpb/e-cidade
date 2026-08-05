@@ -39,13 +39,13 @@ $clrotulo->label("ed09_c_descr");
 
 $db_botao1 = false;
 
-$ed53_d_inicio_dia = isset( $ed53_d_inicio ) && !empty( $ed53_d_inicio ) ? substr( $ed53_d_inicio, 0, 2 ) : "";
-$ed53_d_inicio_mes = isset( $ed53_d_inicio ) && !empty( $ed53_d_inicio ) ? substr( $ed53_d_inicio, 3, 2 ) : "";
-$ed53_d_inicio_ano = isset( $ed53_d_inicio ) && !empty( $ed53_d_inicio ) ? substr( $ed53_d_inicio, 6, 4 ) : "";
+$ed53_d_inicio_dia = isset( $ed53_d_inicio ) && !empty( $ed53_d_inicio ) ? substr( (string) $ed53_d_inicio, 0, 2 ) : "";
+$ed53_d_inicio_mes = isset( $ed53_d_inicio ) && !empty( $ed53_d_inicio ) ? substr( (string) $ed53_d_inicio, 3, 2 ) : "";
+$ed53_d_inicio_ano = isset( $ed53_d_inicio ) && !empty( $ed53_d_inicio ) ? substr( (string) $ed53_d_inicio, 6, 4 ) : "";
 
-$ed53_d_fim_dia = isset( $ed53_d_fim ) && !empty( $ed53_d_fim ) ? substr( $ed53_d_fim, 0, 2 ) : "";
-$ed53_d_fim_mes = isset( $ed53_d_fim ) && !empty( $ed53_d_fim ) ? substr( $ed53_d_fim, 3, 2 ) : "";
-$ed53_d_fim_ano = isset( $ed53_d_fim ) && !empty( $ed53_d_fim ) ? substr( $ed53_d_fim, 6, 4 ) : "";
+$ed53_d_fim_dia = isset( $ed53_d_fim ) && !empty( $ed53_d_fim ) ? substr( (string) $ed53_d_fim, 0, 2 ) : "";
+$ed53_d_fim_mes = isset( $ed53_d_fim ) && !empty( $ed53_d_fim ) ? substr( (string) $ed53_d_fim, 3, 2 ) : "";
+$ed53_d_fim_ano = isset( $ed53_d_fim ) && !empty( $ed53_d_fim ) ? substr( (string) $ed53_d_fim, 6, 4 ) : "";
 
 if( isset( $opcao ) && $opcao == "alterar" ) {
 
@@ -223,7 +223,7 @@ if( $clregencia->numrows > 0 ) {
     <tr>
       <td valign="top">
         <?php
-        $chavepri= array(
+        $chavepri= [
                           "ed53_i_codigo"           => @$ed53_i_codigo,
                           "ed53_i_periodoavaliacao" => @$ed53_i_periodoavaliacao,
                           "ed09_c_descr"            => @$ed09_c_descr,
@@ -231,7 +231,7 @@ if( $clregencia->numrows > 0 ) {
                           "ed53_d_fim"              => @$ed53_d_fim,
                           "ed53_i_diasletivos"      => @$ed53_i_diasletivos,
                           "ed53_i_semletivas"       => @$ed53_i_semletivas
-                        );
+                        ];
 
         $sCampos = "ed09_c_descr, ed53_d_inicio, ed53_d_fim, ed53_i_diasletivos, ed53_i_semletivas";
         $sLabels = "ed53_i_periodoavaliacao, ed53_d_inicio, ed53_d_fim, ed53_i_diasletivos, ed53_i_semletivas";

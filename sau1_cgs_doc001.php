@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -81,7 +81,7 @@ if(isset($incluir) || isset($alterar) ){
    <br>
    <center>
    <fieldset style="width:95%">
-    <?include(modification("forms/db_frmsaudoc.php"));?>
+    <?php include(modification("forms/db_frmsaudoc.php"));?>
    </fieldset>
    </center>
   </td>
@@ -89,7 +89,7 @@ if(isset($incluir) || isset($alterar) ){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)){
  if($clcgs->erro_status=="0"){
   $clcgs->erro(true,false);
@@ -117,7 +117,7 @@ if(isset($incluir)){
                  (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a1.location.href="sau1_cgs_und001.php";
                  parent.mo_camada('a1');
                 </script>
-       <?
+       <?php 
       }
   }
 }

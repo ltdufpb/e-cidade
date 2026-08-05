@@ -52,7 +52,7 @@ class cl_rhlotavincele {
                  rh28_codelenov = int4 = Elemento novo
                  ";
    //funcao construtor da classe
-   function cl_rhlotavincele() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhlotavincele");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

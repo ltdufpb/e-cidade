@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_edu_relatmodel_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cledu_relatmodel = new cl_edu_relatmodel;
 $cledu_relatmodel->rotulo->label("ed217_i_codigo");
 $cledu_relatmodel->rotulo->label("ed217_i_relatorio");
@@ -54,7 +55,7 @@ $cledu_relatmodel->rotulo->label("ed217_i_relatorio");
               <?=$Led217_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ed217_i_codigo",10,$Ied217_i_codigo,true,"text",4,"","chave_ed217_i_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cledu_relatmodel->rotulo->label("ed217_i_relatorio");
               <?=$Led217_i_relatorio?>
             </td>
             <td width="96%" align="left" nowrap> 
-            <?
+            <?php 
             $x = array(""=>"","1"=>"HISTÓRICO ESCOLAR","2"=>"CERTIFICADO DE CONCLUSÃO");
             db_select('ed217_i_relatorio',$x,true,1,"");
             ?>
@@ -83,7 +84,7 @@ $cledu_relatmodel->rotulo->label("ed217_i_relatorio");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_edu_relatmodel.php")==true){
@@ -123,12 +124,12 @@ $cledu_relatmodel->rotulo->label("ed217_i_relatorio");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

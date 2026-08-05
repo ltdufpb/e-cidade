@@ -41,7 +41,7 @@ switch ( $oPost->sAction ) {
 
   case 'UpdateNiveisEnsino':
 
-    $aRegistros = explode(",",$oPost->sRegistros);
+    $aRegistros = explode(",",(string) $oPost->sRegistros);
     $aRegistros = array_filter( $aRegistros ); //Remove elementos vazios
 
     for ( $iCont = 0; $iCont < count( $aRegistros ); $iCont++ ){
@@ -63,7 +63,7 @@ switch ( $oPost->sAction ) {
 
     $oJson = new services_json();
 
-    echo $oJson->encode( urlencode($sMsg) );
+    echo $oJson->encode( urlencode((string) $sMsg) );
 
     break;
 }

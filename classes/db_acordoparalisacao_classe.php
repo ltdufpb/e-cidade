@@ -39,7 +39,7 @@ class cl_acordoparalisacao
     public function __construct()
     {
         $this->rotulo = new rotulo("acordoparalisacao"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -116,10 +116,10 @@ class cl_acordoparalisacao
          $this->erro_status = "0";
          return false; 
        }
-       $this->ac47_sequencial = pg_result($result,0,0); 
+       $this->ac47_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from acordoparalisacao_ac47_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ac47_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ac47_sequencial)){
          $this->erro_sql = " Campo ac47_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_acordoparalisacao
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Paralisação de contratos ($this->ac47_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Paralisação de contratos já Cadastrado";
@@ -185,14 +185,14 @@ class cl_acordoparalisacao
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20518,'$this->ac47_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3692,20518,'','".AddSlashes(pg_result($resaco,0,'ac47_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3692,20519,'','".AddSlashes(pg_result($resaco,0,'ac47_acordo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3692,20520,'','".AddSlashes(pg_result($resaco,0,'ac47_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3692,20521,'','".AddSlashes(pg_result($resaco,0,'ac47_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3692,1013475,'','".AddSlashes(pg_result($resaco,0,'ac47_acordoevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3692,20518,'','".AddSlashes(pg_fetch_result($resaco,0,'ac47_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3692,20519,'','".AddSlashes(pg_fetch_result($resaco,0,'ac47_acordo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3692,20520,'','".AddSlashes(pg_fetch_result($resaco,0,'ac47_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3692,20521,'','".AddSlashes(pg_fetch_result($resaco,0,'ac47_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3692,1013475,'','".AddSlashes(pg_fetch_result($resaco,0,'ac47_acordoevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -203,10 +203,10 @@ class cl_acordoparalisacao
       $this->atualizacampos();
      $sql = " update acordoparalisacao set ";
      $virgula = "";
-     if(trim($this->ac47_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_sequencial"])){ 
+     if(trim((string) $this->ac47_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_sequencial"])){ 
        $sql  .= $virgula." ac47_sequencial = $this->ac47_sequencial ";
        $virgula = ",";
-       if(trim($this->ac47_sequencial) == null ){ 
+       if(trim((string) $this->ac47_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial da Paralisação não informado.";
          $this->erro_campo = "ac47_sequencial";
          $this->erro_banco = "";
@@ -216,10 +216,10 @@ class cl_acordoparalisacao
          return false;
        }
      }
-     if(trim($this->ac47_acordo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_acordo"])){ 
+     if(trim((string) $this->ac47_acordo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_acordo"])){ 
        $sql  .= $virgula." ac47_acordo = $this->ac47_acordo ";
        $virgula = ",";
-       if(trim($this->ac47_acordo) == null ){ 
+       if(trim((string) $this->ac47_acordo) == null ){ 
          $this->erro_sql = " Campo Acordo não informado.";
          $this->erro_campo = "ac47_acordo";
          $this->erro_banco = "";
@@ -229,10 +229,10 @@ class cl_acordoparalisacao
          return false;
        }
      }
-     if(trim($this->ac47_datainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_datainicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac47_datainicio_dia"] !="") ){ 
+     if(trim((string) $this->ac47_datainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_datainicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac47_datainicio_dia"] !="") ){ 
        $sql  .= $virgula." ac47_datainicio = '$this->ac47_datainicio' ";
        $virgula = ",";
-       if(trim($this->ac47_datainicio) == null ){ 
+       if(trim((string) $this->ac47_datainicio) == null ){ 
          $this->erro_sql = " Campo Data Inicial não informado.";
          $this->erro_campo = "ac47_datainicio_dia";
          $this->erro_banco = "";
@@ -245,7 +245,7 @@ class cl_acordoparalisacao
        if(isset($GLOBALS["HTTP_POST_VARS"]["ac47_datainicio_dia"])){ 
          $sql  .= $virgula." ac47_datainicio = null ";
          $virgula = ",";
-         if(trim($this->ac47_datainicio) == null ){ 
+         if(trim((string) $this->ac47_datainicio) == null ){ 
            $this->erro_sql = " Campo Data Inicial não informado.";
            $this->erro_campo = "ac47_datainicio_dia";
            $this->erro_banco = "";
@@ -256,7 +256,7 @@ class cl_acordoparalisacao
          }
        }
      }
-     if(trim($this->ac47_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac47_datafim_dia"] !="") ){ 
+     if(trim((string) $this->ac47_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ac47_datafim_dia"] !="") ){ 
        $sql  .= $virgula." ac47_datafim = '$this->ac47_datafim' ";
        $virgula = ",";
      }     else{ 
@@ -269,8 +269,8 @@ class cl_acordoparalisacao
           $virgula = ",";
        }
      }
-     if(trim($this->ac47_acordoevento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_acordoevento"])){ 
-        if(trim($this->ac47_acordoevento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ac47_acordoevento"])){ 
+     if(trim((string) $this->ac47_acordoevento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac47_acordoevento"])){ 
+        if(trim((string) $this->ac47_acordoevento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ac47_acordoevento"])){ 
            $this->ac47_acordoevento = "0" ; 
         } 
        $sql  .= $virgula." ac47_acordoevento = $this->ac47_acordoevento ";
@@ -290,19 +290,19 @@ class cl_acordoparalisacao
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20518,'$this->ac47_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ac47_sequencial"]) || $this->ac47_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3692,20518,'".AddSlashes(pg_result($resaco,$conresaco,'ac47_sequencial'))."','$this->ac47_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3692,20518,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac47_sequencial'))."','$this->ac47_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ac47_acordo"]) || $this->ac47_acordo != "")
-             $resac = db_query("insert into db_acount values($acount,3692,20519,'".AddSlashes(pg_result($resaco,$conresaco,'ac47_acordo'))."','$this->ac47_acordo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3692,20519,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac47_acordo'))."','$this->ac47_acordo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ac47_datainicio"]) || $this->ac47_datainicio != "")
-             $resac = db_query("insert into db_acount values($acount,3692,20520,'".AddSlashes(pg_result($resaco,$conresaco,'ac47_datainicio'))."','$this->ac47_datainicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3692,20520,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac47_datainicio'))."','$this->ac47_datainicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ac47_datafim"]) || $this->ac47_datafim != "")
-             $resac = db_query("insert into db_acount values($acount,3692,20521,'".AddSlashes(pg_result($resaco,$conresaco,'ac47_datafim'))."','$this->ac47_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3692,20521,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac47_datafim'))."','$this->ac47_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ac47_acordoevento"]) || $this->ac47_acordoevento != "")
-             $resac = db_query("insert into db_acount values($acount,3692,1013475,'".AddSlashes(pg_result($resaco,$conresaco,'ac47_acordoevento'))."','$this->ac47_acordoevento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3692,1013475,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac47_acordoevento'))."','$this->ac47_acordoevento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -357,14 +357,14 @@ class cl_acordoparalisacao
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20518,'$ac47_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3692,20518,'','".AddSlashes(pg_result($resaco,$iresaco,'ac47_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3692,20519,'','".AddSlashes(pg_result($resaco,$iresaco,'ac47_acordo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3692,20520,'','".AddSlashes(pg_result($resaco,$iresaco,'ac47_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3692,20521,'','".AddSlashes(pg_result($resaco,$iresaco,'ac47_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3692,1013475,'','".AddSlashes(pg_result($resaco,$iresaco,'ac47_acordoevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3692,20518,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac47_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3692,20519,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac47_acordo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3692,20520,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac47_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3692,20521,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac47_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3692,1013475,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac47_acordoevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

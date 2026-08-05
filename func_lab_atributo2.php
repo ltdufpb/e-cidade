@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_lab_atributo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cllab_atributo = new cl_lab_atributo;
 $cllab_atributo->rotulo->label("la25_i_codigo");
 $cllab_atributo->rotulo->label("la25_c_descr");
@@ -54,7 +55,7 @@ $cllab_atributo->rotulo->label("la25_c_descr");
               <?=$Lla25_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("la25_i_codigo",10,$Ila25_i_codigo,true,"text",4,"","chave_la25_i_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cllab_atributo->rotulo->label("la25_c_descr");
               <?=$Lla25_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("la25_c_descr",10,$Ila25_c_descr,true,"text",4,"","chave_la25_c_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cllab_atributo->rotulo->label("la25_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_lab_atributo.php")==true){
@@ -124,12 +125,12 @@ $cllab_atributo->rotulo->label("la25_c_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

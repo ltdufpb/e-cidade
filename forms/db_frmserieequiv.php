@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,12 +33,12 @@ $clrotulo->label("ed11_i_codigo");
 ?>
 <script>
  team = new Array(
- <?
+ <?php 
  #Seleciona todos os calendários
  $sql_result = $clensino->sql_record($clensino->sql_query("","ed10_i_codigo,ed10_c_descr","ed10_c_abrev",""));
- $num = pg_num_rows($sql_result);
- $conta = "";
- while ($row=pg_fetch_array($sql_result)){
+ $num = ($sql_result === false || $sql_result === null) ? 0 : pg_num_rows($sql_result);
+ $conta = 0;
+ while ($sql_result !== false && $sql_result !== null && ($row=pg_fetch_array($sql_result))){
   $conta = $conta+1;
   $cod_curso = $row["ed10_i_codigo"];
   echo "new Array(\n";
@@ -46,14 +46,14 @@ $clrotulo->label("ed11_i_codigo");
   $num_sub = !$sub_result ? 0 : pg_num_rows($sub_result);
   if ($num_sub>=1){
    echo "new Array(\"\", ''),\n";
-   $conta_sub = "";
+   $conta_sub = 0;
    while ($rowx=pg_fetch_array($sub_result)){
     $codigo_base=$rowx["ed11_i_codigo"];
     $base_nome=$rowx["ed11_c_descr"];
     $conta_sub=$conta_sub+1;
     if ($conta_sub==$num_sub){
      echo "new Array(\"$base_nome\", $codigo_base)\n";
-     $conta_sub = "";
+     $conta_sub = 0;
     }else{
      echo "new Array(\"$base_nome\", $codigo_base),\n";
     }
@@ -108,14 +108,14 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
       <b>Selecione o nível de ensino:</b><br>
       <select name="grupo" onChange="js_zerar();fillSelectFromArray(this.form.subgrupo, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" style="font-size:9px;width:250px;height:18px;">
        <option></option>
-       <?
+       <?php 
        $sql_result = $clensino->sql_record($clensino->sql_query("","ed10_i_codigo,ed10_c_descr","ed10_c_abrev",""));
        while($row=pg_fetch_array($sql_result)){
         $cod_curso=$row["ed10_i_codigo"];
         $desc_curso=$row["ed10_c_descr"];
         ?>
         <option value="<?=$cod_curso;?>" <?=$cod_curso==@$ensino?"selected":""?>><?=$desc_curso;?></option>
-        <?
+        <?php 
        }
        ?>
       </select>
@@ -130,15 +130,15 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
    </table>
   </td>
  </tr>
- <?if(isset($serie)){?>
+ <?php if(isset($serie)){?>
   <tr>
    <td colspan="2" align="center">
-    <?
+    <?php 
     $result = $clserie->sql_record($clserie->sql_query_equiv("","*","ed10_i_codigo,ed11_i_sequencia"," ed11_i_ensino != $ensino OR (ed11_i_ensino = $ensino AND ed11_i_codigo != $serie)"));
     ?>
     <b>Etapas equivalentes a <span id="nomeserie"></span> em outros ensinos:</b><br>
     <select name="serieequiv[]" id="serieequiv" style="font-size:9px;width:400px;height:350px" multiple>
-     <?
+     <?php 
      for($x=0;$x<$clserie->numrows;$x++){
       db_fieldsmemory($result,$x);
       $result2 = $clserieequiv->sql_record($clserieequiv->sql_query_file("","ed234_i_serie",""," ed234_i_serie = $serie AND ed234_i_serieequiv = $ed11_i_codigo"));
@@ -149,11 +149,11 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
       }
       ?>
       <option value="<?=$ed11_i_codigo?>" <?=$selected?>><?=$ed10_c_descr?> - <?=$ed11_c_descr?></option>
-      <?
+      <?php 
      }
      ?>
     </select>
-    <?
+    <?php 
     ?>
    </td>
   </tr>
@@ -179,7 +179,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
     </fieldset>
    </td>
   </tr>
- <?}?>
+ <?php }?>
 </table>
 </center>
 </form>
@@ -198,13 +198,13 @@ function js_limpar(){
  }
 }
 function js_zerar(){
- <?if(isset($serie)){?>
+ <?php if(isset($serie)){?>
  qtd = document.form1.serieequiv.length;
  for (i = 0; i < qtd; i++) {
   document.form1.serieequiv.options[0] = null;
  }
  document.getElementById("nomeserie").innerHTML = "_________";
- <?}?>
+ <?php }?>
 }
 function js_geral(){
  js_OpenJanelaIframe('','db_iframe_geral','func_serieequiv.php','Quadro Geral de Etapas Equivalentes',true);

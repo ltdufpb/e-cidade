@@ -20,7 +20,7 @@ class rotulocampo {
   public function label ($sNomeTabelaCampo = "" ) {
 
 
-    $aNomeTabelaCampo = explode(".", $sNomeTabelaCampo);
+    $aNomeTabelaCampo = explode(".", (string) $sNomeTabelaCampo);
 
     if ( count($aNomeTabelaCampo) == 2 ) {
 

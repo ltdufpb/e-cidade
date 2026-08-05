@@ -27,32 +27,35 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao;
 
+use Instituicao;
+use TipoAssentamento;
+
 class ParametrosAssentamentosNaoPerdeDSR {
 
     /**
-     * @var \Instituicao
+     * @var Instituicao
      * @access private
      */
     private $instituicao;
 
     /**
-     * @var \TipoAssentamento[]
+     * @var TipoAssentamento[]
      * @access private
      */
-    private $tiposAssentamento = array(); 
+    private $tiposAssentamento = []; 
 
     /**
-     * @param \Instituicao $instituicao
+     * @param Instituicao $instituicao
      * @return self
      */
-    public function setInstituicao(\Instituicao $instituicao)
+    public function setInstituicao(Instituicao $instituicao)
     {
         $this->instituicao = $instituicao;
         return $this;
     }
 
     /**
-     * @return \Instituicao
+     * @return Instituicao
      */
     public function getInstituicao()
     {
@@ -60,7 +63,7 @@ class ParametrosAssentamentosNaoPerdeDSR {
     }
 
     /**
-     * @param \TipoAssentamento[] $tipoAssentamento
+     * @param TipoAssentamento[] $tipoAssentamento
      * @return self
      */
     public function setTiposAssentamento($tipoAssentamento)
@@ -70,7 +73,7 @@ class ParametrosAssentamentosNaoPerdeDSR {
     }
 
     /**
-     * @return \TipoAssentamento[]
+     * @return TipoAssentamento[]
      */
     public function getTiposAssentamento()
     {
@@ -82,7 +85,7 @@ class ParametrosAssentamentosNaoPerdeDSR {
      */
     public function getCodigosTiposAssentamento()
     {
-        $codigosTiposAssentamento = array();
+        $codigosTiposAssentamento = [];
 
         if(!empty($this->tiposAssentamento)) {
             foreach ($this->tiposAssentamento as $tipoAssentamento) {
@@ -94,7 +97,7 @@ class ParametrosAssentamentosNaoPerdeDSR {
     }
 
     /**
-     * @param \TipoAssentamento $tipoAssentamento
+     * @param TipoAssentamento $tipoAssentamento
      * @return self
      */
     public function addTipoAssentamento($tipoAssentamento)

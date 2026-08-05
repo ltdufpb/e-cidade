@@ -35,12 +35,6 @@
  */
 class RelatorioAlunosMatriculados extends EstatisticaAlunosMatriculados {
 
-  /**
-   * valida se devemos exibir o percentual
-   * @var boolean
-   */
-  private $lPercentual = false;
-
   const COR_ENSINO = '180';
   const COR_ETAPA  = '225';
   const COR_TURMA  = '255';
@@ -60,7 +54,10 @@ class RelatorioAlunosMatriculados extends EstatisticaAlunosMatriculados {
    * @param Escola     $oEscola     Instancia da escola
    * @param Boolean    $lPercentual Valida se mostra ou não os percentuais
    */
-  public function __construct( Calendario $oCalendario, $aEtapa, Escola $oEscola, $lPercentual = false ) {
+  public function __construct( Calendario $oCalendario, $aEtapa, Escola $oEscola, /**
+   * valida se devemos exibir o percentual
+   */
+  private $lPercentual = false ) {
 
     parent::__construct( $oCalendario, $aEtapa, $oEscola );
     $this->getEstatisticaAlunosMatriculados();
@@ -70,8 +67,6 @@ class RelatorioAlunosMatriculados extends EstatisticaAlunosMatriculados {
     global $head2;
     global $head3;
     global $head4;
-
-    $this->lPercentual = $lPercentual;
 
     $oEtapa = EtapaRepository::getEtapaByCodigo($aEtapa[0]);
     $sDescricaoEtapa = $oEtapa->getNome();
@@ -89,7 +84,7 @@ class RelatorioAlunosMatriculados extends EstatisticaAlunosMatriculados {
     $head1 = 'RELATÓRIO DE ALUNOS MATRICULADOS';
     $head2 = "Calendário: {$oCalendario->getDescricao()}";
     $head3 = "Etapa : {$sDescricaoEtapa} ";
-    $head4 = $lPercentual ? "Filtro: Turmas e Percentuais" : "Filtro: Turmas" ;
+    $head4 = $this->lPercentual ? "Filtro: Turmas e Percentuais" : "Filtro: Turmas" ;
 
     $this->oPdf->setfillcolor(223);
     $this->oPdf->SetMargins(8, 8, 8);
@@ -299,7 +294,7 @@ class RelatorioAlunosMatriculados extends EstatisticaAlunosMatriculados {
 
     public function ajustaTamanhoFonte($content, $largura, $tamanhoFonteOriginal)
     {
-        $content = "${content}   ";
+        $content = "{$content}   ";
         $tamanhoString = $this->oPdf->GetStringWidth($content);
 
         if ($tamanhoString > $largura) {

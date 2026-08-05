@@ -64,7 +64,7 @@ $clrotulo->label("y27_descr");
                             <?= db_ancora("<strong>Nome/Razão Social:</strong>", "js_pesquisaCgm(true);", 4); ?>
                         </td>
                         <td>
-                            <?
+                            <?php 
                             db_input("z01_numcgm", 5, @$Iz01_numcgm, true, "text", 1, "onchange='js_pesquisaCgm(false);'");
                             db_input("z01_nome", 30, false, true, "text");
                             ?>
@@ -75,7 +75,7 @@ $clrotulo->label("y27_descr");
                             <?= db_ancora(@$Lj01_matric, "js_pesquisaMatricula(true);", 4); ?>
                         </td>
                         <td>
-                            <?
+                            <?php 
                             db_input("j01_matric", 5, @$Ij01_matric, true, "text", 1, "onchange='js_pesquisaMatricula(false);'");
                             ?>
                         </td>
@@ -85,7 +85,7 @@ $clrotulo->label("y27_descr");
                             <?= db_ancora(@$Lq02_inscr, "js_pesquisaInscricao(true);", 4); ?>
                         </td>
                         <td>
-                            <?
+                            <?php 
                             db_input("q02_inscr", 5, @$Iq02_inscr, true, "text", 1, "onchange='js_pesquisaInscricao(false);'");
                             ?>
                         </td>
@@ -125,7 +125,7 @@ $clrotulo->label("y27_descr");
                             <strong>Data para Vencimento:</strong>
                         </td>
                         <td>
-                            <?
+                            <?php 
                                 db_inputdata("dataVencimento", "", "", "", true, 'text', 1)
                             ?>
                         </td>
@@ -135,7 +135,7 @@ $clrotulo->label("y27_descr");
                             <?= db_ancora("<strong>Tipo de Fiscalização:</strong>", "js_pesquisaFiscalização(true);", 4); ?>
                         </td>
                         <td>
-                            <?
+                            <?php 
                                 db_input('y27_codtipo', 5, $Iy27_codtipo, true, 'text', 1, "onchange='js_pesquisaFiscalização(false);'");
                                 db_input('y27_descr', 30, $Iy27_descr, true, 'text', 3, "");
                             ?>
@@ -157,7 +157,7 @@ $clrotulo->label("y27_descr");
             <input name="processar" id="processar" type="button" onclick="js_geraRecibo();" value="Processar">
         </form>
     </div>
-    <? db_menu(); ?>
+    <?php  db_menu(); ?>
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -37,7 +37,8 @@ include(modification("classes/db_pagordemele_classe.php"));
 include(modification("classes/db_pagordem_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clempelemento = new cl_empelemento;
 $clempempenho = new cl_empempenho;
@@ -65,7 +66,7 @@ $RLc70_valor = "Valor";
     <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
     <link href="estilos.css" rel="stylesheet" type="text/css">
     <style>
-        <?$cor="#999999"?>
+        <?php $cor="#999999"?>
         .bordas02 {
             border: 2px solid #cccccc;
             border-top-color: <?=$cor?>;
@@ -93,7 +94,7 @@ $RLc70_valor = "Valor";
             </center>
             <form name='form1'>
                 <center>
-                    <?
+                    <?php 
 
 
                     if (isset ($e60_numemp) && $e60_numemp != "") {

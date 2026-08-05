@@ -54,7 +54,7 @@ class cl_cfpatri {
                  t06_controlaplacainstituicao = bool = Contolar placa por instituição 
                  ";
    //funcao construtor da classe 
-   function cl_cfpatri() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cfpatri"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

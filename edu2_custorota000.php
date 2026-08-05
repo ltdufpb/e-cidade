@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -46,7 +46,7 @@ if($cllinha->numrows==0){?>
    </td>
   </tr>
  </table>
- <?
+ <?php 
  exit;
 }
 $pdf = new PDF();
@@ -139,7 +139,7 @@ $sql1= "select ve01_placa,
              where ed220_i_rota=$chavepesquisa
              ";
 $result1 = db_query($sql1);
-$linhas1= pg_numrows($result1);
+$linhas1= pg_num_rows($result1);
  if($linhas1>0){
  $pdf->cell(190,4,"","LR",1,"C",0);
  $pdf->setfont('arial','',7);
@@ -177,7 +177,7 @@ $sql2 ="select ve70_litros,
               where ed220_i_rota=$chavepesquisa
               ";
 $result2 = db_query($sql2);
-$linhas2= pg_numrows($result2);
+$linhas2= pg_num_rows($result2);
  if($linhas1>0){
  $pdf->cell(190,4,"","LR",1,"C",0);
  $pdf->setfont('arial','',7);

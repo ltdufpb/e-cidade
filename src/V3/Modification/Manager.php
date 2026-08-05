@@ -2,6 +2,9 @@
 
 namespace ECidade\V3\Modification;
 
+use ECidade\V3\Modification\Data\Group;
+use Exception;
+use InvalidArgumentException;
 use ArrayObject;
 use ECidade\V3\Extension\AbstractManager;
 use ECidade\V3\Extension\Container;
@@ -19,15 +22,13 @@ class Manager extends AbstractManager
     /**
      * @param Container $container
      */
-    public function __construct(Container $container = null)
+    public function __construct(?Container $container = null)
     {
         // cria o container, caso nao for informado, e registra logger
         parent::__construct($container);
 
         if (!$this->container->has('group')) {
-            $this->container->register('group', function ($container) {
-                return Data\Group::restore();
-            });
+            $this->container->register('group', fn($container) => Group::restore());
         }
 
         // cache de \ECidade\V3\Modification\Data\Modification
@@ -81,7 +82,7 @@ class Manager extends AbstractManager
         $dataModification = ModificationData::restore($parseModification->getId());
 
         if ($force === false && $dataModification->exists()) {
-            throw new \Exception("Modificação já descompactada: " . $parseModification->getId());
+            throw new Exception("Modificação já descompactada: " . $parseModification->getId());
         }
 
         $dataModification->setId($parseModification->getId());
@@ -140,7 +141,7 @@ class Manager extends AbstractManager
         foreach ($modifications as $id) {
 
             $data = $cacheDataModifications($id);
-            $data->setFilesErrors(array());
+            $data->setFilesErrors([]);
 
             // adiciona modificaton ao grupo
             if ($data->hasGroup()) {
@@ -208,7 +209,7 @@ class Manager extends AbstractManager
         foreach ($modifications as $id) {
 
             $data = $cacheDataModifications($id);
-            $data->setFilesErrors(array());
+            $data->setFilesErrors([]);
 
             // remove modificaton do grupo
             if ($data->hasGroup()) {
@@ -300,7 +301,7 @@ class Manager extends AbstractManager
         foreach ($modifications as $id) {
 
             $data = $cacheDataModifications($id);
-            $data->setFilesErrors(array());
+            $data->setFilesErrors([]);
             $data->setStatus(ModificationData::STATUS_ENABLED, $user);
         }
 
@@ -321,21 +322,21 @@ class Manager extends AbstractManager
     private function prepare($modifications, $type, $mode, $user = null)
     {
         if (!is_array($modifications)) {
-            $modifications = array($modifications);
+            $modifications = [$modifications];
         }
 
         if (empty($modifications)) {
-            throw new \Exception("Nenhum ID informado.");
+            throw new Exception("Nenhum ID informado.");
         }
 
-        if (!in_array($type, array('install', 'uninstall', 'apply'))) {
-            throw new \InvalidArgumentException(
+        if (!in_array($type, ['install', 'uninstall', 'apply'])) {
+            throw new InvalidArgumentException(
                 sprintf("Tipo inválido: %s", $type)
             );
         }
 
-        if (!in_array($mode, array('add', 'remove'))) {
-            throw new \InvalidArgumentException(
+        if (!in_array($mode, ['add', 'remove'])) {
+            throw new InvalidArgumentException(
                 sprintf("Modo inválido: %s", $mode)
             );
         }
@@ -348,7 +349,7 @@ class Manager extends AbstractManager
 
         // [file][type][modification]
         $dataFileTypeModification = new FileTypeModification();
-        $fileTypeModification = array();
+        $fileTypeModification = [];
 
         if ($type != 'apply' && $dataFileTypeModification->exists()) {
             $dataFileTypeModification->load();
@@ -361,18 +362,18 @@ class Manager extends AbstractManager
             $modificationUserType = $dataModification->getType() === ModificationData::TYPE_USER;
 
             if (!$dataModification->exists()) {
-                throw new \Exception("Modificação sem cache: $id");
+                throw new Exception("Modificação sem cache: $id");
             }
 
             if ($modificationUserType && empty($user)) {
-                throw new \Exception("Usuário não definido para modificação: $id");
+                throw new Exception("Usuário não definido para modificação: $id");
             }
 
             if ($type == 'uninstall' && !$dataModification->isEnabled($user)) {
-                throw new \Exception("Modificação não instalada: $id");
+                throw new Exception("Modificação não instalada: $id");
             }
             else if ($type == 'install' && $dataModification->isEnabled($user)) {
-                throw new \Exception("Modificação já instalada: $id");
+                throw new Exception("Modificação já instalada: $id");
             }
 
             if ($mode == 'add') {
@@ -383,7 +384,7 @@ class Manager extends AbstractManager
             }
         }
 
-        return (object) array(
+        return (object) [
             // array com ids das modificacoes
             'modifications' => $modifications,
 
@@ -393,7 +394,7 @@ class Manager extends AbstractManager
             // [file][type][modification]
             'fileTypeModification' => $fileTypeModification,
             'dataFileTypeModification' => $dataFileTypeModification,
-        );
+        ];
     }
 
     /**
@@ -404,14 +405,14 @@ class Manager extends AbstractManager
     public function updateFile($path, $user = null)
     {
         if (!file_exists($path)) {
-            throw new \Exception('Arquivo não existe: ' . $path);
+            throw new Exception('Arquivo não existe: ' . $path);
         }
 
         // clear absolute path
         $path = str_replace(ECIDADE_PATH, null, realpath($path));
 
         $dataFileTypeModification = new FileTypeModification();
-        $fileTypeModification = array();
+        $fileTypeModification = [];
 
         if ($dataFileTypeModification->exists()) {
             $dataFileTypeModification->load();
@@ -419,10 +420,10 @@ class Manager extends AbstractManager
         }
 
         if (!isset($fileTypeModification[$path])) {
-            throw new \Exception('Arquivo sem modificacao: ' . $path);
+            throw new Exception('Arquivo sem modificacao: ' . $path);
         }
 
-        $filesReparse = new ArrayObject(array($path => $fileTypeModification[$path]));
+        $filesReparse = new ArrayObject([$path => $fileTypeModification[$path]]);
         return $this->parseFiles($filesReparse, $user);
     }
 
@@ -441,7 +442,7 @@ class Manager extends AbstractManager
         }
 
         $dataFileTypeModification = new FileTypeModification();
-        $fileTypeModification = array();
+        $fileTypeModification = [];
 
         // clear absolute path
         $path = str_replace(ECIDADE_PATH, null, realpath($path));
@@ -456,7 +457,7 @@ class Manager extends AbstractManager
             return true;
         }
 
-        $filesReparse = new ArrayObject(array($path => $fileTypeModification[$path]));
+        $filesReparse = new ArrayObject([$path => $fileTypeModification[$path]]);
         $managerParseFiles = new ManagerParseFiles($this->container, $user);
 
         // agrupa operacoes para executar parse na ordem correta
@@ -560,7 +561,7 @@ class Manager extends AbstractManager
         foreach ($dataModification->getFiles() as $path) {
 
             if (!isset($fileTypeModification[$path][$type])) {
-                $fileTypeModification[$path][$type] = array();
+                $fileTypeModification[$path][$type] = [];
             }
 
             if (!in_array($id, $fileTypeModification[$path][$type])) {
@@ -612,7 +613,7 @@ class Manager extends AbstractManager
             }
         }
 
-        $removeKeys = array();
+        $removeKeys = [];
         $iterator = $filesReparse->getIterator();
         for ($iterator->rewind(); $iterator->valid(); $iterator->next()) {
             if (!isset($fileTypeModification[$iterator->key()])) {
@@ -633,7 +634,7 @@ class Manager extends AbstractManager
     public function parse($path)
     {
         if (!file_exists($path)) {
-            throw new \Exception("Arquivo não existe: $path");
+            throw new Exception("Arquivo não existe: $path");
         }
 
         // parse no xml
@@ -645,22 +646,22 @@ class Manager extends AbstractManager
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      * @return bool
      */
     public function setup()
     {
         $mode = 0775;
-        $directories = array(
+        $directories = [
             ECIDADE_MODIFICATION_PATH,
             ECIDADE_MODIFICATION_LOG_PATH,
             ECIDADE_MODIFICATION_DATA_PATH,
             ECIDADE_MODIFICATION_XML_PATH,
-        );
+        ];
 
         foreach ($directories as $path) {
             if (!is_dir($path) && !mkdir($path, $mode, true)) {
-                throw new \Exception(sprintf("Nao foi possivel criar diretorio: %s", $path));
+                throw new Exception(sprintf("Nao foi possivel criar diretorio: %s", $path));
             }
         }
 

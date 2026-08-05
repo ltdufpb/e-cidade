@@ -30,28 +30,28 @@
 class cl_avaliacaoestruturafrequencia
 {
     // cria variaveis de erro
-    var $rotulo     = null;
-    var $query_sql  = null;
-    var $numrows    = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql   = null;
-    var $erro_banco = null;
-    var $erro_msg   = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo     = null;
+    public $query_sql  = null;
+    public $numrows    = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql   = null;
+    public $erro_banco = null;
+    public $erro_msg   = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $ed328_sequencial = 0;
-    var $ed328_escola = 0;
-    var $ed328_db_estrutura = 0;
-    var $ed328_ativo = 'f';
-    var $ed328_arredondafrequencia = 'f';
-    var $ed328_observacao = null;
-    var $ed328_ano = 0;
+    public $ed328_sequencial = 0;
+    public $ed328_escola = 0;
+    public $ed328_db_estrutura = 0;
+    public $ed328_ativo = 'f';
+    public $ed328_arredondafrequencia = 'f';
+    public $ed328_observacao = null;
+    public $ed328_ano = 0;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  ed328_sequencial = int4 = Código Estrutura Frequência 
                  ed328_escola = int4 = Código da Escola 
                  ed328_db_estrutura = int4 = Código do Estrutural 
@@ -61,11 +61,11 @@ class cl_avaliacaoestruturafrequencia
                  ed328_ano = int4 = Ano 
                  ";
     //funcao construtor da classe
-    function cl_avaliacaoestruturafrequencia()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("avaliacaoestruturafrequencia");
-        $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
     //funcao erro
     function erro($mostra, $retorna)
@@ -145,10 +145,10 @@ class cl_avaliacaoestruturafrequencia
                 $this->erro_status = "0";
                 return false;
             }
-            $this->ed328_sequencial = pg_result($result, 0, 0);
+            $this->ed328_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from avaliacaoestruturafrequencia_ed328_sequencial_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $ed328_sequencial)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $ed328_sequencial)) {
                 $this->erro_sql = " Campo ed328_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -188,7 +188,7 @@ class cl_avaliacaoestruturafrequencia
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql   = "Avaliação Estrutura Frequência ($this->ed328_sequencial) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Avaliação Estrutura Frequência já Cadastrado";
@@ -217,16 +217,16 @@ class cl_avaliacaoestruturafrequencia
             if (($resaco != false) || ($this->numrows != 0)) {
 
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,19981,'$this->ed328_sequencial','I')");
-                $resac = db_query("insert into db_acount values($acount,3582,19981,'','" . AddSlashes(pg_result($resaco, 0, 'ed328_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3582,19982,'','" . AddSlashes(pg_result($resaco, 0, 'ed328_escola')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3582,19983,'','" . AddSlashes(pg_result($resaco, 0, 'ed328_db_estrutura')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3582,19984,'','" . AddSlashes(pg_result($resaco, 0, 'ed328_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3582,19985,'','" . AddSlashes(pg_result($resaco, 0, 'ed328_arredondafrequencia')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3582,19986,'','" . AddSlashes(pg_result($resaco, 0, 'ed328_observacao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3582,19987,'','" . AddSlashes(pg_result($resaco, 0, 'ed328_ano')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,3582,19981,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed328_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,3582,19982,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed328_escola')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,3582,19983,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed328_db_estrutura')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,3582,19984,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed328_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,3582,19985,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed328_arredondafrequencia')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,3582,19986,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed328_observacao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,3582,19987,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed328_ano')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
         }
         return true;
@@ -237,10 +237,10 @@ class cl_avaliacaoestruturafrequencia
         $this->atualizacampos();
         $sql = " update avaliacaoestruturafrequencia set ";
         $virgula = "";
-        if (trim($this->ed328_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed328_sequencial"])) {
+        if (trim((string) $this->ed328_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed328_sequencial"])) {
             $sql  .= $virgula . " ed328_sequencial = $this->ed328_sequencial ";
             $virgula = ",";
-            if (trim($this->ed328_sequencial) == null) {
+            if (trim((string) $this->ed328_sequencial) == null) {
                 $this->erro_sql = " Campo Código Estrutura Frequência nao Informado.";
                 $this->erro_campo = "ed328_sequencial";
                 $this->erro_banco = "";
@@ -250,10 +250,10 @@ class cl_avaliacaoestruturafrequencia
                 return false;
             }
         }
-        if (trim($this->ed328_escola) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed328_escola"])) {
+        if (trim((string) $this->ed328_escola) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed328_escola"])) {
             $sql  .= $virgula . " ed328_escola = $this->ed328_escola ";
             $virgula = ",";
-            if (trim($this->ed328_escola) == null) {
+            if (trim((string) $this->ed328_escola) == null) {
                 $this->erro_sql = " Campo Código da Escola nao Informado.";
                 $this->erro_campo = "ed328_escola";
                 $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_avaliacaoestruturafrequencia
                 return false;
             }
         }
-        if (trim($this->ed328_db_estrutura) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed328_db_estrutura"])) {
+        if (trim((string) $this->ed328_db_estrutura) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed328_db_estrutura"])) {
             $sql  .= $virgula . " ed328_db_estrutura = $this->ed328_db_estrutura ";
             $virgula = ",";
-            if (trim($this->ed328_db_estrutura) == null) {
+            if (trim((string) $this->ed328_db_estrutura) == null) {
                 $this->erro_sql = " Campo Código do Estrutural nao Informado.";
                 $this->erro_campo = "ed328_db_estrutura";
                 $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_avaliacaoestruturafrequencia
                 return false;
             }
         }
-        if (trim($this->ed328_ativo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed328_ativo"])) {
+        if (trim((string) $this->ed328_ativo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed328_ativo"])) {
             $sql  .= $virgula . " ed328_ativo = '$this->ed328_ativo' ";
             $virgula = ",";
-            if (trim($this->ed328_ativo) == null) {
+            if (trim((string) $this->ed328_ativo) == null) {
                 $this->erro_sql = " Campo Ativo nao Informado.";
                 $this->erro_campo = "ed328_ativo";
                 $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_avaliacaoestruturafrequencia
                 return false;
             }
         }
-        if (trim($this->ed328_arredondafrequencia) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed328_arredondafrequencia"])) {
+        if (trim((string) $this->ed328_arredondafrequencia) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed328_arredondafrequencia"])) {
             $sql  .= $virgula . " ed328_arredondafrequencia = '$this->ed328_arredondafrequencia' ";
             $virgula = ",";
-            if (trim($this->ed328_arredondafrequencia) == null) {
+            if (trim((string) $this->ed328_arredondafrequencia) == null) {
                 $this->erro_sql = " Campo Arredonda Frequência nao Informado.";
                 $this->erro_campo = "ed328_arredondafrequencia";
                 $this->erro_banco = "";
@@ -302,12 +302,12 @@ class cl_avaliacaoestruturafrequencia
                 return false;
             }
         }
-        if (trim($this->ed328_observacao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed328_observacao"])) {
+        if (trim((string) $this->ed328_observacao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed328_observacao"])) {
             $sql  .= $virgula . " ed328_observacao = '$this->ed328_observacao' ";
             $virgula = ",";
         }
-        if (trim($this->ed328_ano) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed328_ano"])) {
-            if (trim($this->ed328_ano) == "" && isset($GLOBALS["HTTP_POST_VARS"]["ed328_ano"])) {
+        if (trim((string) $this->ed328_ano) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed328_ano"])) {
+            if (trim((string) $this->ed328_ano) == "" && isset($GLOBALS["HTTP_POST_VARS"]["ed328_ano"])) {
                 $this->ed328_ano = "0";
             }
             $sql  .= $virgula . " ed328_ano = $this->ed328_ano ";
@@ -327,23 +327,23 @@ class cl_avaliacaoestruturafrequencia
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,19981,'$this->ed328_sequencial','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed328_sequencial"]) || $this->ed328_sequencial != "")
-                        $resac = db_query("insert into db_acount values($acount,3582,19981,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed328_sequencial')) . "','$this->ed328_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,3582,19981,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed328_sequencial')) . "','$this->ed328_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed328_escola"]) || $this->ed328_escola != "")
-                        $resac = db_query("insert into db_acount values($acount,3582,19982,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed328_escola')) . "','$this->ed328_escola'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,3582,19982,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed328_escola')) . "','$this->ed328_escola'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed328_db_estrutura"]) || $this->ed328_db_estrutura != "")
-                        $resac = db_query("insert into db_acount values($acount,3582,19983,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed328_db_estrutura')) . "','$this->ed328_db_estrutura'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,3582,19983,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed328_db_estrutura')) . "','$this->ed328_db_estrutura'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed328_ativo"]) || $this->ed328_ativo != "")
-                        $resac = db_query("insert into db_acount values($acount,3582,19984,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed328_ativo')) . "','$this->ed328_ativo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,3582,19984,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed328_ativo')) . "','$this->ed328_ativo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed328_arredondafrequencia"]) || $this->ed328_arredondafrequencia != "")
-                        $resac = db_query("insert into db_acount values($acount,3582,19985,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed328_arredondafrequencia')) . "','$this->ed328_arredondafrequencia'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,3582,19985,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed328_arredondafrequencia')) . "','$this->ed328_arredondafrequencia'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed328_observacao"]) || $this->ed328_observacao != "")
-                        $resac = db_query("insert into db_acount values($acount,3582,19986,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed328_observacao')) . "','$this->ed328_observacao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,3582,19986,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed328_observacao')) . "','$this->ed328_observacao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed328_ano"]) || $this->ed328_ano != "")
-                        $resac = db_query("insert into db_acount values($acount,3582,19987,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed328_ano')) . "','$this->ed328_ano'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,3582,19987,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed328_ano')) . "','$this->ed328_ano'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }
@@ -398,16 +398,16 @@ class cl_avaliacaoestruturafrequencia
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
                     $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac  = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac  = db_query("insert into db_acountkey values($acount,19981,'$ed328_sequencial','E')");
-                    $resac  = db_query("insert into db_acount values($acount,3582,19981,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed328_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac  = db_query("insert into db_acount values($acount,3582,19982,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed328_escola')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac  = db_query("insert into db_acount values($acount,3582,19983,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed328_db_estrutura')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac  = db_query("insert into db_acount values($acount,3582,19984,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed328_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac  = db_query("insert into db_acount values($acount,3582,19985,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed328_arredondafrequencia')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac  = db_query("insert into db_acount values($acount,3582,19986,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed328_observacao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac  = db_query("insert into db_acount values($acount,3582,19987,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed328_ano')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac  = db_query("insert into db_acount values($acount,3582,19981,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed328_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac  = db_query("insert into db_acount values($acount,3582,19982,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed328_escola')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac  = db_query("insert into db_acount values($acount,3582,19983,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed328_db_estrutura')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac  = db_query("insert into db_acount values($acount,3582,19984,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed328_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac  = db_query("insert into db_acount values($acount,3582,19985,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed328_arredondafrequencia')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac  = db_query("insert into db_acount values($acount,3582,19986,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed328_observacao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac  = db_query("insert into db_acount values($acount,3582,19987,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed328_ano')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }
@@ -469,7 +469,7 @@ class cl_avaliacaoestruturafrequencia
             $this->erro_status = "0";
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql   = "Record Vazio na Tabela:avaliacaoestruturafrequencia";
@@ -516,7 +516,7 @@ class cl_avaliacaoestruturafrequencia
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -551,7 +551,7 @@ class cl_avaliacaoestruturafrequencia
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -596,7 +596,7 @@ class cl_avaliacaoestruturafrequencia
         if ($ordem != null) {
 
             $sql        .= " order by ";
-            $campos_sql  = explode("#", $ordem);
+            $campos_sql  = explode("#", (string) $ordem);
             $virgula     = "";
 
             for ($i = 0; $i < sizeof($campos_sql); $i++) {

@@ -4,7 +4,6 @@
 namespace ECidade\Tributario\Divida\Repository;
 
 use cl_inicial;
-use DateTime;
 use ECidade\Tributario\Divida\Model\Inicial;
 use Exception;
 
@@ -19,7 +18,7 @@ class InicialRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * InicialRepository constructor.
@@ -65,7 +64,7 @@ class InicialRepository
             throw new Exception("Não foi possível buscar os débitos.");
         }
 
-        $arrInicial = array();
+        $arrInicial = [];
 
         if (pg_num_rows($rs) === 0) {
             return $arrInicial;
@@ -112,7 +111,7 @@ class InicialRepository
             throw new Exception("Não foi possível buscar os débitos.");
         }
 
-        $arrInicial = array();
+        $arrInicial = [];
 
         if (pg_num_rows($rs) === 0) {
             return $arrInicial;

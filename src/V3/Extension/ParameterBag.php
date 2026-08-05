@@ -2,21 +2,25 @@
 
 namespace ECidade\V3\Extension;
 
-class ParameterBag implements \IteratorAggregate, \Countable {
+use IteratorAggregate;
+use Countable;
+use ArrayIterator;
+
+class ParameterBag implements IteratorAggregate, Countable {
 
   /**
    * Parameter storage.
    *
    * @var array
    */
-  protected $data = array();
+  protected $data = [];
 
   /**
    * Constructor.
    *
    * @param array $data
    */
-  public function __construct(array $data = array()) {
+  public function __construct(array $data = []) {
     $this->data = $data;
   }
   
@@ -44,7 +48,7 @@ class ParameterBag implements \IteratorAggregate, \Countable {
    * @param array
    * @return ParameterBag
    */
-  public function replace(array & $data = array()) {
+  public function replace(array & $data = []) {
     $this->data = $data;
     return $this;
   }
@@ -128,10 +132,10 @@ class ParameterBag implements \IteratorAggregate, \Countable {
   /**
    * Returns an iterator for data.
    *
-   * @return \ArrayIterator
+   * @return ArrayIterator
    */
   public function getIterator() {
-    return new \ArrayIterator($this->data);
+    return new ArrayIterator($this->data);
   }
 
   /**

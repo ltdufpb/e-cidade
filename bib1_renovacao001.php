@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -112,7 +112,7 @@ if (isset($submitrenovar)) {
    parent.db_iframe_renovacao.hide();
    parent.location.href = "bib1_devolucao001.php?bi18_carteira=<?=$leitor?>&ov02_nome=<?=$nome?>";
   </script>
-  <?
+  <?php 
   exit;
 }
 ?>
@@ -125,14 +125,14 @@ if (isset($submitrenovar)) {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<?MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Renovação de Empréstimo</b></legend>
-   <?
+   <?php 
    $cod_emprest = explode("|",trim($renovaemprestimo));
    $cod_exemp   = "";
    $sep_exemp   = "";
@@ -213,7 +213,7 @@ if (isset($submitrenovar)) {
          <td><b>Emprestado</b></td>
          <td><b>Devolver até</b></td>
         </tr>
-        <?
+        <?php 
         for ($x = 0; $x < $cldevolucaoacervo->numrows; $x++) {
 
           db_fieldsmemory($result, $x);
@@ -226,11 +226,11 @@ if (isset($submitrenovar)) {
            <td><?=db_formatar($bi18_retirada,'d')?></td>
            <td><?=db_formatar($bi18_devolucao,'d')?></td>
           </tr>
-          <?
+          <?php 
         }
         ?>
        </table>
-       <?
+       <?php 
        $bi18_retirada_dia  = date("d",db_getsession("DB_datausu"));
        $bi18_retirada_mes  = date("m",db_getsession("DB_datausu"));
        $bi18_retirada_ano  = date("Y",db_getsession("DB_datausu"));
@@ -246,7 +246,7 @@ if (isset($submitrenovar)) {
           <b>Tempo de Empréstimo (dias):</b>
          </td>
          <td>
-          <?db_input('tempo', 10, "", true, 'text', 3, "")?>
+          <?php db_input('tempo', 10, "", true, 'text', 3, "")?>
          </td>
         </tr>
         <tr>
@@ -254,7 +254,7 @@ if (isset($submitrenovar)) {
           <b>Data de Retirada:</b>
          </td>
          <td>
-          <?db_inputdata('bi18_retirada', @$bi18_retirada_dia, @$bi18_retirada_mes, @$bi18_retirada_ano, true, 'text', 3, "")?>
+          <?php db_inputdata('bi18_retirada', @$bi18_retirada_dia, @$bi18_retirada_mes, @$bi18_retirada_ano, true, 'text', 3, "")?>
          </td>
         </tr>
         <tr>
@@ -262,7 +262,7 @@ if (isset($submitrenovar)) {
           <b>Data de Devolução:</b>
          </td>
          <td>
-          <?db_inputdata('bi18_devolucao', 
+          <?php db_inputdata('bi18_devolucao', 
                          @$bi18_devolucao_dia, 
                          @$bi18_devolucao_mes, 
                          @$bi18_devolucao_ano,
@@ -270,7 +270,7 @@ if (isset($submitrenovar)) {
                          'text',
                          1,
                          " onchange=\"js_diasemana();\"","",""," parent.js_diasemana();")?>
-          <?db_input('diasemana', 10, "", true, 'text', 3, "")?>
+          <?php db_input('diasemana', 10, "", true, 'text', 3, "")?>
          </td>
         </tr>
        </table>

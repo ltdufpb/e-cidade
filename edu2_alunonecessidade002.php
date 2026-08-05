@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,26 +38,26 @@ $head4 = "Etapa: TODAS";
 /**
  * Array com os tipos de Apoio para necessidade especial
  */
-$aApoio = array(""=>"",
+$aApoio = [""=>"",
                 "1"=>"SEM APOIO PEDAGÓGICO",
                 "2"=>"COM APOIO PEDAGÓGICO",
                 "3"=>"COM APOIO PEDAGÓGICO (OUTRO ESTABELECIMENTO)"
-               );
+               ];
 
 /**
  * Array com os tipos de diagnóstico necessidade especial
  */
-$aTipo  = array(""=>"",
+$aTipo  = [""=>"",
                 "1"=>"SEM DIAGNÓSTICO",
                 "2"=>"FICHA DE AVALIAÇÃO",
                 "3"=>"LAUDO TÉCNICO"
-               );
+               ];
            
 
 /**
  * Array com os filtros que montaram a clausula where 
  */
-$aFiltros   = array();
+$aFiltros   = [];
 $aFiltros[] = " calendario.ed52_i_ano = {$oGet->iAno} ";
 $aFiltros[] = " ed60_c_situacao       = 'MATRICULADO' ";
 $aFiltros[] = " ed60_c_ativa          = 'S' ";
@@ -138,8 +138,8 @@ if ($iLinhasMatricula == 0) {
 /**
  * Organiza os dados retornado pela query
  */
-$aTotalAlunoEscola  = array();
-$aAlunosNecessidade = array();
+$aTotalAlunoEscola  = [];
+$aAlunosNecessidade = [];
 for ($i = 0; $i < $iLinhasMatricula; $i++) {
   
   $oDadosMatricula = db_utils::fieldsMemory($rsAlunos, $i);
@@ -148,12 +148,12 @@ for ($i = 0; $i < $iLinhasMatricula; $i++) {
   $iEnsino = $oDadosMatricula->ed10_i_codigo;
   $iEtapa  = $oDadosMatricula->ed11_i_codigo;
   
-  if ( !array_key_exists($iEscola, $aAlunosNecessidade) ) {
+  if ( !array_key_exists((string) $iEscola, $aAlunosNecessidade) ) {
   
     $oEscola          = new stdClass();
     $oEscola->iCodigo = $oDadosMatricula->ed57_i_escola;
     $oEscola->sEscola = $oDadosMatricula->ed18_c_nome;
-    $oEscola->aEtapa  = array();
+    $oEscola->aEtapa  = [];
   
     $aAlunosNecessidade[$iEscola] = $oEscola;
   }
@@ -167,7 +167,7 @@ for ($i = 0; $i < $iLinhasMatricula; $i++) {
     $oEnsino->sEnsino       = $oDadosMatricula->ed10_c_descr;
     $oEnsino->iCodigoEtapa  = $oDadosMatricula->ed11_i_codigo;
     $oEnsino->sEtapa        = $oDadosMatricula->ed11_c_descr;
-    $oEnsino->aAlunos       = array();
+    $oEnsino->aAlunos       = [];
   
     $aAlunosNecessidade[$iEscola]->aEtapa[$iChaveEnsinoEtapa] = $oEnsino;
   }
@@ -179,7 +179,7 @@ for ($i = 0; $i < $iLinhasMatricula; $i++) {
   $oAluno->sEtapa        = $oDadosMatricula->ed11_c_descr;
   $oAluno->sInep         = $oDadosMatricula->ed47_c_codigoinep;
   $oAluno->iEscola       = $oDadosMatricula->ed57_i_escola;
-  $oAluno->aNecessidades = array();
+  $oAluno->aNecessidades = [];
   
   $oNecessidade               = new stdClass();
   $oNecessidade->iNecessidade = $oDadosMatricula->ed48_i_codigo;
@@ -189,7 +189,7 @@ for ($i = 0; $i < $iLinhasMatricula; $i++) {
   
   $oAluno->aNecessidades[] = $oNecessidade;
   
-  if ( array_key_exists( $oDadosMatricula->ed47_i_codigo, $aAlunosNecessidade[$iEscola]->aEtapa[$iChaveEnsinoEtapa]->aAlunos ) ) {
+  if ( array_key_exists( (string) $oDadosMatricula->ed47_i_codigo, $aAlunosNecessidade[$iEscola]->aEtapa[$iChaveEnsinoEtapa]->aAlunos ) ) {
     $aAlunosNecessidade[$iEscola]->aEtapa[$iChaveEnsinoEtapa]->aAlunos[$oAluno->iCodigo]->aNecessidades[] = $oNecessidade;
   } else {
     

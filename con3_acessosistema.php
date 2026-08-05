@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -67,7 +67,7 @@ function js_mostraacount(codacessa){
 <form name="form1" action="" method="post">
 <tr>
 <td align='right'><strong>Periodo:</strong></td>
-<td align='left'><?
+<td align='left'><?php 
 db_inputdata("dataini",@$dataini_dia,@$dataini_mes,@$dataini_ano,true,'text',2);
 echo "<strong> &nbsp a &nbsp</strong>";
 db_inputdata("datafim",@$datafim_dia,@$datafim_mes,@$datafim_ano,true,'text',2);
@@ -75,7 +75,7 @@ db_inputdata("datafim",@$datafim_dia,@$datafim_mes,@$datafim_ano,true,'text',2);
 </tr>
 <tr>
 <td align='right'><strong>Usuario:</strong></td>
-<td align='left'><?
+<td align='left'><?php 
 $resultusu = $cldb_usuarios->sql_record($cldb_usuarios->sql_query_file(null,"id_usuario,nome||' ---- '||login as nome","nome"," usuarioativo = '1' and usuext = 0"));
 db_selectrecord("id_usuario",$resultusu,true,'texte',2,null,null,'0');
 
@@ -83,7 +83,7 @@ db_selectrecord("id_usuario",$resultusu,true,'texte',2,null,null,'0');
 </tr>
 <tr>
 <td align='right'><strong>Modulo:</strong></td>
-<td align='left'><?
+<td align='left'><?php 
 //$resultmod = $cldb_modulos->sql_record($cldb_modulos->sql_query(null,'*',null," libcliente = true  "));
 $resultmod = $cldb_modulos->sql_record("select m.id_item,nome_modulo from db_modulos m inner join db_itensmenu i on m.id_item = i.id_item where libcliente = true order by nome_modulo ");
 
@@ -98,7 +98,7 @@ db_selectrecord("modulo",$resultmod,true,'texte',2,null,null,'0');
 
 </form>
 </table>
-<?
+<?php 
 
 if(isset($pesquisar) || count($HTTP_POST_VARS)>0){
   

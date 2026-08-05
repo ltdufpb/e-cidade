@@ -51,7 +51,7 @@ class cl_pontoparadaescolaproc {
                  tre13_escolaproc = int4 = Escola de Procedência 
                  ";
    //funcao construtor da classe 
-   function cl_pontoparadaescolaproc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pontoparadaescolaproc"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_atendrequi_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clatendrequi = new cl_atendrequi;
 $clrotulo     = new rotulocampo;
 
@@ -59,7 +60,7 @@ $clrotulo->label("m40_codigo");
               <?=$Lm42_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("m42_codigo",10,$Im42_codigo,true,"text",4,"","chave_m42_codigo");
 		       ?>
             </td>
@@ -69,7 +70,7 @@ $clrotulo->label("m40_codigo");
               <?=$Lm40_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("m40_codigo",10,$Im40_codigo,true,"text",4,"","chave_m40_codigo");
 		       ?>
             </td>
@@ -87,7 +88,7 @@ $clrotulo->label("m40_codigo");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_atendrequi.php")==true){
@@ -144,12 +145,12 @@ $clrotulo->label("m40_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matmater_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmatmater = new cl_matmater;
 $clmatmater->rotulo->label("m60_codmater");
 $clmatmater->rotulo->label("m60_descr");
@@ -54,7 +55,7 @@ $clmatmater->rotulo->label("m60_descr");
               <?=$Lm60_codmater?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("m60_codmater",10,$Im60_codmater,true,"text",4,"","chave_m60_codmater");
 		       ?>
             </td>

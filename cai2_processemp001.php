@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -99,11 +99,11 @@ function js_abre(botao){
   <tr> 
     <td  align="left" nowrap title="<?=$Tc71_data?>"><b>Período de </b></td>
     <td align="left" nowrap colspan="3">
-    <?
+    <?php 
       db_inputdata('t71_data',@$t71_data_dia,@$t71_data_mes,@$t71_dats_ano,true,'text',1,'',"t71_dataINI");
     ?>
     <b>a</b>
-    <?
+    <?php 
       db_inputdata('t71_data',@$t71_data_dia,@$t71_data_mes,@$t71_dats_ano,true,'text',1,'',"t71_dataFIM");
     ?>
     </td>
@@ -111,7 +111,7 @@ function js_abre(botao){
   <tr> 
     <td  align="left" nowrap title="Escolha os processos a serem impressos"> <b>Opção: </b>  </td>
     <td align="left" nowrap>
-      <?
+      <?php 
       $processo = array("0"=>"Selecione uma opção",
                         "10,11"=>"Empenhado - Estornado",
                         "20,21"=>"Liquidado - Estornado",
@@ -121,7 +121,7 @@ function js_abre(botao){
     </td>
     <td  align="left" nowrap title="Ordem dos campos na impressão."> <b>Ordem: </b>  </td>
     <td align="left" nowrap>
-      <?
+      <?php 
       $ordem = array("c71_data"=>"Data",
                      "e60_codemp::text::int"=>"Empenho",
                      "z01_nome"=>"Nome");
@@ -132,7 +132,7 @@ function js_abre(botao){
   <tr>
     <td  align="left" nowrap > <b>Tipo: </b>  </td>
     <td align="left" nowrap>
-      <?
+      <?php 
       $xtipo = array("e"=>"Empenho",
                      "r"=>"RP");
       db_select('tipo',$xtipo,true,1);
@@ -142,7 +142,7 @@ function js_abre(botao){
   <tr>
   <td><?=$Lo40_orgao?></td>
   <td>
-  <?
+  <?php 
   $result = $clorcorgao->sql_record($clorcorgao->sql_query(null,null,"o40_orgao,o40_descr","o40_orgao","o40_anousu=".db_getsession("DB_anousu")." and o40_instit=".db_getsession("DB_instit")));
   db_selectrecord("o40_orgao",$result,true,2,"","","","0","document.form1.submit();");
   ?>
@@ -151,7 +151,7 @@ function js_abre(botao){
   <tr>
   <td><?=$Lo41_unidade?></td>
   <td>
-  <?
+  <?php 
   if(isset($o40_orgao) && $o40_orgao != '0'){
     $result = $clorcunidade->sql_record($clorcunidade->sql_query(null,null,null,"o41_unidade,o41_descr","o41_unidade","o41_anousu=".db_getsession("DB_anousu")."  and o41_orgao=$o40_orgao " ));
     db_selectrecord("o41_unidade",$result,true,2,"","","",($clorcunidade->numrows>1?"0":""));
@@ -173,6 +173,6 @@ function js_abre(botao){
   </table>
   </form>
 </center>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

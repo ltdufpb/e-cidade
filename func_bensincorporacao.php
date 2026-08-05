@@ -47,7 +47,8 @@ db_utils::makeCollectionFromRecord($rsDepartamentos, function ($dado) use (&$dep
 
 db_postmemory($_POST);
 $get = db_utils::postMemory($_GET);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrotulo = new rotulocampo;
 $clrotulo->label('t52_bem');
 $clrotulo->label('t52_ident');

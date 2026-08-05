@@ -75,7 +75,7 @@ class cl_iptuisen {
                  j46_arealo = float8 = Área do lote M2
                  ";
    //funcao construtor da classe
-   function cl_iptuisen() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptuisen");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

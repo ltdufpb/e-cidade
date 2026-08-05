@@ -27,10 +27,23 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model;
 
+use DBDate;
+use ServidorRepository;
+use BusinessException;
+use Servidor;
+use ParameterException;
+use AssentamentoRepository;
+use Assentamento;
+use DateTime;
+use cl_pontoeletronicoregistrojustificativa;
+use cl_pontoeletronicoarquivodataregistro;
+use DBException;
+use db_utils;
+use stdClass;
+use Exception;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\EscalaServidor;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\Periodo;
 use ECidade\RecursosHumanos\RH\Efetividade\Repository\Periodo as PeriodoRepository;
-use ECidade\RecursosHumanos\RH\PontoEletronico\Arquivo\Registro\Marcacao;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho as DiaTrabalho;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Repository\DiaTrabalho as DiaTrabalhoRepository;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\Model\Justificativa as JustificativaModel;
@@ -42,7 +55,6 @@ use ECidade\RecursosHumanos\RH\PontoEletronico\Arquivo\Repository\Marcacao   as 
 
 use ECidade\RecursosHumanos\RH\PontoEletronico\Manutencao\EspelhoPonto;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Manutencao\Repository\EspelhoPontoCache;
-use \cl_pontoeletronicoarquivodata;
 
 use ECidade\V3\Extension\Logger;
 use ECidade\V3\Extension\Registry;
@@ -61,11 +73,11 @@ class ProcessamentoPontoEletronico
      * @param array $aMatriculas
      * @param Periodo $oPeriodo
      * @param $aDatasProcessar
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     public static function processarMatriculas($aMatriculas, $oPeriodo, $aDatasProcessar, $lOrigemImportacao = false)
     {
-        $aDatasEfetividade = \DBDate::getDatasNoIntervalo($oPeriodo->getDataInicio(), $oPeriodo->getDataFim());
+        $aDatasEfetividade = DBDate::getDatasNoIntervalo($oPeriodo->getDataInicio(), $oPeriodo->getDataFim());
         $matriculasCacheValido = EspelhoPontoCache::init()->getEspelhoPontoCacheValido(
             $aMatriculas,
             $oPeriodo->getDataInicio(),
@@ -75,13 +87,13 @@ class ProcessamentoPontoEletronico
         );
 
         foreach ($aMatriculas as $iMatricula) {
-            $oServidor = \ServidorRepository::getInstanciaByCodigo($iMatricula);
+            $oServidor = ServidorRepository::getInstanciaByCodigo($iMatricula);
             $aEscalas = $oServidor->getEscalas();
 
             if (empty($aEscalas)) {
                 $mensagem = "Não há escalas configuradas para o servidor: {$oServidor->getMatricula()} - "
                     . "{$oServidor->getCgm()->getNome()}";
-                throw new \BusinessException($mensagem);
+                throw new BusinessException($mensagem);
             }
             $dataRescisao = '';
             if ($oServidor->isRescindido()) {
@@ -128,7 +140,7 @@ class ProcessamentoPontoEletronico
                 $oPeriodoEspelhoPonto->setDataInicio($oDataEfetividade);
                 $oPeriodoEspelhoPonto->setDataFim($oDataEfetividade);
 
-                $oEspelho = new EspelhoPonto($oServidor, array($oPeriodoEspelhoPonto), $oServidor->getInstituicao());
+                $oEspelho = new EspelhoPonto($oServidor, [$oPeriodoEspelhoPonto], $oServidor->getInstituicao());
                 $oEspelho->calcularTotalizadores();
                 $oEspelho->setDiaTrabalhoCache($oDiaTrabalhoModel);
 
@@ -144,24 +156,24 @@ class ProcessamentoPontoEletronico
 
     /**
      * Retorna as datas em que o servidor faltou para gerar assentamentos de faltas de DSR
-     * @param \Servidor $oServidor
+     * @param Servidor $oServidor
      * @param Periodo $oPeriodo
-     * @throws \BusinessException
+     * @throws BusinessException
      * @return \String
      */
-    public static function getDatasFaltas(\Servidor $oServidor, Periodo $oPeriodo)
+    public static function getDatasFaltas(Servidor $oServidor, Periodo $oPeriodo)
     {
-        $aDatasEfetividade = \DBDate::getDatasNoIntervalo($oPeriodo->getDataInicio(), $oPeriodo->getDataFim());
+        $aDatasEfetividade = DBDate::getDatasNoIntervalo($oPeriodo->getDataInicio(), $oPeriodo->getDataFim());
 
         $aEscalas = $oServidor->getEscalas();
 
         if (empty($aEscalas)) {
             $mensagem = "Não há escalas configuradas para o servidor: {$oServidor->getMatricula()} - "
             . "{$oServidor->getCgm()->getNome()}";
-            throw new \BusinessException($mensagem);
+            throw new BusinessException($mensagem);
         }
 
-        $datasFaltas = array();
+        $datasFaltas = [];
 
         foreach ($aDatasEfetividade as $oDataEfetividade) {
             $oEscalaServidorNaData = self::getEscalaNaData($aEscalas, $oDataEfetividade);
@@ -187,14 +199,14 @@ class ProcessamentoPontoEletronico
     /**
      * Retorna a instância de EscalaServidor conforme a data da efetividade verificada
      * @param $aEscalas
-     * @param \DBDate $oDataEfetividade
+     * @param DBDate $oDataEfetividade
      * @return EscalaServidor|null
      */
-    public static function getEscalaNaData($aEscalas, \DBDate $oDataEfetividade)
+    public static function getEscalaNaData($aEscalas, DBDate $oDataEfetividade)
     {
 
         foreach ($aEscalas as $oEscala) {
-            $oIntervaloDatas = \DBDate::getIntervaloEntreDatas($oEscala->getDataEscala(), $oDataEfetividade);
+            $oIntervaloDatas = DBDate::getIntervaloEntreDatas($oEscala->getDataEscala(), $oDataEfetividade);
 
             if (!$oIntervaloDatas->invert && $oIntervaloDatas->days >= 0) {
                 if ($oEscala->getEscalaPosterior() == null) {
@@ -205,7 +217,7 @@ class ProcessamentoPontoEletronico
                 $oData->modificarIntervalo('-1 day');
 
                 if ($oEscala->getEscalaPosterior() instanceof EscalaServidor
-                    && \DBDate::dataEstaNoIntervalo($oDataEfetividade, $oEscala->getDataEscala(), $oData)
+                    && DBDate::dataEstaNoIntervalo($oDataEfetividade, $oEscala->getDataEscala(), $oData)
                 ) {
                     return $oEscala;
                 }
@@ -221,36 +233,36 @@ class ProcessamentoPontoEletronico
      * @param $aDatas
      * @param bool $aHorarios
      * @param bool $lSobrescrever
-     * @throws \BusinessException
-     * @throws \DBException
-     * @throws \ParameterException
+     * @throws BusinessException
+     * @throws DBException
+     * @throws ParameterException
      */
     public static function criarMarcacoesNasDatas($iMatricula, $aDatas, $aHorarios = false, $lSobrescrever = false)
     {
 
         if (empty($aDatas)) {
-            throw new \ParameterException("Não foram informadas as datas a processar.");
+            throw new ParameterException("Não foram informadas as datas a processar.");
         }
 
         if (empty($iMatricula)) {
-            throw new \ParameterException("Informe a matrícula do servidor.");
+            throw new ParameterException("Informe a matrícula do servidor.");
         }
 
-        $oServidor = \ServidorRepository::getInstanciaByCodigo($iMatricula);
+        $oServidor = ServidorRepository::getInstanciaByCodigo($iMatricula);
         $aEscalas = $oServidor->getEscalas();
 
         if (empty($aEscalas)) {
             $mensagem = "Servidor (Matrícula: {$iMatricula}) não possui escala configurada."
                 . " Para configurar acesse:\nRH > Procedimentos > Efetividade > Manutenção da Escala de Funcionários";
-            throw new \ParameterException($mensagem, 4);
+            throw new ParameterException($mensagem, 4);
         }
 
         $primeiraData = $aDatas[0]->data;
         $ultimaData = $aDatas[count($aDatas) - 1]->data;
 
         $oPeriodoRepository = new PeriodoRepository(null, null, true);
-        $aPeriodos = $oPeriodoRepository->getPeriodosEntreDatas(new \DBDate($primeiraData), new \DBDate($ultimaData));
-        $aCodigosArquivos = array();
+        $aPeriodos = $oPeriodoRepository->getPeriodosEntreDatas(new DBDate($primeiraData), new DBDate($ultimaData));
+        $aCodigosArquivos = [];
 
         foreach ($aPeriodos as $oPeriodo) {
             $oCabecalhoRepository = new CabecalhoRepository();
@@ -260,14 +272,14 @@ class ProcessamentoPontoEletronico
             $aCodigosArquivos[$oPeriodo->getExercicio() . $oPeriodo->getCompetencia()] = $iCodigoArquivo;
         }
 
-        $colecaoHistoricoRegistraPonto = \ServidorRepository::getRegistraPontoNoPeriodoPorMatricula(
+        $colecaoHistoricoRegistraPonto = ServidorRepository::getRegistraPontoNoPeriodoPorMatricula(
             $iMatricula,
             $primeiraData,
             $ultimaData
         );
 
         foreach ($aDatas as $data) {
-            $oData = new \DBDate($data->data);
+            $oData = new DBDate($data->data);
 
             if (!empty($colecaoHistoricoRegistraPonto)) {
                 $registraPonto = $colecaoHistoricoRegistraPonto->getPosicaoHistoricoPorData($data->data);
@@ -288,11 +300,11 @@ class ProcessamentoPontoEletronico
 
             if (empty($oEscalaServidorNaData)) {
                 $mensagem = "Servidor {$oServidor->getMatricula()} - {$oServidor->getCgm()->getNome()} não possui";
-                $mensagem .= " escala de trabalho configurada no dia {$oData->getDate(\DBDate::DATA_PTBR)}.";
+                $mensagem .= " escala de trabalho configurada no dia {$oData->getDate(DBDate::DATA_PTBR)}.";
                 $mensagem .= ' Para verificar as escalas, acesse o menu:';
                 $mensagem .= "\n- RH > Procedimentos > Efetividade > Manutenção da Escala de Funcionários";
 
-                throw new \ParameterException($mensagem, 5);
+                throw new ParameterException($mensagem, 5);
             }
 
             $oDiaTrabalhoRepository = new DiaTrabalhoRepository();
@@ -302,7 +314,7 @@ class ProcessamentoPontoEletronico
             $aHorasJornada = $oDiaTrabalhoModel->getJornada()->getHoras();
             $oDiaTrabalhoModel->setAfastamento(null);
             $oAfastamentoNaData = null;
-            $aAfastamentos = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($oServidor, 'A', $oData);
+            $aAfastamentos = AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($oServidor, 'A', $oData);
 
             if (!empty($aAfastamentos)) {
                 $oAfastamentoNaData = $aAfastamentos[0];
@@ -354,7 +366,7 @@ class ProcessamentoPontoEletronico
                                 if ($oMarcacaoDia->getMarcacao()->format('Y-m-d')
                                     < $aHorasJornada[$iMarcacoes - 1]->oHora->format('Y-m-d')) {
                                     $oMarcacao->setData(
-                                        new \DBDate($aHorasJornada[$iMarcacoes - 1]->oHora->format('Y-m-d'))
+                                        new DBDate($aHorasJornada[$iMarcacoes - 1]->oHora->format('Y-m-d'))
                                     );
                                 }
                             }
@@ -365,8 +377,8 @@ class ProcessamentoPontoEletronico
                 $oMarcacao->setHora($sHora);
                 $oMarcacao->setManual($lManual);
 
-                $aAfastamentos = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
-                    \ServidorRepository::getInstanciaByCodigo($oServidor->getMatricula()),
+                $aAfastamentos = AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
+                    ServidorRepository::getInstanciaByCodigo($oServidor->getMatricula()),
                     'S',
                     $oData
                 );
@@ -404,7 +416,7 @@ class ProcessamentoPontoEletronico
 
     /**
      * @param MarcacaoRegistro $oMarcacao
-     * @param \Assentamento[] $aAssentamentosNaData
+     * @param Assentamento[] $aAssentamentosNaData
      * @param $iOrdem
      */
     public static function vincularJustificativa(&$oMarcacao, $aAssentamentosNaData, $iOrdem)
@@ -429,7 +441,7 @@ class ProcessamentoPontoEletronico
                 }
 
                 if (!$oAssentamentoNaData->isTotal()) {
-                    if (in_array($iOrdem, array(1, 2)) && $oAssentamentoNaData->getPeriodo1() != null) {
+                    if (in_array($iOrdem, [1, 2]) && $oAssentamentoNaData->getPeriodo1() != null) {
                         self::salvarJustificativaMarcacao($oJustificativaModel, $oMarcacao->getCodigo());
 
                         if (!$oAssentamentoNaData->getServidor()->registraPontoEletronico()
@@ -438,7 +450,7 @@ class ProcessamentoPontoEletronico
                         }
                     }
 
-                    if (in_array($iOrdem, array(3, 4)) && $oAssentamentoNaData->getPeriodo2() != null) {
+                    if (in_array($iOrdem, [3, 4]) && $oAssentamentoNaData->getPeriodo2() != null) {
                         self::salvarJustificativaMarcacao($oJustificativaModel, $oMarcacao->getCodigo());
 
                         if (!$oAssentamentoNaData->getServidor()->registraPontoEletronico()
@@ -447,7 +459,7 @@ class ProcessamentoPontoEletronico
                         }
                     }
 
-                    if (in_array($iOrdem, array(5, 6)) && $oAssentamentoNaData->getPeriodo3() != null) {
+                    if (in_array($iOrdem, [5, 6]) && $oAssentamentoNaData->getPeriodo3() != null) {
                         self::salvarJustificativaMarcacao($oJustificativaModel, $oMarcacao->getCodigo());
 
                         if (!$oAssentamentoNaData->getServidor()->registraPontoEletronico()) {
@@ -466,16 +478,16 @@ class ProcessamentoPontoEletronico
      * @param $aMarcacoesManutencao
      */
     public static function salvarMarcacaoEVincularJustificativa(
-        \Servidor $oServidor,
+        Servidor $oServidor,
         $sDataProcessar,
         $oDiaTrabalho,
         $aMarcacoesManutencao
     ) {
-        $aAssentamentosNaData = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
+        $aAssentamentosNaData = AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
             $oServidor,
             'S',
-            new \DBDate($sDataProcessar),
-            \Assentamento::NATUREZA_JUSTIFICATIVA
+            new DBDate($sDataProcessar),
+            Assentamento::NATUREZA_JUSTIFICATIVA
         );
 
         self::removerJustificativaNaData($oDiaTrabalho->getCodigo());
@@ -487,9 +499,9 @@ class ProcessamentoPontoEletronico
 
         foreach ($aMarcacoes as $oStdMarcacao) {
             $oMarcacaoManutencao = $aMarcacoesManutencao[$oStdMarcacao->getTipo() - 1];
-            $oDataMaior = new \DBDate($sDataMaior);
-            $oDataMarcacao = new \DBDate($oMarcacaoManutencao->data);
-            $oDataMarcacaoDiaTrabalho = new \DBDate($oStdMarcacao->getData());
+            $oDataMaior = new DBDate($sDataMaior);
+            $oDataMarcacao = new DBDate($oMarcacaoManutencao->data);
+            $oDataMarcacaoDiaTrabalho = new DBDate($oStdMarcacao->getData());
 
             // Se a data da marcação divergir da data do registro do ponto, prevalece a data de registro do ponto
             // Isso ocorre pois pontos preenchidos manualmente vem, por padrão, com a data de início da jornada.
@@ -505,13 +517,13 @@ class ProcessamentoPontoEletronico
             if ($oDataMaior->getTimeStamp() == $oDataMarcacao->getTimeStamp()) {
                 if ($oMarcacaoManutencao->hora != ''
                     && !empty($aMarcacoesManutencao[$oStdMarcacao->getTipo() - 2]->hora)) {
-                    $oDateTimeMarcacaoAtual = new \DateTime("{$oMarcacaoManutencao->hora}");
-                    $oDateTimeMarcacaoAnterior = new \DateTime(
+                    $oDateTimeMarcacaoAtual = new DateTime("{$oMarcacaoManutencao->hora}");
+                    $oDateTimeMarcacaoAnterior = new DateTime(
                         "{$aMarcacoesManutencao[$oStdMarcacao->getTipo() - 2]->hora}"
                     );
 
                     if ($oDateTimeMarcacaoAtual->getTimeStamp() < $oDateTimeMarcacaoAnterior->getTimeStamp()) {
-                        $oDataMaior = new \DateTime("{$aMarcacoesManutencao[$oStdMarcacao->getTipo() - 2]->data}");
+                        $oDataMaior = new DateTime("{$aMarcacoesManutencao[$oStdMarcacao->getTipo() - 2]->data}");
                         $sDataMaior = $oDataMaior->modify("+1 day")->format("Y-m-d");
                     }
                 }
@@ -532,8 +544,8 @@ class ProcessamentoPontoEletronico
             $oMarcacao->setCodigo($oStdMarcacao->getCodigo());
             $oMarcacao->setHora($oMarcacaoManutencao->hora);
             $oMarcacao->setManual($oMarcacaoManutencao->alterado);
-            $oMarcacao->setDataVinculo(new \DBDate($sDataProcessar));
-            $oMarcacao->setData(new \DBDate($sDataMaior));
+            $oMarcacao->setDataVinculo(new DBDate($sDataProcessar));
+            $oMarcacao->setData(new DBDate($sDataMaior));
             $oMarcacao->setPIS($oServidor->getPISPASEP());
             $oMarcacao->setMatricula($oServidor->getMatricula());
             $oMarcacao->setServidor($oServidor);
@@ -560,25 +572,23 @@ class ProcessamentoPontoEletronico
 
     /**
      * @param $iCodigoData
-     * @throws \DBException
+     * @throws DBException
      */
     public static function removerJustificativaNaData($iCodigoData)
     {
-        $oDaoRegistroJustificativa = new \cl_pontoeletronicoregistrojustificativa();
-        $oDaoPontoData = new \cl_pontoeletronicoarquivodataregistro();
+        $oDaoRegistroJustificativa = new cl_pontoeletronicoregistrojustificativa();
+        $oDaoPontoData = new cl_pontoeletronicoarquivodataregistro();
 
         $sSqlPontoData = $oDaoPontoData->sql_query(null, 'rh198_sequencial', null, "rh197_sequencial = {$iCodigoData}");
         $rsPontoData = db_query($sSqlPontoData);
 
         if (!$rsPontoData) {
-            throw new \DBException('Erro ao buscar os registros do dia.');
+            throw new DBException('Erro ao buscar os registros do dia.');
         }
 
         if (pg_num_rows($rsPontoData) > 0) {
             $iTotalRegistros = pg_num_rows($rsPontoData);
-            $aRegistrosExcluir = \db_utils::makeCollectionFromRecord($rsPontoData, function ($oRetorno) {
-                return $oRetorno->rh198_sequencial;
-            });
+            $aRegistrosExcluir = db_utils::makeCollectionFromRecord($rsPontoData, fn($oRetorno) => $oRetorno->rh198_sequencial);
 
             $oDaoRegistroJustificativa->excluir(
                 null,
@@ -586,7 +596,7 @@ class ProcessamentoPontoEletronico
             );
 
             if ($oDaoRegistroJustificativa->erro_status == '0') {
-                throw new \DBException($oDaoRegistroJustificativa->erro_msg);
+                throw new DBException($oDaoRegistroJustificativa->erro_msg);
             }
         }
     }
@@ -595,7 +605,7 @@ class ProcessamentoPontoEletronico
      * @param JustificativaModel $oJustificativaModel
      * @param $iMarcacao
      * @param string $sTipo
-     * @throws \DBException
+     * @throws DBException
      */
     public static function salvarJustificativaMarcacao(
         JustificativaModel $oJustificativaModel,
@@ -603,7 +613,7 @@ class ProcessamentoPontoEletronico
         $sTipo = 'P'
     ) {
 
-        $oDaoRegistroJustificativa = new \cl_pontoeletronicoregistrojustificativa();
+        $oDaoRegistroJustificativa = new cl_pontoeletronicoregistrojustificativa();
 
         $oDaoRegistroJustificativa->rh199_sequencial = null;
         $oDaoRegistroJustificativa->rh199_pontoeletronicoarquivodataregistro = $iMarcacao;
@@ -613,24 +623,22 @@ class ProcessamentoPontoEletronico
         $oDaoRegistroJustificativa->incluir($oDaoRegistroJustificativa->rh199_sequencial);
 
         if ($oDaoRegistroJustificativa->erro_status == '0') {
-            throw new \DBException($oDaoRegistroJustificativa->erro_msg);
+            throw new DBException($oDaoRegistroJustificativa->erro_msg);
         }
     }
 
     /**
      * @param array $aCodigosArquivos
      * @param array $aPeriodos
-     * @param \DBDate $data
+     * @param DBDate $data
      * @return mixed|null
      */
-    public static function getCodigoArquivoPorPeriodosEData(array $aCodigosArquivos, array $aPeriodos, \DBDate $data)
+    public static function getCodigoArquivoPorPeriodosEData(array $aCodigosArquivos, array $aPeriodos, DBDate $data)
     {
 
         foreach ($aPeriodos as $oPeriodo) {
-            if (\DBDate::dataEstaNoIntervalo($data, $oPeriodo->getDataInicio(), $oPeriodo->getDataFim())) {
-                return isset($aCodigosArquivos[$oPeriodo->getExercicio() . $oPeriodo->getCompetencia()])
-                    ? $aCodigosArquivos[$oPeriodo->getExercicio() . $oPeriodo->getCompetencia()]
-                    : null;
+            if (DBDate::dataEstaNoIntervalo($data, $oPeriodo->getDataInicio(), $oPeriodo->getDataFim())) {
+                return $aCodigosArquivos[$oPeriodo->getExercicio() . $oPeriodo->getCompetencia()] ?? null;
             }
         }
 
@@ -685,13 +693,13 @@ class ProcessamentoPontoEletronico
             /**
              * Quando a jornada começa em um dia e termina no outro, é necessário atualizar também a data
              */
-            $intervaloEntreData = \DBDate::getIntervaloEntreDatas(
+            $intervaloEntreData = DBDate::getIntervaloEntreDatas(
                 $oDiaTrabalhoModel->getData(),
-                new \DBDate($aHorasJornada[$iMarcacoes - 1]->oHora->format('Y-m-d'))
+                new DBDate($aHorasJornada[$iMarcacoes - 1]->oHora->format('Y-m-d'))
             );
 
             if ($intervaloEntreData->days > 0) {
-                $oMarcacao->setData(new \DBDate($aHorasJornada[$iMarcacoes - 1]->oHora->format('Y-m-d')));
+                $oMarcacao->setData(new DBDate($aHorasJornada[$iMarcacoes - 1]->oHora->format('Y-m-d')));
             }
         }
     }
@@ -729,25 +737,23 @@ class ProcessamentoPontoEletronico
 
     /**
      * @param int[] $matriculas
-     * @param \DBDate $dataInicial
-     * @param \DBDate $dataFinal
-     * @return \stdClass
-     * @throws \BusinessException
-     * @throws \DBException
-     * @throws \ParameterException
+     * @param DBDate $dataInicial
+     * @param DBDate $dataFinal
+     * @return stdClass
+     * @throws BusinessException
+     * @throws DBException
+     * @throws ParameterException
      */
-    public static function ajustarMatriculasParaCacheEspelhoPonto($matriculas, \DBDate $dataInicial, \DBDate $dataFinal)
+    public static function ajustarMatriculasParaCacheEspelhoPonto($matriculas, DBDate $dataInicial, DBDate $dataFinal)
     {
-        $retornoAjuste = new \stdClass();
+        $retornoAjuste = new stdClass();
         $retornoAjuste->erro = false;
-        $retornoAjuste->matriculasComErro = array();
-        $retornoAjuste->matriculasMarcacoesAjustadas = array();
+        $retornoAjuste->matriculasComErro = [];
+        $retornoAjuste->matriculasMarcacoesAjustadas = [];
 
-        $datas = \DBDate::getDatasNoIntervalo($dataInicial, $dataFinal);
+        $datas = DBDate::getDatasNoIntervalo($dataInicial, $dataFinal);
 
-        $datasProcessamento = array_map(function ($data) {
-            return (object) array( 'data' => $data->getDate());
-        }, $datas);
+        $datasProcessamento = array_map(fn($data) => (object) [ 'data' => $data->getDate()], $datas);
 
         if (count($matriculas) > 0) {
             $tempo = microtime(true);
@@ -779,8 +785,8 @@ class ProcessamentoPontoEletronico
 
         foreach ($aPeriodos as $oPeriodo) {
             $oPeriodo = $oPeriodoRepository->getCodigoArquivoPorPeriodo($oPeriodo);
-            $datasIntervalo = \DBDate::getDatasNoIntervalo($oPeriodo->getDataInicio(), $oPeriodo->getDataFim());
-            $aDatasProcessar = array();
+            $datasIntervalo = DBDate::getDatasNoIntervalo($oPeriodo->getDataInicio(), $oPeriodo->getDataFim());
+            $aDatasProcessar = [];
 
             foreach ($datasIntervalo as $oDataProcessar) {
                 $aDatasProcessar[] = $oDataProcessar->getDate();
@@ -796,7 +802,7 @@ class ProcessamentoPontoEletronico
                 );
 
                 db_fim_transacao(false);
-            } catch (\Exception $erro) {
+            } catch (Exception $erro) {
                 db_fim_transacao(true);
                 array_map(function ($matricula) use ($retornoAjuste, $erro) {
                     if (!array_key_exists($matricula, $retornoAjuste->matriculasComErro)) {
@@ -813,10 +819,10 @@ class ProcessamentoPontoEletronico
         return $retornoAjuste;
     }
 
-    public static function reinicializarMarcacoesNasDatas(\Servidor $servidor, $aDatas)
+    public static function reinicializarMarcacoesNasDatas(Servidor $servidor, $aDatas)
     {
         if (empty($aDatas)) {
-            throw new \ParameterException("Não foram informadas as datas a processar.");
+            throw new ParameterException("Não foram informadas as datas a processar.");
         }
 
         $aEscalas = $servidor->getEscalas();
@@ -825,8 +831,8 @@ class ProcessamentoPontoEletronico
         $ultimaData = $aDatas[count($aDatas)-1]->data;
 
         $oPeriodoRepository = new PeriodoRepository(null, null, true);
-        $aPeriodos = $oPeriodoRepository->getPeriodosEntreDatas(new \DBDate($primeiraData), new \DBDate($ultimaData));
-        $aCodigosArquivos   = array();
+        $aPeriodos = $oPeriodoRepository->getPeriodosEntreDatas(new DBDate($primeiraData), new DBDate($ultimaData));
+        $aCodigosArquivos   = [];
 
         foreach ($aPeriodos as $oPeriodo) {
             $oCabecalhoRepository = new CabecalhoRepository();
@@ -837,7 +843,7 @@ class ProcessamentoPontoEletronico
         }
 
         foreach ($aDatas as $data) {
-            $oData = new \DBDate($data->data);
+            $oData = new DBDate($data->data);
 
             $oCabecalhoRegistro = new CabecalhoRegistro();
             $oCabecalhoRegistro->setCodigo(
@@ -850,7 +856,7 @@ class ProcessamentoPontoEletronico
                 $mensagem  = "Servidor não possui escala na data."
                     . " Para configurar acesse:\nRH > Procedimentos > Efetividade > "
                     . "Manutenção da Escala de Funcionários";
-                throw new \ParameterException($mensagem, 5);
+                throw new ParameterException($mensagem, 5);
             }
 
             $oDiaTrabalhoRepository = new DiaTrabalhoRepository();
@@ -859,7 +865,7 @@ class ProcessamentoPontoEletronico
             $oDiaTrabalhoModel->setCodigoArquivo($oCabecalhoRegistro->getCodigo());
             $oDiaTrabalhoModel->setAfastamento(null);
             $oAfastamentoNaData = null;
-            $aAfastamentos = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($servidor, 'A', $oData);
+            $aAfastamentos = AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($servidor, 'A', $oData);
             $aHorariosMarcacoesReais = $oDiaTrabalhoRepository->getMarcacoesReaisPorServidorNaData(
                 $servidor,
                 $oData,
@@ -893,14 +899,14 @@ class ProcessamentoPontoEletronico
 
                 if (!empty($aHorariosMarcacoesReais[$iMarcacoes])
                     && !empty($aHorariosMarcacoesReais[$iMarcacoes]->sData)) {
-                    $oMarcacao->setData(new \DBDate($aHorariosMarcacoesReais[$iMarcacoes]->sData));
+                    $oMarcacao->setData(new DBDate($aHorariosMarcacoesReais[$iMarcacoes]->sData));
                 }
 
                 $oMarcacao->setHora($sHora);
                 $oMarcacao->setManual(false);
 
-                $aAfastamentos = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
-                    \ServidorRepository::getInstanciaByCodigo($servidor->getMatricula()),
+                $aAfastamentos = AssentamentoRepository::getAssentamentosServidorPorTipoENatureza(
+                    ServidorRepository::getInstanciaByCodigo($servidor->getMatricula()),
                     'S',
                     $oData
                 );

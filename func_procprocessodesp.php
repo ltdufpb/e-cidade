@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procprocessodesp_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clprocprocessodesp = new cl_procprocessodesp;
 $clprocprocessodesp->rotulo->label("p80_coddesp");
 $clprocprocessodesp->rotulo->label("p80_despacho");
@@ -54,7 +55,7 @@ $clprocprocessodesp->rotulo->label("p80_despacho");
               <?=$Lp80_coddesp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p80_coddesp",8,$Ip80_coddesp,true,"text",4,"","chave_p80_coddesp");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clprocprocessodesp->rotulo->label("p80_despacho");
               <?=$Lp80_despacho?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p80_despacho",1,$Ip80_despacho,true,"text",4,"","chave_p80_despacho");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clprocprocessodesp->rotulo->label("p80_despacho");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_procprocessodesp.php")==true){
@@ -118,12 +119,12 @@ $clprocprocessodesp->rotulo->label("p80_despacho");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

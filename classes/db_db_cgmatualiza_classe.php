@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -162,7 +162,7 @@ class cl_db_cgmatualiza {
                  w11_cgmnovo = bool = CGM novo 
                  ";
    //funcao construtor da classe 
-   function cl_db_cgmatualiza() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_cgmatualiza"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

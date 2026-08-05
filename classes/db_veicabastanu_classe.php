@@ -63,7 +63,7 @@ class cl_veicabastanu
                  ";
 
     //funcao construtor da classe
-    function cl_veicabastanu()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("veicabastanu");

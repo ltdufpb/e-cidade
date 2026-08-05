@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_socios_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsocios = new cl_socios;
 $clsocios->rotulo->label("q95_cgmpri");
 $clsocios->rotulo->label("q95_numcgm");
@@ -55,7 +56,7 @@ $clsocios->rotulo->label("q95_numcgm");
               <?=$Lq95_cgmpri?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q95_cgmpri",6,$Iq95_cgmpri,true,"text",4,"","chave_q95_cgmpri");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clsocios->rotulo->label("q95_numcgm");
               <?=$Lq95_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q95_numcgm",6,$Iq95_numcgm,true,"text",4,"","chave_q95_numcgm");
 		       ?>
             </td>
@@ -83,7 +84,7 @@ $clsocios->rotulo->label("q95_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_socios.php")==true){
@@ -121,12 +122,12 @@ $clsocios->rotulo->label("q95_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

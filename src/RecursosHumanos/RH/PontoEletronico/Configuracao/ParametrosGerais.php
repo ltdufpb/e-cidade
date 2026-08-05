@@ -27,6 +27,9 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao;
 
+use Instituicao;
+use TipoAssentamento;
+
 class ParametrosGerais
 {
 
@@ -36,52 +39,52 @@ class ParametrosGerais
     private $iCodigo;
 
     /**
-     * @var \Instituicao
+     * @var Instituicao
      */
     private $oInstituicao;
 
     /**
-     * @var null|\TipoAssentamento
+     * @var null|TipoAssentamento
      */
     private $oTipoAssentamentoExtra50Diurna;
 
     /**
-     * @var null|\TipoAssentamento
+     * @var null|TipoAssentamento
      */
     private $oTipoAssentamentoExtra75Diurna;
 
     /**
-     * @var null|\TipoAssentamento
+     * @var null|TipoAssentamento
      */
     private $oTipoAssentamentoExtra100Diurna;
 
     /**
-     * @var null|\TipoAssentamento
+     * @var null|TipoAssentamento
      */
     private $oTipoAssentamentoExtra50Noturna;
 
     /**
-     * @var null|\TipoAssentamento
+     * @var null|TipoAssentamento
      */
     private $oTipoAssentamentoExtra75Noturna;
 
     /**
-     * @var null|\TipoAssentamento
+     * @var null|TipoAssentamento
      */
     private $oTipoAssentamentoExtra100Noturna;
 
     /**
-     * @var null|\TipoAssentamento
+     * @var null|TipoAssentamento
      */
     private $oTipoAssentamentoAdicionalNoturno;
 
     /**
-     * @var null|\TipoAssentamento
+     * @var null|TipoAssentamento
      */
     private $oTipoAssentamentoFalta;
 
     /**
-     * @var null|\TipoAssentamento
+     * @var null|TipoAssentamento
      */
     private $oTipoAssentamentoFaltaDSR;
 
@@ -91,12 +94,12 @@ class ParametrosGerais
     private $lHoraExtraSomenteComAutorizacao = true;
 
     /**
-     * @var null|\TipoAssentamento
+     * @var null|TipoAssentamento
      */
     private $tipoAssentamentoAtraso;
 
     /**
-     * @return null|\TipoAssentamento
+     * @return null|TipoAssentamento
      */
     public function getTipoAssentamentoAtraso()
     {
@@ -104,7 +107,7 @@ class ParametrosGerais
     }
 
     /**
-     * @param null|\TipoAssentamento $tipoAssentamentoAtraso
+     * @param null|TipoAssentamento $tipoAssentamentoAtraso
      */
     public function setTipoAssentamentoAtraso($tipoAssentamentoAtraso)
     {
@@ -128,15 +131,15 @@ class ParametrosGerais
     }
 
     /**
-     * @param \Instituicao $oInstituicao
+     * @param Instituicao $oInstituicao
      */
-    public function setInstituicao(\Instituicao $oInstituicao)
+    public function setInstituicao(Instituicao $oInstituicao)
     {
         $this->oInstituicao = $oInstituicao;
     }
 
     /**
-     * @return \Instituicao
+     * @return Instituicao
      */
     public function getInstituicao()
     {
@@ -144,7 +147,7 @@ class ParametrosGerais
     }
 
     /**
-     * @param null|\TipoAssentamento $oTipoAssentamentoExtra50Diurna
+     * @param null|TipoAssentamento $oTipoAssentamentoExtra50Diurna
      */
     public function setTipoAssentamentoExtra50Diurna($oTipoAssentamentoExtra50Diurna)
     {
@@ -152,7 +155,7 @@ class ParametrosGerais
     }
 
     /**
-     * @return null|\TipoAssentamento
+     * @return null|TipoAssentamento
      */
     public function getTipoAssentamentoExtra50Diurna()
     {
@@ -160,7 +163,7 @@ class ParametrosGerais
     }
 
     /**
-     * @param null|\TipoAssentamento $oTipoAssentamentoExtra75Diurna
+     * @param null|TipoAssentamento $oTipoAssentamentoExtra75Diurna
      */
     public function setTipoAssentamentoExtra75Diurna($oTipoAssentamentoExtra75Diurna)
     {
@@ -168,7 +171,7 @@ class ParametrosGerais
     }
 
     /**
-     * @return null|\TipoAssentamento
+     * @return null|TipoAssentamento
      */
     public function getTipoAssentamentoExtra75Diurna()
     {
@@ -176,7 +179,7 @@ class ParametrosGerais
     }
 
     /**
-     * @param null|\TipoAssentamento $oTipoAssentamentoExtra100Diurna
+     * @param null|TipoAssentamento $oTipoAssentamentoExtra100Diurna
      */
     public function setTipoAssentamentoExtra100Diurna($oTipoAssentamentoExtra100Diurna)
     {
@@ -184,7 +187,7 @@ class ParametrosGerais
     }
 
     /**
-     * @return null|\TipoAssentamento
+     * @return null|TipoAssentamento
      */
     public function getTipoAssentamentoExtra100Diurna()
     {
@@ -192,7 +195,7 @@ class ParametrosGerais
     }
 
     /**
-     * @param null|\TipoAssentamento $oTipoAssentamentoExtra50Noturna
+     * @param null|TipoAssentamento $oTipoAssentamentoExtra50Noturna
      */
     public function setTipoAssentamentoExtra50Noturna($oTipoAssentamentoExtra50Noturna)
     {
@@ -200,7 +203,7 @@ class ParametrosGerais
     }
 
     /**
-     * @return null|\TipoAssentamento
+     * @return null|TipoAssentamento
      */
     public function getTipoAssentamentoExtra50Noturna()
     {
@@ -208,7 +211,7 @@ class ParametrosGerais
     }
 
     /**
-     * @param null|\TipoAssentamento $oTipoAssentamentoExtra75Noturna
+     * @param null|TipoAssentamento $oTipoAssentamentoExtra75Noturna
      */
     public function setTipoAssentamentoExtra75Noturna($oTipoAssentamentoExtra75Noturna)
     {
@@ -216,7 +219,7 @@ class ParametrosGerais
     }
 
     /**
-     * @return null|\TipoAssentamento
+     * @return null|TipoAssentamento
      */
     public function getTipoAssentamentoExtra75Noturna()
     {
@@ -224,7 +227,7 @@ class ParametrosGerais
     }
 
     /**
-     * @param null|\TipoAssentamento $oTipoAssentamentoExtra100Noturna
+     * @param null|TipoAssentamento $oTipoAssentamentoExtra100Noturna
      */
     public function setTipoAssentamentoExtra100Noturna($oTipoAssentamentoExtra100Noturna)
     {
@@ -232,7 +235,7 @@ class ParametrosGerais
     }
 
     /**
-     * @return null|\TipoAssentamento
+     * @return null|TipoAssentamento
      */
     public function getTipoAssentamentoExtra100Noturna()
     {
@@ -240,7 +243,7 @@ class ParametrosGerais
     }
 
     /**
-     * @param null|\TipoAssentamento $oTipoAssentamentoAdicionalNoturno
+     * @param null|TipoAssentamento $oTipoAssentamentoAdicionalNoturno
      */
     public function setTipoAssentamentoAdicionalNoturno($oTipoAssentamentoAdicionalNoturno)
     {
@@ -248,7 +251,7 @@ class ParametrosGerais
     }
 
     /**
-     * @return null|\TipoAssentamento
+     * @return null|TipoAssentamento
      */
     public function getTipoAssentamentoAdicionalNoturno()
     {
@@ -256,7 +259,7 @@ class ParametrosGerais
     }
 
     /**
-     * @param null|\TipoAssentamento $oTipoAssentamentoFalta
+     * @param null|TipoAssentamento $oTipoAssentamentoFalta
      */
     public function setTipoAssentamentoFalta($oTipoAssentamentoFalta)
     {
@@ -264,7 +267,7 @@ class ParametrosGerais
     }
 
     /**
-     * @return null|\TipoAssentamento
+     * @return null|TipoAssentamento
      */
     public function getTipoAssentamentoFalta()
     {
@@ -288,7 +291,7 @@ class ParametrosGerais
     }
 
     /**
-     * @return null|\TipoAssentamento
+     * @return null|TipoAssentamento
      */
     public function getTipoAssentamentoFaltaDSR()
     {
@@ -296,7 +299,7 @@ class ParametrosGerais
     }
 
     /**
-     * @param null|\TipoAssentamento $oTipoAssentamentoFaltaDSR
+     * @param null|TipoAssentamento $oTipoAssentamentoFaltaDSR
      *
      * @return self
      */

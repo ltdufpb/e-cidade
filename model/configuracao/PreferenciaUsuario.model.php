@@ -60,12 +60,6 @@ class PreferenciaUsuario {
   private $sOrdenacao;
 
   /**
-   * Instância da classe UsuarioSistema
-   * @var UsuarioSistema
-   */
-  private $oUsuarioSistema;
-
-  /**
    * Define se a busca por menus deve ser exibida ou não.
    * @var String
    */
@@ -133,11 +127,12 @@ class PreferenciaUsuario {
      * realiza o LazyLoad carregando as preferências do usuário
      * @param UsuarioSistema $oUsuarioSistema [description]
      */
-    function __construct( UsuarioSistema $oUsuarioSistema ) {
+    function __construct( /**
+     * Instância da classe UsuarioSistema
+     */
+    private readonly UsuarioSistema $oUsuarioSistema ) {
 
       $oPreferenciaCliente = new PreferenciaCliente();
-
-      $this->oUsuarioSistema    = $oUsuarioSistema;
       $this->sNomeArquivo       = $this->oUsuarioSistema->getLogin() . '.json';
 
       $this->sOrdencao          = 'sequencial';
@@ -266,7 +261,7 @@ class PreferenciaUsuario {
    * @return void
    */
   public function limparFiltrosPersonalizados() {
-    $this->aFiltrosPersonalizados = array();
+    $this->aFiltrosPersonalizados = [];
     return;
   }
 

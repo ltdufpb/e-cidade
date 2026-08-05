@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -36,7 +36,7 @@ require_once(modification("classes/db_cursoturno_classe.php"));
 require_once(modification("classes/db_cursoato_classe.php"));
 require_once(modification("classes/db_cursoatoserie_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcursoescola = new cl_cursoescola;
 $clcursoturno = new cl_cursoturno;
 $clcursoato = new cl_cursoato;
@@ -121,7 +121,7 @@ if(isset($excluir)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Vincular curso <?=$ed29_c_descr?> na escola <?=$ed18_c_nome?></b></legend>
-    <?include(modification("forms/db_frmcursoescola.php"));?>
+    <?php include(modification("forms/db_frmcursoescola.php"));?>
    </fieldset>
    </center>
   </td>
@@ -129,7 +129,7 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)){
  if($clcursoescola->erro_status=="0"){
   $clcursoescola->erro(true,false);
@@ -145,7 +145,7 @@ if(isset($incluir)){
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href='edu1_cursoturno001.php?ed85_i_curso=<?=$ed71_i_curso?>&ed29_c_descr=<?=$ed29_c_descr?>';
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a4.location.href='edu1_cursoato001.php?ed71_i_curso=<?=$ed71_i_curso?>&ed29_c_descr=<?=$ed29_c_descr?>';
   </script>
-  <?
+  <?php 
   $clcursoescola->erro(true,true);
  };
 };
@@ -164,7 +164,7 @@ if(isset($alterar)){
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href='edu1_cursoturno001.php?ed85_i_curso=<?=$ed71_i_curso?>&ed29_c_descr=<?=$ed29_c_descr?>';
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a4.location.href='edu1_cursoato001.php?ed71_i_curso=<?=$ed71_i_curso?>&ed29_c_descr=<?=$ed29_c_descr?>';
   </script>
-  <?
+  <?php 
   $clcursoescola->erro(true,true);
  };
 };
@@ -177,7 +177,7 @@ if(isset($excluir)){
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href='edu1_cursoturno001.php?ed85_i_curso=<?=$ed71_i_curso?>&ed29_c_descr=<?=$ed29_c_descr?>';
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a4.location.href='edu1_cursoato001.php?ed71_i_curso=<?=$ed71_i_curso?>&ed29_c_descr=<?=$ed29_c_descr?>';
   </script>
-  <?
+  <?php 
   $clcursoescola->erro(true,true);
  };
 };

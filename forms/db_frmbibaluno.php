@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,11 +40,11 @@ if($ed47_i_nacion==3){
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
  <tr valign="top">
   <td align="center">
-   <?db_ancora(@$Led47_i_codigo,"",3);?>
-   <?db_input('ed47_i_codigo',20,$Ied47_i_codigo,true,'text',3,"")?>
-   <?db_input('ed47_v_nome',40,$Ied47_v_nome,true,'text',3,'')?>
+   <?php db_ancora(@$Led47_i_codigo,"",3);?>
+   <?php db_input('ed47_i_codigo',20,$Ied47_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed47_v_nome',40,$Ied47_v_nome,true,'text',3,'')?>
    <?=@$Led47_c_codigoinep?>
-   <?db_input('ed47_c_codigoinep',12,$Ied47_c_codigoinep,true,'text',3,'')?>
+   <?php db_input('ed47_c_codigoinep',12,$Ied47_c_codigoinep,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -56,12 +56,12 @@ if($ed47_i_nacion==3){
        <?=@$Led47_c_certidaotipo?>
       </td>
       <td>
-       <?
+       <?php 
        $x = array(''=>'','N'=>'NASCIMENTO','C'=>'CASAMENTO');
        db_select('ed47_c_certidaotipo',$x,true,$db_opcao,"");
        ?>
        <?=@$Led47_c_certidaonum?>
-       <?db_input('ed47_c_certidaonum',8,$Ied47_c_certidaonum,true,'text',$db_opcao,"")?>
+       <?php db_input('ed47_c_certidaonum',8,$Ied47_c_certidaonum,true,'text',$db_opcao,"")?>
       </td>
      </tr>
      <tr>
@@ -69,9 +69,9 @@ if($ed47_i_nacion==3){
        <?=@$Led47_c_certidaofolha?>
       </td>
       <td>
-       <?db_input('ed47_c_certidaofolha',4,$Ied47_c_certidaofolha,true,'text',$db_opcao,"")?>
+       <?php db_input('ed47_c_certidaofolha',4,$Ied47_c_certidaofolha,true,'text',$db_opcao,"")?>
        <?=@$Led47_c_certidaolivro?>
-       <?db_input('ed47_c_certidaolivro',8,$Ied47_c_certidaolivro,true,'text',$db_opcao,"")?>
+       <?php db_input('ed47_c_certidaolivro',8,$Ied47_c_certidaolivro,true,'text',$db_opcao,"")?>
       </td>
      </tr>
      <tr>
@@ -79,9 +79,9 @@ if($ed47_i_nacion==3){
        <?=@$Led47_c_certidaocart?>
       </td>
       <td>
-       <?db_input('ed47_c_certidaocart',30,$Ied47_c_certidaocart,true,'text',$db_opcao," onKeyUp=\"js_ValidaCamposEdu(this,2,'$GLOBALS[Sed47_c_certidaocart]','t','t',event);\"")?>
+       <?php db_input('ed47_c_certidaocart',30,$Ied47_c_certidaocart,true,'text',$db_opcao," onKeyUp=\"js_ValidaCamposEdu(this,2,'$GLOBALS[Sed47_c_certidaocart]','t','t',event);\"")?>
        <?=@$Led47_c_certidaodata?>
-       <?db_inputdata('ed47_c_certidaodata',@$ed47_c_certidaodata_dia,@$ed47_c_certidaodata_mes,@$ed47_c_certidaodata_ano,true,'text',$db_opcao,"")?>
+       <?php db_inputdata('ed47_c_certidaodata',@$ed47_c_certidaodata_dia,@$ed47_c_certidaodata_mes,@$ed47_c_certidaodata_ano,true,'text',$db_opcao,"")?>
       </td>
      </tr>
      <tr>
@@ -89,12 +89,12 @@ if($ed47_i_nacion==3){
        <?=@$Led47_i_censoufcert?>
       </td>
       <td>
-       <?
+       <?php 
        $result_uf = $clcensouf->sql_record($clcensouf->sql_query_file("","ed260_i_codigo,ed260_c_nome","ed260_c_nome"));
        db_selectrecord("ed47_i_censoufcert",$result_uf,"",$db_opcao,"","","","  ","iframe_uf.location.href='edu1_aluno004.php?campo=cert&censouf='+this.value",1);
        ?>
        <?=@$Led47_i_censomuniccert?>
-       <?
+       <?php 
        if(isset($ed47_i_censoufcert) && $ed47_i_censoufcert!=""){
         $result_munic = $clcensomunic->sql_record($clcensomunic->sql_query_file("","ed261_i_codigo,ed261_c_nome","ed261_c_nome","ed261_i_censouf = $ed47_i_censoufcert"));
         if($clcensomunic->numrows==0){
@@ -124,11 +124,11 @@ if($ed47_i_nacion==3){
        <?=@$Led47_v_ident?>
       </td>
       <td>
-       <?db_input('ed47_v_ident',15,$Ied47_v_ident,true,'text',$db_opcao1);?>
+       <?php db_input('ed47_v_ident',15,$Ied47_v_ident,true,'text',$db_opcao1);?>
        <?=@$Led47_v_identcompl?>
-       <?db_input('ed47_v_identcompl',4,@$Ied47_v_identcompl,true,'text',$db_opcao1);?>
+       <?php db_input('ed47_v_identcompl',4,@$Ied47_v_identcompl,true,'text',$db_opcao1);?>
        <?=@$Led47_i_censoufident?>
-       <?
+       <?php 
        $result_uf = $clcensouf->sql_record($clcensouf->sql_query_file("","ed260_i_codigo,ed260_c_nome","ed260_c_nome"));
        db_selectrecord("ed47_i_censoufident",$result_uf,"",$db_opcao1,"","","","  ","",1);
        ?>
@@ -139,12 +139,12 @@ if($ed47_i_nacion==3){
        <?=@$Led47_i_censoorgemissrg?>
       </td>
       <td>
-       <?
+       <?php 
        $result_org = $clcensoorgemissrg->sql_record($clcensoorgemissrg->sql_query_file("","ed132_i_codigo,ed132_c_descr","ed132_c_descr"));
        db_selectrecord("ed47_i_censoorgemissrg",$result_org,"",$db_opcao1,"","","","  ","",1);
        ?>
        <?=@$Led47_d_identdtexp?>
-       <?db_inputdata('ed47_d_identdtexp',@$ed47_d_identdtexp_dia,@$ed47_d_identdtexp_mes,@$ed47_d_identdtexp_ano,true,'text',$db_opcao1);?>
+       <?php db_inputdata('ed47_d_identdtexp',@$ed47_d_identdtexp_dia,@$ed47_d_identdtexp_mes,@$ed47_d_identdtexp_ano,true,'text',$db_opcao1);?>
       </td>
      </tr>
     </table>
@@ -160,14 +160,14 @@ if($ed47_i_nacion==3){
        <?=@$Led47_v_cnh?>
       </td>
       <td>
-       <?db_input('ed47_v_cnh',15,$Ied47_v_cnh,true,'text',$db_opcao1,"");?>
+       <?php db_input('ed47_v_cnh',15,$Ied47_v_cnh,true,'text',$db_opcao1,"");?>
        <?=@$Led47_v_categoria?>
-       <?
+       <?php 
        $y = array(""=>"","A"=>"A","B"=>"B","C"=>"C","D"=>"D","E"=>"E");
        db_select('ed47_v_categoria',$y,true,$db_opcao1);
        ?>
        <?=@$Led47_d_dtemissao?>
-       <?db_inputdata('ed47_d_dtemissao',@$ed47_d_dtemissao_dia,@$ed47_d_dtemissao_mes,@$ed47_d_dtemissao_ano,true,'text',$db_opcao1);?>
+       <?php db_inputdata('ed47_d_dtemissao',@$ed47_d_dtemissao_dia,@$ed47_d_dtemissao_mes,@$ed47_d_dtemissao_ano,true,'text',$db_opcao1);?>
       </td>
      </tr>
      <tr>
@@ -175,9 +175,9 @@ if($ed47_i_nacion==3){
        <?=@$Led47_d_dthabilitacao?>
       </td>
       <td>
-       <?db_inputdata('ed47_d_dthabilitacao',@$ed47_d_dthabilitacao_dia,@$ed47_d_dthabilitacao_mes,@$ed47_d_dthabilitacao_ano,true,'text',$db_opcao1);?>
+       <?php db_inputdata('ed47_d_dthabilitacao',@$ed47_d_dthabilitacao_dia,@$ed47_d_dthabilitacao_mes,@$ed47_d_dthabilitacao_ano,true,'text',$db_opcao1);?>
        <?=@$Led47_d_dtvencimento?>
-       <?db_inputdata('ed47_d_dtvencimento',@$ed47_d_dtvencimento_dia,@$ed47_d_dtvencimento_mes,@$ed47_d_dtvencimento_ano,true,'text',$db_opcao1);?>
+       <?php db_inputdata('ed47_d_dtvencimento',@$ed47_d_dtvencimento_dia,@$ed47_d_dtvencimento_mes,@$ed47_d_dtvencimento_ano,true,'text',$db_opcao1);?>
       </td>
      </tr>
     </table>
@@ -193,10 +193,10 @@ if($ed47_i_nacion==3){
        <?=@$Led47_v_cpf?>
       </td>
       <td>
-       <?db_input('ed47_v_cpf',11,@$Ied47_v_cpf,true,'text',$db_opcao1,"onChange='js_verificacpf(this);'");?>
-       <?$desabpassaporte = $ed47_i_nacion!=3?"readOnly style='background:#DEB887'":""?>
+       <?php db_input('ed47_v_cpf',11,@$Ied47_v_cpf,true,'text',$db_opcao1,"onChange='js_verificacpf(this);'");?>
+       <?php $desabpassaporte = $ed47_i_nacion!=3?"readOnly style='background:#DEB887'":""?>
        <?=@$Led47_c_passaporte?>
-       <?db_input('ed47_c_passaporte',20,$Ied47_c_passaporte,true,'text',$db_opcao," $desabpassaporte ")?>
+       <?php db_input('ed47_c_passaporte',20,$Ied47_c_passaporte,true,'text',$db_opcao," $desabpassaporte ")?>
       </td>
       </td>
      </tr>
@@ -210,12 +210,12 @@ if($ed47_i_nacion==3){
     <tr>
      <td nowrap title="<?=@$Ted47_t_obs?>">
       <?=@$Led47_t_obs?><br>
-      <?db_textarea('ed47_t_obs',4,60,$Ied47_t_obs,true,'text',$db_opcao,"")?>
+      <?php db_textarea('ed47_t_obs',4,60,$Ied47_t_obs,true,'text',$db_opcao,"")?>
      </td>
      <td width="10%"></td>
      <td>
       <?=@$Led47_v_contato?><br>
-      <?db_textarea('ed47_v_contato',4,60,$Ied47_v_contato,true,'text',$db_opcao,"")?>
+      <?php db_textarea('ed47_v_contato',4,60,$Ied47_v_contato,true,'text',$db_opcao,"")?>
      </td>
     </tr>
    </table>

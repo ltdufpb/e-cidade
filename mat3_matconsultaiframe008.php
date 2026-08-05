@@ -42,7 +42,7 @@ db_postmemory($HTTP_POST_VARS);
   <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
   <link href="estilos.css" rel="stylesheet" type="text/css">
   <style>
-  <?//$cor="#999999"?>
+  <?php //$cor="#999999"?>
   .bordas{
       border: 2px solid #cccccc;
       border-top-color: #999999;
@@ -76,7 +76,7 @@ db_postmemory($HTTP_POST_VARS);
       ?>
       </td>
     </tr>
-  <?
+  <?php 
   if (!isset($filtroquery)){
   if (isset($codmater)&&$codmater!="") {
     $where="";

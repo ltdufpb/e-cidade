@@ -1350,7 +1350,7 @@ class Registro20
 
     public function toArray()
     {
-        return array(
+        return [
             "tipoRegistro" => $this->getTipoRegistro(),
             "codigoInepEscola" => $this->getCodigoInepEscola(),
             "codigoTurma" => $this->getCodigoTurma(),
@@ -1425,6 +1425,6 @@ class Registro20
             "estagioSupervisionado" => $this->getEstagioSupervisionado(),
             "projetoVidaUnidade" => $this->getProjetoVidaUnidade(),
             "outrasDisciplinas" => $this->getOutrasDisciplinas(),
-        );
+        ];
     }
 }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -32,8 +32,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 $oDaoHistorico = db_utils::getdao("historico");
 $oDaoAlunoCurso = db_utils::getdao("alunocurso");
 $ed61_i_escola = db_getsession("DB_coddepto");
@@ -83,7 +83,7 @@ if (isset($incluir)) {
     <td valign="top" bgcolor="#CCCCCC">
      <center>
       <fieldset style="width:95%;height:445px;"><legend><b>Curso</b></legend>
-       <?include(modification("forms/db_frmhistoricoesc.php"));?>
+       <?php include(modification("forms/db_frmhistoricoesc.php"));?>
       </fieldset>
      </center>
     </td>
@@ -91,7 +91,7 @@ if (isset($incluir)) {
   </table>
  </body>
 </html>
-<?
+<?php 
 if (isset($incluir)) {
 
   if ($oDaoHistorico->erro_status == "0") {
@@ -119,7 +119,7 @@ if (isset($incluir)) {
      parent.arvore.location.href = "edu1_historicoarvore.php?ed61_i_aluno=<?=$ed61_i_aluno?>"+
                                    "&ed47_v_nome=<?=$ed47_v_nome?>";
     </script>
-    <?
+    <?php 
   }
 
 }

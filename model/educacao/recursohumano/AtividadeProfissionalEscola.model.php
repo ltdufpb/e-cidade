@@ -73,13 +73,13 @@ class AtividadeProfissionalEscola
      * Array com as turnos e horários que o profissional exerce a atividade
      * @var AgendaAtividadeProfissional[]
      */
-    protected $aAgendaAtividade = array();
+    protected $aAgendaAtividade = [];
 
     /**
      * Relacoes de trabalho vínculada a Função do profissional
      * @var RelacaoTrabalho[]
      */
-    protected $aRelacoesTrabalho = array();
+    protected $aRelacoesTrabalho = [];
 
     public function __construct($iCodigo = null)
     {
@@ -232,7 +232,7 @@ class AtividadeProfissionalEscola
 
             if (!empty($aDiasSemana)) {
 
-                $aAgendaAtividadeAux = array();
+                $aAgendaAtividadeAux = [];
                 foreach ($aAgendaAtividade as $oAgendaAtividadeProfissional) {
 
                     if (in_array($oAgendaAtividadeProfissional->getDiaSemana(), $aDiasSemana)) {
@@ -363,19 +363,19 @@ class AtividadeProfissionalEscola
     {
 
         if (!$this->oAtividadeEscolar->permiteLecionar()) {
-            return array();
+            return [];
         }
 
-        $aCodigosAgendas = array();
+        $aCodigosAgendas = [];
         foreach ($this->getAgenda() as $oAgenda) {
             $aCodigosAgendas[] = $oAgenda->getCodigo();
         }
 
         if (count($aCodigosAgendas) == 0) {
-            return array();
+            return [];
         }
 
-        $aWhere = array();
+        $aWhere = [];
         $aWhere[] = " ed22_i_rechumanoescola = {$this->oProfissionalEscola->getCodigo()} ";
         $aWhere[] = " ed01_c_docencia        = 'S' ";
         $aWhere[] = " ed129_codigo in (" . implode(", ", $aCodigosAgendas) . ")";
@@ -399,11 +399,11 @@ class AtividadeProfissionalEscola
         }
 
         if (pg_num_rows($rsValida) == 0) {
-            return array();
+            return [];
         }
 
         $iLinha = pg_num_rows($rsValida);
-        $aConflitos = array();
+        $aConflitos = [];
         for ($i = 0; $i < $iLinha; $i++) {
 
             $oDados = db_utils::fieldsMemory($rsValida, $i);

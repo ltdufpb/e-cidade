@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("classes/db_matrequi_classe.php"));
 include(modification("classes/db_db_depusu_classe.php"));
 include(modification("classes/db_matrequiitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 //if (substr($DB_BASE,0,5) != "ontem") {
 //	  die("rotina indisponivel");
@@ -79,7 +80,7 @@ if(isset($alterar)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmmatrequi.php"));
 	?>
     </center>
@@ -88,7 +89,7 @@ if(isset($alterar)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($chavepesquisa)){
     echo "<script>
                parent.iframe_matrequiitem.location.href='mat1_matrequiitemalt001.php?m40_codigo=".@$chavepesquisa."&m40_almox=".@$m40_almox."';\n

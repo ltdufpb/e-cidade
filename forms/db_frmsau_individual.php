@@ -530,7 +530,7 @@ function js_pesquisafaa(chave){
 }
 function js_preenchepesquisafaa(chave){
 	db_iframe_prontuarios.hide();
-	<?
+	<?php 
 		echo " location.href = '" . basename ( $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] ) . "?idarq=" . @$idarq . "&db_botao=true&chavepesquisaprontuario='+chave";
 	?>
 }

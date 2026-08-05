@@ -39,63 +39,55 @@ final class Periodo
   /**
    * @type integer
    */
-    const PRIMEIRO_BIMESTRE = 6;
-    const SEGUNDO_BIMESTRE = 7;
-    const TERCEIRO_BIMESTRE = 8;
-    const QUARTO_BIMESTRE = 9;
-    const QUINTO_BIMESTRE = 10;
+    const int PRIMEIRO_BIMESTRE = 6;
+    const int SEGUNDO_BIMESTRE = 7;
+    const int TERCEIRO_BIMESTRE = 8;
+    const int QUARTO_BIMESTRE = 9;
+    const int QUINTO_BIMESTRE = 10;
 
-    /**
-     * @var integer
-     */
-    const SEXTO_BIMESTRE = 11;
+    const int SEXTO_BIMESTRE = 11;
     /**
      * @type integer
      */
-    const PRIMEIRO_SEMESTRE = 12;
+    const int PRIMEIRO_SEMESTRE = 12;
 
     /**
      * @type integer
      */
-    const SEGUNDO_SEMESTRE = 13;
+    const int SEGUNDO_SEMESTRE = 13;
 
     /**
      * @type integer
      */
-    const PRIMEIRO_QUADRIMESTRE = 14;
+    const int PRIMEIRO_QUADRIMESTRE = 14;
 
     /**
      * @type integer
      */
-    const SEGUNDO_QUADRIMESTRE  = 15;
+    const int SEGUNDO_QUADRIMESTRE  = 15;
 
     /**
      * @type integer
      */
-    const TERCEIRO_QUADRIMESTRE = 16;
+    const int TERCEIRO_QUADRIMESTRE = 16;
 
 
-    const MARCO = 19;
+    const int MARCO = 19;
 
-    const ABRIL = 20;
+    const int ABRIL = 20;
 
-    const JUNHO = 22;
+    const int JUNHO = 22;
 
-    const AGOSTO = 24;
+    const int AGOSTO = 24;
 
-    const SETEMBRO = 25;
+    const int SETEMBRO = 25;
 
-    const DEZEMBRO = 28;
+    const int DEZEMBRO = 28;
 
     /**
      * @type integer
      */
-    const ANO = 1;
-    /**
-     * Código
-     * @var integer
-     */
-    private $iCodigo;
+    const int ANO = 1;
 
     /**
      * Descrição
@@ -138,17 +130,19 @@ final class Periodo
      * @throws BusinessException
      * @param integer $iCodigo
      */
-    public function __construct($iCodigo = null)
+    public function __construct(/**
+     * Código
+     */
+    private $iCodigo = null)
     {
-        $this->iCodigo = $iCodigo;
         if (empty($this->iCodigo)) {
             return;
         }
 
         $oDaoPeriodo    = new cl_periodo();
-        $rsBuscaPeriodo = db_query($oDaoPeriodo->sql_query_file($iCodigo));
+        $rsBuscaPeriodo = db_query($oDaoPeriodo->sql_query_file($this->iCodigo));
         if (!$rsBuscaPeriodo || pg_num_rows($rsBuscaPeriodo) == 0) {
-            throw new BusinessException("Período [{$iCodigo}] não encontrado.");
+            throw new BusinessException("Período [{$this->iCodigo}] não encontrado.");
         }
         $oStdPeriodo       = db_utils::fieldsMemory($rsBuscaPeriodo, 0);
         $this->sDescricao  = $oStdPeriodo->o114_descricao;
@@ -250,7 +244,7 @@ final class Periodo
      * Retorna a data final do período informado
      * @param  integer $iPeriodo código do período
      * @param  integer $iAno     ano
-     * @throws \Exception
+     * @throws Exception
      * @return DBDate
      */
     public static function dataFinalPeriodo($iPeriodo, $iAno)
@@ -258,48 +252,48 @@ final class Periodo
         switch ($iPeriodo) {
             case 12: // 1º SEMESTRE
             case 22: // JUNHO
-                return new \DBDate("{$iAno}-06-30");
+                return new DBDate("{$iAno}-06-30");
             break;
             case 13: // 2º SEMESTRE
             case 16: // 3º QUADRIMESTRE
             case 28: // DEZEMBRO
-                return new \DBDate("{$iAno}-12-31");
+                return new DBDate("{$iAno}-12-31");
             break;
             case 14: // 1º QUADRIMESTRE
             case 20: // ABRIL
-                return new \DBDate("{$iAno}-04-30");
+                return new DBDate("{$iAno}-04-30");
             break;
             case 15: // 2º QUADRIMESTRE
             case 24: // AGOSTO
-                return new \DBDate("{$iAno}-08-31");
+                return new DBDate("{$iAno}-08-31");
             break;
             case 17: // JANEIRO
-                return new \DBDate("{$iAno}-01-31");
+                return new DBDate("{$iAno}-01-31");
             break;
             case 18:
                 $iDia = cal_days_in_month(CAL_GREGORIAN, '02', $iAno);
-                return new \DBDate("{$iAno}-02-{$iDia}");
+                return new DBDate("{$iAno}-02-{$iDia}");
             break;
             case 19: // MARÇO
-                return new \DBDate("{$iAno}-03-31");
+                return new DBDate("{$iAno}-03-31");
             break;
             case 21: // MAIO
-                return new \DBDate("{$iAno}-05-31");
+                return new DBDate("{$iAno}-05-31");
             break;
             case 23: // JULHO
-                return new \DBDate("{$iAno}-07-31");
+                return new DBDate("{$iAno}-07-31");
             break;
             case 25: // SETEMBRO
-                return new \DBDate("{$iAno}-09-30");
+                return new DBDate("{$iAno}-09-30");
             break;
             case 26: // OUTUBRO
-                return new \DBDate("{$iAno}-10-31");
+                return new DBDate("{$iAno}-10-31");
             break;
             case 27: // NOVEMBRO
-                return new \DBDate("{$iAno}-11-30");
+                return new DBDate("{$iAno}-11-30");
             break;
             default:
-                throw new \Exception("Período não implementado.");
+                throw new Exception("Período não implementado.");
             break;
         }
     }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -78,7 +78,7 @@ $clrotulo = new rotulocampo;
     <td align='right'> <strong><?=$Le91_anousu?></strong>
     </td > 
     <td > 
-    <?
+    <?php 
     $result = $clempresto->sql_record($clempresto->sql_query(null,"distinct e91_anousu","e91_anousu limit 1"));
     global $e91_anousu;
     db_input("e91_anousu",5,$Se91_anousu,true,'',3);
@@ -96,12 +96,12 @@ $clrotulo = new rotulocampo;
 </table>
     </form>
     </center>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php 
 if(isset($processar)){
   db_msgbox($db_msgerro);
 }

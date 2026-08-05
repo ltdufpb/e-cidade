@@ -95,7 +95,7 @@ class EstatutarioRepository
      * @param Estatutario|null $contrato
      * @throws Exception
      */
-    public function delete(Estatutario $estatutario = null)
+    public function delete(?Estatutario $estatutario = null)
     {
         $id = $estatutario instanceof Estatutario ? $estatutario->getSequencial() : null;
 
@@ -113,7 +113,7 @@ class EstatutarioRepository
      * @return bool|Estatutario
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhpessoalprocessoestatutario;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

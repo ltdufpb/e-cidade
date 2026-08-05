@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_lista_classe.php"));
 db_postmemory($HTTP_POST_VARS);
 db_postmemory($HTTP_SERVER_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cllista = new cl_lista;
 $instit = db_getsession("DB_instit");
 //exit;
@@ -63,7 +64,7 @@ $instit = db_getsession("DB_instit");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
 //        db_msgbox("nao ta setada");
         if(isset($campos)==false){
@@ -100,12 +101,12 @@ $instit = db_getsession("DB_instit");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

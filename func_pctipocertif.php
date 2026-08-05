@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_pctipocertif_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clpctipocertif = new cl_pctipocertif;
 $clpctipocertif->rotulo->label("pc70_codigo");
@@ -55,7 +56,7 @@ $clpctipocertif->rotulo->label("pc70_codigo");
               <?=$Lpc70_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		            db_input("pc70_codigo", 10, $Ipc70_codigo, true, "text", 4, "", "pc70_codigo");
 		          ?>
             </td>
@@ -73,7 +74,7 @@ $clpctipocertif->rotulo->label("pc70_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
 	      $DB_coddepto = db_getsession("DB_coddepto"); 
 	      $sWhere      = "";
 	      $sAnd        = "";
@@ -150,12 +151,12 @@ $clpctipocertif->rotulo->label("pc70_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

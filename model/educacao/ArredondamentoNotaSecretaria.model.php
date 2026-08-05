@@ -73,7 +73,7 @@ class ArredondamentoNotaSecretaria extends ArredondamentoNota implements IEducac
       $oDadosRegra->lArredondar                  = $oDados->ed139_arredondamedia == 't';
       $oDadosRegra->iCasasDecimais               = 0;
       $oDadosRegra->iCasasDecimaisArredondamento = $oDados->ed316_casasdecimaisarredondamento;
-      $oDadosRegra->aRegras                      = array();
+      $oDadosRegra->aRegras                      = [];
       $aPartesMascara                            = explode(".", $oDados->db77_estrut);
 
       if (isset($aPartesMascara[1])) {

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_mer_consumocardapio_classe.php"));
 require_once(modification("classes/db_mer_consumoescola_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clmer_consumocardapio = new cl_mer_consumocardapio;
 $clmer_consumoescola = new cl_mer_consumoescola;
@@ -52,7 +52,7 @@ $iCodTipoCardapio         = $oGet->me37_i_tipocardapio;
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php 
   db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js");
   db_app::load("widgets/messageboard.widget.js, widgets/windowAux.widget.js");
   db_app::load("estilos.css, grid.style.css");
@@ -95,7 +95,7 @@ td.linhagrid
   <table border="0" cellspacing="0" cellpadding="0" align="center">
     <tr>
      <td>
-      <?include(modification("forms/db_frmmer_consumocardapio.php"));?>     
+      <?php include(modification("forms/db_frmmer_consumocardapio.php"));?>     
      </td>
    </tr>   
   </table>

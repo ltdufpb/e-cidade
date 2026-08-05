@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadescrito_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcadescrito = new cl_cadescrito;
 $clcadescrito->rotulo->label("q86_numcgm");
 ?>
@@ -53,7 +54,7 @@ $clcadescrito->rotulo->label("q86_numcgm");
               <?=$Lq86_numcgm?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("q86_numcgm",6,$Iq86_numcgm,true,"text",4,"","chave_q86_numcgm");
 		       ?>
             </td>
@@ -71,7 +72,7 @@ $clcadescrito->rotulo->label("q86_numcgm");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
 
       if(!isset($pesquisa_chave)){
 
@@ -119,12 +120,12 @@ $clcadescrito->rotulo->label("q86_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

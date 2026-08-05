@@ -83,7 +83,7 @@ class TutorialEtapa {
     }
 
     $passos = $this->getPassos();
-    $this->passoAtual = isset($passos[0]) ? $passos[0] : new TutorialEtapaPasso();
+    $this->passoAtual = $passos[0] ?? new TutorialEtapaPasso();
 
     return $this->passoAtual;
   }
@@ -127,17 +127,17 @@ class TutorialEtapa {
 
   /**
    * Retorna os dados da classe no formato de stdClass
-   * @return \stdClass Objeto de retorno
+   * @return stdClass Objeto de retorno
    */
   public function toObject() {
 
-    $obj = new \stdClass();
+    $obj = new stdClass();
 
     $obj->id = $this->getId();
     $obj->descricao = $this->getDescricao();
     $obj->ordem = $this->getOrdem();
     $obj->passoAtual = $this->getPassoAtual()->toObject();
-    $obj->passos = array();
+    $obj->passos = [];
 
     foreach ($this->getPassos() as $passo) {
       $obj->passos[] = $passo->toObject();

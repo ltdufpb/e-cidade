@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -43,7 +43,7 @@ $clrotulo->label("ac13_validade");
           <b>Código:</b>
         </td>
         <td>
-		      <?
+		      <?php 
 		        db_input('ac13_sequencial',10,$Iac13_sequencial,true,'text',3);
 		      ?>
         </td>
@@ -53,7 +53,7 @@ $clrotulo->label("ac13_validade");
           <?=@$Lac13_descricao?>
         </td>
         <td>
-          <?
+          <?php 
             db_input('ac13_descricao',40,$Iac13_descricao,true,'text',$db_opcao);
           ?>
         </td>
@@ -63,7 +63,7 @@ $clrotulo->label("ac13_validade");
           <?=@$Lac13_validade?>
         </td>
         <td>
-		      <?
+		      <?php 
 		        db_inputdata('ac13_validade',@$ac13_validade_dia,@$ac13_validade_mes,@$ac13_validade_ano,true,
 		                     'text',$db_opcao,"");
 		      ?>
@@ -75,7 +75,7 @@ $clrotulo->label("ac13_validade");
             <legend>
               <b>Observação</b>
             </legend>
-              <?
+              <?php 
                 db_textarea('ac13_obs',5,60,$Iac13_obs,true,'text',$db_opcao,"");
               ?>
           </fieldset>
@@ -87,7 +87,7 @@ $clrotulo->label("ac13_validade");
             <legend>
               <b>Texto Padrão</b>
             </legend>
-              <?
+              <?php 
                 db_textarea('ac13_textopadrao',5,60,$Iac13_textopadrao,true,'text',$db_opcao,"");
               ?>
           </fieldset>
@@ -119,7 +119,7 @@ $clrotulo->label("ac13_validade");
       <td>
         <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" 
                onClick="return js_pesquisar();" 
-               <?//=($db_opcao==1?"disabled":($db_opcao==2||$db_opcao==22?"":""))?> >
+               <?php //=($db_opcao==1?"disabled":($db_opcao==2||$db_opcao==22?"":""))?> >
       </td>
     </tr>
   </table>

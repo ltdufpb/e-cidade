@@ -8,7 +8,6 @@ use ECidade\Educacao\Escola\Model\ComponenteCurricular;
 use ECidade\Educacao\Escola\Repository\Repository;
 use ECidade\Educacao\Secretaria\BNCC\Model\Disciplina;
 use ECidade\Educacao\Secretaria\BNCC\Model\DisciplinaEquivalente;
-use ECidade\Educacao\Secretaria\BNCC\Service\EquivalenciaEtapasService;
 use ECidade\Enum\Educacao\BNCC\EnsinoEnum;
 use Exception;
 

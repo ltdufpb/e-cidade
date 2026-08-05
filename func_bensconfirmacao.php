@@ -47,7 +47,8 @@ $clbens->rotulo->label("t52_descr");
 $clbens->rotulo->label("t52_ident");
 $clclabens->rotulo->label("t64_class");
 $cldb_depart->rotulo->label("descrdepto");
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $result = $clcfpatri->sql_record($clcfpatri->sql_query_file());
 db_fieldsmemory($result,0);
 ?>
@@ -68,7 +69,7 @@ db_fieldsmemory($result,0);
               <label class="bold" id="lbl_chave_t52_bem" for="chave_t52_bem"><?=$Lt52_bem?></label>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("t52_bem",10,$It52_bem,true,"text",4,"","chave_t52_bem");
 		       ?>
             </td>
@@ -78,14 +79,14 @@ db_fieldsmemory($result,0);
              <label class="bold" id="lbl_chave_t52_placa" for="chave_t52_placa"><?= $Lt52_ident ?></label>
            </td>
            <td width="96%" align="left" nowrap>
-             <?
+             <?php 
              $Nt52_ident = null;
              db_input("t52_ident", 10, $It52_ident, true, "text", 4, "", "chave_t52_placa");
              ?>
            </td>
          </tr>
           <tr>
-            <?
+            <?php 
 	            $cldb_estrut->autocompletar   = true;
               $cldb_estrut->funcao_onchange = 'js_troca(this.value)';
               $cldb_estrut->nomeform        = 'form2';
@@ -103,7 +104,7 @@ db_fieldsmemory($result,0);
               <label class="bold" id="lbl_chave_t52_descr" for="chave_t52_descr"><?=$Lt52_descr?></label>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("t52_descr",40,$It52_descr,true,"text",4,"","chave_t52_descr");
 		       ?>&nbsp;&nbsp;
             </td>
@@ -111,7 +112,7 @@ db_fieldsmemory($result,0);
               <label class="bold" id="lbl_descrdepto" for="descrdepto"><?=$Ldescrdepto?></label>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("descrdepto",40,$Idescrdepto,true,"text",4,"");
 		       ?>
             </td>
@@ -129,7 +130,7 @@ db_fieldsmemory($result,0);
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
 
       $where_instit  = " and db_depart.instit = ".db_getsession("DB_instit");
       $where2_instit = " and t52_instit = ".db_getsession("DB_instit")." and t52_depart = ".db_getsession("DB_coddepto");
@@ -379,12 +380,12 @@ function js_troca(obj){
     js_mascara02_t64_class();
 }
 </script>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

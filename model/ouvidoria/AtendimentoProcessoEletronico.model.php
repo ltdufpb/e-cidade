@@ -193,11 +193,11 @@ class AtendimentoProcessoEletronico
 
         if (empty($this->getId())) {
             if(!$dao->incluir(null)){
-                throw new \Exception($dao->erro_msg);
+                throw new Exception($dao->erro_msg);
             }
         } else {
             if(!$dao->alterar($this->getId())){
-                throw new \Exception($dao->erro_msg);
+                throw new Exception($dao->erro_msg);
             }
         }
 

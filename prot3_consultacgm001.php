@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,13 +61,13 @@ db_postmemory($HTTP_POST_VARS);
   </tr>
   <tr> 
     <td  align="right" nowrap title="<?=$Tz01_numcgm?>"> 
-      <? 
+      <?php  
          //Clicando na ancora para buscar o cgm atraves do formulario de pesquisa.
          db_ancora($Lz01_numcgm,"js_pesquisaz01_numcgm(true);",1);
       ?>
     </td> 
     <td align="left" nowrap>
-      <?
+      <?php 
          //Digitando um numero de cgm para buscar
 	 db_input("z01_numcgm",10,$Iz01_numcgm,true,"text",1,"onchange='js_pesquisaz01_numcgm(false);'"); 
 	 db_input("z01_nome",45,$Iz01_nome,true,"text",3);
@@ -82,7 +82,7 @@ db_postmemory($HTTP_POST_VARS);
 </table>
 </form>
 </center>
-<? 
+<?php  
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 

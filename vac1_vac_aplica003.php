@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -73,14 +73,14 @@ if (isset($excluir)) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmvac_aplica.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit") 
@@ -88,7 +88,7 @@ if (isset($excluir)) {
 ?>
 </body>
    </html>
-<?
+<?php 
 if (isset($excluir)) {
 
   if ($clvac_aplica->erro_status == "0") {

@@ -55,7 +55,7 @@ class ProfissionalFormacaoRepository extends Repository
         if (!$rs) {
             throw new Exception("Erro ao buscar formação do profissional.");
         }
-        $formacao = array();
+        $formacao = [];
         if (pg_num_rows($rs) === 0) {
             return $formacao;
         }

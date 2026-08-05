@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -37,7 +37,8 @@ include(modification("classes/db_baseserie_classe.php"));
 include(modification("classes/db_basemps_classe.php"));
 include(modification("classes/db_base_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clserie     = new cl_serie;
 $clbaseserie = new cl_baseserie;
 $clbasemps   = new cl_basemps;
@@ -64,7 +65,7 @@ if (isset($serie_codigos)) {
   parent.db_iframe_outraseriealt.hide();
   parent.js_refresh();
  </script>
- <?
+ <?php 
  exit;
 }
 ?>
@@ -80,7 +81,7 @@ if (isset($serie_codigos)) {
  <tr>
   <td align="center" valign="top">
    <b>Selecione as outras Etapas para conter as alterações desta disciplina.</b>
-   <?
+   <?php 
    $sql = $clbaseserie->sql_query("","si.ed11_i_sequencia as inicial,sf.ed11_i_sequencia as final,si.ed11_i_ensino as ensino",""," ed87_i_codigo = $base");
    $result = $clbaseserie->sql_record($sql);
    db_fieldsmemory($result,0);
@@ -102,12 +103,12 @@ if (isset($serie_codigos)) {
     <script>
      parent.db_iframe_outraseriealt.hide();
     </script>
-    <?
+    <?php 
     exit;
    }
    ?>
    <select name="series[]" id="series" size="10" style="font-size:9px;width:330px;" multiple>
-   <?
+   <?php 
    for($x=0;$x<$linhas1;$x++){
     db_fieldsmemory($result1,$x);
     echo "<option value='$ed34_i_codigo'>$ed11_c_descr</option>";
@@ -146,7 +147,7 @@ if (isset($serie_codigos)) {
   }
  }
  function js_fechar(){
-  <?
+  <?php 
   $sql = $clbasemps->sql_query("","distinct ed31_i_curso,ed31_c_descr,ed11_c_descr",""," ed34_i_base = $base AND ed34_i_serie = $serie");
   $result = $clbasemps->sql_record($sql);
   db_fieldsmemory($result,0);

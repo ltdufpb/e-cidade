@@ -36,7 +36,7 @@
      * Collection de SistemaConta
      * @var array
      */
-    private $aInstancias = array();
+    private $aInstancias = [];
 
     /**
      * Instancia da classe
@@ -58,7 +58,7 @@
      */
     public static function getSistemaContaByCodigo($iCodigoSistemaConta) {
 
-      if (!array_key_exists($iCodigoSistemaConta, SistemaContaRepository::getInstance()->aInstancias)) {
+      if (!array_key_exists((string) $iCodigoSistemaConta, SistemaContaRepository::getInstance()->aInstancias)) {
         SistemaContaRepository::getInstance()->aInstancias[$iCodigoSistemaConta] = new SistemaConta($iCodigoSistemaConta);
       }
       return SistemaContaRepository::getInstance()->aInstancias[$iCodigoSistemaConta];
@@ -84,7 +84,7 @@
      */
     public static function adicionarSistemaConta(SistemaConta $oSistemaConta) {
 
-      if (!array_key_exists($oSistemaConta->getCodigoSistemaConta(),
+      if (!array_key_exists((string) $oSistemaConta->getCodigoSistemaConta(),
                            SistemaContaRepository::getInstance()->aInstancias)) {
         SistemaContaRepository::getInstance()->aInstancias[$oSistemaConta->getCodigoSistemaConta()] = $oSistemaConta;
       }
@@ -100,7 +100,7 @@
        /**
         *
         */
-      if (array_key_exists($oSistemaConta->getCodigoSistemaConta(),
+      if (array_key_exists((string) $oSistemaConta->getCodigoSistemaConta(),
                            SistemaContaRepository::getInstance()->aInstancias)) {
         unset(SistemaContaRepository::getInstance()->aInstancias[$oSistemaConta->getCodigoSistemaConta()]);
       }

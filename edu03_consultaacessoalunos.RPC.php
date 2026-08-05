@@ -59,7 +59,7 @@ try {
       }
 
       $rsFileLock = fopen($sLockFile, 'w');
-      fputs($rsFileLock, db_getsession("DB_id_usuario"));
+      fputs($rsFileLock, (string) db_getsession("DB_id_usuario"));
 
       db_inicio_transacao();
 
@@ -72,8 +72,8 @@ try {
         $oClient = new DBSoapClient(ControleAcessoAluno::getUrlWebservice());
       } else {
 
-        $aOptions = array('location' => ControleAcessoAluno::getUrlWebservice(),
-                          'uri'      => ControleAcessoAluno::getURI());
+        $aOptions = ['location' => ControleAcessoAluno::getUrlWebservice(),
+                          'uri'      => ControleAcessoAluno::getURI()];
         $oClient = new DBSoapClient(null, $aOptions);
       }
       $sCampos = "to_timestamp(max(ed101_dataleitura|| ' ' || cast(ed101_horaleitura as time) + '1 second'::interval),";
@@ -90,17 +90,17 @@ try {
 
         $sUltimaLeitura = db_utils::fieldsMemory($rsUltimaLeitura, 0)->ultima_leitura;
 
-        if( trim($sUltimaLeitura) != '' ) {
+        if( trim((string) $sUltimaLeitura) != '' ) {
 
           $sDataInicial = $sUltimaLeitura;
-          $sDataInicial = substr($sDataInicial, 0, 19);
+          $sDataInicial = substr((string) $sDataInicial, 0, 19);
         }
       }
       if( $sDataInicial == "" ) {
         $sDataInicial = date('Y-m-d', db_getsession('DB_datausu')) . ' ' . db_hora(0, 'H:i:s');
       }
 
-      $oRetornoDadosLeitura = $oClient->getDadosLeituras(array("dataHoraInicial" => $sDataInicial));
+      $oRetornoDadosLeitura = $oClient->getDadosLeituras(["dataHoraInicial" => $sDataInicial]);
 
       if( !isset($oRetornoDadosLeitura->getDadosLeituraResult->Movimentacao) ) {
         throw new Exception('Nenhuma leitura para ser processada.');
@@ -124,7 +124,7 @@ try {
          * de percorrer o array a cada leitura.
          */
         $oDaoAluno = db_utils::getDao("aluno");
-        $aCacheAlunosExistentes = array();
+        $aCacheAlunosExistentes = [];
         foreach( $aDadosLeitura as $oParam => $oMovimento ) {
 
           /**
@@ -235,8 +235,8 @@ try {
 
       $sWhere = '';
       $sAnd   = '';
-      $oParam->dataInicial = implode("-", array_reverse(explode("/", $oParam->dataInicial)));
-      $oParam->dataFinal   = implode("-", array_reverse(explode("/", $oParam->dataFinal)));
+      $oParam->dataInicial = implode("-", array_reverse(explode("/", (string) $oParam->dataInicial)));
+      $oParam->dataFinal   = implode("-", array_reverse(explode("/", (string) $oParam->dataFinal)));
 
       if( $oParam->dataInicial != "" ) {
 

@@ -44,7 +44,7 @@ class Avaliacao
     /**
      * @var AvaliacaoGrupo[]
      */
-    protected $aGrupos = array();
+    protected $aGrupos = [];
     /**
      * @var string
      */
@@ -112,9 +112,9 @@ class Avaliacao
 
     /**
      * @return int
-     * @deprecated
      * @see getCodigo
      */
+    #[Deprecated]
     public function getAvaliacao()
     {
         return $this->iAvaliacao;
@@ -141,9 +141,9 @@ class Avaliacao
     /**
      * @param $iAvaliacao
      * @return $this
-     * @deprecated
      * @see setCodigo
      */
+    #[Deprecated]
     public function setAvaliacao($iAvaliacao)
     {
         $this->iAvaliacao = $iAvaliacao;
@@ -253,7 +253,7 @@ class Avaliacao
     public function getPerguntas($iGrupo = null)
     {
 
-        $aPerguntas = array();
+        $aPerguntas = [];
         $aPerguntasDoGrupo = $this->getGruposPerguntas();
         foreach ($aPerguntasDoGrupo as $oGrupo) {
 
@@ -338,7 +338,7 @@ class Avaliacao
      */
     public function getRespostasDaPerguntaPoCodigo($iCodigoPergunta)
     {
-        $aRespostas = array();
+        $aRespostas = [];
         if ($this->iAvaliacaoGrupo != "") {
 
             $oPergunta = new AvaliacaoPergunta($iCodigoPergunta);
@@ -355,7 +355,7 @@ class Avaliacao
      */
     public function getRespostasDaPerguntaPorIdentificador($sIdentificador)
     {
-        $aRespostas = array();
+        $aRespostas = [];
         $oDaoAvaliacaoPergunta = new cl_avaliacaopergunta;
         $sSqlPergunta = $oDaoAvaliacaoPergunta->sql_query_file(null,
             "db103_sequencial",
@@ -543,7 +543,7 @@ class Avaliacao
         if (empty($this->sIdentificador)) {
             $this->sIdentificador = $identifier->slugify($this->sDescricao);
         } else if (!$identifier->validate($this->sIdentificador)) {
-            throw new \DBException("Identificador da avaliação já cadastrado: '$this->sIdentificador'");
+            throw new DBException("Identificador da avaliação já cadastrado: '$this->sIdentificador'");
         }
 
         $oDao = new cl_avaliacao;
@@ -563,7 +563,7 @@ class Avaliacao
         }
 
         if ($oDao->erro_status == 0) {
-            throw new \Exception("Não foi possível salvar a avaliação.");
+            throw new Exception("Não foi possível salvar a avaliação.");
         }
 
         $this->iAvaliacao = $oDao->db101_sequencial;
@@ -610,15 +610,11 @@ class Avaliacao
         $copy = clone $this;
         $copy->organizaDados();
 
-        $copy->aGrupos = array_map(function ($data) {
-            return $data->jsonSerialize();
-        }, $copy->aGrupos);
+        $copy->aGrupos = array_map(fn($data) => $data->jsonSerialize(), $copy->aGrupos);
 
         foreach ($copy->aGrupos as &$grupo) {
-            $grupo['oAvaliacao'] = array();
-            $grupo['aPerguntas'] = array_map(function ($data) {
-                return $data->jsonSerialize();
-            }, $grupo['aPerguntas']);
+            $grupo['oAvaliacao'] = [];
+            $grupo['aPerguntas'] = array_map(fn($data) => $data->jsonSerialize(), $grupo['aPerguntas']);
         }
 
         return JSON::create()->stringify($copy->jsonSerialize());

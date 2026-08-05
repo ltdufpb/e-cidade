@@ -67,7 +67,7 @@ class cl_aguacontratoeconomia {
                  x38_observacoes = varchar(200) = Observações 
                  ";
    //funcao construtor da classe 
-   function cl_aguacontratoeconomia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacontratoeconomia"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

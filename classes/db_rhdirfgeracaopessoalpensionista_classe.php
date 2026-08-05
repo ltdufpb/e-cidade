@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhdirfgeracaopessoalpensionista
 class cl_rhdirfgeracaopessoalpensionista { 
@@ -26,7 +26,7 @@ class cl_rhdirfgeracaopessoalpensionista {
                  rh202_rhdirfgeracaopessoal = int4 = Geração dados pessoal 
                  ";
    //funcao construtor da classe 
-   function cl_rhdirfgeracaopessoalpensionista() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhdirfgeracaopessoalpensionista"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

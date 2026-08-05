@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,8 +32,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str( $HTTP_SERVER_VARS["QUERY_STRING"] );
-db_postmemory( $HTTP_POST_VARS );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
+db_postmemory( $_POST );
 
 $clensino        = new cl_ensino;
 $cldisciplina    = new cl_disciplina;
@@ -92,7 +92,7 @@ db_fieldsmemory( $result0, 0 );
           <center>
           <fieldset style="width:95%">
             <legend><b>Disciplinas de <?=$ed10_c_descr?></b></legend>
-            <?
+            <?php 
               include(modification("forms/db_frmdisciplina.php"));
             ?>
           </fieldset>
@@ -102,7 +102,7 @@ db_fieldsmemory( $result0, 0 );
     </table>
   </body>
 </html>
-<?
+<?php 
 if ( isset( $incluir ) ) {
 
   if ( $cldisciplina->erro_status == "0" ) {

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_fisctestem_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clfisctestem = new cl_fisctestem;
 $clfisctestem->rotulo->label("y23_codnoti");
 $clfisctestem->rotulo->label("y23_numcgm");
@@ -55,7 +56,7 @@ $clfisctestem->rotulo->label("y23_numcgm");
               <?=$Ly23_codnoti?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y23_codnoti",20,$Iy23_codnoti,true,"text",4,"","chave_y23_codnoti");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clfisctestem->rotulo->label("y23_numcgm");
               <?=$Ly23_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y23_numcgm",8,$Iy23_numcgm,true,"text",4,"","chave_y23_numcgm");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clfisctestem->rotulo->label("y23_numcgm");
               <?=$Ly23_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y23_numcgm",8,$Iy23_numcgm,true,"text",4,"","chave_y23_numcgm");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clfisctestem->rotulo->label("y23_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_fisctestem.php")==true){
@@ -129,12 +130,12 @@ $clfisctestem->rotulo->label("y23_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

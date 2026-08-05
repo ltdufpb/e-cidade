@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -174,7 +174,7 @@ if (isset($confirma)) {
       db_hora(),                                   // Hora Atual
       db_getsession('DB_coddepto'),                // Depto do Usuario Atual logado
       $aItens,                                     // Itens do Atendimento
-      &$erro_msg);
+      $erro_msg);
     }
     
     if ($sqlerro==true) {
@@ -205,7 +205,7 @@ if (isset($confirma)) {
 </script>
 
 <style>
-<?$cor="#999999"?>
+<?php $cor="#999999"?>
 .bordas{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -213,7 +213,7 @@ if (isset($confirma)) {
          border-bottom-color: <?=$cor?>;
          background-color: #999999;
 }
-<?$cor="999999"?>
+<?php $cor="999999"?>
 .bordas_corp{
          border: 1px solid #cccccc;
          border-right-color: <?=$cor?>;
@@ -240,7 +240,7 @@ if (isset($confirma)) {
     </td>
   </tr>
  <table border='1' cellspacing="0" cellpadding="0">   
- <?
+ <?php 
 db_input('valor',40,"",true,'hidden',3,'');
 db_input("m80_codigo","10","",true,"hidden",3);
 if (isset($m80_codigo) && $m80_codigo!= "") {
@@ -383,6 +383,6 @@ function js_buscaquant()
   return true;
 }
 </script>
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

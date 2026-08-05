@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcprojativprogramfisica_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcprojativprogramfisica = new cl_orcprojativprogramfisica;
 $clorcprojativprogramfisica->rotulo->label("o28_sequencial");
 $clorcprojativprogramfisica->rotulo->label("o28_orcprojativ");
@@ -54,7 +55,7 @@ $clorcprojativprogramfisica->rotulo->label("o28_orcprojativ");
               <?=$Lo28_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o28_sequencial",10,$Io28_sequencial,true,"text",4,"","chave_o28_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clorcprojativprogramfisica->rotulo->label("o28_orcprojativ");
               <?=$Lo28_orcprojativ?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o28_orcprojativ",10,$Io28_orcprojativ,true,"text",4,"","chave_o28_orcprojativ");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clorcprojativprogramfisica->rotulo->label("o28_orcprojativ");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcprojativprogramfisica.php")==true){
@@ -122,12 +123,12 @@ $clorcprojativprogramfisica->rotulo->label("o28_orcprojativ");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

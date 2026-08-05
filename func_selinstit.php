@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("classes/db_db_config_classe.php"));
 include(modification("classes/db_db_userinst_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $cl_db_userinst = new cl_db_userinst;
 $cldb_config = new cl_db_config;
@@ -90,7 +91,7 @@ function js_marcatodos(){
 <form name="form1" method="post" id='form1'>
 <center>
 <table cellspacing="0" bgcolor="#CCCCCC" border="1" marginwidth="0">
-   <?
+   <?php 
    // selecina as instituições que o usuario tem liberadas
    $vetor_instit = array();
    $resit  = $cl_db_userinst->sql_record($cl_db_userinst->sql_query_file(null, null,"id_instit",null,"id_usuario=".db_getsession("DB_id_usuario")));
@@ -104,14 +105,14 @@ function js_marcatodos(){
    if($result==false || $cldb_config->numrows==0){
      ?>
      <tr><td align="center" valign="top"> Sem Cadastro de Instituição </td></tr>
-     <?
+     <?php 
    }else{
      ?>
      <tr> 
        <td align="center" alt="Marcar/Desmarcar todos." title="Marcar/Desmarcar todos."><input type="checkbox" name="marcardesmarcar" onclick="js_marcatodos();"/></td> 
        <td align="center"><b>Instituições</b></td> 
      </tr>
-     <?
+     <?php 
      for($i=0;$i<$cldb_config->numrows;$i++){
        db_fieldsmemory($result,$i);
 
@@ -127,7 +128,7 @@ function js_marcatodos(){
          <td align="left" > <input name='cod_<?=$codigo?>' type='checkbox' onclick='js_marca("<?=$codigo?>");<?=($funcao==''?'':$funcao.'();')?>' value='<?=$codigo?>'></td>
          <td align="left" > <strong><?=$nomeinst?></strong></td>
        </tr>
-       <?
+       <?php 
        if($prefeitura=='t'){
          echo "<script>document.form1.cod_$codigo.click();</script>";
        }

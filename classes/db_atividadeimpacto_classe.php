@@ -56,7 +56,7 @@ class cl_atividadeimpacto {
                  am03_potencialpoluidor = varchar(20) = Potencial Poluidor
                  ";
    //funcao construtor da classe
-   function cl_atividadeimpacto() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atividadeimpacto");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

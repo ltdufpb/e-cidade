@@ -57,7 +57,7 @@ try {
     case 'getAlunosVinculados':
 
       $oTurma            = TurmaRepository::getTurmaByCodigo($oParam->iCodigoTurma);
-      $aAlunosVinculados = array();
+      $aAlunosVinculados = [];
       foreach ($oTurma->getAlunosProgressaoParcial() as $oProgressaoAluno) {
 
         $oDadosAluno                           = new stdClass();
@@ -85,7 +85,7 @@ try {
     case 'getDadosTurma':
 
       $oTurma  = TurmaRepository::getTurmaByCodigo($oParam->iCodigoTurma);
-      $aEtapas = array();
+      $aEtapas = [];
 
       foreach ($oTurma->getEtapas() as $oEtapaTurma) {
 
@@ -121,7 +121,7 @@ try {
 
       $oTurma       = TurmaRepository::getTurmaByCodigo($oParam->iCodigoTurma);
       $oEtapa       = EtapaRepository::getEtapaByCodigo($oParam->iEtapa);
-      $aDisciplinas = array();
+      $aDisciplinas = [];
 
       foreach ($oTurma->getDisciplinasPorEtapa($oEtapa) as $oRegencia) {
 
@@ -156,7 +156,7 @@ try {
                                                                                                         $lSomenteAlunosEscola
                                                                                                        );
 
-      $aAlunosSemVinculo = array();
+      $aAlunosSemVinculo = [];
 
       foreach ($aProgressoes as $oProgressaoAluno) {
 
@@ -268,7 +268,7 @@ try {
       }
       $iLinhas = pg_num_rows( $rsProgressao );
 
-      $oRetorno->aProgressao = array();
+      $oRetorno->aProgressao = [];
       for ($i = 0; $i < $iLinhas; $i++) {
 
         $oDadosProgressao                = db_utils::fieldsMemory($rsProgressao, $i);
@@ -276,36 +276,21 @@ try {
         $oProgressao->iCodigoProgressao  = $oDadosProgressao->ed114_sequencial;
         $oProgressao->iAno               = $oDadosProgressao->ed114_ano;
         $oProgressao->iEtapa             = $oDadosProgressao->ed114_serie;
-        $oProgressao->sEtapa             = urlencode($oDadosProgressao->serie);
+        $oProgressao->sEtapa             = urlencode((string) $oDadosProgressao->serie);
         $oProgressao->iDisciplina        = $oDadosProgressao->ed12_i_codigo;
-        $oProgressao->sDisciplina        = urlencode($oDadosProgressao->disciplina);
+        $oProgressao->sDisciplina        = urlencode((string) $oDadosProgressao->disciplina);
 
         $oRetorno->aProgressao[] = $oProgressao;
       }
 
       break;
   }
-} catch (BusinessException $eErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = $eErro->getMessage();
-} catch (ParameterException $eErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = $eErro->getMessage();
-} catch (DBException $eErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = $eErro->getMessage();
-} catch (Exception $eErro) {
+} catch (BusinessException|ParameterException|DBException|Exception $eErro) {
 
   db_fim_transacao(true);
   $oRetorno->status  = 2;
   $oRetorno->message = $eErro->getMessage();
 }
 
-$oRetorno->message = urlencode($oRetorno->message);
+$oRetorno->message = urlencode((string) $oRetorno->message);
 echo $oJson->encode($oRetorno);

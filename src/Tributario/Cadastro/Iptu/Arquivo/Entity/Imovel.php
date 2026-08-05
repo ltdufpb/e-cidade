@@ -6,18 +6,18 @@ use ECidade\Tributario\Library\Entity;
 
 final class Imovel extends Entity
 {
-    const TIPO_IMOVEL_CODIGO    = 'TIPOIMOVELCODIGO';
-    const TIPO_IMOVEL_DESCRICAO = 'TIPOIMOVELDESCRICAO';
-    const MATRICULA             = 'MATRICULA';
-    const EXERCICIO             = 'EXERCICIO';
-    const NOTIFICACAO           = 'NOTIFICACAO';
-    const ZONA_ENTREGA          = 'ZONAENTREGA';
-    const ZONA_FISCAL_LOTE      = 'ZONAFISCALLOTE';
-    const SETOR_FISCAL          = 'SETORFISCAL';
-    const SETOR_CARTOGRAFICA    = 'SETORCARTOGRAFICA';
-    const QUADRACARTOGRAFICA    = 'QUADRACARTOGRAFICA';
-    const LOTE_CARTOGRAFICA     = 'LOTECARTOGRAFICA';
-    const SUBLOTE               = 'SUBLOTE';
+    const string TIPO_IMOVEL_CODIGO    = 'TIPOIMOVELCODIGO';
+    const string TIPO_IMOVEL_DESCRICAO = 'TIPOIMOVELDESCRICAO';
+    const string MATRICULA             = 'MATRICULA';
+    const string EXERCICIO             = 'EXERCICIO';
+    const string NOTIFICACAO           = 'NOTIFICACAO';
+    const string ZONA_ENTREGA          = 'ZONAENTREGA';
+    const string ZONA_FISCAL_LOTE      = 'ZONAFISCALLOTE';
+    const string SETOR_FISCAL          = 'SETORFISCAL';
+    const string SETOR_CARTOGRAFICA    = 'SETORCARTOGRAFICA';
+    const string QUADRACARTOGRAFICA    = 'QUADRACARTOGRAFICA';
+    const string LOTE_CARTOGRAFICA     = 'LOTECARTOGRAFICA';
+    const string SUBLOTE               = 'SUBLOTE';
 
     private $tipoImovelCodigo = '';
 

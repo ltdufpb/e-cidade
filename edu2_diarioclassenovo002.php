@@ -104,7 +104,7 @@ try {
     /**
      * Adiciona as regências selecionadas ao array da classe
      */
-    $aRegencias = explode(",", $oGet->aRegencias);
+    $aRegencias = explode(",", (string) $oGet->aRegencias);
     foreach ($aRegencias as $iRegencia) {
         $oRelatorio->adicionarRegencias(new Regencia($iRegencia));
     }

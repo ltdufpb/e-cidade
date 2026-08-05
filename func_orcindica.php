@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcindica_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcindica = new cl_orcindica;
 $clorcindica->rotulo->label("o10_indica");
 $clorcindica->rotulo->label("o10_descr");
@@ -54,7 +55,7 @@ $clorcindica->rotulo->label("o10_descr");
               <?=$Lo10_indica?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o10_indica",4,$Io10_indica,true,"text",4,"","chave_o10_indica");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clorcindica->rotulo->label("o10_descr");
               <?=$Lo10_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o10_descr",40,$Io10_descr,true,"text",4,"","chave_o10_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clorcindica->rotulo->label("o10_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcindica.php")==true){
@@ -118,12 +119,12 @@ $clorcindica->rotulo->label("o10_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

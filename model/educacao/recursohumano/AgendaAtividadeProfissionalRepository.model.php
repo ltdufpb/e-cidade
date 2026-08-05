@@ -38,7 +38,7 @@ class AgendaAtividadeProfissionalRepository {
    * Collection de AgendaAtividadeProfissional
    * @var array
    */
-  private $aAgenda = array();
+  private $aAgenda = [];
 
   /**
    * Instancia da classe
@@ -85,7 +85,7 @@ class AgendaAtividadeProfissionalRepository {
       throw new DBException( _M(self::MSG_AGENDAATIVIDADEPROFISSIONAL . "erro_buscar_atividade", $oMsgErro) );
     }
 
-    $aAgendas = array();
+    $aAgendas = [];
     if (pg_num_rows($rsAgenda) == 0) {
       return $aAgendas;
     }
@@ -120,7 +120,7 @@ class AgendaAtividadeProfissionalRepository {
    */
   public static function adicionarAgenda(AgendaAtividadeProfissional $oAgendaAtividadeProfissional) {
 
-    if(!array_key_exists($oAgendaAtividadeProfissional->getCodigo(), AgendaAtividadeProfissionalRepository::getInstance()->aAgenda)) {
+    if(!array_key_exists((string) $oAgendaAtividadeProfissional->getCodigo(), AgendaAtividadeProfissionalRepository::getInstance()->aAgenda)) {
       AgendaAtividadeProfissionalRepository::getInstance()->aAgenda[$oAgendaAtividadeProfissional->getCodigo()] = $oAgendaAtividadeProfissional;
     }
     return true;
@@ -133,7 +133,7 @@ class AgendaAtividadeProfissionalRepository {
    */
   public static function removerAgenda(AgendaAtividadeProfissional $oAgendaAtividadeProfissional) {
 
-    if (array_key_exists($oAgendaAtividadeProfissional->getCodigo(), AgendaAtividadeProfissionalRepository::getInstance()->aAgenda)) {
+    if (array_key_exists((string) $oAgendaAtividadeProfissional->getCodigo(), AgendaAtividadeProfissionalRepository::getInstance()->aAgenda)) {
       unset(AgendaAtividadeProfissionalRepository::getInstance()->aAgenda[$oAgendaAtividadeProfissional->getCodigo()]);
     }
     return true;

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_aguacalc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $claguacalc = new cl_aguacalc;
 $claguacalc->rotulo->label("x22_codcalc");
 $claguacalc->rotulo->label("x22_matric");
@@ -54,7 +55,7 @@ $claguacalc->rotulo->label("x22_matric");
               <?=$Lx22_codcalc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x22_codcalc",5,$Ix22_codcalc,true,"text",4,"","chave_x22_codcalc");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $claguacalc->rotulo->label("x22_matric");
               <?=$Lx22_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x22_matric",10,$Ix22_matric,true,"text",4,"","chave_x22_matric");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $claguacalc->rotulo->label("x22_matric");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguacalc.php")==true){
@@ -122,12 +123,12 @@ $claguacalc->rotulo->label("x22_matric");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

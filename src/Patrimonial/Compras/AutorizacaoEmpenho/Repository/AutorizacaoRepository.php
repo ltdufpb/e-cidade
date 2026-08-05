@@ -27,15 +27,19 @@
 
 namespace ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Repository;
 
+use cl_empautoriza;
+use cl_db_depusu;
+use cl_empauthist;
+use cl_empautpresta;
+use cl_empautorizaprocesso;
+use cl_empautidot;
+use cl_empautitem;
+use Dotacao;
 use ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Model\Autorizacao;
 use ECidade\Patrimonial\Compras\ProcessoAdministrativoEmpenho\Model\ProcessoAdministrativo;
 use ECidade\Patrimonial\Compras\HistoricoEmpenho\Model\Historico;
-use ECidade\Patrimonial\Compras\HistoricoEmpenho\Repository\HistoricoRepository;
 use ECidade\Patrimonial\Compras\TipoPrestacaoEmpenho\Model\TipoPrestacao;
-use ECidade\Patrimonial\Licitacao\Licitacon\Regra\Emissao\Licitacao;
 use Exception;
-use PhpOffice\PhpWord\Tests\Element\ObjectTest;
-use UsuarioSistema;
 
 /**
  * Class AutorizacaoEmpenhoRepository
@@ -46,20 +50,15 @@ class AutorizacaoRepository
     /**
      * @var array
      */
-    private $scopes = array();
-
-    /**
-     * @var Object
-     */
-    private $dao;
+    private $scopes = [];
 
     /**
      * AutorizacaoRepository constructor.
      * @param $dao \cl_empautoriza
+     * @param object $dao
      */
-    public function __construct($dao)
+    public function __construct(private $dao)
     {
-        $this->dao = $dao;
     }
 
 
@@ -69,7 +68,7 @@ class AutorizacaoRepository
      */
     public function buscaUsuarioPorAutorizacao($codigoAutorizacao)
     {
-        $dao = new \cl_empautoriza();
+        $dao = new cl_empautoriza();
         $sql = $dao->sql_query_file($codigoAutorizacao, 'e54_login, e54_depto');
 
         return pg_fetch_array(db_query($sql));
@@ -80,7 +79,7 @@ class AutorizacaoRepository
         $codigoUsuario,
         $codigoDepartamento
     ) {
-        $dao = new \cl_db_depusu;
+        $dao = new cl_db_depusu;
         $sql = $dao->sql_query_file($codigoUsuario, $codigoDepartamento, 'coddepto as cod02');
 
         return pg_fetch_row(db_query($sql));
@@ -93,7 +92,7 @@ class AutorizacaoRepository
      * @return bool|Autorizacao
      * @throws Exception
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $columns = ['*'])
     {
         $sql = $this->dao->sql_query($id, implode(', ', $columns));
         $rs = db_query($sql);
@@ -197,7 +196,7 @@ class AutorizacaoRepository
         if ($autorizacao->getHistorico() !== null) {
             $this->associaHistorico(
                 $autorizacao,
-                new \cl_empauthist(),
+                new cl_empauthist(),
                 $autorizacao->getHistorico()
             );
         }
@@ -205,14 +204,14 @@ class AutorizacaoRepository
         if ($autorizacao->getTipoPrestacao() !== null) {
             $this->associaPrestacao(
                 $autorizacao,
-                new \cl_empautpresta(),
+                new cl_empautpresta(),
                 $autorizacao->getTipoPrestacao()
             );
         }
 
         $processoAdministrativo = $this->associaProcessoAdministrativo(
             $autorizacao,
-            new \cl_empautorizaprocesso(),
+            new cl_empautorizaprocesso(),
             $numeroProcesso
         );
 
@@ -221,13 +220,13 @@ class AutorizacaoRepository
         if ($autorizacao->getDotacao() !== null) {
             $this->associaDotacao(
                 $autorizacao,
-                new \cl_empautidot(),
+                new cl_empautidot(),
                 $autorizacao->getDotacao()
             );
         }
 
         if ($autorizacao->getItens()) {
-            $daoAutorizacaoItem = new \cl_empautitem();
+            $daoAutorizacaoItem = new cl_empautitem();
             $sqlBuscaItensVinculados = $daoAutorizacaoItem->sql_query_file($codigoAutorizacaoImportada);
             $result = db_query($sqlBuscaItensVinculados);
             $this->associaItens($autorizacao, pg_fetch_all($result), $daoAutorizacaoItem);
@@ -239,20 +238,20 @@ class AutorizacaoRepository
 
     /**
      * @param Autorizacao $autorizacao
-     * @param \cl_empautidot $daoDotacaoAutorizacao
-     * @param \Dotacao $dotacao
+     * @param cl_empautidot $daoDotacaoAutorizacao
+     * @param Dotacao $dotacao
      * @throws Exception
      */
     public function associaDotacao(
         Autorizacao $autorizacao,
-        \cl_empautidot $daoDotacaoAutorizacao,
-        \Dotacao $dotacao
+        cl_empautidot $daoDotacaoAutorizacao,
+        Dotacao $dotacao
     ) {
         try {
             $daoDotacaoAutorizacao->e56_coddot = $dotacao->getCodigo();
             $daoDotacaoAutorizacao->e56_anousu = $dotacao->getAno();
             $daoDotacaoAutorizacao->incluir($autorizacao->getCodigoAutorizacao());
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception(
                 "Não foi possivel vincular a Dotação a Autorização
                 {$autorizacao->getCodigoAutorizacao()}"
@@ -264,7 +263,7 @@ class AutorizacaoRepository
     public function associaItens(
         Autorizacao $autorizacao,
         array $autorizacaoItens,
-        \cl_empautitem $daoAutorizacaoItens
+        cl_empautitem $daoAutorizacaoItens
     ) {
         try {
             foreach ($autorizacaoItens as $autItem) {
@@ -278,7 +277,7 @@ class AutorizacaoRepository
                 $daoAutorizacaoItens->e55_descr = $autItem['e55_descr'];
                 $daoAutorizacaoItens->incluir($autorizacao->getCodigoAutorizacao(), $autItem['e55_sequen']);
             }
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception(
                 "Não foi possivel vincular os Itens a Autorização
                 {$autorizacao->getCodigoAutorizacao()}"
@@ -289,20 +288,20 @@ class AutorizacaoRepository
 
     /**
      * @param Autorizacao $autorizacao
-     * @param \cl_empauthist $daoHistorico
+     * @param cl_empauthist $daoHistorico
      * @param Historico $historico
      * @throws Exception
      */
     public function associaHistorico(
         Autorizacao $autorizacao,
-        \cl_empauthist $daoHistorico,
+        cl_empauthist $daoHistorico,
         Historico $historico
     ) {
         try {
             $daoHistorico->excluir($autorizacao->getCodigoAutorizacao());
             $daoHistorico->e40_codhist = $historico->getCodigo();
             $daoHistorico->incluir($autorizacao->getCodigoAutorizacao());
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception(
                 "Não foi possivel vincular o Histórico a Autorização
                 {$autorizacao->getCodigoAutorizacao()}"
@@ -312,13 +311,13 @@ class AutorizacaoRepository
 
     /**
      * @param Autorizacao $autorizacao
-     * @param \cl_empautpresta $daoAutorizacaoPrestacao
+     * @param cl_empautpresta $daoAutorizacaoPrestacao
      * @param TipoPrestacao $tipoPrestacao
      * @throws Exception
      */
     public function associaPrestacao(
         Autorizacao $autorizacao,
-        \cl_empautpresta $daoAutorizacaoPrestacao,
+        cl_empautpresta $daoAutorizacaoPrestacao,
         TipoPrestacao $tipoPrestacao
     ) {
         try {
@@ -326,7 +325,7 @@ class AutorizacaoRepository
             $daoAutorizacaoPrestacao->e58_tipo = $tipoPrestacao->getCodigoTipoPrestacao();
             $daoAutorizacaoPrestacao->e58_autori = $autorizacao->getCodigoAutorizacao();
             $daoAutorizacaoPrestacao->incluir();
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception(
                 "Não foi possivel vincular a Prestação com a Autorização
                 {$autorizacao->getCodigoAutorizacao()}"
@@ -337,14 +336,14 @@ class AutorizacaoRepository
 
     /**
      * @param Autorizacao $autorizacao
-     * @param \cl_empautorizaprocesso $daoProcessoAdministrativo
+     * @param cl_empautorizaprocesso $daoProcessoAdministrativo
      * @param $numeroProcesso
      * @return ProcessoAdministrativo
      * @throws Exception
      */
     public function associaProcessoAdministrativo(
         Autorizacao $autorizacao,
-        \cl_empautorizaprocesso $daoProcessoAdministrativo,
+        cl_empautorizaprocesso $daoProcessoAdministrativo,
         $numeroProcesso
     ) {
         try {
@@ -352,15 +351,15 @@ class AutorizacaoRepository
             $daoProcessoAdministrativo->e150_empautoriza = $autorizacao->getCodigoAutorizacao();
             $daoProcessoAdministrativo->e150_numeroprocesso = $numeroProcesso;
             $daoProcessoAdministrativo->incluir('');
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception("Erro ao tentar cadastrar um Processo Administrativo vinculado a Autorização
             {$autorizacao->getCodigoAutorizacao()}");
         }
 
-        return ProcessoAdministrativo::fromState(array(
+        return ProcessoAdministrativo::fromState([
             'e150_empautoriza' => $autorizacao->getCodigoAutorizacao(),
             'e150_numeroprocesso' => $numeroProcesso
-        ));
+        ]);
     }
 
     /**
@@ -369,7 +368,7 @@ class AutorizacaoRepository
      */
     public function removeScope($key)
     {
-        if (array_key_exists($key, $this->scopes)) {
+        if (array_key_exists((string) $key, $this->scopes)) {
             unset($this->scopes[$key]);
         }
 

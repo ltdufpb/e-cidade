@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tarefa_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltarefa = new cl_tarefa;
 $cltarefa->rotulo->label("at40_sequencial");
 $cltarefa->rotulo->label("at40_descr");
@@ -54,7 +55,7 @@ $cltarefa->rotulo->label("at40_descr");
               <?=$Lat40_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("at40_sequencial",10,$Iat40_sequencial,true,"text",4,"","chave_at40_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cltarefa->rotulo->label("at40_descr");
               <?=$Lat40_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("chave_at40_descr",40,$Iat40_descr,true,"text",4);
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cltarefa->rotulo->label("at40_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tarefa.php")==true){
@@ -118,12 +119,12 @@ $cltarefa->rotulo->label("at40_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

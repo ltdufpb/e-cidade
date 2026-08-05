@@ -2,6 +2,8 @@
 
 namespace ECidade\Configuracao\Opcao;
 
+use Exception;
+use db_utils;
 use ECidade\Configuracao\Opcao\Model\Opcao as OpcaoModel;
 
 class Opcao
@@ -41,7 +43,7 @@ class Opcao
      * @param $valor
      * @param null $ano
      * @param null $instituicao
-     * @throws \Exception
+     * @throws Exception
      */
     public static function salvar($nome, $valor, $ano = null, $instituicao = null)
     {
@@ -59,7 +61,7 @@ class Opcao
             $sql = "delete from db_opcoes where db153_sequencial = {$item->getId()}";
             $rsDelete = db_query($sql);
             if (!$rsDelete) {
-                throw new \Exception("Erro ao remover Item {$nome}");
+                throw new Exception("Erro ao remover Item {$nome}");
             }
             unset(self::getInstance()->opcoes[$hash]);
         }
@@ -90,9 +92,9 @@ class Opcao
 
         $rsInsert = db_query($insert);
         if (!$rsInsert) {
-            throw new \Exception("Erro ao incluir opcao {$nome}");
+            throw new Exception("Erro ao incluir opcao {$nome}");
         }
-        $codigoOpcao  = \db_utils::fieldsMemory($rsInsert, 0)->db153_sequencial;
+        $codigoOpcao  = db_utils::fieldsMemory($rsInsert, 0)->db153_sequencial;
         $item->setid($codigoOpcao);
         self::getInstance()->opcoes[$hash] = $item;
     }
@@ -103,7 +105,7 @@ class Opcao
      * @param null $ano
      * @param null $instituicao
      * @return OpcaoModel
-     * @throws \Exception
+     * @throws Exception
      */
     public static function get($nome, $ano = null, $instituicao = null)
     {
@@ -125,10 +127,10 @@ class Opcao
             $sql = "select  * from db_opcoes where " . implode(" and ", $where);
             $rsDados = db_query($sql);
             if (!$rsDados) {
-                throw  new \Exception("Erro ao pesquisar dados da opcao '{$nome}'");
+                throw  new Exception("Erro ao pesquisar dados da opcao '{$nome}'");
             }
             if (pg_num_rows($rsDados) > 0) {
-                $dados = \db_utils::fieldsMemory($rsDados, 0);
+                $dados = db_utils::fieldsMemory($rsDados, 0);
                 $item = new OpcaoModel();
                 $item->setAno($dados->db153_ano);
                 $item->setID($dados->db153_sequencial);

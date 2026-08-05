@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_meiimportalinhacontador_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmeiimportalinhacontador = new cl_meiimportalinhacontador;
 $clmeiimportalinhacontador->rotulo->label("q109_sequencial");
 $clmeiimportalinhacontador->rotulo->label("q109_meiimportalinha");
@@ -54,7 +55,7 @@ $clmeiimportalinhacontador->rotulo->label("q109_meiimportalinha");
               <?=$Lq109_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q109_sequencial",10,$Iq109_sequencial,true,"text",4,"","chave_q109_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clmeiimportalinhacontador->rotulo->label("q109_meiimportalinha");
               <?=$Lq109_meiimportalinha?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q109_meiimportalinha",10,$Iq109_meiimportalinha,true,"text",4,"","chave_q109_meiimportalinha");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clmeiimportalinhacontador->rotulo->label("q109_meiimportalinha");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_meiimportalinhacontador.php")==true){
@@ -122,12 +123,12 @@ $clmeiimportalinhacontador->rotulo->label("q109_meiimportalinha");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

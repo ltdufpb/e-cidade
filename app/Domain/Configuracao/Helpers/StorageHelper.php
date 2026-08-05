@@ -32,9 +32,9 @@ class StorageHelper
      */
     public static function uploadArquivo(
         $caminho,
-        array $allowed = null,
+        ?array $allowed = null,
         $onlyId = false,
-        \stdClass $metadata = null,
+        ?\stdClass $metadata = null,
         $fileFather = null
     ) {
         $arquivo = explode("/", $caminho);
@@ -61,11 +61,11 @@ class StorageHelper
     public static function atualizarArquivo(
         $id,
         $caminho,
-        Array $allowed = null,
+        ?Array $allowed = null,
         $onlyId = false,
-        \stdClass $metadata = null
+        ?\stdClass $metadata = null
     ) {
-        $arquivo = explode("/", $caminho);
+        $arquivo = explode("/", (string) $caminho);
         $post = new Post(Autenticacao::getInstance());
         $file = new File();
         $file->realPath($caminho)
@@ -92,7 +92,7 @@ class StorageHelper
      */
     public static function downloadArquivo($idStorage)
     {
-        return (new FileEstorage())->getPath($idStorage);
+        return new FileEstorage()->getPath($idStorage);
     }
 
     /**
@@ -127,6 +127,6 @@ class StorageHelper
      */
     public static function getContentsBase64($idStorage)
     {
-        return (new FileEstorage())->getBase64($idStorage);
+        return new FileEstorage()->getBase64($idStorage);
     }
 }

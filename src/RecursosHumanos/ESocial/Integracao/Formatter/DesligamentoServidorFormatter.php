@@ -2,6 +2,10 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use DBException;
+use db_utils;
+use BusinessException;
 use CalculoFolha;
 use CgmJuridico;
 use DBCompetencia;
@@ -45,9 +49,10 @@ class DesligamentoServidorFormatter extends Formatter
     /**
      * @param  array $dados
      * @return mixed|stdClass[]
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
+    #[Override]
     public function formatar($servidores)
     {
         $dadosServidor = [];
@@ -65,8 +70,8 @@ class DesligamentoServidorFormatter extends Formatter
     /**
      * @param  $dadosFormatado
      * @return mixed
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function processamento($servidor)
     {
@@ -102,12 +107,12 @@ class DesligamentoServidorFormatter extends Formatter
         if (!$rs) {
             $msg = "Ocorreu um erro ao buscar informações da competência de pagamento de rescisão da "
                 . "matrícula: {$this->servidorAtual->getMatricula()}.";
-            throw new \DBException($msg);
+            throw new DBException($msg);
         }
 
         if (pg_num_rows($rs) > 0) {
-            $ano = \db_utils::fieldsMemory($rs, 0)->ano;
-            $mes = \db_utils::fieldsMemory($rs, 0)->mes;
+            $ano = db_utils::fieldsMemory($rs, 0)->ano;
+            $mes = db_utils::fieldsMemory($rs, 0)->mes;
 
             if ($this->servidorAtual->getAnoCompetencia() != $ano
                 || $this->servidorAtual->getMesCompetencia() != $mes) {
@@ -125,7 +130,7 @@ class DesligamentoServidorFormatter extends Formatter
         $this->inicializaEventosFinanceiros();
 
         $infoDeslig->mtvDeslig = str_pad(
-            $this->servidorAtual->getDadosRescisao()->r59_motivoesocial,
+            (string) $this->servidorAtual->getDadosRescisao()->r59_motivoesocial,
             2,
             '0',
             STR_PAD_LEFT
@@ -180,8 +185,8 @@ class DesligamentoServidorFormatter extends Formatter
         $ideEstabLot->tpInsc = 1; //CNPJ=1, CAEPF= 2, CNO = 3 VERIQUEI OUTRO METODO ESTA COM A MESMA VALIDACAO
         $ideEstabLot->nrInsc = $this->getEmpregador()->getCnpj(); //VERIFICAR SE PODE SER CNPJ
         $ideEstabLot->codLotacao = '01';
-        $anoRescisao = (int) substr($this->servidorAtual->getDadosRescisao()->rh05_recis, 0, 4);
-        $mesRescisao = (int) substr($this->servidorAtual->getDadosRescisao()->rh05_recis, 5, 2);
+        $anoRescisao = (int) substr((string) $this->servidorAtual->getDadosRescisao()->rh05_recis, 0, 4);
+        $mesRescisao = (int) substr((string) $this->servidorAtual->getDadosRescisao()->rh05_recis, 5, 2);
         $infoRubrica = [];
 
         foreach ($this->eventosRescisao as $eventoRescisao) {
@@ -251,7 +256,7 @@ class DesligamentoServidorFormatter extends Formatter
      * @param int $ano
      * @param int $mes
      * @return array
-     * @throws \DBException
+     * @throws DBException
      */
     private function inicializaRubricaPensaoAlimenticia()
     {
@@ -263,7 +268,7 @@ class DesligamentoServidorFormatter extends Formatter
         $this->rubricaPensaoAlimenticia[] = PagamentosRendTrabalhoRepository::buscarParametroRubricaPensaoAlimenticia(
             $competencia
         );
-        $this->rubricaPensaoAlimenticia[] = "4" . substr($this->rubricaPensaoAlimenticia[0], 1, 3);
+        $this->rubricaPensaoAlimenticia[] = "4" . substr((string) $this->rubricaPensaoAlimenticia[0], 1, 3);
     }
 
     /**
@@ -271,6 +276,7 @@ class DesligamentoServidorFormatter extends Formatter
      *
      * @return  CgmJuridico
      */
+    #[Override]
     public function getEmpregador()
     {
         return $this->empregador;
@@ -283,6 +289,7 @@ class DesligamentoServidorFormatter extends Formatter
      *
      * @return  self
      */
+    #[Override]
     public function setEmpregador(CgmJuridico $empregador)
     {
         $this->empregador = $empregador;

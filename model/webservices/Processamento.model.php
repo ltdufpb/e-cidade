@@ -76,7 +76,7 @@ class Processamento {
    * @var array
    * @access private
    */
-  private $aDadosRecebidos = array();
+  private $aDadosRecebidos = [];
 
   /**
    * Dados Referentes a classe a ser executada pelo webservice.
@@ -104,7 +104,7 @@ class Processamento {
    *
    * @var Array
    */
-  private $aParametrosProcessamento = array();
+  private $aParametrosProcessamento = [];
 
   /**
    * Objeto contendo a Intância do Log
@@ -148,7 +148,7 @@ class Processamento {
   /**
    * Abre o arquivo a partir do metodo informado
    * @return bool
-   * @throws \Exception
+   * @throws Exception
    */
   private function abrirArquivo() {
 
@@ -158,9 +158,9 @@ class Processamento {
 
     $oDadosClasse                        = new stdClass();
     $oDadosClasse->sNome                 = '';
-    $oDadosClasse->aParametrosConstrutor = array();
+    $oDadosClasse->aParametrosConstrutor = [];
     $oDadosClasse->sCaminhoArquivo       = '';
-    $oDadosClasse->aMetodos              = array();
+    $oDadosClasse->aMetodos              = [];
 
     $sCaminhoArquivo = DBFileExplorer::getCaminhoArquivo(
         Processamento::PATH_REQUISICOES,
@@ -234,7 +234,7 @@ class Processamento {
           $oDadosClasse->sNome                 = $oAtributos->getNamedItem('nome')->nodeValue;
           $oDadosClasse->sReferencia           = $oAttrReferencia->nodeValue;
           $oDadosClasse->sCaminhoArquivo       = $oAtributos->getNamedItem('caminho')->nodeValue;
-          $oDadosClasse->aParametrosConstrutor = array();
+          $oDadosClasse->aParametrosConstrutor = [];
           if ($oAtributos->getNamedItem('parametros')->nodeValue) {
             $oDadosClasse->aParametrosConstrutor = explode(',', $oAtributos->getNamedItem('parametros')->nodeValue);
           }
@@ -265,7 +265,7 @@ class Processamento {
           $oMetodo              = new stdClass();
           $oMetodo->sNome       = $oAtributos->getNamedItem('nome')->nodeValue;
           $oMetodo->sReferencia = $oAtributos->getNamedItem('referencia')->nodeValue;
-          $oMetodo->aParametros = !is_null($oXmlAtributo) ? explode(',', $oXmlAtributo->nodeValue) : array();
+          $oMetodo->aParametros = !is_null($oXmlAtributo) ? explode(',', (string) $oXmlAtributo->nodeValue) : [];
 
           $this->aMetodosExecucao[$oMetodo->sReferencia][] = $oMetodo;
 
@@ -289,7 +289,7 @@ class Processamento {
         $oAtributos                          = $oXmlClasse->attributes;
 
         $oDadosClasse->sNome                 = $oAtributos->getNamedItem('nome')->nodeValue;
-        $oDadosClasse->aParametrosConstrutor = explode(',', $oAtributos->getNamedItem('parametros')->nodeValue);
+        $oDadosClasse->aParametrosConstrutor = explode(',', (string) $oAtributos->getNamedItem('parametros')->nodeValue);
         $oDadosClasse->sCaminhoArquivo       = $oAtributos->getNamedItem('caminho')->nodeValue;
 
         // Verifica se o arquivo informado no XML existe
@@ -312,7 +312,7 @@ class Processamento {
 
           $oMetodo                  = new stdClass();
           $oMetodo->sNome           = $oAtributos->getNamedItem('nome')->nodeValue;
-          $oMetodo->aParametros     = !is_null($oParametros) ? explode(',', $oParametros->nodeValue) : array();
+          $oMetodo->aParametros     = !is_null($oParametros) ? explode(',', (string) $oParametros->nodeValue) : [];
 
           $oDadosClasse->aMetodos[] = $oMetodo;
         }
@@ -336,7 +336,7 @@ class Processamento {
     $this->log('INICIO VALIDAÇÃO DE PARAMETROS DECLARADOS NO XML', 1);
     $this->log('');
 
-    $aParametrosSeremValidados = array();
+    $aParametrosSeremValidados = [];
 
     // Valida todos os parametros escritos no XML
     foreach ($this->aParametrosProcessamento as $oParametro) {
@@ -448,7 +448,7 @@ class Processamento {
 
           try {
             $DBDate = new DBDate($sValor);
-          }catch (ParameterException $msgErro) {
+          }catch (ParameterException) {
             throw new Exception("{$sMensagem} não e uma data válida");
           }
           break;
@@ -576,7 +576,7 @@ class Processamento {
   /**
    * Executa Classes
    * @return mixed
-   * @throws \Exception
+   * @throws Exception
    */
   private function executarClasse() {
 
@@ -584,9 +584,9 @@ class Processamento {
     $this->log('INICIO PROCESSAMENTO DAS CLASSE(S)', 1);
     $this->log('');
 
-    $methodsNotLogged = array(
+    $methodsNotLogged = [
         'getFotoPrincipal'
-    );
+    ];
 
     switch ($this->sVersao) {
 
@@ -741,13 +741,13 @@ class Processamento {
     $oDaoDBLogsAcessa->arquivo   = $sMetodo;
     $oDaoDBLogsAcessa->id_usuario= 1;
     $oDaoDBLogsAcessa->id_modulo = $_SESSION['DB_modulo'];
-    $oDaoDBLogsAcessa->id_item   = (isset($_SESSION['DB_itemmenu_acessado'])) ? $_SESSION['DB_itemmenu_acessado'] : 9638;
+    $oDaoDBLogsAcessa->id_item   = $_SESSION['DB_itemmenu_acessado'] ?? 9638;
     $oDaoDBLogsAcessa->coddepto  = 1;
     $oDaoDBLogsAcessa->instit    = $_SESSION['DB_instit'];
     $oDaoDBLogsAcessa->incluir(null);
     $_SESSION['DB_acessado']    = $oDaoDBLogsAcessa->codsequen;
     if ( $oDaoDBLogsAcessa->erro_status == "0" ) {
-      throw new SoapFault("e-Cidade","Erro ao processar registros de Log.\n". '-'.$oDaoDBLogsAcessa->erro_status. '-' . utf8_encode($oDaoDBLogsAcessa->erro_msg));
+      throw new SoapFault("e-Cidade","Erro ao processar registros de Log.\n". '-'.$oDaoDBLogsAcessa->erro_status. '-' . mb_convert_encoding($oDaoDBLogsAcessa->erro_msg, 'UTF-8', 'ISO-8859-1'));
     }
   }
 }

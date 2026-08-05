@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,17 +63,17 @@ if(isset($alterar)){
   <tr> 
     <td  align="left" valign="top" bgcolor="#CCCCCC"> 
     <fieldset style="width:100%"><legend><b>Alteração de Classe Terapêutica</b></legend>
-	<?include(modification("forms/db_frmfar_classeterapeutica.php"));?>
+	<?php include(modification("forms/db_frmfar_classeterapeutica.php"));?>
 	</td>
   </tr>
 </table>
 </center>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar)){
   if($clfar_classeterapeutica->erro_status=="0"){
     $clfar_classeterapeutica->erro(true,false);

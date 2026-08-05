@@ -1,7 +1,9 @@
 <?php
 namespace ECidade\RecursosHumanos\ESocial;
 
-class ESocialContextException extends \Exception
+use Exception;
+
+class ESocialContextException extends Exception
 {
     /**
      * @var mixed

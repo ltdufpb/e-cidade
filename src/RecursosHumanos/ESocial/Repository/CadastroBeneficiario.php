@@ -27,12 +27,15 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Repository;
 
+use BaseClassRepository;
+use cl_rhpessoalmov;
+use cl_selecao;
+use ServidorRepository;
+use cl_rhregime;
+use stdClass;
 use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
-use BusinessException;
 use DBException;
-use ParameterException;
 use db_utils;
-use cl_cgm;
 use DBCompetencia;
 use InstituicaoRepository;
 
@@ -40,24 +43,24 @@ use InstituicaoRepository;
  * Class CadastroBeneficiario
  * @package ECidade\RecursosHumanos\ESocial\Repository
  */
-class CadastroBeneficiario extends \BaseClassRepository
+class CadastroBeneficiario extends BaseClassRepository
 {
     protected static $oInstance;
 
     /**
      * @param DBCompetencia $dbCompetencia
-     * @return \stdClass[]
+     * @return stdClass[]
      * @throws DBException
      */
     public static function buscarBeneficiarios(DBCompetencia $dbCompetencia, $servidores = null, $selecao = null)
     {
-        $retorno = array();
+        $retorno = [];
         
         $servidorMovimentacaoRepository = new ServidorMovimentacaoRepository();
         $codigoInstituicao = InstituicaoRepository::getInstituicaoSessao()->getCodigo();
         
         if (empty($servidores)) {
-            $clRhPessoalmov = new \cl_rhpessoalmov();
+            $clRhPessoalmov = new cl_rhpessoalmov();
           
           /*
            * Buscamos todas as matriculas que possuem a situacao do vinculo do regime aposentado/inativo ou pensionista
@@ -71,7 +74,7 @@ class CadastroBeneficiario extends \BaseClassRepository
             $where .= " AND not exists (select 1 from rhpesrescisao where rh05_seqpes = rh02_seqpes) ";
             
             if (!empty($selecao)) {
-                $clselecao = new \cl_selecao();
+                $clselecao = new cl_selecao();
                 $condicaoSelecao = $clselecao->getCondicaoSelecao($selecao, $codigoInstituicao);
                 $where .= " and {$condicaoSelecao} ";
             }
@@ -94,7 +97,7 @@ class CadastroBeneficiario extends \BaseClassRepository
             for ($contador = 0; $contador < $qtdServidores; $contador++) {
                 $matriculaServidor = db_utils::fieldsMemory($rsServidores, $contador)->rh01_regist;
                 
-                $servidor = \ServidorRepository::getInstanciaByCodigo($matriculaServidor);
+                $servidor = ServidorRepository::getInstanciaByCodigo($matriculaServidor);
                 $servidor->movimentacao = $servidorMovimentacaoRepository->scopeSeqPes(
                     $servidor->getCodigoMovimentacao()
                 )->first();
@@ -111,7 +114,7 @@ class CadastroBeneficiario extends \BaseClassRepository
               /*
                * Verificamos se a matricula informada eh aposentado ou pensionista e não possui rescisao
                */
-                $clRegime = new \cl_rhregime();
+                $clRegime = new cl_rhregime();
               
                 //validacao regime
                 $where  = " rhregime.rh30_codreg = {$servidor->getCodigoRegime()} ";

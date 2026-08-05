@@ -60,7 +60,7 @@ class cl_itbiconstr {
                  it08_coordenadas = varchar(50) = Longitude/Latitude 
                  ";
    //funcao construtor da classe 
-   public function cl_itbiconstr() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbiconstr"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

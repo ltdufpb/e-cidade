@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -36,7 +36,8 @@ include(modification("classes/db_alunoaltcampos_classe.php"));
 include(modification("classes/db_alunoaltconf_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_jsplibwebseller.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $claluno = new cl_aluno;
 $clalunoalt = new cl_alunoalt;
@@ -55,7 +56,7 @@ if(isset($confirmar)){
  <script>
   parent.db_iframe_alunoalterado.hide();
  </script>
- <?
+ <?php 
  exit;
 }
 $result = db_query("SELECT ed47_v_nome FROM aluno WHERE ed47_i_codigo = $aluno");
@@ -88,7 +89,7 @@ $array_modulo = array("1"=>"ESCOLA","2"=>"BIBLIOTECA");
    <br>
    <fieldset style="width:95%"><legend><b>Alterações realizadas no cadastro do aluno <?=$aluno." - ".$nomealuno?></b></legend>
     <table width="100%" border="1" cellspacing="0" cellpading="1">
-    <?
+    <?php 
     $codigo_alunoalt = "";
     $sep = "";
     $sql3 = "SELECT *
@@ -131,7 +132,7 @@ $array_modulo = array("1"=>"ESCOLA","2"=>"BIBLIOTECA");
       <td bgcolor="#999999"><b>Conteúdo Anterior</b></td>
       <td bgcolor="#999999"><b>Conteúdo Após Alteração</b></td>
      </tr>
-     <?
+     <?php 
      $result4 = $clalunoaltcampos->sql_record($clalunoaltcampos->sql_query("","ed276_c_campo,ed276_c_contant,ed276_c_contatual",""," ed276_i_alunoalt = $ed275_i_codigo"));
      for($y=0;$y<$clalunoaltcampos->numrows;$y++){
       db_fieldsmemory($result4,$y);
@@ -143,7 +144,7 @@ $array_modulo = array("1"=>"ESCOLA","2"=>"BIBLIOTECA");
        <td><?=$ed276_c_contant==""?"&nbsp;":$ed276_c_contant?></td>
        <td><?=$ed276_c_contatual==""?"&nbsp;":$ed276_c_contatual?></td>
       </tr>
-      <?
+      <?php 
      }
     }
     ?>

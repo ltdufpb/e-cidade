@@ -40,7 +40,7 @@ class InicialNumpreRepository
     /**
      * @var array
      */
-    private $where = array();
+    private $where = [];
 
     /**
      * @param InicialNumpre $inicialNumpre
@@ -65,9 +65,7 @@ class InicialNumpreRepository
             return false;
         }
 
-        $where = array_map(function (array $filter) {
-            return "{$filter[0]} {$filter[1]} {$filter[2]}";
-        }, $this->where);
+        $where = array_map(fn(array $filter) => "{$filter[0]} {$filter[1]} {$filter[2]}", $this->where);
         $where = implode(' AND ', $where);
 
         $query = "SELECT * FROM inicialnumpre WHERE {$where}";
@@ -91,11 +89,9 @@ class InicialNumpreRepository
      */
     public function get()
     {
-        $dao = new \cl_inicialnumpre();
+        $dao = new cl_inicialnumpre();
 
-        $where = array_map(function (array $filter) {
-            return "{$filter[0]} {$filter[1]} {$filter[2]}";
-        }, $this->where);
+        $where = array_map(fn(array $filter) => "{$filter[0]} {$filter[1]} {$filter[2]}", $this->where);
         $where = implode(' AND ', $where);
 
         $sql = $dao->sql_query_file(null, '*', null, $where);
@@ -105,13 +101,13 @@ class InicialNumpreRepository
             throw new Exception("Não foi possível buscar os numpres dos iniciais.");
         }
 
-        $numpres = array();
+        $numpres = [];
 
         while ($inicial = pg_fetch_array($rs)) {
             $numpres[] = InicialNumpre::fromState($inicial);
         }
 
-        $this->where = array();
+        $this->where = [];
 
         return $numpres;
     }
@@ -125,21 +121,21 @@ class InicialNumpreRepository
      */
     public function scopeInicial($inicial, $operacao = '=')
     {
-        return $this->where(array(
+        return $this->where([
             'v59_inicial',
             $operacao,
             $inicial
-        ));
+        ]);
     }
 
     public function delete($where)
     {
-        $dao = new \cl_inicialnumpre();
+        $dao = new cl_inicialnumpre();
 
         $dao->excluir(null, $where);
 
         if ($dao->erro_status == 0) {
-            throw new \Exception("Erro ao excluir registro da tabela iniicialnumpre: " . $dao->erro_msg);
+            throw new Exception("Erro ao excluir registro da tabela iniicialnumpre: " . $dao->erro_msg);
         }
     }
 }

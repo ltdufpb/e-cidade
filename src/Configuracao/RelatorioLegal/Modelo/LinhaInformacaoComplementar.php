@@ -113,7 +113,7 @@ class LinhaInformacaoComplementar
             $ordemLinha = $this->getLinha()->getOrdem();
         }
 
-        return array(
+        return [
             'sequencial' => $this->getSequencial(),
             'valor' => $this->getValor(),
             'informacaoComplementar' => $this->getInformacaoComplementar(),
@@ -123,7 +123,7 @@ class LinhaInformacaoComplementar
             'sigla' => $this->getSigla(),
             'padrao' => $this->isPadrao(),
             'linhaInformacaoComplementarContaCorrente' => $codigoInformacaoComplementar,
-        );
+        ];
     }
 
     /**

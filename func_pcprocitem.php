@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pcprocitem_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpcprocitem = new cl_pcprocitem;
 $clpcprocitem->rotulo->label("pc81_codprocitem");
 $clpcprocitem->rotulo->label("pc81_codproc");
@@ -54,7 +55,7 @@ $clpcprocitem->rotulo->label("pc81_codproc");
               <?=$Lpc81_codprocitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc81_codprocitem",10,$Ipc81_codprocitem,true,"text",4,"","chave_pc81_codprocitem");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clpcprocitem->rotulo->label("pc81_codproc");
               <?=$Lpc81_codproc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc81_codproc",10,$Ipc81_codproc,true,"text",4,"","chave_pc81_codproc");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clpcprocitem->rotulo->label("pc81_codproc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pcprocitem.php")==true){
@@ -118,12 +119,12 @@ $clpcprocitem->rotulo->label("pc81_codproc");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

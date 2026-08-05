@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -54,10 +54,10 @@
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
-     <?
-	     $clcriaabas->identifica = array("regraarredondamento"     =>"Regra","regraarredondamentofaixa"=>"Faixa"); 
-	     $clcriaabas->src        = array("regraarredondamento"     =>"edu1_regraarredondamento005.php");
-	     $clcriaabas->disabled   = array("regraarredondamentofaixa"=>"true"); 
+     <?php 
+	     $clcriaabas->identifica = ["regraarredondamento"     =>"Regra","regraarredondamentofaixa"=>"Faixa"]; 
+	     $clcriaabas->src        = ["regraarredondamento"     =>"edu1_regraarredondamento005.php"];
+	     $clcriaabas->disabled   = ["regraarredondamentofaixa"=>"true"]; 
 	     $clcriaabas->cria_abas(); 
      ?> 
     </td>
@@ -65,7 +65,7 @@
 </table>
 <form name="form1">
 </form>
-<? 
+<?php  
 	db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

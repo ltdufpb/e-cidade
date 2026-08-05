@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pctipoelemento_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpctipoelemento = new cl_pctipoelemento;
 $clpctipoelemento->rotulo->label("pc06_codtipo");
 $clpctipoelemento->rotulo->label("pc06_codele");
@@ -54,7 +55,7 @@ $clpctipoelemento->rotulo->label("pc06_codele");
               <?=$Lpc06_codtipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc06_codtipo",6,$Ipc06_codtipo,true,"text",4,"","chave_pc06_codtipo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clpctipoelemento->rotulo->label("pc06_codele");
               <?=$Lpc06_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc06_codele",6,$Ipc06_codele,true,"text",4,"","chave_pc06_codele");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clpctipoelemento->rotulo->label("pc06_codele");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pctipoelemento.php")==true){
@@ -118,12 +119,12 @@ $clpctipoelemento->rotulo->label("pc06_codele");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

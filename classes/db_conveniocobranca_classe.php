@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: arrecadacao
 //CLASSE DA ENTIDADE conveniocobranca
 class cl_conveniocobranca {
@@ -44,7 +44,7 @@ class cl_conveniocobranca {
                  ar13_responsavelnossonumero = bool = Responsável pelo Nosso Número
                  ";
    //funcao construtor da classe
-   function cl_conveniocobranca() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conveniocobranca");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

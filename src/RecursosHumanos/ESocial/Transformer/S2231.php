@@ -2,14 +2,14 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Transformer;
 
-use ECidade\RecursosHumanos\ESocial\Model\Configuracao;
+use stdClass;
+use InstituicaoRepository;
+use DBPessoal;
+use db_utils;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 use ECidade\RecursosHumanos\ESocial\Integracao\ESocial;
-use ECidade\RecursosHumanos\ESocial\Integracao\ESocialEnvio;
-use ECidade\RecursosHumanos\ESocial\Integracao\ESocialEnvioStatus;
 use ECidade\RecursosHumanos\ESocial\Integracao\Recurso;
 use ECidade\V3\Extension\Registry;
-use ECidade\RecursosHumanos\ESocial\Mapeadores\Tabelas\CategoriaCNH;
 
 /**
  * Class S2231
@@ -72,7 +72,7 @@ class S2231
         $oESocial = new ESocial(Registry::get('app.config'), Recurso::CONSULTA_RECIBO);
         $oEmpregador = $this->getEmpregador();
 
-        $params = new \stdClass();
+        $params = new stdClass();
 
         $params->idEvento = Tipo::S2231;
         $params->idReferencia = $this->matricula;
@@ -110,10 +110,10 @@ class S2231
     private function getEmpregador()
     {
 
-        $codigoInstituicao = \InstituicaoRepository::getInstituicaoSessao()->getCodigo();
+        $codigoInstituicao = InstituicaoRepository::getInstituicaoSessao()->getCodigo();
 
-        $anoFolha  = \DBPessoal::getAnoFolha();
-        $mesFolha  = \DBPessoal::getMesFolha();
+        $anoFolha  = DBPessoal::getAnoFolha();
+        $mesFolha  = DBPessoal::getMesFolha();
 
         $sqlCgm = "
             SELECT DISTINCT
@@ -138,7 +138,7 @@ class S2231
             throw new DBException("Não há empregadores cadastrados para essa matrícula {$this->matricula}.");
         }
 
-        $aEmpregador = \db_utils::getCollectionByRecord($resultadoSqlCgm);
+        $aEmpregador = db_utils::getCollectionByRecord($resultadoSqlCgm);
 
         return $aEmpregador[0];
     }

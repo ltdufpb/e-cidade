@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptucadtaxaexe_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cliptucadtaxaexe = new cl_iptucadtaxaexe;
 $cliptucadtaxaexe->rotulo->label("j08_iptucadtaxaexe");
 $cliptucadtaxaexe->rotulo->label("j08_iptucadtaxa");
@@ -54,7 +55,7 @@ $cliptucadtaxaexe->rotulo->label("j08_iptucadtaxa");
               <?=$Lj08_iptucadtaxaexe?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j08_iptucadtaxaexe",10,$Ij08_iptucadtaxaexe,true,"text",4,"","chave_j08_iptucadtaxaexe");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cliptucadtaxaexe->rotulo->label("j08_iptucadtaxa");
               <?=$Lj08_iptucadtaxa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j08_iptucadtaxa",10,$Ij08_iptucadtaxa,true,"text",4,"","chave_j08_iptucadtaxa");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cliptucadtaxaexe->rotulo->label("j08_iptucadtaxa");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
        
         $campos = " iptucadtaxaexe.j08_anousu,
@@ -126,12 +127,12 @@ $cliptucadtaxaexe->rotulo->label("j08_iptucadtaxa");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

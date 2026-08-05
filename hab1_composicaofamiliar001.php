@@ -49,7 +49,7 @@ $db_opcao   = 1;
     <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
-    <?
+    <?php 
       db_app::load("scripts.js, prototype.js, widgets/windowAux.widget.js,strings.js,widgets/dbtextField.widget.js,
                    dbmessageBoard.widget.js,dbautocomplete.widget.js,dbcomboBox.widget.js,
                    datagrid.widget.js");
@@ -67,7 +67,7 @@ $db_opcao   = 1;
                      <b>Tipo Familiar:</b>
                    </td>
                    <td>
-                   <?
+                   <?php 
                      $sCamposFamiliar = "z14_sequencial,
                                          case 
                                            z14_sequencial when 0 then 'Selecione...'
@@ -97,10 +97,10 @@ $db_opcao   = 1;
                  </tr>
                  <tr style='display:none' id='vinculocgm'>
                    <td>
-                     <?db_ancora($Lz01_nome, "js_pesquisacgm(true)", 1)?>
+                     <?php db_ancora($Lz01_nome, "js_pesquisacgm(true)", 1)?>
                    </td>
                    <td>
-                     <?
+                     <?php 
                       db_input("z01_numcgm", 10, $Iz01_numcgm, true, "text", 1, "onchange='js_pesquisacgm(false)'");
                       db_input("z01_nome", 40, $Iz01_nome, true, "text", 3);
                       
@@ -113,7 +113,7 @@ $db_opcao   = 1;
                      <?=$Lz01_nome?>
                    </td>
                    <td>
-                     <?
+                     <?php 
                       db_input("nomecgm", 50, $Iz01_nome, true, "text", 1, "");
                      ?>
                    </td>  
@@ -121,7 +121,7 @@ $db_opcao   = 1;
                     <?=$Lz01_nasc?>
                    </td>
                    <td nowrap title="<?=$Tz01_nasc?>"> 
-                    <?
+                    <?php 
                     db_inputdata('z01_nasc',@$z01_nasc_dia,@$z01_nasc_mes,@$z01_nasc_ano,true,'text',$db_opcao);
                     ?>
                    </td>   
@@ -131,7 +131,7 @@ $db_opcao   = 1;
                    <?=$Lz01_estciv?>
                    </td>
                    <td nowrap title="<?=$Tz01_estciv?>"> 
-                     <?
+                     <?php 
                      $x = array(
                                 "1" => "Solteiro",
                                 "2" => "Casado",
@@ -145,7 +145,7 @@ $db_opcao   = 1;
                      <?=$Lz01_sexo?>
                    </td>
                    <td nowrap title="<?=$Tz01_dtfalecimento?>"> 
-                     <?
+                     <?php 
                      $aSex = array( 0  => "Selecione",
                                    "M" => "Masculino",
                                    "F" => "Feminino");
@@ -158,7 +158,7 @@ $db_opcao   = 1;
                       <?=$Lz01_profis?>
                    </td>
                    <td>
-                   <?
+                   <?php 
                     db_input('z01_profis', 50, $Iz01_profis, true, 'text', $db_opcao);
                     ?> 
                    </td>
@@ -166,7 +166,7 @@ $db_opcao   = 1;
                      <?=$Lz01_renda ?>
                    </td>
                    <td >
-                   <?
+                   <?php 
                     db_input('z01_renda', 10, $Iz01_renda, true, 'text', $db_opcao, '', '', '', "width:100%");
                     ?>
                  </tr>
@@ -175,7 +175,7 @@ $db_opcao   = 1;
                    <?=@$Lz01_escolaridade?>
                    </td>
                    <td nowrap title="<?=@$Tz01_escolaridade?>" colspan="3"> 
-                     <?
+                     <?php 
                       db_input('z01_escolaridade', 50, $Iz01_escolaridade, true, 'text', $db_opcao);
                      ?>
                    </td>

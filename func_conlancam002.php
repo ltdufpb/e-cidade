@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -35,7 +35,8 @@ require_once(modification("classes/db_conlancamcompl_classe.php"));
 require_once(modification("classes/db_conlancamdig_classe.php"));
 require_once(modification("classes/db_conplano_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 db_postmemory($HTTP_GET_VARS);
 
@@ -138,7 +139,7 @@ if( isset($chavepesquisa)){
           </tr>
           <tr>
               <td>
-                  <?
+                  <?php 
                   if (isset($sql)) {
                       $js_funcao="parent.js_infoLancamento|c70_codlan";
                       db_lovrot($sql,15,"()","",$js_funcao,"","form1",array(),false,array());

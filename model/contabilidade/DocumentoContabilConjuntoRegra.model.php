@@ -38,7 +38,7 @@ class DocumentoContabilConjuntoRegra {
    * Conjunto de regras (SQL) de um documento contábil
    * @var array
 	 */
-	protected $aRegras = array();
+	protected $aRegras = [];
 
 	/**
 	 * Adiciona as regras do documento no array de Regras

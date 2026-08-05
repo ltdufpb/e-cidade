@@ -29,31 +29,31 @@
 
 class cl_reciboregistra {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $k146_numpre = 0;
-   var $k146_convenio = 0;
+   public $k146_numpre = 0;
+   public $k146_convenio = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  k146_numpre = int4 = Numpre
                  k146_convenio = int4 = Convenio
                  ";
    //funcao construtor da classe
-   function cl_reciboregistra() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("reciboregistra");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -104,7 +104,7 @@ class cl_reciboregistra {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "ReciboRegistra () não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "ReciboRegistra já Cadastrado";
@@ -136,10 +136,10 @@ class cl_reciboregistra {
       $this->atualizacampos();
      $sql = " update reciboregistra set ";
      $virgula = "";
-     if(trim($this->k146_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k146_numpre"])){
+     if(trim((string) $this->k146_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k146_numpre"])){
        $sql  .= $virgula." k146_numpre = $this->k146_numpre ";
        $virgula = ",";
-       if(trim($this->k146_numpre) == null ){
+       if(trim((string) $this->k146_numpre) == null ){
          $this->erro_sql = " Campo Numpre não informado.";
          $this->erro_campo = "k146_numpre";
          $this->erro_banco = "";
@@ -149,10 +149,10 @@ class cl_reciboregistra {
          return false;
        }
      }
-     if(trim($this->k146_convenio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k146_convenio"])){
+     if(trim((string) $this->k146_convenio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k146_convenio"])){
        $sql  .= $virgula." k146_convenio = $this->k146_convenio ";
        $virgula = ",";
-       if(trim($this->k146_convenio) == null ){
+       if(trim((string) $this->k146_convenio) == null ){
          $this->erro_sql = " Campo Convenio não informado.";
          $this->erro_campo = "k146_convenio";
          $this->erro_banco = "";

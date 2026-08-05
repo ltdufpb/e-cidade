@@ -72,14 +72,14 @@ class Importar
      * Periodos a serem importados
      * @var array
      */
-    private $periodos = array();
+    private $periodos = [];
 
     /**
      * Colunas a serem importadas
      *
      * @var array
      */
-    private $colunas = array();
+    private $colunas = [];
 
     /**
      * Importar constructor.

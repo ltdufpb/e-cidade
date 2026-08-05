@@ -94,7 +94,7 @@ class PeriodoEscola {
    * Turno Referente ao periodo
    * @var array
    */
-  private $aTurnoReferentePeriodo = array();
+  private $aTurnoReferentePeriodo = [];
   /**
    * Constutor
    * @param int $iCodigo

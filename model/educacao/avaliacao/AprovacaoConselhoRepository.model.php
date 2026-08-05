@@ -38,7 +38,7 @@ class AprovacaoConselhoRepository {
    * Array com as Aprovações de Conselho
    * @var array
    */
-  private $aAprovacaoConselho = array();
+  private $aAprovacaoConselho = [];
 
   /**
    * Instância da classe

@@ -27,6 +27,10 @@
 
 namespace ECidade\Tributario\Divida\Repository;
 
+use BaseClassRepository;
+use cl_certdiv;
+use DateTime;
+use stdClass;
 use \cl_divida;
 use ECidade\Tributario\Divida\Divida as Entity;
 use ECidade\Tributario\Divida\Interfaces\TermoRepositoryInterface;
@@ -41,11 +45,11 @@ use Exception;
  *
  * @author Leonardo Oliveira <leonardo.malia@dbseller.com.br>
  */
-class Divida extends \BaseClassRepository implements TermoRepositoryInterface
+class Divida extends BaseClassRepository implements TermoRepositoryInterface
 {
     protected static $oInstance;
 
-    protected $scopes = array();
+    protected $scopes = [];
 
     /**
      * Retorna uma dívida filtrando por código.
@@ -87,7 +91,7 @@ class Divida extends \BaseClassRepository implements TermoRepositoryInterface
      */
     public function getByCertidao($code)
     {
-        $dao = new \cl_certdiv;
+        $dao = new cl_certdiv;
         $sql = $dao->sql_query($code);
 
         $result = \db_query($sql);
@@ -96,7 +100,7 @@ class Divida extends \BaseClassRepository implements TermoRepositoryInterface
             throw new Exception('Nenhuma divida encontrada para certidao informada');
         }
 
-        $data = array();
+        $data = [];
         foreach (pg_fetch_all($result) as $item) {
             $data[] = $this->make((object) $item);
         }
@@ -120,7 +124,7 @@ class Divida extends \BaseClassRepository implements TermoRepositoryInterface
             throw new Exception("Não foi possível buscar as dívidas.");
         }
 
-        $dividas = array();
+        $dividas = [];
 
         if (pg_num_rows($rs) === 0) {
             return $dividas;
@@ -251,7 +255,7 @@ class Divida extends \BaseClassRepository implements TermoRepositoryInterface
     /**
      * Formata a divida para entidade.
      *
-     * @param \stdClass $item
+     * @param stdClass $item
      *
      * @return Entity
      */
@@ -268,7 +272,7 @@ class Divida extends \BaseClassRepository implements TermoRepositoryInterface
         $entity
             ->setCodigoDivida($item->v01_coddiv)
             ->setCgm($item->v01_numcgm)
-            ->setDataIncricao(new \DateTime($item->v01_dtinsc))
+            ->setDataIncricao(new DateTime($item->v01_dtinsc))
             ->setExercicio($item->v01_exerc)
             ->setNumpre($item->v01_numpre)
             ->setNumpar($item->v01_numpar)
@@ -277,15 +281,15 @@ class Divida extends \BaseClassRepository implements TermoRepositoryInterface
             ->setProcedencia($procedencia)
             ->setLivro($item->v01_livro)
             ->setFolha($item->v01_folha)
-            ->setDataVencimento(new \DateTime($item->v01_dtvenc))
-            ->setDataOperacao(new \DateTime($item->v01_dtoper))
+            ->setDataVencimento(new DateTime($item->v01_dtvenc))
+            ->setDataOperacao(new DateTime($item->v01_dtoper))
             ->setValor($item->v01_valor)
             ->setObservacao($item->v01_obs)
             ->setNumdig($item->v01_numdig)
             ->setInstituicao($item->v01_instit)
-            ->setDataInclusao(new \DateTime($item->v01_dtinclusao))
+            ->setDataInclusao(new DateTime($item->v01_dtinclusao))
             ->setProcesso($item->v01_processo)
-            ->setDataProcesso(new \DateTime($item->v01_dtprocesso))
+            ->setDataProcesso(new DateTime($item->v01_dtprocesso))
             ->setTitular($item->v01_titular);
 
         return $entity;
@@ -302,7 +306,7 @@ class Divida extends \BaseClassRepository implements TermoRepositoryInterface
         $dividas = $this->scopeNumpre("(".implode(',', $numpres).")", 'in')
             ->get();
 
-        $dataAtual = new \DateTime();
+        $dataAtual = new DateTime();
 
         $observacoes =  "Esta dívida fez parte do parcelamento {$parcelamento->getCodigo()},";
         $observacoes .= "anulado em {$dataAtual->format('d/m/Y')}";

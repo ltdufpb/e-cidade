@@ -127,8 +127,8 @@ if ($db_opcao != 1) {
                     </label>
                 </td>
                 <td>
-                    <? db_input('bi23_aquisicao', 10, $Ibi23_aquisicao, true, 'text', $db_opcao, " onchange='js_pesquisabi23_aquisicao(false);' onKeyPress='tab(event,9)'") ?>
-                    <? db_input('bi04_forma', 40, $Ibi04_forma, true, 'text', 3, "onKeyPress='tab(event,10)'") ?>
+                    <?php  db_input('bi23_aquisicao', 10, $Ibi23_aquisicao, true, 'text', $db_opcao, " onchange='js_pesquisabi23_aquisicao(false);' onKeyPress='tab(event,9)'") ?>
+                    <?php  db_input('bi04_forma', 40, $Ibi04_forma, true, 'text', 3, "onKeyPress='tab(event,10)'") ?>
                 </td>
             </tr>
             <tr>

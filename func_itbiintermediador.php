@@ -1,4 +1,4 @@
-<?
+<?php 
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -6,7 +6,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itbiintermediador_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clitbiintermediador = new cl_itbiintermediador;
 $clitbiintermediador->rotulo->label("it35_sequencial");
 $clitbiintermediador->rotulo->label("it35_sequencial");
@@ -24,11 +25,11 @@ $clitbiintermediador->rotulo->label("it35_sequencial");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lit35_sequencial?></label></td>
-          <td><? db_input("it35_sequencial",10,$Iit35_sequencial,true,"text",4,"","chave_it35_sequencial"); ?></td>
+          <td><?php  db_input("it35_sequencial",10,$Iit35_sequencial,true,"text",4,"","chave_it35_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lit35_sequencial?></label></td>
-          <td><? db_input("it35_sequencial",10,$Iit35_sequencial,true,"text",4,"","chave_it35_sequencial");?></td>
+          <td><?php  db_input("it35_sequencial",10,$Iit35_sequencial,true,"text",4,"","chave_it35_sequencial");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +37,7 @@ $clitbiintermediador->rotulo->label("it35_sequencial");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_itbiintermediador.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbiintermediador.php")==true){
@@ -78,12 +79,12 @@ $clitbiintermediador->rotulo->label("it35_sequencial");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -27,6 +27,11 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas;
 
+use DateTime;
+use Override;
+use Deprecated;
+use DateInterval;
+use Exception;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\Jornada;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacaoPonto;
@@ -42,12 +47,12 @@ use ECidade\RecursosHumanos\RH\Assentamento\AssentamentoAbonoFalta;
 class FaltaAtraso extends BaseHora implements Horas
 {
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $oDiaFalta;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $oDiaFaltaNoturna;
 
@@ -99,7 +104,7 @@ class FaltaAtraso extends BaseHora implements Horas
     /**
      * Calcula o número de horas falta em determinado dia
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     public function calcular()
     {
@@ -113,8 +118,8 @@ class FaltaAtraso extends BaseHora implements Horas
     }
 
     /**
-     * @return \DateTime
-     * @throws \Exception
+     * @return DateTime
+     * @throws Exception
      */
     protected function calcularHorasFalta()
     {
@@ -157,7 +162,7 @@ class FaltaAtraso extends BaseHora implements Horas
 
         $this->calcularFaltasPelaMarcacao($marcacoesReais, $jornada);
 
-        $debug = "-- Hora Atraso Calculada......: ". (($this->oDiaFalta instanceof \DateTime) ? $this->oDiaFalta->format('H:i') : '_:__');
+        $debug = "-- Hora Atraso Calculada......: ". (($this->oDiaFalta instanceof DateTime) ? $this->oDiaFalta->format('H:i') : '_:__');
         $this->logger->debug($debug);
 
         return $this->posCalcular($this->oDiaFalta);
@@ -166,7 +171,7 @@ class FaltaAtraso extends BaseHora implements Horas
     /**
      * @param MarcacoesPontoCollection $marcacoesReais
      * @param Jornada $jornada
-     * @return \DateTime
+     * @return DateTime
      */
     private function calcularFaltasPelaMarcacao(MarcacoesPontoCollection $marcacoesReais, Jornada $jornada)
     {
@@ -196,13 +201,13 @@ class FaltaAtraso extends BaseHora implements Horas
         {
             $this->logger->debug("-- Entrando no percorreMinutoAMinuto");
 
-            $debug = "-- Marcacao................: ". (($primeiraMarcacao->getMarcacao() instanceof \DateTime)  ? $primeiraMarcacao->getMarcacao()->format('H:i')      : '_:__');
+            $debug = "-- Marcacao................: ". (($primeiraMarcacao->getMarcacao() instanceof DateTime)  ? $primeiraMarcacao->getMarcacao()->format('H:i')      : '_:__');
             if($primeiraMarcacao instanceof MarcacaoPonto) {
                 $debug .= " - Tipo: ". (MarcacaoPonto::getDescricaoTipoMarcacao($primeiraMarcacao->getTipo()));
             }
             $this->logger->debug($debug);
 
-            $debug = "-- Hora Jornada............: ". (($primeiraHoraJornada instanceof \DateTime) ? $primeiraHoraJornada->format('H:i') : '_:__');
+            $debug = "-- Hora Jornada............: ". (($primeiraHoraJornada instanceof DateTime) ? $primeiraHoraJornada->format('H:i') : '_:__');
             $this->logger->debug($debug);
 
             $this->percorreMinutoAMinuto($primeiraMarcacao->getMarcacao(), $primeiraHoraJornada);
@@ -221,10 +226,10 @@ class FaltaAtraso extends BaseHora implements Horas
                 $marcacaoSaida1 = $marcacoesReais->getMarcacaoSaida1()->getMarcacao();
                 $marcacaoEntrada2 = $marcacoesReais->getMarcacaoEntrada2()->getMarcacao();
 
-                $horaIntervaloJornada = new \DateTime('00:00');
+                $horaIntervaloJornada = new DateTime('00:00');
                 $horaIntervaloJornada->add($jornada->getIntervalo());
 
-                $horaIntervaloMarcacao = new \DateTime('00:00');
+                $horaIntervaloMarcacao = new DateTime('00:00');
                 $horaIntervaloMarcacao->add($marcacaoSaida1->diff($marcacaoEntrada2));
 
                 $diferencaEntreIntervaloJornadaMarcacao = $horaIntervaloJornada->diff($horaIntervaloMarcacao);
@@ -236,13 +241,13 @@ class FaltaAtraso extends BaseHora implements Horas
 
                     $this->logger->debug("-- Entrando no percorreMinutoAMinuto");
 
-                    $debug = "-- Marcacao................: ". (($marcacaoEntrada2 instanceof \DateTime)  ? $marcacaoEntrada2->format('H:i')      : '_:__');
+                    $debug = "-- Marcacao................: ". (($marcacaoEntrada2 instanceof DateTime)  ? $marcacaoEntrada2->format('H:i')      : '_:__');
                     if($marcacoesReais->getMarcacaoEntrada2() instanceof MarcacaoPonto) {
                         $debug .= " Tipo: ". (MarcacaoPonto::getDescricaoTipoMarcacao($marcacoesReais->getMarcacaoEntrada2()->getTipo()));
                     }
                     $this->logger->debug($debug);
 
-                    $debug = "-- Hora Jornada............: ". (($horaJornadaAtualizada instanceof \DateTime) ? $horaJornadaAtualizada->format('H:i') : '_:__');
+                    $debug = "-- Hora Jornada............: ". (($horaJornadaAtualizada instanceof DateTime) ? $horaJornadaAtualizada->format('H:i') : '_:__');
                     $this->logger->debug($debug);
 
                     $this->percorreMinutoAMinuto($marcacaoEntrada2, $horaJornadaAtualizada);
@@ -258,11 +263,12 @@ class FaltaAtraso extends BaseHora implements Horas
      * Percorre cada minuto da marcação, caso seja maior que o horário da jornada, verificando se está dentro do período
      * diurno ou noturno( neste caso, convertendo para cálculo de horas noturnas )
      *
-     * @deprecated
-     * @param \DateTime $marcacao
-     * @param \DateTime $horaJornada
+     * @param DateTime $marcacao
+     * @param DateTime $horaJornada
      */
-    public function percorreMinutoAMinuto(\DateTime $marcacao, \DateTime $horaJornada)
+    #[Override]
+    #[Deprecated]
+    public function percorreMinutoAMinuto(DateTime $marcacao, DateTime $horaJornada)
     {
         if ($marcacao->getTimestamp() <= $horaJornada->getTimestamp()) {
             return;
@@ -290,10 +296,10 @@ class FaltaAtraso extends BaseHora implements Horas
 
     /**
      * @param $horasFalta
-     * @return \DateTime
-     * @throws \Exception
+     * @return DateTime
+     * @throws Exception
      */
-    protected function posCalcular(\DateTime $horasFalta)
+    protected function posCalcular(DateTime $horasFalta)
     {
         $this->logger->debug("-- POS CALCULO DE ATRASO");
 
@@ -329,9 +335,9 @@ class FaltaAtraso extends BaseHora implements Horas
                 $debug = '-- Hora do assentamento de abono......:' . $this->horaAssentamentoAbonoFalta;
                 $this->logger->debug($debug);
 
-                list($hora, $minuto) = explode(':', $this->horaAssentamentoAbonoFalta);
-                $intervaloSubtrair = new \DateInterval("PT{$hora}H{$minuto}M");
-                $horasSubtrair = \DateTime::createFromFormat('H:i', "{$hora}:{$minuto}");
+                [$hora, $minuto] = explode(':', $this->horaAssentamentoAbonoFalta);
+                $intervaloSubtrair = new DateInterval("PT{$hora}H{$minuto}M");
+                $horasSubtrair = DateTime::createFromFormat('H:i', "{$hora}:{$minuto}");
                 $horasSubtrair->setDate(
                   $this->getDiaTrabalho()->getData()->getAno(),
                   $this->getDiaTrabalho()->getData()->getMes(),
@@ -358,14 +364,14 @@ class FaltaAtraso extends BaseHora implements Horas
             }
         }
 
-        $debug = "-- Hora Atraso................: ". (($horasFalta instanceof \DateTime) ? $horasFalta->format('H:i') : '_:__');
+        $debug = "-- Hora Atraso................: ". (($horasFalta instanceof DateTime) ? $horasFalta->format('H:i') : '_:__');
         $this->logger->debug($debug);
 
         return $horasFalta;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     protected function calcularHorasNoturna()
     {
@@ -380,7 +386,7 @@ class FaltaAtraso extends BaseHora implements Horas
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getHorasAtrasoNoturno()
     {

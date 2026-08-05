@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -110,10 +110,10 @@ function js_selecionar(){
       <table border="0" align='left'> 
 	<tr>
 	  <td nowrap title="<?=@$Tcodcam?>" colspan='2' align='center'>
-	     <?
+	     <?php 
 	     db_ancora(@$Lnomecam,"js_pesquisacampo(true);",1);
 	     ?>
-      <?
+      <?php 
       db_input('codcam',6,$Icodcam,true,'text',1," onchange='js_pesquisacampo(false);'");
       db_input('nomecam',40,$Inomecam,true,'text',3,'');
 	     ?>
@@ -127,7 +127,7 @@ function js_selecionar(){
 	<tr>
 	  <td colspan='2'>
 	    <table border="0">
-	    <?
+	    <?php 
 	        if(isset($codcam) && $codcam!=""){
 	    ?>
 	      <tr>
@@ -135,7 +135,7 @@ function js_selecionar(){
 		   <input name='selecionar' type='button' value='Selecionar' onclick='js_selecionar();'>
 		</td>
 	      </tr> 
-	      <?}?>
+	      <?php }?>
 	      <tr>
 	        <td>
 		     <iframe name="campos"   marginwidth="0" marginheight="0" frameborder="0" src="con3_db_syscampo002.php?codcam=<?=@$codcam?>" width="740" height="320">
@@ -151,7 +151,7 @@ function js_selecionar(){
   </tr>
 </table>
 </form>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -181,7 +181,7 @@ function js_mostracampo1(chave1,chave2){
   db_iframe.hide();
 }
 </script>
-<?
+<?php 
 if(isset($erro_msg)){
   db_msgbox($erro_msg);
 }

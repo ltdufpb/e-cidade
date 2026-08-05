@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -58,7 +58,7 @@ class cl_reconhecimentocontabil {
                  c112_estornado = bool = Estornado 
                  ";
    //funcao construtor da classe 
-   function cl_reconhecimentocontabil() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("reconhecimentocontabil"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

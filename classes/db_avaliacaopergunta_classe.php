@@ -28,36 +28,36 @@
 //CLASSE DA ENTIDADE avaliacaopergunta
 class cl_avaliacaopergunta { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db103_sequencial = 0; 
-   var $db103_avaliacaotiporesposta = 0; 
-   var $db103_avaliacaogrupopergunta = 0; 
-   var $db103_descricao = null; 
-   var $db103_identificador = null; 
-   var $db103_obrigatoria = 'f'; 
-   var $db103_ativo = 'f'; 
-   var $db103_ordem = 0; 
-   var $db103_tipo = 0; 
-   var $db103_mascara = null; 
-   var $db103_dblayoutcampo = 0; 
-   var $db103_perguntaidentificadora = 'f'; 
-   var $db103_camposql = null; 
-   var $db103_identificadorcampo = null; 
-   var $db103_somenteleitura = 'f';
+   public $db103_sequencial = 0; 
+   public $db103_avaliacaotiporesposta = 0; 
+   public $db103_avaliacaogrupopergunta = 0; 
+   public $db103_descricao = null; 
+   public $db103_identificador = null; 
+   public $db103_obrigatoria = 'f'; 
+   public $db103_ativo = 'f'; 
+   public $db103_ordem = 0; 
+   public $db103_tipo = 0; 
+   public $db103_mascara = null; 
+   public $db103_dblayoutcampo = 0; 
+   public $db103_perguntaidentificadora = 'f'; 
+   public $db103_camposql = null; 
+   public $db103_identificadorcampo = null; 
+   public $db103_somenteleitura = 'f';
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db103_sequencial = int4 = Sequencial 
                  db103_avaliacaotiporesposta = int4 = Avaliação Tipo Resposta 
                  db103_avaliacaogrupopergunta = int4 = Avaliação Grupo Pergunta 
@@ -75,10 +75,10 @@ class cl_avaliacaopergunta {
                  db103_somenteleitura = bool = Identificador do campo para somente leitura
                  ";
    //funcao construtor da classe 
-   function cl_avaliacaopergunta() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("avaliacaopergunta"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -196,10 +196,10 @@ class cl_avaliacaopergunta {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db103_sequencial = pg_result($result,0,0); 
+       $this->db103_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from avaliacaopergunta_db103_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db103_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db103_sequencial)){
          $this->erro_sql = " Campo db103_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -255,7 +255,7 @@ class cl_avaliacaopergunta {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Avaliação Pergunta ($this->db103_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Avaliação Pergunta já Cadastrado";
@@ -284,24 +284,24 @@ class cl_avaliacaopergunta {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16915,'$this->db103_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,2983,16915,'','".AddSlashes(pg_result($resaco,0,'db103_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2983,17046,'','".AddSlashes(pg_result($resaco,0,'db103_avaliacaotiporesposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2983,16916,'','".AddSlashes(pg_result($resaco,0,'db103_avaliacaogrupopergunta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2983,16917,'','".AddSlashes(pg_result($resaco,0,'db103_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2983,19378,'','".AddSlashes(pg_result($resaco,0,'db103_identificador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2983,16918,'','".AddSlashes(pg_result($resaco,0,'db103_obrigatoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2983,16919,'','".AddSlashes(pg_result($resaco,0,'db103_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2983,17023,'','".AddSlashes(pg_result($resaco,0,'db103_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2983,21839,'','".AddSlashes(pg_result($resaco,0,'db103_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2983,21840,'','".AddSlashes(pg_result($resaco,0,'db103_mascara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2983,1009307,'','".AddSlashes(pg_result($resaco,0,'db103_dblayoutcampo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2983,1009305,'','".AddSlashes(pg_result($resaco,0,'db103_perguntaidentificadora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2983,1009304,'','".AddSlashes(pg_result($resaco,0,'db103_camposql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2983,1009512,'','".AddSlashes(pg_result($resaco,0,'db103_identificadorcampo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2983,1010591,'','".AddSlashes(pg_result($resaco,0,'db103_somenteleitura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2983,16915,'','".AddSlashes(pg_fetch_result($resaco,0,'db103_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2983,17046,'','".AddSlashes(pg_fetch_result($resaco,0,'db103_avaliacaotiporesposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2983,16916,'','".AddSlashes(pg_fetch_result($resaco,0,'db103_avaliacaogrupopergunta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2983,16917,'','".AddSlashes(pg_fetch_result($resaco,0,'db103_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2983,19378,'','".AddSlashes(pg_fetch_result($resaco,0,'db103_identificador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2983,16918,'','".AddSlashes(pg_fetch_result($resaco,0,'db103_obrigatoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2983,16919,'','".AddSlashes(pg_fetch_result($resaco,0,'db103_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2983,17023,'','".AddSlashes(pg_fetch_result($resaco,0,'db103_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2983,21839,'','".AddSlashes(pg_fetch_result($resaco,0,'db103_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2983,21840,'','".AddSlashes(pg_fetch_result($resaco,0,'db103_mascara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2983,1009307,'','".AddSlashes(pg_fetch_result($resaco,0,'db103_dblayoutcampo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2983,1009305,'','".AddSlashes(pg_fetch_result($resaco,0,'db103_perguntaidentificadora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2983,1009304,'','".AddSlashes(pg_fetch_result($resaco,0,'db103_camposql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2983,1009512,'','".AddSlashes(pg_fetch_result($resaco,0,'db103_identificadorcampo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2983,1010591,'','".AddSlashes(pg_fetch_result($resaco,0,'db103_somenteleitura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -311,10 +311,10 @@ class cl_avaliacaopergunta {
       $this->atualizacampos();
      $sql = " update avaliacaopergunta set ";
      $virgula = "";
-     if(trim($this->db103_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_sequencial"])){ 
+     if(trim((string) $this->db103_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_sequencial"])){ 
        $sql  .= $virgula." db103_sequencial = $this->db103_sequencial ";
        $virgula = ",";
-       if(trim($this->db103_sequencial) == null ){ 
+       if(trim((string) $this->db103_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "db103_sequencial";
          $this->erro_banco = "";
@@ -324,10 +324,10 @@ class cl_avaliacaopergunta {
          return false;
        }
      }
-     if(trim($this->db103_avaliacaotiporesposta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_avaliacaotiporesposta"])){ 
+     if(trim((string) $this->db103_avaliacaotiporesposta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_avaliacaotiporesposta"])){ 
        $sql  .= $virgula." db103_avaliacaotiporesposta = $this->db103_avaliacaotiporesposta ";
        $virgula = ",";
-       if(trim($this->db103_avaliacaotiporesposta) == null ){ 
+       if(trim((string) $this->db103_avaliacaotiporesposta) == null ){ 
          $this->erro_sql = " Campo Avaliação Tipo Resposta não informado.";
          $this->erro_campo = "db103_avaliacaotiporesposta";
          $this->erro_banco = "";
@@ -337,10 +337,10 @@ class cl_avaliacaopergunta {
          return false;
        }
      }
-     if(trim($this->db103_avaliacaogrupopergunta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_avaliacaogrupopergunta"])){ 
+     if(trim((string) $this->db103_avaliacaogrupopergunta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_avaliacaogrupopergunta"])){ 
        $sql  .= $virgula." db103_avaliacaogrupopergunta = $this->db103_avaliacaogrupopergunta ";
        $virgula = ",";
-       if(trim($this->db103_avaliacaogrupopergunta) == null ){ 
+       if(trim((string) $this->db103_avaliacaogrupopergunta) == null ){ 
          $this->erro_sql = " Campo Avaliação Grupo Pergunta não informado.";
          $this->erro_campo = "db103_avaliacaogrupopergunta";
          $this->erro_banco = "";
@@ -350,10 +350,10 @@ class cl_avaliacaopergunta {
          return false;
        }
      }
-     if(trim($this->db103_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_descricao"])){ 
+     if(trim((string) $this->db103_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_descricao"])){ 
        $sql  .= $virgula." db103_descricao = '$this->db103_descricao' ";
        $virgula = ",";
-       if(trim($this->db103_descricao) == null ){ 
+       if(trim((string) $this->db103_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "db103_descricao";
          $this->erro_banco = "";
@@ -363,14 +363,14 @@ class cl_avaliacaopergunta {
          return false;
        }
      }
-     if(trim($this->db103_identificador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_identificador"])){ 
+     if(trim((string) $this->db103_identificador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_identificador"])){ 
        $sql  .= $virgula." db103_identificador = '$this->db103_identificador' ";
        $virgula = ",";
      }
-     if(trim($this->db103_obrigatoria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_obrigatoria"])){ 
+     if(trim((string) $this->db103_obrigatoria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_obrigatoria"])){ 
        $sql  .= $virgula." db103_obrigatoria = '$this->db103_obrigatoria' ";
        $virgula = ",";
-       if(trim($this->db103_obrigatoria) == null ){ 
+       if(trim((string) $this->db103_obrigatoria) == null ){ 
          $this->erro_sql = " Campo Obrigatória não informado.";
          $this->erro_campo = "db103_obrigatoria";
          $this->erro_banco = "";
@@ -380,10 +380,10 @@ class cl_avaliacaopergunta {
          return false;
        }
      }
-     if(trim($this->db103_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_ativo"])){ 
+     if(trim((string) $this->db103_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_ativo"])){ 
        $sql  .= $virgula." db103_ativo = '$this->db103_ativo' ";
        $virgula = ",";
-       if(trim($this->db103_ativo) == null ){ 
+       if(trim((string) $this->db103_ativo) == null ){ 
          $this->erro_sql = " Campo Ativo não informado.";
          $this->erro_campo = "db103_ativo";
          $this->erro_banco = "";
@@ -393,10 +393,10 @@ class cl_avaliacaopergunta {
          return false;
        }
      }
-     if(trim($this->db103_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_ordem"])){ 
+     if(trim((string) $this->db103_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_ordem"])){ 
        $sql  .= $virgula." db103_ordem = $this->db103_ordem ";
        $virgula = ",";
-       if(trim($this->db103_ordem) == null ){ 
+       if(trim((string) $this->db103_ordem) == null ){ 
          $this->erro_sql = " Campo Ordem não informado.";
          $this->erro_campo = "db103_ordem";
          $this->erro_banco = "";
@@ -406,10 +406,10 @@ class cl_avaliacaopergunta {
          return false;
        }
      }
-     if(trim($this->db103_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_tipo"])){ 
+     if(trim((string) $this->db103_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_tipo"])){ 
        $sql  .= $virgula." db103_tipo = $this->db103_tipo ";
        $virgula = ",";
-       if(trim($this->db103_tipo) == null ){ 
+       if(trim((string) $this->db103_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo não informado.";
          $this->erro_campo = "db103_tipo";
          $this->erro_banco = "";
@@ -419,30 +419,30 @@ class cl_avaliacaopergunta {
          return false;
        }
      }
-     if(trim($this->db103_mascara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_mascara"])){ 
+     if(trim((string) $this->db103_mascara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_mascara"])){ 
        $sql  .= $virgula." db103_mascara = '$this->db103_mascara' ";
        $virgula = ",";
      }
-     if(trim($this->db103_dblayoutcampo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_dblayoutcampo"])){ 
-        if(trim($this->db103_dblayoutcampo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db103_dblayoutcampo"])){ 
+     if(trim((string) $this->db103_dblayoutcampo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_dblayoutcampo"])){ 
+        if(trim((string) $this->db103_dblayoutcampo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db103_dblayoutcampo"])){ 
            $this->db103_dblayoutcampo = "0" ; 
         } 
        $sql  .= $virgula." db103_dblayoutcampo = $this->db103_dblayoutcampo ";
        $virgula = ",";
      }
-     if(trim($this->db103_perguntaidentificadora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_perguntaidentificadora"])){ 
+     if(trim((string) $this->db103_perguntaidentificadora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_perguntaidentificadora"])){ 
        $sql  .= $virgula." db103_perguntaidentificadora = '$this->db103_perguntaidentificadora' ";
        $virgula = ",";
      }
-     if(trim($this->db103_camposql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_camposql"])){ 
+     if(trim((string) $this->db103_camposql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_camposql"])){ 
        $sql  .= $virgula." db103_camposql = '$this->db103_camposql' ";
        $virgula = ",";
      }
-     if(trim($this->db103_identificadorcampo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_identificadorcampo"])){ 
+     if(trim((string) $this->db103_identificadorcampo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_identificadorcampo"])){ 
        $sql  .= $virgula." db103_identificadorcampo = '$this->db103_identificadorcampo' ";
        $virgula = ",";
      }
-     if(trim($this->db103_somenteleitura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_somenteleitura"])){ 
+     if(trim((string) $this->db103_somenteleitura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db103_somenteleitura"])){ 
       $sql  .= $virgula." db103_somenteleitura = '$this->db103_somenteleitura' ";
       $virgula = ",";
     }
@@ -460,39 +460,39 @@ class cl_avaliacaopergunta {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,16915,'$this->db103_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db103_sequencial"]) || $this->db103_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,2983,16915,'".AddSlashes(pg_result($resaco,$conresaco,'db103_sequencial'))."','$this->db103_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2983,16915,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db103_sequencial'))."','$this->db103_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db103_avaliacaotiporesposta"]) || $this->db103_avaliacaotiporesposta != "")
-             $resac = db_query("insert into db_acount values($acount,2983,17046,'".AddSlashes(pg_result($resaco,$conresaco,'db103_avaliacaotiporesposta'))."','$this->db103_avaliacaotiporesposta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2983,17046,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db103_avaliacaotiporesposta'))."','$this->db103_avaliacaotiporesposta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db103_avaliacaogrupopergunta"]) || $this->db103_avaliacaogrupopergunta != "")
-             $resac = db_query("insert into db_acount values($acount,2983,16916,'".AddSlashes(pg_result($resaco,$conresaco,'db103_avaliacaogrupopergunta'))."','$this->db103_avaliacaogrupopergunta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2983,16916,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db103_avaliacaogrupopergunta'))."','$this->db103_avaliacaogrupopergunta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db103_descricao"]) || $this->db103_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,2983,16917,'".AddSlashes(pg_result($resaco,$conresaco,'db103_descricao'))."','$this->db103_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2983,16917,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db103_descricao'))."','$this->db103_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db103_identificador"]) || $this->db103_identificador != "")
-             $resac = db_query("insert into db_acount values($acount,2983,19378,'".AddSlashes(pg_result($resaco,$conresaco,'db103_identificador'))."','$this->db103_identificador',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2983,19378,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db103_identificador'))."','$this->db103_identificador',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db103_obrigatoria"]) || $this->db103_obrigatoria != "")
-             $resac = db_query("insert into db_acount values($acount,2983,16918,'".AddSlashes(pg_result($resaco,$conresaco,'db103_obrigatoria'))."','$this->db103_obrigatoria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2983,16918,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db103_obrigatoria'))."','$this->db103_obrigatoria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db103_ativo"]) || $this->db103_ativo != "")
-             $resac = db_query("insert into db_acount values($acount,2983,16919,'".AddSlashes(pg_result($resaco,$conresaco,'db103_ativo'))."','$this->db103_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2983,16919,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db103_ativo'))."','$this->db103_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db103_ordem"]) || $this->db103_ordem != "")
-             $resac = db_query("insert into db_acount values($acount,2983,17023,'".AddSlashes(pg_result($resaco,$conresaco,'db103_ordem'))."','$this->db103_ordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2983,17023,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db103_ordem'))."','$this->db103_ordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db103_tipo"]) || $this->db103_tipo != "")
-             $resac = db_query("insert into db_acount values($acount,2983,21839,'".AddSlashes(pg_result($resaco,$conresaco,'db103_tipo'))."','$this->db103_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2983,21839,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db103_tipo'))."','$this->db103_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db103_mascara"]) || $this->db103_mascara != "")
-             $resac = db_query("insert into db_acount values($acount,2983,21840,'".AddSlashes(pg_result($resaco,$conresaco,'db103_mascara'))."','$this->db103_mascara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2983,21840,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db103_mascara'))."','$this->db103_mascara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db103_dblayoutcampo"]) || $this->db103_dblayoutcampo != "")
-             $resac = db_query("insert into db_acount values($acount,2983,1009307,'".AddSlashes(pg_result($resaco,$conresaco,'db103_dblayoutcampo'))."','$this->db103_dblayoutcampo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2983,1009307,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db103_dblayoutcampo'))."','$this->db103_dblayoutcampo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db103_perguntaidentificadora"]) || $this->db103_perguntaidentificadora != "")
-             $resac = db_query("insert into db_acount values($acount,2983,1009305,'".AddSlashes(pg_result($resaco,$conresaco,'db103_perguntaidentificadora'))."','$this->db103_perguntaidentificadora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2983,1009305,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db103_perguntaidentificadora'))."','$this->db103_perguntaidentificadora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db103_camposql"]) || $this->db103_camposql != "")
-             $resac = db_query("insert into db_acount values($acount,2983,1009304,'".AddSlashes(pg_result($resaco,$conresaco,'db103_camposql'))."','$this->db103_camposql',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2983,1009304,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db103_camposql'))."','$this->db103_camposql',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db103_identificadorcampo"]) || $this->db103_identificadorcampo != "")
-             $resac = db_query("insert into db_acount values($acount,2983,1009512,'".AddSlashes(pg_result($resaco,$conresaco,'db103_identificadorcampo'))."','$this->db103_identificadorcampo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2983,1009512,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db103_identificadorcampo'))."','$this->db103_identificadorcampo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db103_somenteleitura"]) || $this->db103_somenteleitura != "")
-             $resac = db_query("insert into db_acount values($acount,2983,1010591,'".AddSlashes(pg_result($resaco,$conresaco,'db103_somenteleitura'))."','$this->db103_somenteleitura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2983,1010591,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db103_somenteleitura'))."','$this->db103_somenteleitura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -546,23 +546,23 @@ class cl_avaliacaopergunta {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,16915,'$db103_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,2983,16915,'','".AddSlashes(pg_result($resaco,$iresaco,'db103_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2983,17046,'','".AddSlashes(pg_result($resaco,$iresaco,'db103_avaliacaotiporesposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2983,16916,'','".AddSlashes(pg_result($resaco,$iresaco,'db103_avaliacaogrupopergunta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2983,16917,'','".AddSlashes(pg_result($resaco,$iresaco,'db103_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2983,19378,'','".AddSlashes(pg_result($resaco,$iresaco,'db103_identificador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2983,16918,'','".AddSlashes(pg_result($resaco,$iresaco,'db103_obrigatoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2983,16919,'','".AddSlashes(pg_result($resaco,$iresaco,'db103_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2983,17023,'','".AddSlashes(pg_result($resaco,$iresaco,'db103_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2983,21839,'','".AddSlashes(pg_result($resaco,$iresaco,'db103_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2983,21840,'','".AddSlashes(pg_result($resaco,$iresaco,'db103_mascara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2983,1009307,'','".AddSlashes(pg_result($resaco,$iresaco,'db103_dblayoutcampo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2983,1009305,'','".AddSlashes(pg_result($resaco,$iresaco,'db103_perguntaidentificadora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2983,1009304,'','".AddSlashes(pg_result($resaco,$iresaco,'db103_camposql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2983,1009512,'','".AddSlashes(pg_result($resaco,$iresaco,'db103_identificadorcampo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2983,16915,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db103_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2983,17046,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db103_avaliacaotiporesposta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2983,16916,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db103_avaliacaogrupopergunta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2983,16917,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db103_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2983,19378,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db103_identificador'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2983,16918,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db103_obrigatoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2983,16919,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db103_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2983,17023,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db103_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2983,21839,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db103_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2983,21840,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db103_mascara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2983,1009307,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db103_dblayoutcampo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2983,1009305,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db103_perguntaidentificadora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2983,1009304,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db103_camposql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2983,1009512,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db103_identificadorcampo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

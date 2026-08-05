@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcreservager_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcreservager = new cl_orcreservager;
 $clorcreservager->rotulo->label("o84_codres");
 $clorcreservager->rotulo->label("o84_codres");
@@ -54,7 +55,7 @@ $clorcreservager->rotulo->label("o84_codres");
               <?=$Lo84_codres?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o84_codres",6,$Io84_codres,true,"text",4,"","chave_o84_codres");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clorcreservager->rotulo->label("o84_codres");
               <?=$Lo84_codres?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o84_codres",6,$Io84_codres,true,"text",4,"","chave_o84_codres");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clorcreservager->rotulo->label("o84_codres");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcreservager.php")==true){
@@ -118,12 +119,12 @@ $clorcreservager->rotulo->label("o84_codres");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

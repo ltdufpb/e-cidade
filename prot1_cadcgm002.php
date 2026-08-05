@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -533,13 +533,13 @@
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Expires" CONTENT="0">
-<?
+<?php 
 	db_app::load('strings.js,scripts.js,datagrid.widget.js,prototype.js');
 	db_app::load('estilos.css,grid.style.css');
 ?>
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?
+<?php 
 if(!isset($testanome)){
 ?>
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
@@ -550,7 +550,7 @@ if(!isset($testanome)){
     <td width="140">&nbsp;</td>
   </tr>
 </table>
-<?
+<?php 
 }else{
   db_input('autoinfra',10,'',true,'hidden',3);
   db_input('autonotific',10,'',true,'hidden',3);
@@ -562,20 +562,20 @@ if(!isset($testanome)){
   <tr>
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
     <center>
-	<?
+	<?php 
     include(modification("forms/db_frmcgm.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php 
 if(!isset($testanome)){//esta variavel eh passada qdo esta pagina é acessada pela func_nome, pq ela é montada dentro do iframe de pesquisa e não necessita de menu, se não for a func_nome que acessa o menu é montado normalmente
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 }
 ?>
 </body>
-<?
+<?php 
 if (isset($sMsgErro) && !empty($sMsgErro)) {
 	db_msgbox($sMsgErro);
 }

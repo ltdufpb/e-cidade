@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_contranslr_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcontranslr = new cl_contranslr;
 $clcontranslr->rotulo->label("c47_seqtranslr");
 $clcontranslr->rotulo->label("c47_seqtranslan");
@@ -54,7 +55,7 @@ $clcontranslr->rotulo->label("c47_seqtranslan");
               <?=$Lc47_seqtranslr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c47_seqtranslr",8,$Ic47_seqtranslr,true,"text",4,"","chave_c47_seqtranslr");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcontranslr->rotulo->label("c47_seqtranslan");
               <?=$Lc47_seqtranslan?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c47_seqtranslan",8,$Ic47_seqtranslan,true,"text",4,"","chave_c47_seqtranslan");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clcontranslr->rotulo->label("c47_seqtranslan");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_contranslr.php")==true){
@@ -118,12 +119,12 @@ $clcontranslr->rotulo->label("c47_seqtranslan");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

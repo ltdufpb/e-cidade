@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_docparagpadrao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_docparagpadrao = new cl_db_docparagpadrao;
 $cldb_docparagpadrao->rotulo->label("db62_coddoc");
 $cldb_docparagpadrao->rotulo->label("db62_codparag");
@@ -55,7 +56,7 @@ $cldb_docparagpadrao->rotulo->label("db62_coddoc");
               <?=$Ldb62_coddoc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db62_coddoc",8,$Idb62_coddoc,true,"text",4,"","chave_db62_coddoc");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $cldb_docparagpadrao->rotulo->label("db62_coddoc");
               <?=$Ldb62_codparag?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db62_codparag",8,$Idb62_codparag,true,"text",4,"","chave_db62_codparag");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $cldb_docparagpadrao->rotulo->label("db62_coddoc");
               <?=$Ldb62_coddoc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db62_coddoc",8,$Idb62_coddoc,true,"text",4,"","chave_db62_coddoc");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $cldb_docparagpadrao->rotulo->label("db62_coddoc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_docparagpadrao.php")==true){
@@ -133,12 +134,12 @@ $cldb_docparagpadrao->rotulo->label("db62_coddoc");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -121,26 +121,20 @@ class TurmaEscolarizacaoService
         $data_corte = $request->get('dataCorte');
         $this->dataCorte = $data_corte ? \DBDate::create($data_corte)->convertTo('Y-m-d') : null;
 
-        $periodoDiario = $this->getPeriodoDoDiario($request);
+        $periodoDiario = static::getPeriodoDoDiario($request);
         $this->periodoDiario = [];
         $this->periodoDiario['inicio'] = $periodoDiario[0];
         $this->periodoDiario['fim'] = $periodoDiario[1];
 
-        $this->etapas = collect($request->get('etapa'))->map(function ($etapa) {
-            return EtapaRepository::getEtapaByCodigo($etapa);
-        })->all();
+        $this->etapas = collect($request->get('etapa'))->map(fn($etapa) => EtapaRepository::getEtapaByCodigo($etapa))->all();
 
         $this->avaliacaoPeriodica = AvaliacaoPeriodicaRepository::getAvaliacaoPeriodicaByCodigo(
             $request->get('periodo')
         );
         if ($request->modelo == 4) {
-            $this->disciplinas = collect($request->get('disciplinas')[0])->map(function ($codigo) {
-                return DisciplinaEnsino::find($codigo);
-            })->all();
+            $this->disciplinas = collect($request->get('disciplinas')[0])->map(fn($codigo) => DisciplinaEnsino::find($codigo))->all();
         } else {
-            $this->disciplinas = collect($request->get('disciplinas'))->map(function ($codigo) {
-                return DisciplinaEnsino::find($codigo);
-            })->all();
+            $this->disciplinas = collect($request->get('disciplinas'))->map(fn($codigo) => DisciplinaEnsino::find($codigo))->all();
         }
 
 
@@ -213,7 +207,7 @@ class TurmaEscolarizacaoService
             $periodoCalendario['ed53_d_fim']
         );
 
-        return array($calendarioInicio, $calendarioFim);
+        return [$calendarioInicio, $calendarioFim];
     }
 
     /**
@@ -300,9 +294,7 @@ class TurmaEscolarizacaoService
             }
             $codigoDisciplina = $dadosDiarioClasse->getDisciplina()->getCodigo();
             $disciplina = DisciplinaRepository::getDisciplinaByCodigo($codigoDisciplina);
-            $diarioDisciplina = is_null($matricula->getDiarioDeClasse()->getDisciplinasPorDisciplina($disciplina)) ?
-                new \DiarioAvaliacaoDisciplina(null) :
-                $matricula->getDiarioDeClasse()->getDisciplinasPorDisciplina($disciplina);
+            $diarioDisciplina = $matricula->getDiarioDeClasse()->getDisciplinasPorDisciplina($disciplina) ?? new \DiarioAvaliacaoDisciplina(null);
 
 
             $periodoAvaliacao = is_null($diarioDisciplina->getAvaliacoes()) ?

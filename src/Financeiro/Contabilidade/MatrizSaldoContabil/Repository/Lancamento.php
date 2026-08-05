@@ -70,7 +70,7 @@ class Lancamento extends BaseClassRepository
      */
     protected $persisteSaldoFinal = false;
 
-    protected $lancamentos = array();
+    protected $lancamentos = [];
 
 
     /**
@@ -78,7 +78,7 @@ class Lancamento extends BaseClassRepository
      *
      * @var array
      */
-    private $atributos = array();
+    private $atributos = [];
 
     /**
      * sistema para processamento
@@ -97,7 +97,7 @@ class Lancamento extends BaseClassRepository
      *
      * @var array
      */
-    private $atributosParaProcessamento = array();
+    private $atributosParaProcessamento = [];
 
     /**
      * @var int
@@ -159,11 +159,11 @@ class Lancamento extends BaseClassRepository
         $atributoLancamentoTable->setByLineOfDBUtils($oDaoAtributoLancamento);
         $sequencial = $atributoLancamentoTable->insertValue();
 
-        $infoComplementareNaoObrigatorias = array(
+        $infoComplementareNaoObrigatorias = [
             InformacaoComplementar::INFO_COMP_CODIGO_AI,
             InformacaoComplementar::INFO_COMP_CODIGO_ES,
             InformacaoComplementar::INFO_COMP_CODIGO_CF,
-        );
+        ];
         foreach ($oLancamento->getInfoComplementares() as $oInfocomplementar) {
             if ($oInfocomplementar->getValor() == ''
                 && !in_array($oInfocomplementar->getCodigoInformacaoComplementar(), $infoComplementareNaoObrigatorias)
@@ -251,7 +251,7 @@ class Lancamento extends BaseClassRepository
      * @throws ParameterException
      * @throws Exception
      */
-    protected function build(stdClass $dados, array $infoComplementares = null)
+    protected function build(stdClass $dados, ?array $infoComplementares = null)
     {
         if (empty($dados)) {
             return null;
@@ -276,7 +276,7 @@ class Lancamento extends BaseClassRepository
 
         if (!empty($infoComplementares)) {
             foreach ($infoComplementares as $infoComplementar) {
-                $oInfoComplementar = new Model\InformacaoComplementar();
+                $oInfoComplementar = new InformacaoComplementar();
                 $oInfoComplementar->setSigla($infoComplementar->sigla);
                 $oInfoComplementar->setDescricao($infoComplementar->descricao);
                 $oInfoComplementar->setConta($infoComplementar->conta);
@@ -311,26 +311,24 @@ class Lancamento extends BaseClassRepository
      */
     public function makeCollection($rsResult)
     {
-        $aCollection = array();
+        $aCollection = [];
 
         if (is_object($rsResult)) {
             $aLancamentos[] = $rsResult;
         } else {
-            $aLancamentos = db_utils::makeCollectionFromRecord($rsResult, function ($oLancamento) {
-                return $oLancamento;
-            });
+            $aLancamentos = db_utils::makeCollectionFromRecord($rsResult, fn($oLancamento) => $oLancamento);
         }
 
         foreach ($aLancamentos as $oLancamento) {
             if (!empty($oLancamento->infos_complementares)) {
-                $aIdInfosComplementares = explode(',', $oLancamento->infos_complementares);
+                $aIdInfosComplementares = explode(',', (string) $oLancamento->infos_complementares);
             }
 
             if (!empty($oLancamento->sequencial_conplanoatributos)) {
-                $aSequencialConPlanoAtributos = explode(',', $oLancamento->sequencial_conplanoatributos);
+                $aSequencialConPlanoAtributos = explode(',', (string) $oLancamento->sequencial_conplanoatributos);
             }
 
-            $aInfoComplementar = array();
+            $aInfoComplementar = [];
 
             if (!empty($aIdInfosComplementares) && !empty($aSequencialConPlanoAtributos)) {
                 foreach ($aIdInfosComplementares as $index => $idInfocomplementar) {
@@ -389,7 +387,7 @@ class Lancamento extends BaseClassRepository
             case InformacaoComplementar::INFO_COMP_TIPO_CF:
             case InformacaoComplementar::INFO_COMP_TIPO_CO:
                 $valor = empty($lancamento->atributo_cf) ? '0000' : $lancamento->atributo_cf;
-                $valor = str_pad($valor, 4, '0', STR_PAD_LEFT);
+                $valor = str_pad((string) $valor, 4, '0', STR_PAD_LEFT);
                 break;
             case InformacaoComplementar::INFO_COMP_TIPO_FR:
                 $valor = empty($lancamento->atributo_fr) ? '1' : $lancamento->atributo_fr;
@@ -401,7 +399,7 @@ class Lancamento extends BaseClassRepository
                 $valor = empty($lancamento->atributo_nd) ? '33909900' : $lancamento->atributo_nd;
                 break;
             case InformacaoComplementar::INFO_COMP_TIPO_FS:
-                $valorAtibuto = str_pad($lancamento->atributo_fs, 5, '0', STR_PAD_LEFT);
+                $valorAtibuto = str_pad((string) $lancamento->atributo_fs, 5, '0', STR_PAD_LEFT);
                 $valor = empty($lancamento->atributo_fs) ? '04122' : $valorAtibuto;
                 break;
             case InformacaoComplementar::INFO_COMP_TIPO_ES:
@@ -451,9 +449,9 @@ class Lancamento extends BaseClassRepository
      */
     public function getValoresConplanoExe($mes, $ano, $instituicoes)
     {
-        $aCampos = array();
-        $aWhere = array();
-        $aWhere2 = array();
+        $aCampos = [];
+        $aWhere = [];
+        $aWhere2 = [];
 
         $anoAnterior = $ano - 1;
         $mesAnterior = 12;
@@ -591,7 +589,7 @@ class Lancamento extends BaseClassRepository
     ) {
         $daoConplanoAtributoLancamentos = new cl_conplanoatributolancamentos();
 
-        $codigoInstituicoes = array();
+        $codigoInstituicoes = [];
         foreach ($instituicoes as $instituicao) {
             $codigoInstituicoes[] = $instituicao->getCodigo();
         }
@@ -617,15 +615,13 @@ class Lancamento extends BaseClassRepository
 
         $rsRestosPagar = db_query($sqlRestoPagar);
 
-        $aLancamentosComRestoPagar = db_utils::makeCollectionFromRecord($rsRestosPagar, function ($objRestoPagar) {
-            return $objRestoPagar->codigo_lancamento;
-        });
+        $aLancamentosComRestoPagar = db_utils::makeCollectionFromRecord($rsRestosPagar, fn($objRestoPagar) => $objRestoPagar->codigo_lancamento);
 
         $instancia = $this;
         /**
          * Processamos os dois tipos
          */
-        $lancamntosParaMatriz = array();
+        $lancamntosParaMatriz = [];
         for ($i = 1; $i <= 2; $i++) {
             $this->tipoSaldo = $i;
             pg_result_seek($rsLancamentos, 0);
@@ -650,12 +646,12 @@ class Lancamento extends BaseClassRepository
                 }
             );
 
-            $aLancamentos = array();
+            $aLancamentos = [];
             foreach ($this->lancamentos as $lancamento) {
-                $indice = implode('', array(
+                $indice = implode('', [
                     $lancamento->estrutura . "|",
                     implode('|', $lancamento->informacoesComplementares)
-                ));
+                ]);
 
                 $this->adicionarLancamento(
                     $aLancamentos[$indice],
@@ -719,7 +715,7 @@ class Lancamento extends BaseClassRepository
 
         $lancamento = $this->lancamentos[$dado->sequencial];
         $valor = $dado->valor;
-        if ($dado->sigla == Model\InformacaoComplementar::INFO_COMP_TIPO_FR && !empty($deParaFR[$valor])
+        if ($dado->sigla == InformacaoComplementar::INFO_COMP_TIPO_FR && !empty($deParaFR[$valor])
             && $this->tipoSaldo == self::TIPO_SALDO_MSC) {
             $valor = $deParaFR[$valor];
 
@@ -728,18 +724,18 @@ class Lancamento extends BaseClassRepository
             }
         }
 
-        if ($dado->sigla == Model\InformacaoComplementar::INFO_COMP_TIPO_FR
+        if ($dado->sigla == InformacaoComplementar::INFO_COMP_TIPO_FR
             && !empty($this->deParaFonteRecursos[$valor])
             && $this->tipoSaldo == self::TIPO_SALDO_ECIDADE) {
             $valor = $this->deParaFonteRecursos[$valor];
         }
 
-        $tipos = [Model\InformacaoComplementar::INFO_COMP_TIPO_ND, Model\InformacaoComplementar::INFO_COMP_TIPO_NR];
+        $tipos = [InformacaoComplementar::INFO_COMP_TIPO_ND, InformacaoComplementar::INFO_COMP_TIPO_NR];
         if (in_array($dado->sigla, $tipos) && $this->tipoSaldo == self::TIPO_SALDO_MSC) {
             /**
              * Quando a receita for de dedução, devemos inverter o valor para deduzir do grupo.
              */
-            if ($dado->sigla == Model\InformacaoComplementar::INFO_COMP_TIPO_NR && $valor{1} == 9) {
+            if ($dado->sigla == InformacaoComplementar::INFO_COMP_TIPO_NR && $valor[1] == 9) {
                 $lancamento->valor = $lancamento->valor * -1;
             }
             // removido substr pois deve ser realizado o mapeamento com o plano do governo
@@ -747,11 +743,11 @@ class Lancamento extends BaseClassRepository
         }
 
         /* os atributos abaixo não são enviados para MSC caso o valor encontrado esteja vazio */
-        $atributosParaIgnorar = array(
-            Model\InformacaoComplementar::INFO_COMP_TIPO_ES,
-            Model\InformacaoComplementar::INFO_COMP_TIPO_CF,
-            Model\InformacaoComplementar::INFO_COMP_TIPO_CO,
-        );
+        $atributosParaIgnorar = [
+            InformacaoComplementar::INFO_COMP_TIPO_ES,
+            InformacaoComplementar::INFO_COMP_TIPO_CF,
+            InformacaoComplementar::INFO_COMP_TIPO_CO,
+        ];
         if (in_array($dado->sigla, $atributosParaIgnorar) && $this->tipoSaldo == self::TIPO_SALDO_MSC
             && (empty($valor) or $valor == '0000')) {
             return;
@@ -759,11 +755,11 @@ class Lancamento extends BaseClassRepository
 
         // quando o atributo DC for 0 (zero) não deve ser enviado na matriz
         if ($this->tipoSaldo == self::TIPO_SALDO_MSC
-            && $dado->sigla === Model\InformacaoComplementar::INFO_COMP_TIPO_DC
+            && $dado->sigla === InformacaoComplementar::INFO_COMP_TIPO_DC
             && $valor === '0') {
             return;
         }
-        if ((string)$dado->sigla === Model\InformacaoComplementar::INFO_COMP_TIPO_PO
+        if ((string)$dado->sigla === InformacaoComplementar::INFO_COMP_TIPO_PO
             && $this->tipoSaldo == self::TIPO_SALDO_MSC) {
             if (!empty($deParaPO[$valor])) {
                 $valor = $deParaPO[$valor];
@@ -789,7 +785,7 @@ class Lancamento extends BaseClassRepository
         $ano,
         array $instituicoes,
         $sistemaContaCorrente = 1,
-        $tipoDocumentos = array()
+        $tipoDocumentos = []
     ) {
         $dao = new cl_conplanoatributolancamentos();
         return $dao->removerLancametosCompetencia(
@@ -858,9 +854,7 @@ class Lancamento extends BaseClassRepository
 
         $result = db_query($sSql);
 
-        return db_utils::makeFromRecord($result, function ($item) {
-            return $item->quantidade;
-        });
+        return db_utils::makeFromRecord($result, fn($item) => $item->quantidade);
     }
 
     /**
@@ -902,7 +896,7 @@ class Lancamento extends BaseClassRepository
     private function adicionarLancamento(&$aContasAtributos, $dadosAnterior, $estrutura, $hashInformacoesComplementares)
     {
         if (empty($aContasAtributos['end'])) {
-            $aContasAtributos['end'] = (object)array(
+            $aContasAtributos['end'] = (object)[
                 'sequencial' => $dadosAnterior->sequencial,
                 'estrutura' => $estrutura,
                 'natureza' => 'D',
@@ -911,11 +905,11 @@ class Lancamento extends BaseClassRepository
                 'valor' => 0,
                 'informacoesComplementares' => $hashInformacoesComplementares,
                 'anousu' => $dadosAnterior->anousu
-            );
+            ];
         }
 
         if (empty($aContasAtributos['begin'])) {
-            $aContasAtributos['begin'] = (object)array(
+            $aContasAtributos['begin'] = (object)[
                 'sequencial' => $dadosAnterior->sequencial,
                 'estrutura' => $estrutura,
                 'natureza' => $dadosAnterior->natureza,
@@ -924,7 +918,7 @@ class Lancamento extends BaseClassRepository
                 'valor' => 0,
                 'informacoesComplementares' => $hashInformacoesComplementares,
                 'anousu' => $dadosAnterior->anousu
-            );
+            ];
         }
 
         switch ($dadosAnterior->tipo) {
@@ -947,7 +941,7 @@ class Lancamento extends BaseClassRepository
                 break;
             case 2:
                 if (empty($aContasAtributos['periods'][$dadosAnterior->natureza])) {
-                    $aContasAtributos['periods'][$dadosAnterior->natureza] = (object)array(
+                    $aContasAtributos['periods'][$dadosAnterior->natureza] = (object)[
                         'sequencial' => $dadosAnterior->sequencial,
                         'estrutura' => $estrutura,
                         'natureza' => $dadosAnterior->natureza,
@@ -956,7 +950,7 @@ class Lancamento extends BaseClassRepository
                         'valor' => 0,
                         'informacoesComplementares' => $hashInformacoesComplementares,
                         'anousu' => $dadosAnterior->anousu,
-                    );
+                    ];
                 }
 
                 $aContasAtributos['periods'][$dadosAnterior->natureza]->valor += round(
@@ -1026,7 +1020,7 @@ class Lancamento extends BaseClassRepository
      * @throws DBException
      * @throws ParameterException
      */
-    public function buscarValorInicial($aContasAtributos, $mes, $ano, array $saldosAnteriores = null)
+    public function buscarValorInicial($aContasAtributos, $mes, $ano, ?array $saldosAnteriores = null)
     {
         // tratamento para a conta 82111 apena no inicio do exercício de 2022 no mês de Janeiro 1
         $condicaoEspecial = false;
@@ -1043,7 +1037,7 @@ class Lancamento extends BaseClassRepository
 
         $saldosAgrupados = [];
         foreach ($aSaldos as $index => &$saldo) {
-            $partesAtributos = explode('|', $saldo->c125_hashcontaatributos);
+            $partesAtributos = explode('|', (string) $saldo->c125_hashcontaatributos);
             $conta = $partesAtributos[0];
             $temEncerramento = DBString::string_contains_any_value($conta, $listaContasEncerramento);
             $temExececao = DBString::string_contains_any_value($conta, $listaContasEncerramentoExececao);
@@ -1065,7 +1059,7 @@ class Lancamento extends BaseClassRepository
             if ($this->tipoSaldo == self::TIPO_SALDO_MSC) {
                 unset($partesAtributos[0]);
                 foreach ($partesAtributos as $atributo) {
-                    $dadosAtributo = explode('#', $atributo);
+                    $dadosAtributo = explode('#', (string) $atributo);
                     $dadosAtributo[0] = $this->transformarAtributosSiconfi($dadosAtributo[1], $dadosAtributo[0]);
                     $atributoAjustado = implode('#', $dadosAtributo);
                     $saldo->c125_hashcontaatributos = str_replace(
@@ -1101,11 +1095,11 @@ class Lancamento extends BaseClassRepository
                 if ($saldo->c125_valor == 0 || !$this->validaInstituicao($saldo->c125_hashcontaatributos)) {
                     continue;
                 }
-                $partesAtributos = explode('|', $saldo->c125_hashcontaatributos);
+                $partesAtributos = explode('|', (string) $saldo->c125_hashcontaatributos);
                 unset($partesAtributos[0]);
                 foreach ($partesAtributos as $atributo) {
-                    list($valor, $atributo) = explode('#', $atributo);
-                    if ($atributo == Model\InformacaoComplementar::INFO_COMP_TIPO_FR) {
+                    [$valor, $atributo] = explode('#', (string) $atributo);
+                    if ($atributo == InformacaoComplementar::INFO_COMP_TIPO_FR) {
                         $siconfi = $this->buscaSiconfi2022($valor);
                         if (is_null($siconfi)) {
                             throw new Exception(
@@ -1123,7 +1117,7 @@ class Lancamento extends BaseClassRepository
                 if ($this->tipoSaldo == self::TIPO_SALDO_MSC) {
                     unset($partesAtributos[0]);
                     foreach ($partesAtributos as $atributo) {
-                        $dadosAtributo = explode('#', $atributo);
+                        $dadosAtributo = explode('#', (string) $atributo);
                         $dadosAtributo[0] = $this->transformarAtributosSiconfi($dadosAtributo[1], $dadosAtributo[0]);
                         $atributoAjustado = implode('#', $dadosAtributo);
                         $saldo->c125_hashcontaatributos = str_replace(
@@ -1155,7 +1149,7 @@ class Lancamento extends BaseClassRepository
 
 
         foreach ($aContasAtributos as $hash => $item) {
-            if (array_key_exists($hash, $saldosAgrupados)) {
+            if (array_key_exists((string) $hash, $saldosAgrupados)) {
                 $item['begin']->valor = round($saldosAgrupados[$hash]->c125_valor, 2);
                 $item['begin']->natureza = $saldosAgrupados[$hash]->c125_natureza;
                 unset($saldosAgrupados[$hash]);
@@ -1201,7 +1195,7 @@ class Lancamento extends BaseClassRepository
 
         $oUltimaCompetenciaProcessada->stringCompetencia = "";
         $oUltimaCompetenciaProcessada->stringCompetencia .= str_pad(
-            $oUltimaCompetenciaProcessada->mes,
+            (string) $oUltimaCompetenciaProcessada->mes,
             2,
             "0",
             STR_PAD_LEFT
@@ -1220,7 +1214,7 @@ class Lancamento extends BaseClassRepository
     protected function adicionarContasSemMovimentacao($aSaldos, $aContasAtributos)
     {
         foreach ($aSaldos as $hash => $saldo) {
-            $aAtributos = explode("|", $hash);
+            $aAtributos = explode("|", (string) $hash);
 
             $estrutura = $aAtributos[0];
             unset($aAtributos[0]);
@@ -1262,10 +1256,10 @@ class Lancamento extends BaseClassRepository
      *
      * @return string
      */
-    public function getQueryLancamentosPorCompetencia($mes, $ano, $instituicoes, array $codigoLancamentos = null)
+    public function getQueryLancamentosPorCompetencia($mes, $ano, $instituicoes, ?array $codigoLancamentos = null)
     {
-        $aCampos = array();
-        $aWhere = array();
+        $aCampos = [];
+        $aWhere = [];
 
         //$aCampos[0] = " conta as estrutura,
         $aCampos[0] = " c60_estrut as estrutura,
@@ -1406,7 +1400,7 @@ class Lancamento extends BaseClassRepository
     protected function getConsultasDosAtributos()
     {
         $atributos = $this->getAtributos();
-        $atributosRetorno = array();
+        $atributosRetorno = [];
         foreach ($atributos as $atributo) {
             $atributosRetorno[] = " ({$atributo->sql}) as {$atributo->nome_propriedade} ";
         }
@@ -1428,11 +1422,11 @@ class Lancamento extends BaseClassRepository
         $mes,
         $ano,
         $instituicoes,
-        array $codigoLancamentos = null,
-        array $contas = null
+        ?array $codigoLancamentos = null,
+        ?array $contas = null
     ) {
-        $aCampos = array();
-        $aWhere = array();
+        $aCampos = [];
+        $aWhere = [];
 
         $tipo = '2';
         if ($this->encerramento) {
@@ -1559,14 +1553,14 @@ class Lancamento extends BaseClassRepository
     public function transformarAtributosSiconfi($atributo, $valor)
     {
         switch ($atributo) {
-            case Model\InformacaoComplementar::INFO_COMP_TIPO_PO:
+            case InformacaoComplementar::INFO_COMP_TIPO_PO:
                 if (!empty($this->deParaPo[$valor])) {
                     $valor = $this->deParaPo[$valor];
                 }
                 return $valor;
                 break;
 
-            case Model\InformacaoComplementar::INFO_COMP_TIPO_FR:
+            case InformacaoComplementar::INFO_COMP_TIPO_FR:
                 if (!empty($this->deParaRecursos[$valor])) {
                     $valor = $this->deParaRecursos[$valor];
                 }
@@ -1662,9 +1656,7 @@ class Lancamento extends BaseClassRepository
             throw new DBException("Erro ao buscar os valores finais da competência anterior.");
         }
 
-        $aSaldos = db_utils::makeCollectionFromRecord($rsSaldos, function ($saldoAnterior) {
-            return $saldoAnterior;
-        });
+        $aSaldos = db_utils::makeCollectionFromRecord($rsSaldos, fn($saldoAnterior) => $saldoAnterior);
         return $aSaldos;
     }
 
@@ -1692,9 +1684,7 @@ class Lancamento extends BaseClassRepository
             throw new DBException("Erro ao buscar os valores finais da competência anterior.");
         }
 
-        return db_utils::makeCollectionFromRecord($rsSaldos, function ($saldoAnterior) {
-            return $saldoAnterior;
-        });
+        return db_utils::makeCollectionFromRecord($rsSaldos, fn($saldoAnterior) => $saldoAnterior);
     }
 
     /**
@@ -1738,7 +1728,7 @@ class Lancamento extends BaseClassRepository
         $where = ["o15_recurso = '$valor'"];
         // ajuste para quando o código do recurso esta salvo na tabela ao invés da fonte de recurso...
         // (isso é uma gambiarra para corrigir um erro de sistema)
-        if (strlen($valor) < 4 || strlen($valor) > 4) {
+        if (strlen((string) $valor) < 4 || strlen((string) $valor) > 4) {
             $where = ["(o15_recurso = '$valor' or o15_codigo = $valor) "];
         }
 
@@ -1768,10 +1758,10 @@ class Lancamento extends BaseClassRepository
         $partesAtributos = explode('|', $hashContaAtributos);
         unset($partesAtributos[0]);
         foreach ($partesAtributos as $atributo) {
-            list($valor, $atributo) = explode('#', $atributo);
+            [$valor, $atributo] = explode('#', (string) $atributo);
 
-            if ($atributo === Model\InformacaoComplementar::INFO_COMP_TIPO_PO
-                && array_key_exists($valor, $this->deParaPo)) {
+            if ($atributo === InformacaoComplementar::INFO_COMP_TIPO_PO
+                && array_key_exists((string) $valor, $this->deParaPo)) {
                 return true;
             }
         }

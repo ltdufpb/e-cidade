@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -46,14 +46,14 @@ $clrotulo = new rotulocampo;
                         <b>Início:</b>
                       </td>
                       <td>
-                        <?db_inputdata('la56_d_ini', @$la56_d_ini_dia, @$la56_d_ini_mes, @$la56_d_ini_ano,
+                        <?php db_inputdata('la56_d_ini', @$la56_d_ini_dia, @$la56_d_ini_mes, @$la56_d_ini_ano,
                                         true,'text',$db_opcao,"")?>
                       </td>
                       <td>
                         <b>Fim:</b>
                       </td>
                       <td>
-                        <?db_inputdata('la56_d_fim', @$la56_d_fim_dia, @$la56_d_fim_mes, @$la56_d_fim_ano,
+                        <?php db_inputdata('la56_d_fim', @$la56_d_fim_dia, @$la56_d_fim_mes, @$la56_d_fim_ano,
                                         true,'text',$db_opcao,"")?>
                       </td>
                     <tr>
@@ -69,14 +69,14 @@ $clrotulo = new rotulocampo;
                         <b>Início:</b>
                       </td>
                       <td>
-                        <?db_inputdata('la56_d_ini2', @$la56_d_ini2_dia, @$la56_d_ini2_mes, @$la56_d_ini2_ano,
+                        <?php db_inputdata('la56_d_ini2', @$la56_d_ini2_dia, @$la56_d_ini2_mes, @$la56_d_ini2_ano,
                                         true,'text',$db_opcao,"")?>
                       </td>
                       <td>
                         <b>Fim:</b>
                       </td>
                       <td>
-                        <?db_inputdata('la56_d_fim2', @$la56_d_fim2_dia, @$la56_d_fim2_mes, @$la56_d_fim2_ano,
+                        <?php db_inputdata('la56_d_fim2', @$la56_d_fim2_dia, @$la56_d_fim2_mes, @$la56_d_fim2_ano,
                                         true,'text',$db_opcao,"")?>
                       </td>
                     <tr>

@@ -29,8 +29,8 @@ require_once(modification("fpdf151/pdfwebseller.php"));
 define('MSG_EDU2_DADOSPROFESSOR002', 'educacao.escola.edu2_dadosprofessor002.');
 
 $oCgm                = null;
-$aRechumano          = array();
-$aProfissionalEscola = array();
+$aRechumano          = [];
+$aProfissionalEscola = [];
 
 $oConfig               = new stdClass();
 $oConfig->iTMargin     = 35;
@@ -39,7 +39,7 @@ $oConfig->iXMaximo     = 192;
 $oConfig->iXMaximoLine = 202;
 $oConfig->iAlturaLinha = 4;
 
-$oConfig->aDiasSemana = array(
+$oConfig->aDiasSemana = [
                                1 => 'Domingo',
                                2 => 'Segunda-feira',
                                3 => 'Terça-feira',
@@ -47,7 +47,7 @@ $oConfig->aDiasSemana = array(
                                5 => 'Quinta-feira',
                                6 => 'Sexta-feira',
                                7 => 'Sábado'
-                             );
+                             ];
 
 try {
 
@@ -150,7 +150,7 @@ function imprimeDadosAusencia(FPDF $oPdf, CgmFisico $oCgm, $oConfig) {
   $rsMovimentacao   = $oDaoRecHumano->sql_record($sSqlMovimentacao);
   $iRegistro        = $oDaoRecHumano->numrows;
 
-  $aMovimentos = array();
+  $aMovimentos = [];
 
   $oPdf->setfont('arial','b',7);
   $oPdf->cell(192, 4,"AUSÊNCIAS/LICENÇAS/SUBSTITUIÇÕES", 1, 1, "C",1);
@@ -213,7 +213,7 @@ function imprimeDadosAusencia(FPDF $oPdf, CgmFisico $oCgm, $oConfig) {
 
       $oPdf->cell(20,  4, $oMovimento->dtInicio,                 "L", 0, "C");
       $oPdf->cell(20,  4, $oMovimento->dtFinal,                    0, 0, "C");
-      $oPdf->cell(152, 4, substr($oMovimento->sMessage, 0, 105), "R", 1, "L");
+      $oPdf->cell(152, 4, substr((string) $oMovimento->sMessage, 0, 105), "R", 1, "L");
     }
 
     desenhaBordaPagina($oPdf, $oConfig, false);
@@ -273,7 +273,7 @@ function buscaMovimentacoes( $aRechumano ) {
   $rsRecHumanoMovimentacao     = pg_query( $sSqlRecHumanoMovimentacao );
   $iLinhas                     = pg_num_rows( $rsRecHumanoMovimentacao );
 
-  $aMovimentacoes = array();
+  $aMovimentacoes = [];
   if ( $iLinhas > 0 ) {
 
     for ( $iContador = 0; $iContador < $iLinhas; $iContador++ ) {
@@ -453,7 +453,7 @@ function imprimeEscolas(FPDF $oPdf, $aRechumano, $oConfig) {
   $oPdf->cell(192, 4, "ESCOLAS",   1, 1, "C",1);
   $oPdf->cell(192, 4, "" ,      "LR", 1);
 
-  $aEscolasVinculado = buscaEscolas($aRechumano);
+  $aEscolasVinculado = buscaEscolas();
   foreach( $aEscolasVinculado as $iIndex => $aDadosVinculo) {
 
     $sTipo = "CGM:" ;
@@ -479,7 +479,7 @@ function imprimeEscolas(FPDF $oPdf, $aRechumano, $oConfig) {
     $oPdf->setfont('arial', '', 7);
     foreach ($aDadosVinculo as $oDadosEscola) {
 
-      $sEscola = str_pad($oDadosEscola->ed75_i_escola, 5, " ", STR_PAD_LEFT) ." - ". trim($oDadosEscola->ed18_c_nome);
+      $sEscola = str_pad((string) $oDadosEscola->ed75_i_escola, 5, " ", STR_PAD_LEFT) ." - ". trim((string) $oDadosEscola->ed18_c_nome);
       $dtSaida = !empty($oDadosEscola->ed75_i_saidaescola) ? db_formatar($oDadosEscola->ed75_i_saidaescola, 'd') : "";
 
       $oPdf->cell(132, 4, $sEscola,                                         0, 0, 'L');
@@ -529,7 +529,7 @@ function buscaEscolas($aRechumano) {
 
   $iLinhas = pg_num_rows($rs);
 
-  $aEscolas = array();
+  $aEscolas = [];
   for ($i=0; $i < $iLinhas; $i++) {
 
     $oDados = db_utils::fieldsMemory($rs, $i);
@@ -582,7 +582,7 @@ function dadosFuncoesExercidasEscola( FPDF $oPdf, $oConfig, ProfissionalEscola $
     return false;
   }
 
-  $aRegistrosAtividade = array();
+  $aRegistrosAtividade = [];
   $iTotalAtividades    = 0;
 
   /**
@@ -601,7 +601,7 @@ function dadosFuncoesExercidasEscola( FPDF $oPdf, $oConfig, ProfissionalEscola $
         $oDadosRegistro->sFuncao = $oAtividade->getAtividadeEscolar()->getDescricao();
         $oDadosRegistro->sTurno = AgendaAtividadeProfissional::$aTurnos[$oAgendaProfissional->getTurnoReferente()];
         $oDadosRegistro->sTipoHora = $oAgendaProfissional->getTipoHoraTrabalho()->getAbreviatura();
-        $oDadosRegistro->aDiasSemana = array();
+        $oDadosRegistro->aDiasSemana = [];
         $aRegistrosAtividade[$iChave] = $oDadosRegistro;
       }
 
@@ -783,7 +783,7 @@ function imprimeDadosPessoais( FPDF $oPdf, $oConfig, CgmFisico $oCgm ) {
   $sEnderecoCompleto  = $oCgm->getLogradouro() . ', ' . $oCgm->getNumero();
   $sEnderecoCompleto .= $oCgm->getComplemento() != '' ? ' / ' . $oCgm->getComplemento() : '';
 
-  $aEstadoCivil = array(
+  $aEstadoCivil = [
                          1 => 'SOLTEIRO',
                          2 => 'CASADO',
                          3 => 'VIÚVO',
@@ -791,7 +791,7 @@ function imprimeDadosPessoais( FPDF $oPdf, $oConfig, CgmFisico $oCgm ) {
                          5 => 'SEPARADO CONSENSUAL',
                          6 => 'SEPARADO JUDICIAL',
                          7 => 'UNIÃO ESTÁVEL'
-                       );
+                       ];
 
   $oPdf->setfont( 'arial', 'b', 7 );
   $oPdf->Cell( $oConfig->iXMaximo, $oConfig->iAlturaLinha, 'DADOS PESSOAIS', 1, 1, 'C', 1 );
@@ -874,7 +874,7 @@ function dadosHorariosRegencia( FPDF $oPdf, $oConfig, ProfissionalEscola $oProfi
   foreach ( $aHorariosRegencia as $iDiaSemana => $aDiasSemanaRegencia ) {
 
     $iYTamanho      = $oPdf->getY() - $oConfig->iTMargin;
-    $iTotalPeriodos = array_sum(array_map("count", $aDiasSemanaRegencia)) + 3;
+    $iTotalPeriodos = array_sum(array_map(count(...), $aDiasSemanaRegencia)) + 3;
     $iYTamanho      = $iYTamanho + ($iTotalPeriodos * $oConfig->iAlturaLinha );
 
     if ( $iYTamanho > ($oConfig->iYMaximo -3) ) {

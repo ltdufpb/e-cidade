@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_parecerturma_classe.php"));
 include(modification("classes/db_parecer_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clparecerturma = new cl_parecerturma;
 $clparecer = new cl_parecer;
 $clparecer->rotulo->label("ed92_i_sequencial");
@@ -56,7 +57,7 @@ $clparecer->rotulo->label("ed92_c_descr");
               <?=$Led92_i_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
                        db_input("ed92_i_sequencial",10,$Ied92_i_sequencial,true,"text",4,"","chave_ed92_i_sequencial");
                        ?>
             </td>
@@ -66,7 +67,7 @@ $clparecer->rotulo->label("ed92_c_descr");
               <?=$Led92_c_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
                        db_input("ed92_c_descr",40,$Ied92_c_descr,true,"text",4,"","chave_ed92_c_descr");
                        ?>
             </td>
@@ -84,7 +85,7 @@ $clparecer->rotulo->label("ed92_c_descr");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_parecer.php")==true){
@@ -124,12 +125,12 @@ $clparecer->rotulo->label("ed92_c_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

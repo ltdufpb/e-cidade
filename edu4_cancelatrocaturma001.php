@@ -210,7 +210,7 @@ $clrotulo->label("ed15_c_nome");
       <input type='submit' id='btnLimparDados' name='btnLimparDados' value='Limpar Dados' onClick='js_limparDados();'>
     </center>
   </Body>
-  <?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+  <?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </html>
 <script>
 var sUrl = 'edu4_turmas.RPC.php';

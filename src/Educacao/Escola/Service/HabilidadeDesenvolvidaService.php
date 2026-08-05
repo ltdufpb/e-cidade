@@ -14,7 +14,6 @@ use ECidade\Educacao\Secretaria\BNCC\Registry\DisciplinaRegistry;
 use ECidade\Educacao\Secretaria\BNCC\Registry\HabilidadeReferencialCurricularEstadualRegistry;
 use ECidade\Educacao\Secretaria\BNCC\Repository\HabilidadeReferencialCurricularEstadualRepository;
 use ECidade\Educacao\Secretaria\Services\ParametrosGlobaisService;
-use ECidade\Enum\Educacao\BNCC\TipoBaseCurricularEnum;
 use Exception;
 use stdClass;
 use TurmaRepository;

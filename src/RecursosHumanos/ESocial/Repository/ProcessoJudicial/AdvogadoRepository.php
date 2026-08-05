@@ -119,7 +119,7 @@ class AdvogadoRepository
      * @param  Advogado|null $advogado
      * @throws BusinessException
      */
-    public function delete(Advogado $advogado = null)
+    public function delete(?Advogado $advogado = null)
     {
         $id = $advogado instanceof Advogado ? $advogado->getSequencial() : null;
 
@@ -137,7 +137,7 @@ class AdvogadoRepository
      * @return bool| Advogado
      * @throws BusinessException
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhprocessoadvogado;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

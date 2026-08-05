@@ -27,6 +27,8 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+
 /**
  * Class EFDProcessos
  * @package ECidade\RecursosHumanos\ESocial\Integracao\Formatter
@@ -40,6 +42,7 @@ class EFDProcessos extends Formatter
      * @param array $dados
      * @return array
      */
+    #[Override]
     public function formatar($dados)
     {
         $dadosFormatado = parent::formatar($dados);

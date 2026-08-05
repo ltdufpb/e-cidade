@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bancoshistmovcategoria_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbancoshistmovcategoria = new cl_bancoshistmovcategoria;
 $clbancoshistmovcategoria->rotulo->label("k67_sequencial");
 $clbancoshistmovcategoria->rotulo->label("k67_descricao");
@@ -54,7 +55,7 @@ $clbancoshistmovcategoria->rotulo->label("k67_descricao");
               <?=$Lk67_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k67_sequencial",10,$Ik67_sequencial,true,"text",4,"","chave_k67_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clbancoshistmovcategoria->rotulo->label("k67_descricao");
               <?=$Lk67_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k67_descricao",50,$Ik67_descricao,true,"text",4,"","chave_k67_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clbancoshistmovcategoria->rotulo->label("k67_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bancoshistmovcategoria.php")==true){
@@ -122,12 +123,12 @@ $clbancoshistmovcategoria->rotulo->label("k67_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

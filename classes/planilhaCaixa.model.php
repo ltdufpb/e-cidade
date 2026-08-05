@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,7 @@ class planilhaCaixa {
    * @param integer $iCodPlanilha Código da planilha
    *
    */
-  function planilhaCaixa($iCodPlanilha) {
+  function __construct($iCodPlanilha) {
 
     $this->iPlanilha = $iCodPlanilha;
     $this->iAnoUsu   = db_getsession("DB_anousu");

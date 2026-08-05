@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_protprocesso_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clprotprocesso = new cl_protprocesso;
 $clprotprocesso->rotulo->label("p58_codproc");
 $clprotprocesso->rotulo->label("p58_codproc");
@@ -84,7 +85,7 @@ $clprotprocesso->rotulo->label("p58_codproc");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       
        $sWhere = '';
        
@@ -161,7 +162,7 @@ $clprotprocesso->rotulo->label("p58_codproc");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
@@ -179,7 +180,7 @@ document.form2.chave_p58_codproc.select();
 	  }
   }
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -47,7 +47,7 @@ class Registro40Service
     /**
      * @var Registro40[]
      */
-    private $registros = array();
+    private $registros = [];
 
     /**
      * @var Registro00Service
@@ -171,7 +171,7 @@ class Registro40Service
             }
         }
         if (empty($gestores)) {
-            return array();
+            return [];
         }
         return $gestores;
     }

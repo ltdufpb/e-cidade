@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptuender_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cliptuender = new cl_iptuender;
 ?>
 <html>
@@ -51,7 +52,7 @@ $cliptuender = new cl_iptuender;
 	    <form name="form2" method="post" action="" >
         <tr> 
           <td colspan="2" align="center"> 
-					  <?
+					  <?php 
 			        db_ancora("Matrícula do ímovel","js_pesquisaj43_matric(true);",1);
 							db_input('j43_matric',10,'',true,'text',"1");
 					  ?>
@@ -73,7 +74,7 @@ $cliptuender = new cl_iptuender;
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if (!isset($pesquisa_chave)) {
         if (isset($campos)==false) {
            if (file_exists("funcoes/db_func_iptuender.php")==true){
@@ -128,12 +129,12 @@ function js_mostraiptubase1(chave1){
 
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

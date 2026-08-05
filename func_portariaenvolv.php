@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_portariaenvolv_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clportariaenvolv = new cl_portariaenvolv;
 $clportariaenvolv->rotulo->label("h42_sequencial");
 $clportariaenvolv->rotulo->label("h42_descr");
@@ -54,7 +55,7 @@ $clportariaenvolv->rotulo->label("h42_descr");
               <?=$Lh42_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("h42_sequencial",10,$Ih42_sequencial,true,"text",4,"","chave_h42_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clportariaenvolv->rotulo->label("h42_descr");
               <?=$Lh42_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("h42_descr",40,$Ih42_descr,true,"text",4,"","chave_h42_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clportariaenvolv->rotulo->label("h42_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_portariaenvolv.php")==true){
@@ -122,12 +123,12 @@ $clportariaenvolv->rotulo->label("h42_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

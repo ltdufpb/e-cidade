@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_alunos_turma_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clalunos_turma = new cl_alunos_turma;
 $clalunos_turma->rotulo->label("ed32_i_codigo");
 $clalunos_turma->rotulo->label("ed32_i_matricula");
@@ -56,7 +57,7 @@ $clalunos_turma->rotulo->label("ed32_i_matricula");
               <?=$Led32_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                        db_input("ed32_i_codigo",10,$Ied32_i_codigo,true,"text",4,"","chave_ed32_i_codigo");
                        ?>
             </td>
@@ -66,7 +67,7 @@ $clalunos_turma->rotulo->label("ed32_i_matricula");
               <?=$Led32_i_matricula?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                        db_input("ed32_i_matricula",10,$Ied32_i_matricula,true,"text",4,"","chave_ed32_i_matricula");
                        ?>
             </td>
@@ -84,7 +85,7 @@ $clalunos_turma->rotulo->label("ed32_i_matricula");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_alunos_turma.php")==true){
@@ -120,12 +121,12 @@ $clalunos_turma->rotulo->label("ed32_i_matricula");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

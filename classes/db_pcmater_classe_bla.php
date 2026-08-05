@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE pcmater
 class cl_pcmater { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $pc01_codmater = 0; 
-   var $pc01_descrmater = null; 
-   var $pc01_complmater = null; 
-   var $pc01_codsubgrupo = 0; 
+   public $pc01_codmater = 0; 
+   public $pc01_descrmater = null; 
+   public $pc01_complmater = null; 
+   public $pc01_codsubgrupo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  pc01_codmater = int4 = Código do Material 
                  pc01_descrmater = varchar(80) = Descrição do Material 
                  pc01_complmater = text = Complemento Material 
                  pc01_codsubgrupo = int4 = Código do Sub-Grupo 
                  ";
    //funcao construtor da classe 
-   function cl_pcmater() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcmater"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -121,10 +121,10 @@ class cl_pcmater {
          $this->erro_status = "0";
          return false; 
        }
-       $this->pc01_codmater = pg_result($result,0,0); 
+       $this->pc01_codmater = pg_fetch_result($result,0,0); 
      }else{
        $result = @pg_query("select last_value from pcmater_pc01_codmater_seq");
-       if(($result != false) && (pg_result($result,0,0) < $pc01_codmater)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $pc01_codmater)){
          $this->erro_sql = " Campo pc01_codmater maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -158,7 +158,7 @@ class cl_pcmater {
      $result = @pg_exec($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de Materiais ($this->pc01_codmater) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de Materiais já Cadastrado";
@@ -182,12 +182,12 @@ class cl_pcmater {
      $resaco = $this->sql_record($this->sql_query_file($this->pc01_codmater));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = pg_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = pg_query("insert into db_acountkey values($acount,5491,'$this->pc01_codmater','I')");
-       $resac = pg_query("insert into db_acount values($acount,855,5491,'','".AddSlashes(pg_result($resaco,0,'pc01_codmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,855,5492,'','".AddSlashes(pg_result($resaco,0,'pc01_descrmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,855,5493,'','".AddSlashes(pg_result($resaco,0,'pc01_complmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = pg_query("insert into db_acount values($acount,855,5494,'','".AddSlashes(pg_result($resaco,0,'pc01_codsubgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,855,5491,'','".AddSlashes(pg_fetch_result($resaco,0,'pc01_codmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,855,5492,'','".AddSlashes(pg_fetch_result($resaco,0,'pc01_descrmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,855,5493,'','".AddSlashes(pg_fetch_result($resaco,0,'pc01_complmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = pg_query("insert into db_acount values($acount,855,5494,'','".AddSlashes(pg_fetch_result($resaco,0,'pc01_codsubgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -196,10 +196,10 @@ class cl_pcmater {
       $this->atualizacampos();
      $sql = " update pcmater set ";
      $virgula = "";
-     if(trim($this->pc01_codmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_codmater"])){ 
+     if(trim((string) $this->pc01_codmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_codmater"])){ 
        $sql  .= $virgula." pc01_codmater = $this->pc01_codmater ";
        $virgula = ",";
-       if(trim($this->pc01_codmater) == null ){ 
+       if(trim((string) $this->pc01_codmater) == null ){ 
          $this->erro_sql = " Campo Código do Material nao Informado.";
          $this->erro_campo = "pc01_codmater";
          $this->erro_banco = "";
@@ -209,10 +209,10 @@ class cl_pcmater {
          return false;
        }
      }
-     if(trim($this->pc01_descrmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_descrmater"])){ 
+     if(trim((string) $this->pc01_descrmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_descrmater"])){ 
        $sql  .= $virgula." pc01_descrmater = '$this->pc01_descrmater' ";
        $virgula = ",";
-       if(trim($this->pc01_descrmater) == null ){ 
+       if(trim((string) $this->pc01_descrmater) == null ){ 
          $this->erro_sql = " Campo Descrição do Material nao Informado.";
          $this->erro_campo = "pc01_descrmater";
          $this->erro_banco = "";
@@ -222,7 +222,7 @@ class cl_pcmater {
          return false;
        }
      }
-     if(trim($this->pc01_complmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_complmater"])){ 
+     if(trim((string) $this->pc01_complmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_complmater"])){ 
        $sql  .= $virgula." pc01_complmater = '$this->pc01_complmater' ";
        $virgula = ",";
        /*
@@ -237,10 +237,10 @@ class cl_pcmater {
        }
        */
      }
-     if(trim($this->pc01_codsubgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_codsubgrupo"])){ 
+     if(trim((string) $this->pc01_codsubgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc01_codsubgrupo"])){ 
        $sql  .= $virgula." pc01_codsubgrupo = $this->pc01_codsubgrupo ";
        $virgula = ",";
-       if(trim($this->pc01_codsubgrupo) == null ){ 
+       if(trim((string) $this->pc01_codsubgrupo) == null ){ 
          $this->erro_sql = " Campo Código do Sub-Grupo nao Informado.";
          $this->erro_campo = "pc01_codsubgrupo";
          $this->erro_banco = "";
@@ -258,16 +258,16 @@ class cl_pcmater {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = pg_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = pg_query("insert into db_acountkey values($acount,5491,'$this->pc01_codmater','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc01_codmater"]))
-           $resac = pg_query("insert into db_acount values($acount,855,5491,'".AddSlashes(pg_result($resaco,$conresaco,'pc01_codmater'))."','$this->pc01_codmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,855,5491,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc01_codmater'))."','$this->pc01_codmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc01_descrmater"]))
-           $resac = pg_query("insert into db_acount values($acount,855,5492,'".AddSlashes(pg_result($resaco,$conresaco,'pc01_descrmater'))."','$this->pc01_descrmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,855,5492,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc01_descrmater'))."','$this->pc01_descrmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc01_complmater"]))
-           $resac = pg_query("insert into db_acount values($acount,855,5493,'".AddSlashes(pg_result($resaco,$conresaco,'pc01_complmater'))."','$this->pc01_complmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,855,5493,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc01_complmater'))."','$this->pc01_complmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc01_codsubgrupo"]))
-           $resac = pg_query("insert into db_acount values($acount,855,5494,'".AddSlashes(pg_result($resaco,$conresaco,'pc01_codsubgrupo'))."','$this->pc01_codsubgrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = pg_query("insert into db_acount values($acount,855,5494,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc01_codsubgrupo'))."','$this->pc01_codsubgrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = @pg_exec($sql);
@@ -312,12 +312,12 @@ class cl_pcmater {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = pg_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = pg_query("insert into db_acountkey values($acount,5491,'$pc01_codmater','E')");
-         $resac = pg_query("insert into db_acount values($acount,855,5491,'','".AddSlashes(pg_result($resaco,$iresaco,'pc01_codmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,855,5492,'','".AddSlashes(pg_result($resaco,$iresaco,'pc01_descrmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,855,5493,'','".AddSlashes(pg_result($resaco,$iresaco,'pc01_complmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = pg_query("insert into db_acount values($acount,855,5494,'','".AddSlashes(pg_result($resaco,$iresaco,'pc01_codsubgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,855,5491,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc01_codmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,855,5492,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc01_descrmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,855,5493,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc01_complmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = pg_query("insert into db_acount values($acount,855,5494,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc01_codsubgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pcmater
@@ -377,7 +377,7 @@ class cl_pcmater {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pcmater";
@@ -392,7 +392,7 @@ class cl_pcmater {
    function sql_query ( $pc01_codmater=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_pcmater {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,7 +429,7 @@ class cl_pcmater {
    function sql_query_file ( $pc01_codmater=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_pcmater {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -462,7 +462,7 @@ class cl_pcmater {
    function sql_query_elemento ( $pc01_codmater=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -485,7 +485,7 @@ class cl_pcmater {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -497,7 +497,7 @@ class cl_pcmater {
    function sql_query_grupo ( $pc01_codmater=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -523,7 +523,7 @@ class cl_pcmater {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

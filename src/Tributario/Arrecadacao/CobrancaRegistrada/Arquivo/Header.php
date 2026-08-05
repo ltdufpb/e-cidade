@@ -27,6 +27,10 @@
 
 namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Arquivo;
 
+use Instituicao;
+use ContaBancaria;
+use stdClass;
+
 class Header
 {
   /**
@@ -40,17 +44,17 @@ class Header
   private $iSequencial;
 
   /**
-   * @var \Instituicao
+   * @var Instituicao
    */
   private $oInstituicao;
 
   /**
-   * @var \ContaBancaria
+   * @var ContaBancaria
    */
   private $oContaBancaria;
 
   /**
-   * @var \stdClass
+   * @var stdClass
    */
   private $oConvenio;
 
@@ -87,7 +91,7 @@ class Header
   }
 
   /**
-   * @return \Instituicao
+   * @return Instituicao
    */
   public function getInstituicao()
   {
@@ -97,13 +101,13 @@ class Header
   /**
    * @param \Instituicao oInstituicao
    */
-  public function setInstituicao(\Instituicao $oInstituicao)
+  public function setInstituicao(Instituicao $oInstituicao)
   {
     $this->oInstituicao = $oInstituicao;
   }
 
   /**
-   * @return \ContaBancaria
+   * @return ContaBancaria
    */
   public function getContaBancaria()
   {
@@ -113,13 +117,13 @@ class Header
   /**
    * @param \ContaBancaria oContaBancaria
    */
-  public function setContaBancaria(\ContaBancaria $oContaBancaria)
+  public function setContaBancaria(ContaBancaria $oContaBancaria)
   {
     $this->oContaBancaria = $oContaBancaria;
   }
 
   /**
-   * @return \stdClass oConvenio
+   * @return stdClass oConvenio
    */
   public function getConvenio()
   {
@@ -129,7 +133,7 @@ class Header
   /**
    * @param \stdClass oConvenio
    */
-  public function setConvenio(\stdClass $oConvenio)
+  public function setConvenio(stdClass $oConvenio)
   {
     $this->oConvenio = $oConvenio;
   }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_recreparcarretipo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrecreparcarretipo = new cl_recreparcarretipo;
 $clrecreparcarretipo->rotulo->label("k72_sequencial");
 $clrecreparcarretipo->rotulo->label("k72_codigo");
@@ -54,7 +55,7 @@ $clrecreparcarretipo->rotulo->label("k72_codigo");
               <?=$Lk72_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k72_sequencial",10,$Ik72_sequencial,true,"text",4,"","chave_k72_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clrecreparcarretipo->rotulo->label("k72_codigo");
               <?=$Lk72_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k72_codigo",10,$Ik72_codigo,true,"text",4,"","chave_k72_codigo");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clrecreparcarretipo->rotulo->label("k72_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_recreparcarretipo.php")==true){
@@ -122,12 +123,12 @@ $clrecreparcarretipo->rotulo->label("k72_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

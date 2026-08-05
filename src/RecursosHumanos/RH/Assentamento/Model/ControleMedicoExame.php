@@ -26,6 +26,10 @@
  */
 namespace ECidade\RecursosHumanos\RH\Assentamento\Model;
 
+use cl_monitoramentosaudeexame;
+use db_utils;
+use DBException;
+
 class ControleMedicoExame
 {
     const EXAMEINICIAL = 1;
@@ -223,7 +227,7 @@ class ControleMedicoExame
     public function __construct($codigo = null)
     {
         if (!empty($codigo)) {
-            $dao = new \cl_monitoramentosaudeexame();
+            $dao = new cl_monitoramentosaudeexame();
             $where = "h27_sequencial = {$codigo} ";
             $sql = $dao->sql_query(null, "*", null, $where);
             $rs = db_query($sql);
@@ -233,7 +237,7 @@ class ControleMedicoExame
                 throw new BusinessException($msg);
             }
             if (pg_num_rows($rs) >= 1) {
-                $exame = \db_utils::fieldsMemory($rs, 0);
+                $exame = db_utils::fieldsMemory($rs, 0);
                 $this->setCodigo($exame->h27_sequencial);
                 $this->setCodigoMonitoramentoSaude($exame->h27_monitoriamentosaude);
                 $this->setData($exame->h27_data);
@@ -251,7 +255,7 @@ class ControleMedicoExame
         if (empty($this->codigoMonitoramentoSaude)) {
             throw new BusinessException("Código do Controle Médico não informado.");
         }
-        $exame = new \cl_monitoramentosaudeexame();
+        $exame = new cl_monitoramentosaudeexame();
 
         $exame->h27_monitoriamentosaude = $this->codigoMonitoramentoSaude;
         $exame->h27_data = $this->data;
@@ -262,7 +266,7 @@ class ControleMedicoExame
         $exame->incluir(null);
 
         if ($exame->erro_status == 2) {
-            throw new \DBException($exame->erro_msg);
+            throw new DBException($exame->erro_msg);
         }
         $this->setCodigo($exame->h27_sequencial);
         $this->buscaDescricaoProcedimento();
@@ -284,7 +288,7 @@ class ControleMedicoExame
             throw new BusinessException($msg);
         }
         if (pg_num_rows($rs) >= 1) {
-            $procedimento = \db_utils::fieldsMemory($rs, 0)->h28_descricao;
+            $procedimento = db_utils::fieldsMemory($rs, 0)->h28_descricao;
             $this->setDescricaoProcedimento($procedimento);
         }
     }

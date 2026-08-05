@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itburbano_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clitburbano = new cl_itburbano;
 $clitburbano->rotulo->label("it05_guia");
 $clitburbano->rotulo->label("it05_guia");
@@ -54,7 +55,7 @@ $clitburbano->rotulo->label("it05_guia");
               <?=$Lit05_guia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("it05_guia",10,$Iit05_guia,true,"text",4,"","chave_it05_guia");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clitburbano->rotulo->label("it05_guia");
               <?=$Lit05_guia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("it05_guia",10,$Iit05_guia,true,"text",4,"","chave_it05_guia");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clitburbano->rotulo->label("it05_guia");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itburbano.php")==true){
@@ -118,12 +119,12 @@ $clitburbano->rotulo->label("it05_guia");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -57,7 +57,7 @@ class cl_devolucaoacervo {
                  bi21_usuario = int8 = Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_devolucaoacervo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("devolucaoacervo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

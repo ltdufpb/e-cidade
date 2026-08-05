@@ -26,7 +26,6 @@
  */
 
 require_once modification("model/patrimonio/Item.model.php");
-use ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Model\Autorizacao;
 
 /**
  * Item
@@ -42,7 +41,7 @@ class ItemRepository {
    * @var array
    * @access private
    */
-  private $aItens = array();
+  private $aItens = [];
 
   /**
    * Instancia do repository
@@ -84,11 +83,11 @@ class ItemRepository {
    */
   public static function getItemByCodigo($iCodigo) {
 
-    if (!array_key_exists($iCodigo, ItemRepository::getInstancia()->aItens)) {
-      ItemRepository::getInstancia()->aItens[$iCodigo] = new Item($iCodigo);
+    if (!array_key_exists($iCodigo, $this->getInstancia()->aItens)) {
+      $this->getInstancia()->aItens[$iCodigo] = new Item($iCodigo);
     }
 
-    return ItemRepository::getInstancia()->aItens[$iCodigo];
+    return $this->getInstancia()->aItens[$iCodigo];
   }
 
 }

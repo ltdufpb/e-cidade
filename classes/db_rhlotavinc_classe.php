@@ -64,7 +64,7 @@ class cl_rhlotavinc {
                  rh25_funcao = int4 = Função
                  ";
    //funcao construtor da classe
-   function cl_rhlotavinc() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhlotavinc");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

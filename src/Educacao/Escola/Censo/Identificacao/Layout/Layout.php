@@ -88,7 +88,7 @@ class Layout
 
     protected function parse(array $dadosRegistro)
     {
-        $dados = array();
+        $dados = [];
         foreach ($this->dePara as $item) {
             $dados[] = $dadosRegistro[$item];
         }
@@ -109,7 +109,7 @@ class Layout
 
         foreach ($this->dadosArquivo as $dados) {
             if (!is_array($dados)) {
-                $dados = array($dados);
+                $dados = [$dados];
             }
 
             fwrite($handle, implode('|', $dados) . "\n");

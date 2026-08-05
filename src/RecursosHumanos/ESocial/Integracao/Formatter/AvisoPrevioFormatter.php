@@ -3,6 +3,9 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use stdClass;
+
 /**
  * Class AvisoPrevioFormatter
  * @package ECidade\RecursosHumanos\ESocial\Integracao\Formatter
@@ -13,8 +16,9 @@ class AvisoPrevioFormatter extends Formatter
      * Realiza a formatação dos dados para envio da API
      *
      * @param  array $dados
-     * @return \stdClass[]
+     * @return stdClass[]
      */
+    #[Override]
     public function formatar($dados)
     {
         $dados = parent::formatar($dados);

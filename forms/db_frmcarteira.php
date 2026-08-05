@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,13 +33,13 @@ if(empty($bi16_inclusao_dia) || @$pontos>0){
 }
 ?>
 <center>
-<?
+<?php 
 if(@$pontos<0){
  //$db_opcao = 3;
  ?>
   Leitor possui Carteira Válida, portanto NÃO poderá renovar.<br>
   Para ativar outra carteira, apenas após o vencimento da atual.
- <?
+ <?php 
 }else{
  if($db_opcao==2){
   $db_opcao1 = 3;
@@ -47,23 +47,23 @@ if(@$pontos<0){
   $db_opcao1 = 1;
  }
  ?>
- <?db_input('bi16_leitor',10,$Ibi16_leitor,true,'hidden',"","")?>
+ <?php db_input('bi16_leitor',10,$Ibi16_leitor,true,'hidden',"","")?>
  <table border="0">
   <tr>
    <td nowrap title="<?=@$Tbi16_codigo?>">
     <?=@$Lbi16_codigo?>
    </td>
    <td>
-    <?db_input('bi16_codigo',10,$Ibi16_codigo,true,'text',3,'')?>
+    <?php db_input('bi16_codigo',10,$Ibi16_codigo,true,'text',3,'')?>
    </td>
   </tr>
   <tr>
    <td nowrap title="<?=@$Tbi16_leitorcategoria?>">
-    <?db_ancora(@$Lbi16_leitorcategoria,"js_pesquisabi16_leitorcategoria(true);",$db_opcao);?>
+    <?php db_ancora(@$Lbi16_leitorcategoria,"js_pesquisabi16_leitorcategoria(true);",$db_opcao);?>
    </td>
    <td>
-    <?db_input('bi16_leitorcategoria',10,$Ibi16_leitorcategoria,true,'text',$db_opcao," onchange='js_pesquisabi16_leitorcategoria(false);'")?>
-    <?db_input('bi07_nome',50,$Ibi07_nome,true,'text',3,'')?>
+    <?php db_input('bi16_leitorcategoria',10,$Ibi16_leitorcategoria,true,'text',$db_opcao," onchange='js_pesquisabi16_leitorcategoria(false);'")?>
+    <?php db_input('bi07_nome',50,$Ibi07_nome,true,'text',3,'')?>
    </td>
   </tr>
   <tr>
@@ -71,7 +71,7 @@ if(@$pontos<0){
     <?=@$Lbi16_inclusao?>
    </td>
    <td>
-    <?db_inputdata('bi16_inclusao',@$bi16_inclusao_dia,@$bi16_inclusao_mes,@$bi16_inclusao_ano,true,'text',$db_opcao1,"")?>
+    <?php db_inputdata('bi16_inclusao',@$bi16_inclusao_dia,@$bi16_inclusao_mes,@$bi16_inclusao_ano,true,'text',$db_opcao1,"")?>
    </td>
   </tr>
   <tr>
@@ -79,7 +79,7 @@ if(@$pontos<0){
     <?=@$Lbi16_validade?>
    </td>
    <td>
-    <?db_inputdata('bi16_validade',@$bi16_validade_dia,@$bi16_validade_mes,@$bi16_validade_ano,true,'text',$db_opcao,"")?>
+    <?php db_inputdata('bi16_validade',@$bi16_validade_dia,@$bi16_validade_mes,@$bi16_validade_ano,true,'text',$db_opcao,"")?>
    </td>
   </tr>
   </table>
@@ -170,4 +170,4 @@ function somadata(dias){
 }
 somadata(365);
 </script>
-<?}?>
+<?php }?>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcimpactomovtiporec_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcimpactomovtiporec = new cl_orcimpactomovtiporec;
 $clorcimpactomovtiporec->rotulo->label("o67_codseqimpmov");
 $clorcimpactomovtiporec->rotulo->label("o67_codseqimpmov");
@@ -54,7 +55,7 @@ $clorcimpactomovtiporec->rotulo->label("o67_codseqimpmov");
               <?=$Lo67_codseqimpmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o67_codseqimpmov",5,$Io67_codseqimpmov,true,"text",4,"","chave_o67_codseqimpmov");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clorcimpactomovtiporec->rotulo->label("o67_codseqimpmov");
               <?=$Lo67_codseqimpmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o67_codseqimpmov",5,$Io67_codseqimpmov,true,"text",4,"","chave_o67_codseqimpmov");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clorcimpactomovtiporec->rotulo->label("o67_codseqimpmov");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcimpactomovtiporec.php")==true){
@@ -118,12 +119,12 @@ $clorcimpactomovtiporec->rotulo->label("o67_codseqimpmov");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

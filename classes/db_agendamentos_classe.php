@@ -85,7 +85,7 @@ class cl_agendamentos {
                  sd23_i_upssolicitante = int4 = Unidade
                  ";
    //funcao construtor da classe
-   function cl_agendamentos() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("agendamentos");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

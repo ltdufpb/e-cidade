@@ -37,18 +37,6 @@
 class CalculoMediaRubricaOcorrenciaValores implements ICalculoMediaRubrica{
 
   /**
-   * Instancia do objeto Servidor
-   * @var Servidor
-   */
-  private $oServidor;
-  
-  /**
-   * Instancia do objeto Rubrica
-   * @var Rubrica
-   */
-  private $oRubrica;
-  
-  /**
    * Ano de periodo da folha
    * @var integer
    */
@@ -79,10 +67,14 @@ class CalculoMediaRubricaOcorrenciaValores implements ICalculoMediaRubrica{
    * @param DBDate $oDataInicial
    * @param DBDate $oDataFinal
    */
-  public function __construct ( Servidor $oServidor, Rubrica $oRubrica, DBDate $oDataInicial, DBDate $oDataFinal ) {
+  public function __construct ( /**
+   * Instancia do objeto Servidor
+   */
+  private Servidor $oServidor, /**
+   * Instancia do objeto Rubrica
+   */
+  private Rubrica $oRubrica, DBDate $oDataInicial, DBDate $oDataFinal ) {
     
-    $this->oServidor   = $oServidor;
-    $this->oRubrica    = $oRubrica;
     $this->setAnoFolha(db_anofolha());
     $this->setMesFolha(db_mesfolha());
     

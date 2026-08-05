@@ -1,4 +1,6 @@
 <?php
+use ECidade\Tributario\Issqn\Model\Issbase;
+use ECidade\Tributario\Cadastro\Model\Iptubase;
 use ECidade\Tributario\Arrecadacao\Model\TaxaEspecifica as TaxaEspecificaModel;
 use ECidade\Tributario\Arrecadacao\Repository\TaxaEspecifica as TaxaEspecificaRepository;
 use ECidade\Tributario\Arrecadacao\Service\TaxaEspecifica as TaxaEspecificaService;
@@ -66,21 +68,21 @@ class Recibo
      *
      * @var array
      */
-    private $aMatricula = array();
+    private $aMatricula = [];
 
     /**
      * Array com os código das Inscrições municipais que devem ser vinculadas ao recibo (issbase.q02_inscr)
      *
      * @var array
      */
-    private $aInscricao = array();
+    private $aInscricao = [];
 
     /**
      * Array com os códigos dos cgms que devem ser vinculados ao recibo (cgm.z01_numcgm)
      *
      * @var array
      */
-    private $aVinculoCgm = array();
+    private $aVinculoCgm = [];
 
     /**
      * Tipo de Recibo a ser Gerado
@@ -94,21 +96,21 @@ class Recibo
      *
      * @var array;
      */
-    private $aReceitas = array();
+    private $aReceitas = [];
 
     /**
      * Receitas de custas do recibo.
      *
      * @var array;
      */
-    private $aReceitaCusta = array();
+    private $aReceitaCusta = [];
 
     /**
      * Receitas de custas de parcelamentos contidos no recibo.
      *
      * @var array;
      */
-    private $aReceitaCustaParcelamento = array();
+    private $aReceitaCustaParcelamento = [];
 
     /**
      * Tipo de recibo que sera emitido. 1 - recibo protocolo
@@ -157,14 +159,14 @@ class Recibo
      * que serao utilizados na confeção do recibo;
      * @var array;
      */
-    private $aNumpres = array();
+    private $aNumpres = [];
 
     /**
      * Recursos que o recibo possui.
      *
      * @var array de objetos do tipo stdclass
      */
-    private $aRecursos = array();
+    private $aRecursos = [];
 
     /**
      * Numero de banco gerado pelo sistema.
@@ -200,7 +202,7 @@ class Recibo
      *
      * @var array
      */
-    private $aDescReciboWeb = array();
+    private $aDescReciboWeb = [];
 
     /**
      * Caracteristica peculiar     *
@@ -270,7 +272,7 @@ class Recibo
      * Essencialmente, é ou o Cgm, ou a Inscrição, ou a Matrícula usada
      * na hora de pesquisar alguém na consulta geral financeira.
      *
-     * @var CgmBase|\ECidade\Tributario\Issqn\Model\Issbase|\ECidade\Tributario\Cadastro\Model\Iptubase
+     * @var CgmBase|Issbase|Iptubase
      */
     private $identificacao;
 
@@ -314,7 +316,7 @@ class Recibo
                 $this->setNumnov($oRecibo->k00_numnov);
                 $this->setCgm($oRecibo->k00_numcgm);
                 $this->setDataVencimentoRecibo($oRecibo->k00_dtpaga);
-                $this->setExercicioRecibo(date("Y", strtotime($oRecibo->k00_dtoper)));
+                $this->setExercicioRecibo(date("Y", strtotime((string) $oRecibo->k00_dtoper)));
                 $this->setConta($oRecibo->k00_conta);
                 $this->setTipoEmissao($oRecibo->tipo_emissao);
                 $sSqlDebitosRecibo = $oDaoReciboPaga->sql_query_file(null, " distinct k00_numpre, k00_numpar ",
@@ -726,7 +728,7 @@ class Recibo
 
         if (!empty($this->dtVencRecibo) && $lCobrancaRegistrada) {
             if (!empty($iCodigoConvenio)) {
-                $oDaoConvenio = new \cl_cadconvenio();
+                $oDaoConvenio = new cl_cadconvenio();
                 $sSqConvenio  = $oDaoConvenio->sql_query_convenio_cobranca($iCodigoConvenio, "ar12_sequencial");
                 $rsConvenio   = \db_query($sSqConvenio);
 
@@ -764,7 +766,7 @@ class Recibo
             // Caso seja, pega o ultimo dia útil do ano
             $iExercicioCarne = (!empty($oArreTipo->k00_exercicioscarne) && $this->emiteCarneBanco ? $oArreTipo->k00_exercicioscarne : 0);
             $iAnoAtual = (int)date('Y', db_getsession('DB_datausu')) + $iExercicioCarne;
-            $iAnoRecibo = (int)date('Y', strtotime($oVencimento->vencimento));
+            $iAnoRecibo = (int)date('Y', strtotime((string) $oVencimento->vencimento));
 
             if ($iAnoRecibo > $iAnoAtual && $lAlterarDataVencimento) {
                 $sSqlVencimento = "select fc_ultimo_dia_util('{$iAnoAtual}-12-31'::date) as vencimento";
@@ -845,7 +847,7 @@ class Recibo
                 }
             }
 
-            $cl_reciboavulsoboleto = new \cl_reciboavulsoboleto();
+            $cl_reciboavulsoboleto = new cl_reciboavulsoboleto();
 
             $cl_reciboavulsoboleto->k201_numpre = $this->iNumpre;
             $cl_reciboavulsoboleto->k201_data = date("Y-m-d H:i:s");
@@ -855,7 +857,7 @@ class Recibo
             $cl_reciboavulsoboleto->incluir();
 
             if ($cl_reciboavulsoboleto->erro_status == "0") {
-                throw new \Exception($cl_reciboavulsoboleto->erro_msg);
+                throw new Exception($cl_reciboavulsoboleto->erro_msg);
             }
 
             if (count($this->aVinculoCgm) > 0) {
@@ -976,8 +978,8 @@ class Recibo
                 }
             }
 
-            $aDebitosPorTipo = array();
-            $aDadosBanco = array();
+            $aDebitosPorTipo = [];
+            $aDadosBanco = [];
 
             foreach($this->aNumpres as $oDebito) {
                 $aDebitosPorTipo[$oDebito->k00_tipo] = $oDebito->k00_tipo;
@@ -1266,8 +1268,8 @@ class Recibo
      * @param null $iSequencialEmpenho
      *
      * @return bool
-     * @throws \BusinessException
-     * @throws \Exception
+     * @throws BusinessException
+     * @throws Exception
      */
     function autenticarRecibo($dtAutenticacao, $sCaracteristicaPeculiar = null, $iSequencialEmpenho = null, $retencao = null, $tipo = 3)
     {
@@ -1550,7 +1552,7 @@ class Recibo
         }
 
         $aRecibos = db_utils::getCollectionByRecord($rsRecibos);
-        $aRecibosNumpre = array();
+        $aRecibosNumpre = [];
 
         foreach ($aRecibos as $oRecibo) {
             $aRecibosNumpre[] = new Recibo(null, null, null, $oRecibo->k00_numnov);
@@ -1729,7 +1731,7 @@ class Recibo
                 throw new Exception('Filtro ainda não implementado!');
         }
 
-        $res = array();
+        $res = [];
 
         foreach (explode("\n", $this->getHistorico()) as $linha) {
             if ($this->stringStartsWith(mb_strtolower(trim($linha)), $prefixo)) {
@@ -1742,11 +1744,11 @@ class Recibo
 
     private function stringStartsWith($string, $start)
     {
-        return substr($string, 0, strlen($start)) === $start;
+        return str_starts_with((string) $string, (string) $start);
     }
 
     /**
-     * @return CgmBase|\ECidade\Tributario\Issqn\Model\Issbase|\ECidade\Tributario\Cadastro\Model\Iptubase
+     * @return CgmBase|Issbase|Iptubase
      */
     public function getIdentificacao()
     {
@@ -1754,7 +1756,7 @@ class Recibo
     }
 
     /**
-     * @param CgmBase|\ECidade\Tributario\Issqn\Model\Issbase|\ECidade\Tributario\Cadastro\Model\Iptubase $identificacao
+     * @param CgmBase|Issbase|Iptubase $identificacao
      */
     public function setIdentificacao($identificacao)
     {

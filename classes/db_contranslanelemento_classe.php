@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2013  DBselller Servicos de Informatica             
@@ -52,7 +52,7 @@ class cl_contranslanelemento {
                  c114_elemento = varchar(15) = Elemento 
                  ";
    //funcao construtor da classe 
-   function cl_contranslanelemento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("contranslanelemento"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

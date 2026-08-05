@@ -45,8 +45,8 @@ $result_per          = $clperiodoescola->sql_record($clperiodoescola->sql_query(
 
 db_fieldsmemory( $result_per, 0 );
 
-$hora1         = (int) substr( $menorhorario, 0, 2 );
-$hora2         = (int) substr( $maiorhorario, 0, 2 ) + 1;
+$hora1         = (int) substr( (string) $menorhorario, 0, 2 );
+$hora2         = (int) substr( (string) $maiorhorario, 0, 2 ) + 1;
 $horainicial   = $hora1 * 100;
 $horafinal     = $hora2 * 100;
 $tempo_ini     = mktime( $hora1, 0, 0, date("m"), date("d"), date("Y") );
@@ -155,21 +155,21 @@ if ($oPost->sAction == 'MontaGrade') {
     for ($t = $horainicial; $t <= $horafinal; $t+= 1) {
     	
       $hora = strlen($t) == 3 ? "0".$t : $t;
-      $hora = substr( $hora, 0, 2 ).":".substr( $hora, 2, 2 );
+      $hora = substr( (string) $hora, 0, 2 ).":".substr( (string) $hora, 2, 2 );
       if ($clregenciahorario->numrows > 0) {
       	
         for( $y = 0; $y < $clregenciahorario->numrows; $y++ ) {
         	
          db_fieldsmemory( $result1, $y );
-          if (trim($hora) == trim($ed17_h_inicio)) {
+          if (trim($hora) == trim((string) $ed17_h_inicio)) {
           	
-            $tempo_ini = mktime(substr($ed17_h_inicio, 0, 2), substr( $ed17_h_inicio, 3, 2 ), 0, 1, 1, 1999 );
-            $tempo_fim = mktime(substr($ed17_h_fim, 0, 2), substr( $ed17_h_fim, 3, 2 ), 0, 1, 1, 1999 );
+            $tempo_ini = mktime(substr((string) $ed17_h_inicio, 0, 2), substr( (string) $ed17_h_inicio, 3, 2 ), 0, 1, 1, 1999 );
+            $tempo_fim = mktime(substr((string) $ed17_h_fim, 0, 2), substr( (string) $ed17_h_fim, 3, 2 ), 0, 1, 1, 1999 );
             $difermin  = ($tempo_fim - $tempo_ini) / 60;
             $difer     = ceil($difermin / 2);
             $conta     = $y;
             $proximo   = true;
-            $array     = array();
+            $array     = [];
             
             while ($proximo == true) {
             	
@@ -278,7 +278,7 @@ if ($oPost->sAction == 'MontaGrade') {
               $sHtml .= $identificacao.'\',\''.$nomeprof.'\')" onmouseout="js_Mout(\'tab'.$ed58_i_codigo.'\',\'';
               $sHtml .= $ed17_h_inicio.'\',\''.$ed17_h_fim.'\')">';
               $sHtml .= 'Escola: '.$ed57_i_escola.' Turma: ';
-              $sHtml .= substr($ed57_c_descr,0,10).'<br>'.substr($ed232_c_descr,0,20);
+              $sHtml .= substr((string) $ed57_c_descr,0,10).'<br>'.substr((string) $ed232_c_descr,0,20);
               $sHtml .= '</td>';    
               $sHtml .= '</div>';  
               $sHtml .= '</tr>';
@@ -293,19 +293,19 @@ if ($oPost->sAction == 'MontaGrade') {
         for ($y = 0; $y < $clrechumanohoradisp->numrows; $y++) {
         	
           db_fieldsmemory($result2,$y);
-          if (trim($hora) == trim($ed17_h_inicio)) {
+          if (trim($hora) == trim((string) $ed17_h_inicio)) {
           	
-            $tempo_ini = mktime(substr($ed17_h_inicio,0,2),substr($ed17_h_inicio,3,2),0,1,1,1999);
-            $tempo_fim = mktime(substr($ed17_h_fim,0,2),substr($ed17_h_fim,3,2),0,1,1,1999);
+            $tempo_ini = mktime(substr((string) $ed17_h_inicio,0,2),substr((string) $ed17_h_inicio,3,2),0,1,1,1999);
+            $tempo_fim = mktime(substr((string) $ed17_h_fim,0,2),substr((string) $ed17_h_fim,3,2),0,1,1,1999);
             $difermin  = ($tempo_fim-$tempo_ini)/60;
             $difer     = ceil($difermin/2);
             $sHtml    .= '<table id="tabb'.$ed33_i_codigo.'" width="'.$larg_dia.'" border="0" height="'.$difer.'" ';
-            $sHtml    .= ' style="background:'.(isset($_SESSION["sess_corhorario"][$ed17_i_escola])?$_SESSION["sess_corhorario"][$ed17_i_escola]:$_SESSION["sess_cordisp"][$ed17_i_escola]).';border:1px outset #000000;position:absolute;top:'.$ini_top.'px;left:'.$ini_left.'px;" cellspacing="0" cellpadding="0">';
+            $sHtml    .= ' style="background:'.($_SESSION["sess_corhorario"][$ed17_i_escola] ?? $_SESSION["sess_cordisp"][$ed17_i_escola]).';border:1px outset #000000;position:absolute;top:'.$ini_top.'px;left:'.$ini_left.'px;" cellspacing="0" cellpadding="0">';
             $sHtml    .= '<tr>';
             $sHtml    .= '<td style="font-size:8px;" align="center" onmouseover="js_Mover2(\'tabb'.$ed33_i_codigo;
             $sHtml    .= '\',\''.$ed17_h_inicio.'\',\''.$ed17_h_fim.'\',\''.$ed17_i_escola.'\',\''.$ed18_c_nome.'\',\'';
             $sHtml    .= $ed08_c_descr.'\',\''.$ed15_c_nome.'\',\'';
-            $sHtml    .= (isset($_SESSION["sess_corhorario"][$ed17_i_escola])?$_SESSION["sess_corhorario"][$ed17_i_escola]:$_SESSION["sess_cordisp"][$ed17_i_escola]).'\',\''.$identificacao.'\')" onmouseout="js_Mout2(\'tabb'.$ed33_i_codigo.'\',\''.$ed17_h_inicio.'\',\''.$ed17_h_fim.'\')">';
+            $sHtml    .= ($_SESSION["sess_corhorario"][$ed17_i_escola] ?? $_SESSION["sess_cordisp"][$ed17_i_escola]).'\',\''.$identificacao.'\')" onmouseout="js_Mout2(\'tabb'.$ed33_i_codigo.'\',\''.$ed17_h_inicio.'\',\''.$ed17_h_fim.'\')">';
             $sHtml    .= '</td>';
             $sHtml    .= '</tr>';
             $sHtml    .= '</table>';
@@ -318,10 +318,10 @@ if ($oPost->sAction == 'MontaGrade') {
         for ($r = 0; $r < $clturmaachorario->numrows; $r++) {
         	
           db_fieldsmemory($result111,$r);
-          if (trim($hora) == trim($ed17_h_inicio)) {
+          if (trim($hora) == trim((string) $ed17_h_inicio)) {
           	
-            $tempo_ini = mktime(substr($ed17_h_inicio,0,2),substr($ed17_h_inicio,3,2),0,1,1,1999);
-            $tempo_fim = mktime(substr($ed17_h_fim,0,2),substr($ed17_h_fim,3,2),0,1,1,1999);
+            $tempo_ini = mktime(substr((string) $ed17_h_inicio,0,2),substr((string) $ed17_h_inicio,3,2),0,1,1,1999);
+            $tempo_fim = mktime(substr((string) $ed17_h_fim,0,2),substr((string) $ed17_h_fim,3,2),0,1,1,1999);
             $difermin  = ($tempo_fim-$tempo_ini)/60;
             $difer     = ceil($difermin/2);
             $sHtml    .= '<table id="tab'.$ed270_i_codigo.'" width="'.$larg_dia.'" border="0" bgcolor="#CCCCCC" ';
@@ -334,7 +334,7 @@ if ($oPost->sAction == 'MontaGrade') {
             $sHtml    .= $ed08_c_descr.'\',\''.$ed15_c_nome.'\',\''.$ed268_c_descr.'\',\''.$identificacao.'\',\'';
             $sHtml    .= $_SESSION["sess_corhorario"][$ed17_i_escola].'\')" onmouseout="js_Mout(\'tab';
             $sHtml    .= $ed270_i_codigo.'\',\''.$ed17_h_inicio.'\',\''.$ed17_h_fim.'\')">';
-            $sHtml    .= 'Escola: '.$ed268_i_escola.' Turma: '.substr($ed268_c_descr,0,10);
+            $sHtml    .= 'Escola: '.$ed268_i_escola.' Turma: '.substr((string) $ed268_c_descr,0,10);
             $sHtml    .= '</td>';
             $sHtml    .= '</tr>';
             $sHtml    .= '</table>';

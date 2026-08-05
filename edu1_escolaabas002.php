@@ -54,33 +54,33 @@ $db_opcao   = 1;
 <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?
-   $clcriaabas->identifica    = array("a1"=>"Geral",
+   <?php 
+   $clcriaabas->identifica    = ["a1"=>"Geral",
                                       "a2"=>"Contatos",
                                       "a3"=>"Infra Estrutura",
                                       "a4"=>"Diretores",
                                       "a5"=>"Horários da Escola",
                                       "a6"=>"Gestor"
-                                     );
-   $clcriaabas->sizecampo     = array("a1"=>"20",
+                                     ];
+   $clcriaabas->sizecampo     = ["a1"=>"20",
                                       "a2"=>"20",
                                       "a3"=>"20",
                                       "a4"=>"20",
                                       "a5"=>"20",
                                       "a6"=>"20"
-                                     );
-   $clcriaabas->src           = array("a1"=>"edu1_escola002.php",
+                                     ];
+   $clcriaabas->src           = ["a1"=>"edu1_escola002.php",
                                       "a2"=>"",
                                       "a3"=>"",
                                       "a4"=>"",
                                       "a5"=>"",
                                       "a6"=>""
-                                     );
-   $clcriaabas->disabled      = array("a2"=>"true",
+                                     ];
+   $clcriaabas->disabled      = ["a2"=>"true",
                                       "a3"=>"true",
                                       "a4"=>"true",
                                       "a5"=>"true"
-                                     );
+                                     ];
    $clcriaabas->cordisabled   = "#9b9b9b";
    $clcriaabas->cria_abas();
    ?>
@@ -88,7 +88,7 @@ $db_opcao   = 1;
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
   db_getsession("DB_modulo"),
   db_getsession("DB_anousu"),
   db_getsession("DB_instit"));

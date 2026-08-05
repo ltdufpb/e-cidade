@@ -27,6 +27,8 @@
 
 namespace ECidade\Tributario\Divida\Certidao;
 
+use Exception;
+
 /**
  * Entidade que modela a tabela certdiv do banco de dados.
  *
@@ -175,7 +177,7 @@ class CertidaoDivida
     /**
      * @param  $state
      * @return CertidaoDivida
-     * @throws \Exception
+     * @throws Exception
      */
     public static function fromState($state)
     {

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_areas_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clareas = new cl_areas;
 $clareas->rotulo->label("h05_codigo");
 $clareas->rotulo->label("h05_descr");
@@ -54,7 +55,7 @@ $clareas->rotulo->label("h05_descr");
               <?=$Lh05_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("h05_codigo",5,$Ih05_codigo,true,"text",4,"","chave_h05_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clareas->rotulo->label("h05_descr");
               <?=$Lh05_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("h05_descr",25,$Ih05_descr,true,"text",4,"","chave_h05_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clareas->rotulo->label("h05_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_areas.php")==true){
@@ -122,12 +123,12 @@ $clareas->rotulo->label("h05_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

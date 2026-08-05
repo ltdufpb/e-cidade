@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_ceplog_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_ceplog = new cl_db_ceplog;
 $cldb_ceplog->rotulo->label("db11_codlog");
 $cldb_ceplog->rotulo->label("db11_logradouro");
@@ -54,7 +55,7 @@ $cldb_ceplog->rotulo->label("db11_logradouro");
               <?=$Ldb11_codlog?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db11_codlog",10,$Idb11_codlog,true,"text",4,"","chave_db11_codlog");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_ceplog->rotulo->label("db11_logradouro");
               <?=$Ldb11_logradouro?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db11_logradouro",60,$Idb11_logradouro,true,"text",4,"","chave_db11_logradouro");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_ceplog->rotulo->label("db11_logradouro");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_ceplog.php")==true){
@@ -118,12 +119,12 @@ $cldb_ceplog->rotulo->label("db11_logradouro");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

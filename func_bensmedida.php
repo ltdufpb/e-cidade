@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bensmedida_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbensmedida = new cl_bensmedida;
 $clbensmedida->rotulo->label("t67_sequencial");
 $clbensmedida->rotulo->label("t67_descricao");
@@ -54,7 +55,7 @@ $clbensmedida->rotulo->label("t67_descricao");
               <?=$Lt67_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t67_sequencial",10,$It67_sequencial,true,"text",4,"","chave_t67_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clbensmedida->rotulo->label("t67_descricao");
               <?=$Lt67_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t67_descricao",50,$It67_descricao,true,"text",4,"","chave_t67_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clbensmedida->rotulo->label("t67_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bensmedida.php")==true){
@@ -122,12 +123,12 @@ $clbensmedida->rotulo->label("t67_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

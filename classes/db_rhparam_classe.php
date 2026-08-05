@@ -68,7 +68,7 @@ class cl_rhparam {
                  h36_temposemcontribuicao = int4 = Tempo sem Contribuição 
                  ";
    //funcao construtor da classe 
-   function cl_rhparam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhparam"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

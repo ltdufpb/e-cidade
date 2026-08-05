@@ -27,12 +27,11 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
-use ECidade\RecursosHumanos\ESocial\Entity\Servidor;
-use ECidade\RecursosHumanos\ESocial\Service\ServidorService;
-use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
+use Override;
+use Assentamento;
+use DBException;
 
 use stdClass;
-use DBDate;
 use CgmJuridico;
 
 class BeneficioTerminoFormatter extends Formatter
@@ -49,9 +48,10 @@ class BeneficioTerminoFormatter extends Formatter
 
     /**
      * @param array $dados
-     * @return array|\Assentamento[]
-     * @throws \DBException
+     * @return array|Assentamento[]
+     * @throws DBException
      */
+    #[Override]
     public function formatar($dados)
     {
         $dadosServidor = [];
@@ -65,17 +65,17 @@ class BeneficioTerminoFormatter extends Formatter
 
     private function processar($servidor)
     {
-        $dadoServidor = new \stdClass();
+        $dadoServidor = new stdClass();
         $dadoServidor->inscricao_empregador = $this->inscricao_empregador;
         $dadoServidor->referencia = $servidor->getMatricula();
-        $dadoServidor->ideBeneficio = new \stdClass();
+        $dadoServidor->ideBeneficio = new stdClass();
         $dadoServidor->ideBeneficio->cpfBenef = $servidor->getCgm()->getCpf();
         $dadoServidor->ideBeneficio->nrBeneficio = $servidor->getMatricula();
 
         // Informações da cessação do benefício.
-        $infoBenTermino = new \stdClass();
+        $infoBenTermino = new stdClass();
         $infoBenTermino->dtTermBeneficio = $servidor->getDadosRescisao()->rh05_recis;
-        $infoBenTermino->mtvTermino = str_pad($servidor->getDadosRescisao()->cessacaobeneficios, 2, "0", STR_PAD_LEFT);
+        $infoBenTermino->mtvTermino = str_pad((string) $servidor->getDadosRescisao()->cessacaobeneficios, 2, "0", STR_PAD_LEFT);
         // TODO a verficiar
         // $infoBenTermino->cnpjOrgaoSuc = ;
         // $infoBenTermino->novoCPF = ;

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -149,7 +149,7 @@ function js_controlarodape(mostra, hora){
   <tr>
     <td><b>Data da Geração:</b></td>
     <td>
-      <?
+      <?php 
       if((!isset($datagera_dia) || (isset($datagera_dia) && trim($datagera_dia) == "")) && (!isset($datagera_mes) || (isset($datagera_mes) && trim($datagera_mes) == "")) && (!isset($datagera_ano) || (isset($datagera_ano) && trim($datagera_ano) == ""))){
         $datagera_dia=date('d',db_getsession('DB_datausu'));
         $datagera_mes=date('m',db_getsession('DB_datausu'));
@@ -162,7 +162,7 @@ function js_controlarodape(mostra, hora){
   <tr>
     <td><b>Data do Depósito:</b></td>
     <td>
-      <?
+      <?php 
       if((!isset($datadeposit_dia) || (isset($datadeposit_dia) && trim($datadeposit_dia) == "")) && (!isset($datadeposit_mes) || (isset($datadeposit_mes) && trim($datadeposit_mes) == "")) && (!isset($datadeposit_ano) || (isset($datadeposit_ano) && trim($datadeposit_ano) == ""))){
         $datadeposit_dia = "";
         $datadeposit_mes = "";
@@ -174,25 +174,25 @@ function js_controlarodape(mostra, hora){
   </tr>
   <tr> 
     <td align="left" nowrap title="<?=@$Trh34_codarq?>">
-      <?db_ancora(@$Lrh34_codarq,"js_pesquisa(true);",1);?>
+      <?php db_ancora(@$Lrh34_codarq,"js_pesquisa(true);",1);?>
     </td>
     <td align="left" nowrap colspan="3">
-      <?db_input("rh34_codarq",6,@$Irh34_codarq,true,"text",4,"onchange='js_pesquisa(false);'");?>
-      <?db_input("rh34_descr",40,@$Irh34_descr,true,"text",3);?>
-      <?db_input("rodape",40,0,true,"hidden",3);?>
+      <?php db_input("rh34_codarq",6,@$Irh34_codarq,true,"text",4,"onchange='js_pesquisa(false);'");?>
+      <?php db_input("rh34_descr",40,@$Irh34_descr,true,"text",3);?>
+      <?php db_input("rodape",40,0,true,"hidden",3);?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Trh34_codban?>">
-      <?
+      <?php 
       db_ancora(@$Lrh34_codban,"js_pesquisarh34_codban(true);",1);
       ?>
     </td>
     <td colspan="3"> 
-      <?
+      <?php 
       db_input('rh34_codban',6,$Irh34_codban,true,'text',1," onchange='js_pesquisarh34_codban(false);'")
       ?>
-      <?
+      <?php 
       db_input('db90_descr',40,$Idb90_descr,true,'text',3,'')
       ?>
     </td>
@@ -202,7 +202,7 @@ function js_controlarodape(mostra, hora){
       <?=@$Lrh34_agencia?>
     </td>
     <td> 
-      <?
+      <?php 
       db_input('rh34_agencia',5,$Irh34_agencia,true,'text',1,"")
       ?>
     </td>
@@ -210,7 +210,7 @@ function js_controlarodape(mostra, hora){
       <?=@$Lrh34_dvagencia?>
     </td>
     <td> 
-      <?
+      <?php 
       db_input('rh34_dvagencia',2,$Irh34_dvagencia,true,'text',1,"")
       ?>
     </td>
@@ -220,7 +220,7 @@ function js_controlarodape(mostra, hora){
       <?=@$Lrh34_conta?>
     </td>
     <td> 
-      <?
+      <?php 
       db_input('rh34_conta',15,$Irh34_conta,true,'text',1,"")
       ?>
     </td>
@@ -228,7 +228,7 @@ function js_controlarodape(mostra, hora){
       <?=@$Lrh34_dvconta?>
     </td>
     <td> 
-      <?
+      <?php 
       db_input('rh34_dvconta',2,$Irh34_dvconta,true,'text',1,"")
       ?>
     </td>
@@ -238,7 +238,7 @@ function js_controlarodape(mostra, hora){
       <?=@$Lrh34_convenio?>
     </td>
     <td> 
-      <?
+      <?php 
       db_input('rh34_convenio',20,$Irh34_convenio,true,'text',1,"")
       ?>
     </td>
@@ -248,7 +248,7 @@ function js_controlarodape(mostra, hora){
       <?=@$Lrh34_sequencial?>
     </td>
     <td> 
-      <?
+      <?php 
       db_input('rh34_sequencial',15,$Irh34_sequencial,true,'text',1,"")
       ?>
     </td>
@@ -268,7 +268,7 @@ function js_controlarodape(mostra, hora){
   </tr>
 </form>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -326,7 +326,7 @@ function js_mostradb_bancos1(chave1,chave2){
   db_iframe_db_bancos.hide();
 }
 </script>
-<?
+<?php 
 if(isset($emite2)){
   if($clrharqbanco->erro_status=="0"){
     $clrharqbanco->erro(true,false);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -63,7 +63,7 @@ function js_retorna(codtaxa){
 </tr>
 <tr>
 <td align="center">
-<?
+<?php 
 $sql = "";
 if(isset($receita)){
   if(!empty($receita)){

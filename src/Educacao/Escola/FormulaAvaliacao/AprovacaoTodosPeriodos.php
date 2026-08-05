@@ -33,7 +33,6 @@ use ECidade\Educacao\Escola\Mapper\ResultadoPorAreaConhecimento;
 use ECidade\Educacao\Escola\Model\AreaProcedimentoAvaliacao;
 use ECidade\Educacao\Escola\Model\AreaProcedimentoResultado;
 use Exception;
-use ValorAproveitamentoNivel;
 
 /**
  * Class MaiorNivel

@@ -275,7 +275,7 @@ class AvaliacaoPerguntaOpcao {
     if ( empty($this->sIdentificador) ) {
       $this->sIdentificador = $identifier->slugify($this->sDescricao);
     } else if ( !$identifier->validate($this->sIdentificador) ) {
-      throw new \DBException("Identificador da opção de resposta já cadastrado: '$this->sIdentificador'");
+      throw new DBException("Identificador da opção de resposta já cadastrado: '$this->sIdentificador'");
     }
 
     $oDao = new cl_avaliacaoperguntaopcao();
@@ -324,9 +324,7 @@ class AvaliacaoPerguntaOpcao {
     }
 
     // cria um array com o id de todas respostas da opção
-    $aIdRespostas = db_utils::makeCollectionFromRecord($rsRespostas, function($oData){
-      return $oData->id_resposta;
-    });
+    $aIdRespostas = db_utils::makeCollectionFromRecord($rsRespostas, fn($oData) => $oData->id_resposta);
 
     // Percorre todas respostas buscando o vinculo de quem respondeu e verifica se tem que remove-lo
     foreach ($aIdRespostas as $iIdResposta) {
@@ -347,9 +345,7 @@ class AvaliacaoPerguntaOpcao {
         throw new DBException("Erro ao buscar grupo de respostas.");
       }
 
-      $aGrupoRespostas = db_utils::makeCollectionFromRecord($rsGrupoRespostas, function($oData){
-        return $oData->db108_avaliacaogruporesposta;
-      });
+      $aGrupoRespostas = db_utils::makeCollectionFromRecord($rsGrupoRespostas, fn($oData) => $oData->db108_avaliacaogruporesposta);
 
       $sCampos = "count(*)";
       $sGroup  = " group by db108_avaliacaogruporesposta";
@@ -372,7 +368,7 @@ class AvaliacaoPerguntaOpcao {
             return;
           }
 
-          $aVinculos = array(
+          $aVinculos = [
             'avaliacaogrupoperguntaresposta' => 'db108_avaliacaogruporesposta',
             'avaliacaogruporespostacgm' => 'eso03_avaliacaogruporesposta',
             'cidadaoavaliacao' => 'as01_avaliacaogruporesposta',
@@ -381,7 +377,7 @@ class AvaliacaoPerguntaOpcao {
             'avaliacaogruporespostarhpessoal' => 'eso02_avaliacaogruporesposta',
             'habitfichasocioeconomica' => 'ht12_avaliacaogruporesposta',
             'rechumanodadoscenso' => 'ed309_avaliacaogruporesposta',
-          );
+          ];
 
           foreach ($aVinculos as $table => $key) {
 
@@ -433,13 +429,13 @@ class AvaliacaoPerguntaOpcao {
   }
 
     /**
-     * @param \stdClass $oDados
+     * @param stdClass $oDados
      * @param AvaliacaoPergunta $pergunta
      * @return AvaliacaoPerguntaOpcao
      * @throws BusinessException
      * @throws DBException
      */
-    public static function make(\stdClass $oDados, AvaliacaoPergunta $pergunta)
+    public static function make(stdClass $oDados, AvaliacaoPergunta $pergunta)
     {
         $opcao = new AvaliacaoPerguntaOpcao(null);
         $opcao->setCodigo($oDados->db104_sequencial);

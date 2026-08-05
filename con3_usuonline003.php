@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -52,7 +52,7 @@ if(isset($HTTP_POST_VARS["sair"]) || @$sairfora == 1) {
   <script>
   (window.CurrentWindow || parent.CurrentWindow).window.close();
   </script>
-  <?
+  <?php 
   exit;
 }
 

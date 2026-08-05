@@ -27,6 +27,17 @@
 
 namespace ECidade\Financeiro\Contabilidade\PlanoDeContas\PCASP\Importacao;
 
+use cl_importacaoplanoconta;
+use DBException;
+use db_utils;
+use DBDate;
+use ParameterException;
+use InstituicaoRepository;
+use cl_orctiporec;
+use cl_conplano;
+use ContaPlano;
+use cl_conplanoreduz;
+use Instituicao;
 use Dompdf\Exception;
 use ECidade\Financeiro\Contabilidade\PlanoDeContas\PCASP\Importacao\Modelo;
 
@@ -50,7 +61,7 @@ class Importacao
     private $iModelo;
 
     /**
-     * @var \DBDate
+     * @var DBDate
      */
     private $oData;
 
@@ -68,35 +79,35 @@ class Importacao
     private $iAnoFinal;
 
     /**
-     * @var \Instituicao[]
+     * @var Instituicao[]
      */
     private $instituicoesCadastradas;
 
     /**
      * @var array
      */
-    private $estruturaisNaoExcluidos = array();
+    private $estruturaisNaoExcluidos = [];
 
     public function __construct($iCodigo = null)
     {
 
         if (!empty($iCodigo)) {
-            $oDao = new \cl_importacaoplanoconta();
+            $oDao = new cl_importacaoplanoconta();
             $sSql = $oDao->sql_query_file($iCodigo);
             $rsResult = db_query($sSql);
 
             if (!$rsResult) {
-                throw new \DBException("Houve uma falha ao buscar a importação do PCASP com código {$iCodigo}.");
+                throw new DBException("Houve uma falha ao buscar a importação do PCASP com código {$iCodigo}.");
             }
 
             if (pg_num_rows($rsResult) != 1) {
-                throw new \DBException("Importação do PCASP com código {$iCodigo} não encontrado.");
+                throw new DBException("Importação do PCASP com código {$iCodigo} não encontrado.");
             }
 
-            $oStd = \db_utils::fieldsMemory($rsResult, 0);
+            $oStd = db_utils::fieldsMemory($rsResult, 0);
             $this->setId($oStd->c96_sequencial);
             $this->setCodigoModelo($oStd->c96_modeloplanoconta);
-            $this->setData(new \DBDate($oStd->c96_data));
+            $this->setData(new DBDate($oStd->c96_data));
         }
     }
 
@@ -133,7 +144,7 @@ class Importacao
     }
 
     /**
-     * @return \DBDate
+     * @return DBDate
      */
     public function getData()
     {
@@ -141,7 +152,7 @@ class Importacao
     }
 
     /**
-     * @param \DBDate $oData
+     * @param DBDate $oData
      */
     public function setData($oData)
     {
@@ -158,14 +169,14 @@ class Importacao
 
     /**
      * @return Modelo
-     * @throws \ParameterException
+     * @throws ParameterException
      */
     public function getModelo()
     {
 
         $iCodigoModelo = $this->getCodigoModelo();
         if (empty($iCodigoModelo)) {
-            throw new \ParameterException("Código do modelo do PCASP não informado.");
+            throw new ParameterException("Código do modelo do PCASP não informado.");
         }
 
         if (empty($this->oModelo)) {
@@ -176,13 +187,13 @@ class Importacao
 
     public function salvar()
     {
-        $this->instituicoesCadastradas = \InstituicaoRepository::getInstituicoes();
+        $this->instituicoesCadastradas = InstituicaoRepository::getInstituicoes();
 
         $this->processar();
 
-        $oDao = new \cl_importacaoplanoconta();
+        $oDao = new cl_importacaoplanoconta();
         $oDao->c96_modeloplanoconta = $this->getCodigoModelo();
-        $oDao->c96_data = $this->getData()->getDate(\DBDate::DATA_EN);
+        $oDao->c96_data = $this->getData()->getDate(DBDate::DATA_EN);
 
         if (!$oDao->incluir()) {
             throw new \Exception("Ocorreu um erro ao atualizar o plano de contas.");
@@ -195,7 +206,7 @@ class Importacao
     public function consultaRecurso()
     {
 
-        $oDaoOrcTipoRec = new \cl_orctiporec();
+        $oDaoOrcTipoRec = new cl_orctiporec();
         $sSqlOrcTipoRec = $oDaoOrcTipoRec->sql_query_file(1);
         $rsOrcTipoRec = db_query($sSqlOrcTipoRec);
 
@@ -213,7 +224,7 @@ class Importacao
         $aContasNovas = $this->getModelo()->getContas();
         $iAnoDestino = $this->getModelo()->getExercicio();
 
-        $oDaoConplano = new \cl_conplano();
+        $oDaoConplano = new cl_conplano();
         $sSqlConplano = $oDaoConplano->sql_query_file(null, null, "max(c60_anousu) as max");
         $rsConplano = db_query($sSqlConplano);
 
@@ -221,14 +232,14 @@ class Importacao
         if (empty($lRecurso)) {
             $msg = "Não foi localizado o Recurso Orçamentário necessário para a atualização do plano de contas.";
             $msg .= ";\nCadastre o recurso para prosseguir com a Atualização do PCASP.";
-            throw new \DBException($msg);
+            throw new DBException($msg);
         }
 
         if (!$rsConplano | pg_num_rows($rsConplano) != 1) {
-            throw new \DBException("Houve um erro ao verificar o plano de contas.");
+            throw new DBException("Houve um erro ao verificar o plano de contas.");
         }
 
-        $this->iAnoFinal = \db_utils::fieldsMemory($rsConplano, 0)->max;
+        $this->iAnoFinal = db_utils::fieldsMemory($rsConplano, 0)->max;
 
         $sSqlSelect = "select c60_codcon from conplano
             where c60_anousu = {$iAnoDestino} and c60_estrut = $1 order by c60_codcon desc
@@ -299,17 +310,17 @@ class Importacao
             if ($oConta->isExclusao()) {
                 $this->deletaConta($oConta);
             } else {
-                $aParametrosBusca = array($oConta->getEstruturalFormatado());
+                $aParametrosBusca = [$oConta->getEstruturalFormatado()];
                 $rsConta = pg_execute("importacao_pcasp_select", $aParametrosBusca);
 
                 if (!$rsConta) {
                     $msg = "Houve um erro ao buscar a conta de estrutural {$oConta->getEstruturalFormatado()} ";
                     $msg .= "exercício {$iAnoDestino}.";
-                    throw new \DBException($msg);
+                    throw new DBException($msg);
                 }
 
                 if (pg_num_rows($rsConta) > 0) {
-                    $iCodCon = \db_utils::fieldsMemory($rsConta, 0)->c60_codcon;
+                    $iCodCon = db_utils::fieldsMemory($rsConta, 0)->c60_codcon;
                     $this->atualizaConta($oConta, $iCodCon);
                 } else {
                     $this->insereConta($oConta, $this->iAnoFinal);
@@ -330,19 +341,19 @@ class Importacao
      *
      * @param Conta $oConta
      *
-     * @throws \DBException
+     * @throws DBException
      */
     private function deletaConta(Conta $oConta)
     {
 
-        $iNivelEstrutura = \ContaPlano::getNivelEstrutura($oConta->getEstrutural());
-        $sEstruturalAteNivel = \ContaPlano::getEstruturalAteNivel($oConta->getEstrutural(), $iNivelEstrutura);
+        $iNivelEstrutura = ContaPlano::getNivelEstrutura($oConta->getEstrutural());
+        $sEstruturalAteNivel = ContaPlano::getEstruturalAteNivel($oConta->getEstrutural(), $iNivelEstrutura);
 
-        $aWhere = array(
+        $aWhere = [
             "conplano.c60_estrut ilike '" . str_replace('.', '', $sEstruturalAteNivel) . "%'",
             "conplano.c60_anousu between {$this->oModelo->getExercicio()} and {$this->iAnoFinal}"
-        );
-        $oDaoReduzidos = new \cl_conplanoreduz();
+        ];
+        $oDaoReduzidos = new cl_conplanoreduz();
         $sSqlVerificaLancamento = $oDaoReduzidos->sql_query_razao(
             null,
             null,
@@ -354,7 +365,7 @@ class Importacao
 
         if (!$rsVerificaLancamento) {
             $msg = "Não foi possivel verificar os lançamentos para o estrutural {$oConta->getEstrutural()}";
-            throw new \DBException($msg);
+            throw new DBException($msg);
         }
 
         if (pg_num_rows($rsVerificaLancamento) > 0) {
@@ -376,10 +387,10 @@ class Importacao
         $rsBuscaReduzido = db_query($sSqlBuscaReduzido);
         if (!$rsBuscaReduzido) {
             $msg = "Não foi possivel verificar os códigos reduzidos para o estrutural {$oConta->getEstrutural()}.";
-            throw new \DBException($msg);
+            throw new DBException($msg);
         }
 
-        $sReduzidos = \db_utils::fieldsMemory($rsBuscaReduzido, 0)->reduzidos;
+        $sReduzidos = db_utils::fieldsMemory($rsBuscaReduzido, 0)->reduzidos;
         if (!empty($sReduzidos)) {
             $rsDeleteReduzidos = db_query("
                 delete from conplanoreduz
@@ -388,7 +399,7 @@ class Importacao
             ");
             if (!$rsDeleteReduzidos) {
                 $msg = "Não foi possivel excluir os reduzidos para o estrutural {$oConta->getEstrutural()}.";
-                throw new \DBException($msg);
+                throw new DBException($msg);
             }
         }
 
@@ -403,7 +414,7 @@ class Importacao
          and " . implode(' and ', $aWhere) . "
     ");
         if (!$rsExcluiVinculo) {
-            throw new \DBException(
+            throw new DBException(
                 "Não foi possivel excluir o vínculo de conta corrente do estrutural {$oConta->getEstrutural()}.",
                 1
             );
@@ -417,7 +428,7 @@ class Importacao
          and " . implode(' and ', $aWhere) . "
     ");
         if (!$rsExcluiVinculo) {
-            throw new \DBException(
+            throw new DBException(
                 "Não foi possivel excluir o vínculo de orçamento do estrutural {$oConta->getEstrutural()}.",
                 1
             );
@@ -431,7 +442,7 @@ class Importacao
            and " . implode(' and ', $aWhere) . "
     ");
         if (!$rsExcluirAtributos) {
-            throw new \DBException("Não foi possível excluir o vínculo dos atributos de conta corrente."
+            throw new DBException("Não foi possível excluir o vínculo dos atributos de conta corrente."
                 . pg_last_error());
         }
 
@@ -441,7 +452,7 @@ class Importacao
        where " . implode(' and ', $aWhere) . "
     ");
         if (!$rsExcluiVinculo) {
-            throw new \DBException("Não foi possivel excluir o estrutural {$oConta->getEstrutural()}."
+            throw new DBException("Não foi possivel excluir o estrutural {$oConta->getEstrutural()}."
                 . pg_last_error(), 1);
         }
     }
@@ -452,18 +463,18 @@ class Importacao
      * @param Conta $oConta
      * @param int   $this ->iAnoFinal
      *
-     * @throws \DBException
-     * @throws \ParameterException
+     * @throws DBException
+     * @throws ParameterException
      */
     private function insereConta(Conta $oConta, $iAnoFim)
     {
 
-        $iCodigoConta = \db_utils::fieldsMemory(
+        $iCodigoConta = db_utils::fieldsMemory(
             db_query("select nextval('conplano_c60_codcon_seq') as codcon"),
             0
         )->codcon;
         for ($iAno = $oConta->getModelo()->getExercicio(); $iAno <= $iAnoFim; $iAno++) {
-            $aParametros = array(
+            $aParametros = [
                 $iCodigoConta,
                 $iAno,
                 $oConta->getEstruturalFormatado(),
@@ -475,18 +486,18 @@ class Importacao
                 $oConta->getIndicadorSuperavit(),
                 $oConta->getNaturezaSaldo(),
                 ''
-            );
+            ];
 
             $rsConta = pg_execute("importacao_pcasp_insert", $aParametros);
             if ($oConta->isAnalitica()) {
-                $aParametrosBusca = array($oConta->getEstruturalFormatado());
+                $aParametrosBusca = [$oConta->getEstruturalFormatado()];
                 $rsConta = pg_execute("importacao_pcasp_select", $aParametrosBusca);
 //                $iCodConta = \db_utils::fieldsMemory($rsConta, 0)->c60_codcon;
                 $this->geraContasAnalitica($oConta, $iCodigoConta, $iAno);
             }
 
             if (!$rsConta) {
-                throw new \DBException(
+                throw new DBException(
                     "Houve um erro ao criar a conta de estrutural {$oConta->getEstruturalFormatado()}
                     no exercício {$this->getModelo()->getExercicio()}."
                 );
@@ -501,13 +512,13 @@ class Importacao
      * @param int   $iCodConta
      * @param int   $iAno
      *
-     * @throws \DBException
+     * @throws DBException
      */
     private function geraContasAnalitica(Conta $oConta, $iCodConta, $iAno = null)
     {
 
         if (empty($iCodConta)) {
-            throw new \DBException("Código da Conta não informado para o estrutural {$oConta->getEstrutural()}");
+            throw new DBException("Código da Conta não informado para o estrutural {$oConta->getEstrutural()}");
         }
 
         if (empty($iAno)) {
@@ -518,34 +529,34 @@ class Importacao
 
         foreach ($aInstituicoes as $oInstituicao) {
             // Verifica se existe reduzido para a instituição atual
-            $aParametrosBusca = array($iCodConta, $oInstituicao->getCodigo());
+            $aParametrosBusca = [$iCodConta, $oInstituicao->getCodigo()];
             $rsSelectReduzInstit = pg_execute('importacao_pcasp_select_reduz_instit', $aParametrosBusca);
             if (!$rsSelectReduzInstit) {
-                throw new \DBException("Houve um erro ao buscar informações do reduzido da
+                throw new DBException("Houve um erro ao buscar informações do reduzido da
                 instituição {$oInstituicao->getDescricao()}");
             }
 
             // Não existe reduzido no ano anterior, será gerado um novo reduzido
             if (pg_num_rows($rsSelectReduzInstit) == 0) {
-                $aParametrosInsere = array($iCodConta, $iAno, $oInstituicao->getCodigo());
+                $aParametrosInsere = [$iCodConta, $iAno, $oInstituicao->getCodigo()];
                 $rsConplanoReduz = pg_execute('importacao_pcasp_insert_reduz', $aParametrosInsere);
                 if (!$rsConplanoReduz) {
-                    throw new \DBException("Houve um erro ao salvar o reduzido para o plano de contas.");
+                    throw new DBException("Houve um erro ao salvar o reduzido para o plano de contas.");
                 }
 
-                $aParametros = array($iAno);//anousu
+                $aParametros = [$iAno];//anousu
                 $rsConplanoReduzExe = pg_execute('importacao_pcasp_insert_reduzexe', $aParametros);
                 if (!$rsConplanoReduzExe) {
-                    throw new \DBException("Houve um erro ao salvar o reduzido para o plano de contas.");
+                    throw new DBException("Houve um erro ao salvar o reduzido para o plano de contas.");
                 }
             } else {
-                if (empty(\db_utils::fieldsMemory($rsSelectReduzInstit, 0)->atualizado)) {
-                    $iCodReduzido = \db_utils::fieldsMemory($rsSelectReduzInstit, 0)->reduzido;
+                if (empty(db_utils::fieldsMemory($rsSelectReduzInstit, 0)->atualizado)) {
+                    $iCodReduzido = db_utils::fieldsMemory($rsSelectReduzInstit, 0)->reduzido;
 
-                    $aParametrosInsere = array($iCodConta, $iAno, $iCodReduzido, $oInstituicao->getCodigo());
+                    $aParametrosInsere = [$iCodConta, $iAno, $iCodReduzido, $oInstituicao->getCodigo()];
                     $rsConplanoReduz = pg_execute('importacao_pcasp_insert_reduz_codreduz', $aParametrosInsere);
                     if (!$rsConplanoReduz) {
-                        throw new \DBException("Houve um erro ao salvar o reduzido para o plano de contas.");
+                        throw new DBException("Houve um erro ao salvar o reduzido para o plano de contas.");
                     }
                 }
             }
@@ -557,13 +568,13 @@ class Importacao
      *
      * @param Conta $oConta
      *
-     * @throws \DBException
-     * @throws \ParameterException
+     * @throws DBException
+     * @throws ParameterException
      */
     private function atualizaConta(Conta $oConta, $iCodConta)
     {
 
-        $aParametros = array(
+        $aParametros = [
             $oConta->getTitulo(),
             $oConta->getFuncao(),
             $oConta->getSistema(),
@@ -572,18 +583,18 @@ class Importacao
             $this->getCodigoDetalhamentoSistema($oConta),
             $oConta->getEstruturalFormatado(),
             $this->getModelo()->getExercicio()
-        );
+        ];
 
         if ($oConta->isAnalitica()) {
             /*
              * ajustate para nao incluir reduzido para contas com filhas
              * @todo REFATORAR
              */
-            $iNivel = \ContaPlano::getNivelEstrutura($oConta->getEstrutural());
+            $iNivel = ContaPlano::getNivelEstrutura($oConta->getEstrutural());
             $sEstruturalAteNivel = str_replace(
                 '.',
                 '',
-                \ContaPlano::getEstruturalAteNivel($oConta->getEstrutural(), $iNivel)
+                ContaPlano::getEstruturalAteNivel($oConta->getEstrutural(), $iNivel)
             );
             $iTotalCaracteres = strlen($sEstruturalAteNivel);
 
@@ -600,7 +611,7 @@ class Importacao
                 $rsConta = pg_execute("importacao_pcasp_update", $aParametros);
 
                 if (!$rsConta) {
-                    throw new \DBException("Houve um erro ao buscar a conta de estrutural
+                    throw new DBException("Houve um erro ao buscar a conta de estrutural
                     {$oConta->getEstruturalFormatado()} no exercício {$this->getModelo()->getExercicio()}.");
                 }
                 return;
@@ -611,7 +622,7 @@ class Importacao
         $rsConta = pg_execute("importacao_pcasp_update", $aParametros);
 
         if (!$rsConta) {
-            throw new \DBException("Houve um erro ao buscar a conta de estrutural
+            throw new DBException("Houve um erro ao buscar a conta de estrutural
             {$oConta->getEstruturalFormatado()} no exercício {$this->getModelo()->getExercicio()}.");
         }
     }
@@ -632,31 +643,31 @@ class Importacao
             return 0;
         }
 
-        if (in_array(substr($sEstrutural, 0, 1), array('7', '8'))) {
+        if (in_array(substr($sEstrutural, 0, 1), ['7', '8'])) {
             return 4;
         }
 
-        if (in_array(substr($sEstrutural, 0, 1), array('5', '6'))) {
+        if (in_array(substr($sEstrutural, 0, 1), ['5', '6'])) {
             return 3;
         }
 
-        if (in_array($oConta->getIndicadorSuperavit(), array('P', 'N'))) {
+        if (in_array($oConta->getIndicadorSuperavit(), ['P', 'N'])) {
             return 2;
         }
 
         if ($oConta->getIndicadorSuperavit() == 'F') {
-            if (substr($sEstrutural, 0, 5) == "11111") {
+            if (str_starts_with($sEstrutural, "11111")) {
                 return 5;
             }
 
-            if (substr($sEstrutural, 0, 5) == "11112" || substr($sEstrutural, 0, 5) == "11113"
-                || substr($sEstrutural, 0, 5) == "11113"
+            if (str_starts_with($sEstrutural, "11112") || str_starts_with($sEstrutural, "11113")
+                || str_starts_with($sEstrutural, "11113")
             ) {
                 return 6;
             }
         }
 
-        if (substr($sEstrutural, 0, 5) == "21881") {
+        if (str_starts_with($sEstrutural, "21881")) {
             return 7;
         }
 

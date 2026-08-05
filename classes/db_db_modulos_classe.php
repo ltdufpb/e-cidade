@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE db_modulos
 class cl_db_modulos { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $id_item = 0; 
-   var $nome_modulo = null; 
-   var $descr_modulo = null; 
-   var $imagem = null; 
-   var $temexerc = 'f'; 
+   public $id_item = 0; 
+   public $nome_modulo = null; 
+   public $descr_modulo = null; 
+   public $imagem = null; 
+   public $temexerc = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  id_item = int4 = Código do ítem 
                  nome_modulo = varchar(20) = Nome do módulo 
                  descr_modulo = text = Descrição 
@@ -56,10 +56,10 @@ class cl_db_modulos {
                  temexerc = bool = Exercício 
                  ";
    //funcao construtor da classe 
-   function cl_db_modulos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_modulos"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -147,7 +147,7 @@ class cl_db_modulos {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Módulo ($this->id_item) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Módulo já Cadastrado";
@@ -171,14 +171,14 @@ class cl_db_modulos {
      $resaco = $this->sql_record($this->sql_query_file($this->id_item));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,821,'$this->id_item','I')");
-       $resac = db_query("insert into db_acount values($acount,168,821,'','".AddSlashes(pg_result($resaco,0,'id_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,168,999,'','".AddSlashes(pg_result($resaco,0,'nome_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,168,1000,'','".AddSlashes(pg_result($resaco,0,'descr_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,168,1001,'','".AddSlashes(pg_result($resaco,0,'imagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,168,1002,'','".AddSlashes(pg_result($resaco,0,'temexerc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,168,821,'','".AddSlashes(pg_fetch_result($resaco,0,'id_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,168,999,'','".AddSlashes(pg_fetch_result($resaco,0,'nome_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,168,1000,'','".AddSlashes(pg_fetch_result($resaco,0,'descr_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,168,1001,'','".AddSlashes(pg_fetch_result($resaco,0,'imagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,168,1002,'','".AddSlashes(pg_fetch_result($resaco,0,'temexerc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -187,13 +187,13 @@ class cl_db_modulos {
       $this->atualizacampos();
      $sql = " update db_modulos set ";
      $virgula = "";
-     if(trim($this->id_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_item"])){ 
-        if(trim($this->id_item)=="" && isset($GLOBALS["HTTP_POST_VARS"]["id_item"])){ 
+     if(trim((string) $this->id_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_item"])){ 
+        if(trim((string) $this->id_item)=="" && isset($GLOBALS["HTTP_POST_VARS"]["id_item"])){ 
            $this->id_item = "0" ; 
         } 
        $sql  .= $virgula." id_item = $this->id_item ";
        $virgula = ",";
-       if(trim($this->id_item) == null ){ 
+       if(trim((string) $this->id_item) == null ){ 
          $this->erro_sql = " Campo Código do ítem nao Informado.";
          $this->erro_campo = "id_item";
          $this->erro_banco = "";
@@ -203,10 +203,10 @@ class cl_db_modulos {
          return false;
        }
      }
-     if(trim($this->nome_modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nome_modulo"])){ 
+     if(trim((string) $this->nome_modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nome_modulo"])){ 
        $sql  .= $virgula." nome_modulo = '$this->nome_modulo' ";
        $virgula = ",";
-       if(trim($this->nome_modulo) == null ){ 
+       if(trim((string) $this->nome_modulo) == null ){ 
          $this->erro_sql = " Campo Nome do módulo nao Informado.";
          $this->erro_campo = "nome_modulo";
          $this->erro_banco = "";
@@ -216,10 +216,10 @@ class cl_db_modulos {
          return false;
        }
      }
-     if(trim($this->descr_modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descr_modulo"])){ 
+     if(trim((string) $this->descr_modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descr_modulo"])){ 
        $sql  .= $virgula." descr_modulo = '$this->descr_modulo' ";
        $virgula = ",";
-       if(trim($this->descr_modulo) == null ){ 
+       if(trim((string) $this->descr_modulo) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "descr_modulo";
          $this->erro_banco = "";
@@ -229,10 +229,10 @@ class cl_db_modulos {
          return false;
        }
      }
-     if(trim($this->imagem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["imagem"])){ 
+     if(trim((string) $this->imagem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["imagem"])){ 
        $sql  .= $virgula." imagem = '$this->imagem' ";
        $virgula = ",";
-       if(trim($this->imagem) == null ){ 
+       if(trim((string) $this->imagem) == null ){ 
          $this->erro_sql = " Campo Imagem nao Informado.";
          $this->erro_campo = "imagem";
          $this->erro_banco = "";
@@ -242,10 +242,10 @@ class cl_db_modulos {
          return false;
        }
      }
-     if(trim($this->temexerc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["temexerc"])){ 
+     if(trim((string) $this->temexerc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["temexerc"])){ 
        $sql  .= $virgula." temexerc = '$this->temexerc' ";
        $virgula = ",";
-       if(trim($this->temexerc) == null ){ 
+       if(trim((string) $this->temexerc) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "temexerc";
          $this->erro_banco = "";
@@ -263,19 +263,19 @@ class cl_db_modulos {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,821,'$this->id_item','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["id_item"]))
-           $resac = db_query("insert into db_acount values($acount,168,821,'".AddSlashes(pg_result($resaco,$conresaco,'id_item'))."','$this->id_item',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,168,821,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'id_item'))."','$this->id_item',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["nome_modulo"]))
-           $resac = db_query("insert into db_acount values($acount,168,999,'".AddSlashes(pg_result($resaco,$conresaco,'nome_modulo'))."','$this->nome_modulo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,168,999,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'nome_modulo'))."','$this->nome_modulo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["descr_modulo"]))
-           $resac = db_query("insert into db_acount values($acount,168,1000,'".AddSlashes(pg_result($resaco,$conresaco,'descr_modulo'))."','$this->descr_modulo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,168,1000,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'descr_modulo'))."','$this->descr_modulo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["imagem"]))
-           $resac = db_query("insert into db_acount values($acount,168,1001,'".AddSlashes(pg_result($resaco,$conresaco,'imagem'))."','$this->imagem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,168,1001,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'imagem'))."','$this->imagem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["temexerc"]))
-           $resac = db_query("insert into db_acount values($acount,168,1002,'".AddSlashes(pg_result($resaco,$conresaco,'temexerc'))."','$this->temexerc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,168,1002,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'temexerc'))."','$this->temexerc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -320,14 +320,14 @@ class cl_db_modulos {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,821,'$id_item','E')");
-         $resac = db_query("insert into db_acount values($acount,168,821,'','".AddSlashes(pg_result($resaco,$iresaco,'id_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,168,999,'','".AddSlashes(pg_result($resaco,$iresaco,'nome_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,168,1000,'','".AddSlashes(pg_result($resaco,$iresaco,'descr_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,168,1001,'','".AddSlashes(pg_result($resaco,$iresaco,'imagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,168,1002,'','".AddSlashes(pg_result($resaco,$iresaco,'temexerc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,168,821,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'id_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,168,999,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'nome_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,168,1000,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'descr_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,168,1001,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'imagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,168,1002,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'temexerc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_modulos
@@ -387,7 +387,7 @@ class cl_db_modulos {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_modulos";
@@ -401,7 +401,7 @@ class cl_db_modulos {
    function sql_query ( $id_item=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -422,7 +422,7 @@ class cl_db_modulos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -434,7 +434,7 @@ class cl_db_modulos {
    function sql_query_file ( $id_item=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -455,7 +455,7 @@ class cl_db_modulos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-         $campos_sql = explode("#", $ordem);
+         $campos_sql = explode("#", (string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -467,7 +467,7 @@ class cl_db_modulos {
    function sql_query_usermod ( $id_item=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -490,7 +490,7 @@ class cl_db_modulos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

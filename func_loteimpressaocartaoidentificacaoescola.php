@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_loteimpressaocartaoidentificacao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clloteimpressaocartaoidentificacao = new cl_loteimpressaocartaoidentificacao;
 $clloteimpressaocartaoidentificacao->rotulo->label("ed305_sequencial");
 $clloteimpressaocartaoidentificacao->rotulo->label("ed305_usuario");
@@ -56,7 +57,7 @@ $clloteimpressaocartaoidentificacao->rotulo->label("ed305_usuario");
               <?=$Led305_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ed305_sequencial",10,$Ied305_sequencial,true,"text",4,"","chave_ed305_sequencial");
 		       ?>
             </td>
@@ -66,7 +67,7 @@ $clloteimpressaocartaoidentificacao->rotulo->label("ed305_usuario");
               <?=$Led305_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ed305_usuario",10,$Ied305_usuario,true,"text",4,"","chave_ed305_usuario");
 		       ?>
             </td>
@@ -84,7 +85,7 @@ $clloteimpressaocartaoidentificacao->rotulo->label("ed305_usuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       
 			/**
 			 * Se for modulo escola faz where pelo departamento logado
@@ -140,12 +141,12 @@ $clloteimpressaocartaoidentificacao->rotulo->label("ed305_usuario");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

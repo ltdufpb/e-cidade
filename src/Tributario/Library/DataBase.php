@@ -2,6 +2,7 @@
 
 namespace ECidade\Tributario\Library;
 
+use Override;
 use ECidade\V3\Datasource\Database as DataSourceDataBase;
 use ECidade\V3\Extension\Registry as RegistryV3;
 use Exception;
@@ -49,6 +50,7 @@ final class DataBase extends DataSourceDataBase
      * @return DataBase
      * @throws Exception
      */
+    #[Override]
     public static function getInstance($withDbConn = false, $conexao = null, $withCookie = false)
     {
         if (self::$instance == null) {
@@ -62,6 +64,7 @@ final class DataBase extends DataSourceDataBase
      * @return DataBase
      * @throws Exception
      */
+    #[Override]
     public static function init()
     {
         return self::getInstance();
@@ -71,6 +74,7 @@ final class DataBase extends DataSourceDataBase
      * @param string $query
      * @return bool|resource
      */
+    #[Override]
     public function execute($query)
     {
         return db_query($query);

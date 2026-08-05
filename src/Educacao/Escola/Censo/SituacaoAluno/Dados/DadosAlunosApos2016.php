@@ -45,7 +45,7 @@ class DadosAlunosApos2016 extends DadosAluno2016 implements DadosInterface
         }
 
         // campo 10 - regra 2
-        $aMultiEtapaCenso = array(3, 12, 13, 22, 23, 24, 64, 72);
+        $aMultiEtapaCenso = [3, 12, 13, 22, 23, 24, 64, 72];
         if (in_array($this->iEtapaTurma, $aMultiEtapaCenso)) {
             $this->iEtapaArquivo = $this->iEtapaMatricula;
         }
@@ -246,7 +246,7 @@ class DadosAlunosApos2016 extends DadosAluno2016 implements DadosInterface
         }
 
         // campo 10 - regra 13
-        if ($this->iEtapaTurma == 72 && !in_array($this->iEtapaArquivo, array(69, 70))) {
+        if ($this->iEtapaTurma == 72 && !in_array($this->iEtapaArquivo, [69, 70])) {
             $this->addErro($sMsg);
         }
         // campo 10 - regra 14

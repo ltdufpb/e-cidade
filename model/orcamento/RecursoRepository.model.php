@@ -34,7 +34,7 @@ class RecursoRepository
     /**
      * @var Recurso[]
      */
-    private $aRecurso = array();
+    private $aRecurso = [];
 
     /**
      * Instancia da classe

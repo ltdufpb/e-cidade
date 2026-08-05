@@ -348,7 +348,7 @@ document.form1.submit();
 </head>
 <body class="body-default">
 	<form class="container" name="form1" method="post" action="">
-			<?if (isset($processar)&&$processar!=""){?>
+			<?php if (isset($processar)&&$processar!=""){?>
 
 		<table class="form-container">
 			<tr>
@@ -446,38 +446,38 @@ document.form1.submit();
 			  </td>
 			</tr>
 			</table>
-				<?}else{?>
+				<?php }else{?>
 			<fieldset>
 			  <legend>Pesquisa CDA</legend>
 			<table class="form-container">
 			<tr>
 				<td nowrap title="<?=$Tv13_certid?>">
-				    <?
+				    <?php 
 				      db_ancora($Lv13_certid,"js_pesquisa_certid(true);",1);
 				    ?>
 				</td>
 				<td nowrap>
-				  <?
+				  <?php 
 				    db_input("v13_certid",10,$Iv13_certid,true,"text",4,"onchange='js_pesquisa_certid(false);'");
 				  ?>
 				</td>
 			</tr>
 			</table>
 		</fieldset>
-			<?}
+			<?php }
 			if (isset($processar)&&$processar!=""){?>
 
   				  <input name="cancelar1" id="Cancelar1" type="button" value="Processar" onclick="js_submit_form();">
   				  <input name="voltar" id="voltar" type="button" value="Voltar" onclick="location.href='div4_cancelcda001.php'">
-  				  <?
+  				  <?php 
   				    db_input("cancelar",6,"",true,"hidden",3);
   				  ?>
-			<?}else{?>
+			<?php }else{?>
   				  <input name="processar" id="processar" type="submit" value="Processar" onclick="return js_testacampo();">
-			<?}
+			<?php }
 			?>
 
-		<?
+		<?php 
 		db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 		?>
 		</form>
@@ -534,7 +534,7 @@ if (document.form1.v13_certid.value==""){
 
 }
 </script>
-<?
+<?php 
 if (isset($cancelar)&&$cancelar!=""){
 if ($sqlerro==true){
   db_msgbox($erro_msg);

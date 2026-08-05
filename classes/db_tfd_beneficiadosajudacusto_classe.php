@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ class cl_tfd_beneficiadosajudacusto {
                  tf15_observacao = varchar(100) = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_tfd_beneficiadosajudacusto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_beneficiadosajudacusto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

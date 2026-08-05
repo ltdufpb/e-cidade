@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE parametrodependenciaetapa
 class cl_parametrodependenciaetapa { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed296_sequencial = 0; 
-   var $ed296_parametrodependencia = 0; 
-   var $ed296_etapa = 0; 
-   var $ed296_cursoedu = 0; 
+   public $ed296_sequencial = 0; 
+   public $ed296_parametrodependencia = 0; 
+   public $ed296_etapa = 0; 
+   public $ed296_cursoedu = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed296_sequencial = int4 = Sequencial 
                  ed296_parametrodependencia = int4 = Parametro Dependencia 
                  ed296_etapa = int4 = Etapa 
                  ed296_cursoedu = int4 = Cursos com Progressão Parcial 
                  ";
    //funcao construtor da classe 
-   function cl_parametrodependenciaetapa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("parametrodependenciaetapa"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_parametrodependenciaetapa {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed296_sequencial = pg_result($result,0,0); 
+       $this->ed296_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from parametrodependenciaetapa_ed296_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed296_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed296_sequencial)){
          $this->erro_sql = " Campo ed296_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_parametrodependenciaetapa {
      $result = db_query($sql);      
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "parametro dependencia etapa ($this->ed296_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "parametro dependencia etapa já Cadastrado";
@@ -180,13 +180,13 @@ class cl_parametrodependenciaetapa {
      $resaco = $this->sql_record($this->sql_query_file($this->ed296_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18522,'$this->ed296_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3276,18522,'','".AddSlashes(pg_result($resaco,0,'ed296_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3276,18523,'','".AddSlashes(pg_result($resaco,0,'ed296_parametrodependencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3276,18524,'','".AddSlashes(pg_result($resaco,0,'ed296_etapa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3276,18525,'','".AddSlashes(pg_result($resaco,0,'ed296_cursoedu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3276,18522,'','".AddSlashes(pg_fetch_result($resaco,0,'ed296_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3276,18523,'','".AddSlashes(pg_fetch_result($resaco,0,'ed296_parametrodependencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3276,18524,'','".AddSlashes(pg_fetch_result($resaco,0,'ed296_etapa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3276,18525,'','".AddSlashes(pg_fetch_result($resaco,0,'ed296_cursoedu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_parametrodependenciaetapa {
       $this->atualizacampos();
      $sql = " update parametrodependenciaetapa set ";
      $virgula = "";
-     if(trim($this->ed296_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed296_sequencial"])){ 
+     if(trim((string) $this->ed296_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed296_sequencial"])){ 
        $sql  .= $virgula." ed296_sequencial = $this->ed296_sequencial ";
        $virgula = ",";
-       if(trim($this->ed296_sequencial) == null ){ 
+       if(trim((string) $this->ed296_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "ed296_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_parametrodependenciaetapa {
          return false;
        }
      }
-     if(trim($this->ed296_parametrodependencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed296_parametrodependencia"])){ 
+     if(trim((string) $this->ed296_parametrodependencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed296_parametrodependencia"])){ 
        $sql  .= $virgula." ed296_parametrodependencia = $this->ed296_parametrodependencia ";
        $virgula = ",";
-       if(trim($this->ed296_parametrodependencia) == null ){ 
+       if(trim((string) $this->ed296_parametrodependencia) == null ){ 
          $this->erro_sql = " Campo Parametro Dependencia nao Informado.";
          $this->erro_campo = "ed296_parametrodependencia";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_parametrodependenciaetapa {
          return false;
        }
      }
-     if(trim($this->ed296_etapa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed296_etapa"])){ 
+     if(trim((string) $this->ed296_etapa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed296_etapa"])){ 
        $sql  .= $virgula." ed296_etapa = $this->ed296_etapa ";
        $virgula = ",";
-       if(trim($this->ed296_etapa) == null ){ 
+       if(trim((string) $this->ed296_etapa) == null ){ 
          $this->erro_sql = " Campo Etapa nao Informado.";
          $this->erro_campo = "ed296_etapa";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_parametrodependenciaetapa {
          return false;
        }
      }
-     if(trim($this->ed296_cursoedu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed296_cursoedu"])){ 
+     if(trim((string) $this->ed296_cursoedu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed296_cursoedu"])){ 
        $sql  .= $virgula." ed296_cursoedu = $this->ed296_cursoedu ";
        $virgula = ",";
-       if(trim($this->ed296_cursoedu) == null ){ 
+       if(trim((string) $this->ed296_cursoedu) == null ){ 
          $this->erro_sql = " Campo Cursos com Progressão Parcial nao Informado.";
          $this->erro_campo = "ed296_cursoedu";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_parametrodependenciaetapa {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18522,'$this->ed296_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed296_sequencial"]) || $this->ed296_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3276,18522,'".AddSlashes(pg_result($resaco,$conresaco,'ed296_sequencial'))."','$this->ed296_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3276,18522,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed296_sequencial'))."','$this->ed296_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed296_parametrodependencia"]) || $this->ed296_parametrodependencia != "")
-           $resac = db_query("insert into db_acount values($acount,3276,18523,'".AddSlashes(pg_result($resaco,$conresaco,'ed296_parametrodependencia'))."','$this->ed296_parametrodependencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3276,18523,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed296_parametrodependencia'))."','$this->ed296_parametrodependencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed296_etapa"]) || $this->ed296_etapa != "")
-           $resac = db_query("insert into db_acount values($acount,3276,18524,'".AddSlashes(pg_result($resaco,$conresaco,'ed296_etapa'))."','$this->ed296_etapa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3276,18524,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed296_etapa'))."','$this->ed296_etapa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed296_cursoedu"]) || $this->ed296_cursoedu != "")
-           $resac = db_query("insert into db_acount values($acount,3276,18525,'".AddSlashes(pg_result($resaco,$conresaco,'ed296_cursoedu'))."','$this->ed296_cursoedu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3276,18525,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed296_cursoedu'))."','$this->ed296_cursoedu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_parametrodependenciaetapa {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18522,'$ed296_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3276,18522,'','".AddSlashes(pg_result($resaco,$iresaco,'ed296_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3276,18523,'','".AddSlashes(pg_result($resaco,$iresaco,'ed296_parametrodependencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3276,18524,'','".AddSlashes(pg_result($resaco,$iresaco,'ed296_etapa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3276,18525,'','".AddSlashes(pg_result($resaco,$iresaco,'ed296_cursoedu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3276,18522,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed296_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3276,18523,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed296_parametrodependencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3276,18524,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed296_etapa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3276,18525,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed296_cursoedu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from parametrodependenciaetapa
@@ -376,7 +376,7 @@ class cl_parametrodependenciaetapa {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:parametrodependenciaetapa";
@@ -391,7 +391,7 @@ class cl_parametrodependenciaetapa {
    function sql_query ( $ed296_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -418,7 +418,7 @@ class cl_parametrodependenciaetapa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -431,7 +431,7 @@ class cl_parametrodependenciaetapa {
    function sql_query_file ( $ed296_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -452,7 +452,7 @@ class cl_parametrodependenciaetapa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

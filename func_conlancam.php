@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conlancam_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clconlancam = new cl_conlancam;
 $clconlancam->rotulo->label("c70_codlan");
 $clconlancam->rotulo->label("c70_anousu");
@@ -54,7 +55,7 @@ $clconlancam->rotulo->label("c70_anousu");
               <?=$Lc70_codlan?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?  db_input("c70_codlan",8,$Ic70_codlan,true,"text",4,"","chave_c70_codlan");  ?>
+              <?php   db_input("c70_codlan",8,$Ic70_codlan,true,"text",4,"","chave_c70_codlan");  ?>
             </td>
           </tr>
           <tr> 
@@ -62,7 +63,7 @@ $clconlancam->rotulo->label("c70_anousu");
               <?=$Lc70_anousu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?  db_input("c70_anousu",4,$Ic70_anousu,true,"text",4,"","chave_c70_anousu");  ?>
+              <?php   db_input("c70_anousu",4,$Ic70_anousu,true,"text",4,"","chave_c70_anousu");  ?>
             </td>
           </tr>
           <tr> 
@@ -78,7 +79,7 @@ $clconlancam->rotulo->label("c70_anousu");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conlancam.php")==true){
@@ -114,12 +115,12 @@ $clconlancam->rotulo->label("c70_anousu");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

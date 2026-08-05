@@ -133,7 +133,7 @@ class AcordoDocumento {
                               where upper(ac40_nomearquivo) = upper('{$this->getNomeArquivo()}')";
     
     $rsValidaExistencia   = db_query($sSqlValidaExistencia);
-        if(pg_numrows($rsValidaExistencia) > 0) {
+        if(pg_num_rows($rsValidaExistencia) > 0) {
                       
       throw new FileException("O arquivo já Existe no Cadastro. Renomeie o Arquivo.");           
     }                              
@@ -170,7 +170,7 @@ class AcordoDocumento {
    */
   public function getDocumeto($iAcordo) {
 
-    $aDocumentos         = array();
+    $aDocumentos         = [];
     $oDaoAcordoDocumento = db_utils::getDao("acordodocumento");
     $sCampos             = "ac40_sequencial, ac40_acordo, ac40_descricao, ac40_arquivo";
     $sWhere              = " ac40_acordo = {$iAcordo}";

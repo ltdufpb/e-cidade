@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_sysmodulo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_sysmodulo = new cl_db_sysmodulo;
 $cldb_sysmodulo->rotulo->label("codmod");
 $cldb_sysmodulo->rotulo->label("nomemod");
@@ -54,7 +55,7 @@ $cldb_sysmodulo->rotulo->label("nomemod");
               <?=$Lcodmod?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("codmod",4,$Icodmod,true,"text",4,"","chave_codmod");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_sysmodulo->rotulo->label("nomemod");
               <?=$Lnomemod?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("nomemod",40,$Inomemod,true,"text",4,"","chave_nomemod");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_sysmodulo->rotulo->label("nomemod");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_sysmodulo.php")==true){
@@ -122,12 +123,12 @@ $cldb_sysmodulo->rotulo->label("nomemod");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

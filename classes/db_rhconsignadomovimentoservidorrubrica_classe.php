@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhconsignadomovimentoservidorrubrica
 class cl_rhconsignadomovimentoservidorrubrica { 
@@ -36,7 +36,7 @@ class cl_rhconsignadomovimentoservidorrubrica {
                  rh153_totalparcelas = varchar(3) = Total de Parcelas 
                  ";
    //funcao construtor da classe 
-   function cl_rhconsignadomovimentoservidorrubrica() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhconsignadomovimentoservidorrubrica"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

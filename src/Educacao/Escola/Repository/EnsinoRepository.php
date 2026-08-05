@@ -3,6 +3,7 @@
 
 namespace ECidade\Educacao\Escola\Repository;
 
+use cl_ensino;
 use ECidade\Educacao\Escola\Model\Ensino;
 use Exception;
 
@@ -22,7 +23,7 @@ class EnsinoRepository extends Repository
      */
     public static function find($id)
     {
-        $dao = new \cl_ensino();
+        $dao = new cl_ensino();
         $sql = $dao->sql_query($id, implode(', ', self::$campos), implode(', ', self::$orderBy));
         $rs = db_query($sql);
 

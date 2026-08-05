@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empnotaord_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clempnotaord = new cl_empnotaord;
 $clempnotaord->rotulo->label("m72_codnota");
 $clempnotaord->rotulo->label("m72_codordem");
@@ -61,7 +62,7 @@ $depart= db_getsession("DB_coddepto");
               <strong>Sequencial da Nota</strong>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m72_codnota",10,$Im72_codnota,true,"text",4,"","chave_m72_codnota");
 		       ?>
             </td>
@@ -71,7 +72,7 @@ $depart= db_getsession("DB_coddepto");
               <?=$Le69_numero?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       			db_input("e69_numero",10,$Ie69_numero,true,"text",4,"","chave_e69_numero");
 		       		?>
             </td>
@@ -81,7 +82,7 @@ $depart= db_getsession("DB_coddepto");
               <strong>Ordem de Compra</strong>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m72_codordem",10,$Im72_codordem,true,"text",4,"","chave_m72_codordem");
 		       ?>
             </td>
@@ -91,7 +92,7 @@ $depart= db_getsession("DB_coddepto");
               <?=$Le69_dtnota?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       			db_inputdata('e69_dtnota', null, null, null, true, 'text', 1, '', 'chave_e69_dtnota');
 		       		?>
             </td>
@@ -109,7 +110,7 @@ $depart= db_getsession("DB_coddepto");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       
       $where_instit = " e60_instit = ".db_getsession("DB_instit");
       
@@ -183,12 +184,12 @@ $depart= db_getsession("DB_coddepto");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

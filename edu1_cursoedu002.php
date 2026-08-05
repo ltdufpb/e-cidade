@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,8 +34,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("classes/db_cursoescola_classe.php"));
 require_once(modification("classes/db_cursoedu_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 $clcurso                  = new cl_curso;
 $clcursoescola            = new cl_cursoescola;
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
@@ -83,25 +83,25 @@ if (isset($alterar)) {
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
    <tr>
     <td align="left" valign="top" bgcolor="#CCCCCC">
-     <?MsgAviso(db_getsession("DB_coddepto"), "escola");?>
+     <?php MsgAviso(db_getsession("DB_coddepto"), "escola");?>
      <br>
      <center>
       <fieldset style="width:95%"><legend><b>Alteração de Curso</b></legend>
-       <?include(modification("forms/db_frmcursoedu.php"));?>
+       <?php include(modification("forms/db_frmcursoedu.php"));?>
       </fieldset>
      </center>
     </td>
    </tr>
    <tr>
     <td valign="top" align="center">
-     <?
-       $chavepri= array("ed71_i_codigo"=>@$ed71_i_codigo, 
+     <?php 
+       $chavepri= ["ed71_i_codigo"=>@$ed71_i_codigo, 
                         "ed71_i_escola"=>@$ed71_i_escola, 
                         "ed18_c_nome"=>@$ed18_c_nome, 
                         "ed71_i_curso"=>@$ed71_i_curso, 
                         "ed29_c_descr"=>@$ed29_c_descr, 
                         "ed71_c_situacao"=>@$ed71_c_situacao
-                       );
+                       ];
        $cliframe_alterar_excluir->chavepri      = $chavepri;
        @$cliframe_alterar_excluir->sql          = $clcursoescola->sql_query("", "*", "ed18_c_nome", 
                                                                               " ed71_i_curso = $chavepesquisa" 
@@ -124,14 +124,14 @@ if (isset($alterar)) {
     </td>
    </tr>
   </table>
-   <?
+   <?php 
      db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), 
              db_getsession("DB_anousu"), db_getsession("DB_instit")
             );
    ?>
  </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 	
   if ($clcurso->erro_status == "0") {

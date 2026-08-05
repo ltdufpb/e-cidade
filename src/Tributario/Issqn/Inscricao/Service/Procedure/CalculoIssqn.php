@@ -1,6 +1,9 @@
 <?php
 namespace ECidade\Tributario\Issqn\Inscricao\Service\Procedure;
 
+use DBException;
+use db_utils;
+use BusinessException;
 use ECidade\Tributario\Library\Procedure;
 use \Empresa;
 use \DateTime;
@@ -13,14 +16,12 @@ class CalculoIssqn extends Procedure
      * @param $codigoInstituiacao
      * @param $ano
      * @return string
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public function execute(Empresa $empresa, DateTime $dataCalculo, $codigoInstituiacao, $ano)
     {
-        $atividades = array_map(function ($atividade) {
-            return $atividade->getSequencial();
-        }, $empresa->getAtividades());
+        $atividades = array_map(fn($atividade) => $atividade->getSequencial(), $empresa->getAtividades());
 
         /**
          * @todo implementar todos os tipos (TODOS, ISSQN e ALVARÁ)
@@ -40,13 +41,13 @@ class CalculoIssqn extends Procedure
         $rs = $this->dataBase->execute($sql);
 
         if (!$rs) {
-            throw new \DBException("Erro ao Processar calculo: ".pg_last_error()." - ".$sql);
+            throw new DBException("Erro ao Processar calculo: ".pg_last_error()." - ".$sql);
         }
 
-        $resultado  = \db_utils::fieldsMemory($rs, 0)->resultado_calculo;
+        $resultado  = db_utils::fieldsMemory($rs, 0)->resultado_calculo;
 
-        if (substr($resultado, 0, 2) != "01") {
-            throw new \BusinessException("Erro ao Processar Cálculo : \n\n{$resultado}");
+        if (!str_starts_with((string) $resultado, "01")) {
+            throw new BusinessException("Erro ao Processar Cálculo : \n\n{$resultado}");
         }
 
         return "Cálculo processado com sucesso";

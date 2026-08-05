@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_matrequi_classe.php"));
 $oGet = db_utils::postMemory($_GET);
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmatrequi = new cl_matrequi;
 $clmatrequi->rotulo->label("m40_codigo");
 $clmatrequi->rotulo->label("m40_codigo");
@@ -61,7 +62,7 @@ $sWhere = "m40_depto =".db_getsession('DB_coddepto');
               <?=$Lm40_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m40_codigo",10,$Im40_codigo,true,"text",4,"","chave_m40_codigo");
 		       ?>
             </td>
@@ -79,7 +80,7 @@ $sWhere = "m40_depto =".db_getsession('DB_coddepto');
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matrequi.php")==true){
@@ -122,12 +123,12 @@ $sWhere = "m40_depto =".db_getsession('DB_coddepto');
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

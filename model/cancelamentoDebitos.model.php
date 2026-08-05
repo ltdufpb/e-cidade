@@ -145,13 +145,13 @@ class cancelamentoDebitos {
    * @param string $iCodCancDebitos
    */
 
-  function cancelaDebitos($aDebitos=null,$iCodCancDebitos){
+  function cancelaDebitos($aDebitos=null,$iCodCancDebitos = null){
 
     if(empty($aDebitos)){
       throw new Exception(" Operação cancelada, débitos não informados!");
     }
 
-    if(trim($iCodCancDebitos) == ""){
+    if(trim((string) $iCodCancDebitos) == ""){
       throw new Exception(" Operação cancelada, código de cancelamento inválido!");
     }
 
@@ -375,8 +375,8 @@ class cancelamentoDebitos {
     $oDaoCancDebitosSusp  = db_utils::getDao("cancdebitossusp");
     $oDaoCancDebitosProcReg = db_utils::getDao("cancdebitosprocreg");
 
-    $aCodProc  = array();
-    $aCodCanc  = array();
+    $aCodProc  = [];
+    $aCodCanc  = [];
     $sOper     = "";
     $sWhereReg = "";
 

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -36,7 +36,7 @@ require_once(modification("classes/db_diarioavaliacao_classe.php"));
 require_once(modification("classes/db_regencia_classe.php"));
 require_once(modification("classes/db_periodoavaliacao_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $resultedu          = eduparametros(db_getsession("DB_coddepto"));
 $cldiariofinal      = new cl_diariofinal;
 $cldiario           = new cl_diario;
@@ -93,7 +93,7 @@ if (isset($alterar)) {
  <tr>
   <td valign="top" bgcolor="#CCCCCC">
    <center>
-    <?include(modification("forms/db_frmdiariofinalobs.php"));?>
+    <?php include(modification("forms/db_frmdiariofinalobs.php"));?>
    </center>
   </td>
  </tr>
@@ -103,7 +103,7 @@ if (isset($alterar)) {
 <script>
  js_tabulacaoforms("form1","ed74_t_obs",true,1,"ed74_t_obs",true);
 </script>
-<?
+<?php 
 if (isset($alterar)) {
  ?>
   <script>
@@ -111,6 +111,6 @@ if (isset($alterar)) {
    parent.db_iframe_obs.hide();
    alert("Alteração efetuada com Sucesso");
   </script>
- <?
+ <?php 
 }
 ?>

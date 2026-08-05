@@ -36,7 +36,7 @@
      * Collection de Curso
      * @var array
      */
-    private $aCurso = array();
+    private $aCurso = [];
 
     /**
      * Instancia da classe
@@ -58,7 +58,7 @@
      */
     public static function getByCodigo($iCodigoCurso) {
 
-      if (!array_key_exists($iCodigoCurso, CursoRepository::getInstance()->aCurso)) {
+      if (!array_key_exists((string) $iCodigoCurso, CursoRepository::getInstance()->aCurso)) {
         CursoRepository::getInstance()->aCurso[$iCodigoCurso] = new Curso($iCodigoCurso);
       }
       return CursoRepository::getInstance()->aCurso[$iCodigoCurso];
@@ -121,10 +121,10 @@
        */
     public static function getCursosConcluidosPorAluno(Aluno $oAluno )
     {
-        $where = array(
+        $where = [
             "ed61_i_aluno = {$oAluno->getCodigoAluno()}",
             "ed61_i_anoconc is not null"
-        );
+        ];
 
         return static::getCursosByFiltros($where);
     }
@@ -137,7 +137,7 @@
        */
       public static function getCursosPorAluno(Aluno $oAluno )
       {
-          $where = array("ed61_i_aluno = {$oAluno->getCodigoAluno()}");
+          $where = ["ed61_i_aluno = {$oAluno->getCodigoAluno()}"];
 
           return static::getCursosByFiltros($where);
       }
@@ -149,7 +149,7 @@
        */
       private static function getCursosByFiltros(array $filtros)
       {
-          $aCursos       = array();
+          $aCursos       = [];
           $oDaoHistorico = new cl_historico();
 
           $sSqlHistorico = $oDaoHistorico->sql_query_file(

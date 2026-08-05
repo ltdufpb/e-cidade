@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -44,7 +44,7 @@ include(modification("classes/db_convocacao_classe.php"));
 include(modification("classes/db_opcaoquestao_classe.php"));
 include(modification("classes/db_progclasse_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clproginterrompe = new cl_proginterrompe;
 $clprogmatricula = new cl_progmatricula;
 $clprogconfig = new cl_progconfig;
@@ -98,23 +98,23 @@ if(isset($incluir)){
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Matrícula na Progressão</b></legend>
-    <?include(modification("forms/db_frmprogmatricula.php"));?>
+    <?php include(modification("forms/db_frmprogmatricula.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
 js_tabulacaoforms("form1","ed112_i_rhpessoal",true,1,"ed112_i_rhpessoal",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
  if($clprogmatricula->erro_status=="0"){
   $clprogmatricula->erro(true,false);

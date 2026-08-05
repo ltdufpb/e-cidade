@@ -124,7 +124,7 @@ $result_d = $clprocavaliacao->sql_record($clprocavaliacao->sql_query("","ed41_i_
         </tr>
         <tr>
           <td align="center">
-            <?AvalResult("ordenacao",$procedimento,8,"multiple","asc","","no","","");?>
+            <?php AvalResult("ordenacao",$procedimento,8,"multiple","asc","","no","","");?>
       <input name="ordenar" type="submit" id="btn_ordenar" value="Ordenar" onclick="js_selecionar()">
           </td>
           <td>
@@ -162,7 +162,7 @@ $result_d = $clprocavaliacao->sql_record($clprocavaliacao->sql_query("","ed41_i_
                WHERE ed43_i_procedimento = $procedimento
                ORDER BY ed41_i_sequencia
                ";
-        $chavepri= array("ed41_i_codigo"=>@$ed41_i_codigo,"ed15_c_nome"=>@$ed15_c_nome);
+        $chavepri= ["ed41_i_codigo"=>@$ed41_i_codigo,"ed15_c_nome"=>@$ed15_c_nome];
         $cliframe_alterar_excluir->chavepri=$chavepri;
         @$cliframe_alterar_excluir->sql = $sql;
         $cliframe_alterar_excluir->campos  ="ed09_c_descr,ed37_c_tipo,ed15_c_nome";
@@ -186,7 +186,7 @@ $result_d = $clprocavaliacao->sql_record($clprocavaliacao->sql_query("","ed41_i_
          <script>
           document.form1.ordenar.disabled = true;
          </script>
-         <?
+         <?php 
         }
       ?>
     </td>
@@ -373,7 +373,7 @@ function AvalResult($nome,$procedimento,$tamanho,$tipo,$ordem,$disabled,$linhabr
      }
      for($i=0;$i<$linhas;$i++){
      $dados = pg_fetch_array($query);
-      echo "<option value=\"".trim($dados["tipo"])."\">".trim($dados["tipo"])."</option>\n";
+      echo "<option value=\"".trim((string) $dados["tipo"])."\">".trim((string) $dados["tipo"])."</option>\n";
      }
      ?>
     </select>
@@ -386,7 +386,7 @@ function AvalResult($nome,$procedimento,$tamanho,$tipo,$ordem,$disabled,$linhabr
      }
      for($i=0;$i<$linhas;$i++){
      $dados1 = pg_fetch_array($query1);
-      echo "<option value=\"".$dados1["codigo"]."\">".trim($dados1["avaliacao"])."</option>\n";
+      echo "<option value=\"".$dados1["codigo"]."\">".trim((string) $dados1["avaliacao"])."</option>\n";
      }
      ?>
     </select>

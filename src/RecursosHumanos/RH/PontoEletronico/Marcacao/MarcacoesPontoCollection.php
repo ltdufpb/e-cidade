@@ -27,6 +27,10 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao;
 
+use DateTime;
+use DBDate;
+use BusinessException;
+use ParameterException;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\BaseHora;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Configuracao\Model\Justificativa;
@@ -44,35 +48,33 @@ class MarcacoesPontoCollection
   /**
    * @var MarcacaoPonto[]
    */
-    private $aMarcacoes = array();
+    private $aMarcacoes = [];
 
     /**
      * @var array
      */
-    private $aMarcacoesFaltantes = array(
+    private $aMarcacoesFaltantes = [
         MarcacaoPonto::ENTRADA_1 => MarcacaoPonto::ENTRADA_1,
         MarcacaoPonto::SAIDA_1   => MarcacaoPonto::SAIDA_1,
         MarcacaoPonto::ENTRADA_2 => MarcacaoPonto::ENTRADA_2,
         MarcacaoPonto::SAIDA_2   => MarcacaoPonto::SAIDA_2,
         MarcacaoPonto::ENTRADA_3 => MarcacaoPonto::ENTRADA_3,
         MarcacaoPonto::SAIDA_3   => MarcacaoPonto::SAIDA_3
-    );
+    ];
 
   /**
-   * @param array $aMarcacoes
-   * @param string Y-m-d $dataDiaTrabalho
-   * @return MarcacoesPontoCollection
-   * @throws \ParameterException
-   */
+     * @param array $aMarcacoes
+     * @param string Y-m-d $dataDiaTrabalho
+     * @return MarcacoesPontoCollection
+     * @throws ParameterException
+     */
     public static function getCollectionMarcacoesFromArray(array $aMarcacoes, DiaTrabalho $dataDiaTrabalho)
     {
         $oCollection = new MarcacoesPontoCollection;
         $dataAtual = $dataDiaTrabalho->getData()->getDate();
         $jornada = $dataDiaTrabalho->getJornada();
 
-        $marcacoesValidas = array_filter($aMarcacoes, function (stdClass $marcacao) {
-            return !empty($marcacao->hora);
-        });
+        $marcacoesValidas = array_filter($aMarcacoes, fn(stdClass $marcacao) => !empty($marcacao->hora));
         $possuiSomenteUmaMarcacao = count($marcacoesValidas) === 1;
 
         if ($possuiSomenteUmaMarcacao) {
@@ -80,7 +82,7 @@ class MarcacoesPontoCollection
                 if ($jornada->temHorarioNoturno($dadosMarcacao->data)) {
                     $dateTimeMarcacao = empty($dadosMarcacao->hora)
                       ? null
-                      : new \DateTime("{$dadosMarcacao->data} {$dadosMarcacao->hora}");
+                      : new DateTime("{$dadosMarcacao->data} {$dadosMarcacao->hora}");
 
                     $marcacao = MarcacoesPontoFactory::create($dateTimeMarcacao, 1, $dadosMarcacao->codigo);
                     $marcacao->setJornada($jornada);
@@ -111,7 +113,7 @@ class MarcacoesPontoCollection
                 }
 
                 if ($oStdMarcacao->hora < $aMarcacoes[$iMarcacoes - 1]->hora) {
-                    $novaData = new \DBDate($dataAtual);
+                    $novaData = new DBDate($dataAtual);
                     $novaData->adiantarPeriodo(1, 'd');
 
                     $oStdMarcacao->data = $novaData->getDate();
@@ -120,7 +122,7 @@ class MarcacoesPontoCollection
             }
 
             $oDadosMarcacao =!empty($oStdMarcacao->hora)
-                ? new \DateTime($oStdMarcacao->data .' '. $oStdMarcacao->hora)
+                ? new DateTime($oStdMarcacao->data .' '. $oStdMarcacao->hora)
                 : null;
             $oMarcacao    = MarcacoesPontoFactory::create($oDadosMarcacao, ($iMarcacoes+1), $oStdMarcacao->codigo);
 
@@ -133,9 +135,9 @@ class MarcacoesPontoCollection
             }
 
             if ($oMarcacao instanceof MarcacaoPonto) {
-                $oMarcacao->setData(new \DBDate($oStdMarcacao->data));
+                $oMarcacao->setData(new DBDate($oStdMarcacao->data));
                 $oMarcacao->setOrigemMarcacao($origemMarcacaoGeradaRelogio);
-                $oMarcacao->setManual((boolean)$oStdMarcacao->manual);
+                $oMarcacao->setManual((bool) $oStdMarcacao->manual);
 
                 if (!empty($oStdMarcacao->justificativa)) {
                     if ($oStdMarcacao->justificativa instanceof Justificativa) {
@@ -202,13 +204,13 @@ class MarcacoesPontoCollection
 
     public function getMarcacao($iTipo)
     {
-        return isset($this->aMarcacoes[$iTipo]) ? $this->aMarcacoes[$iTipo] : null;
+        return $this->aMarcacoes[$iTipo] ?? null;
     }
 
     public function getMarcacoesEntrada()
     {
 
-        $aMarcacoes   = array();
+        $aMarcacoes   = [];
 
         if ($this->getMarcacaoEntrada1() !== null) {
             $aMarcacoes[] = $this->getMarcacaoEntrada1();
@@ -224,7 +226,7 @@ class MarcacoesPontoCollection
     public function getMarcacoesSaida()
     {
 
-        $aMarcacoes   = array();
+        $aMarcacoes   = [];
 
         if ($this->getMarcacaoSaida1() !== null) {
             $aMarcacoes[] = $this->getMarcacaoSaida1();
@@ -246,16 +248,16 @@ class MarcacoesPontoCollection
     }
 
   /**
-   * @return \ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacaoPonto
-   */
+     * @return MarcacaoPonto
+     */
     public function getUltimaMarcacao()
     {
         return $this->aMarcacoes[count($this->aMarcacoes)];
     }
 
   /**
-   * @return \ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacaoPonto|null
-   */
+     * @return MarcacaoPonto|null
+     */
     public function getUltimaMarcacaoComRegistro()
     {
 
@@ -364,7 +366,7 @@ class MarcacoesPontoCollection
      * @param int $tipoMarcacao
      * @param bool $forcar
      *
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     public function moverMarcacaoParaAnterior($tipoMarcacao, $forcar = true)
     {
@@ -373,7 +375,7 @@ class MarcacoesPontoCollection
             $anterior = MarcacaoPonto::getDescricaoTipoMarcacao($tipoMarcacao - 1);
 
             if (!empty($this->aMarcacoes[$tipoMarcacao - 1])) {
-                throw new \BusinessException(
+                throw new BusinessException(
                     "Não foi possível mover a marcação ({$atual}) para anterior ({$anterior}) pois já está ocupada"
                 );
             }
@@ -386,12 +388,12 @@ class MarcacoesPontoCollection
 
     public function toArray()
     {
-        $marcacoes = array();
+        $marcacoes = [];
 
         foreach ($this->aMarcacoes as $marcacao) {
             $m = null;
 
-            if ($marcacao->getMarcacao() instanceof \DateTime) {
+            if ($marcacao->getMarcacao() instanceof DateTime) {
                 $m = $marcacao->getMarcacao()->format('H:i');
 
                 if ($marcacao->isManual()) {
@@ -462,7 +464,7 @@ class MarcacoesPontoCollection
      *
      * @return bool
      */
-    public function estaNoIntervalo(\DateTime $horaVerificar)
+    public function estaNoIntervalo(DateTime $horaVerificar)
     {
         if (!$this->temIntervalo()) {
             return false;

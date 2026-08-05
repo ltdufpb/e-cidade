@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -74,7 +74,7 @@ class cl_consolidacaodebitosregistros {
                  k162_consolidacaodebitos = int4 = Sequencial Consolidação dos Débitos 
                  ";
    //funcao construtor da classe 
-   function cl_consolidacaodebitosregistros() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("consolidacaodebitosregistros"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

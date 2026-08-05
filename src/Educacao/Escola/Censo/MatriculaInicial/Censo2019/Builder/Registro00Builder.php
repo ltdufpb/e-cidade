@@ -124,7 +124,7 @@ class Registro00Builder
         $this->registro->setCnpjEscolaPrivada($this->dadosEscola['ed18_i_cnpjmantprivada']);
 
         // Define esfera administrativa apenas quando Regulamentação for: 1 Credenciada ou 2 Em Tramitação
-        if (in_array($this->registro->getRegulamentacao(), array(1,2))) {
+        if (in_array($this->registro->getRegulamentacao(), [1,2])) {
             $esfera = $this->dadosEscola['ed18_i_esferaadministrativa'];
             switch ($esfera) {
                 case self::ESFERA_FEDERAL:

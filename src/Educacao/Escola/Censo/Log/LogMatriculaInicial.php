@@ -28,7 +28,6 @@ namespace ECidade\Educacao\Escola\Censo\Log;
 
 
 use FpdfMultiCellBorder;
-use JSON;
 
 class LogMatriculaInicial extends Log
 {

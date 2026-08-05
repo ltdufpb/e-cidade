@@ -57,7 +57,7 @@ class SituacaoMatriculaEnum extends Enum
      */
     public function sigla()
     {
-        $data = array(
+        $data = [
             self::AVANCADO => 'AV',
             self::CANCELADO => 'CA',
             self::MATRICULADO => 'MA',
@@ -72,7 +72,7 @@ class SituacaoMatriculaEnum extends Enum
             self::RECLASSIFICADO => 'RE',
             self::DESISTENTE => 'DE',
             self::CLASSIFICADO => 'CL'
-         );
+         ];
 
         if (empty($data[$this->getValue()])) {
             throw new Exception('Sigla não encontrada.');

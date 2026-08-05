@@ -32,7 +32,7 @@ $oPluginService = new PluginService();
 try {
 
   $oConfiguracao = $oPluginService->getConfig()->AcessoBase;
-} catch (Exception $oException) {
+} catch (Exception) {
 
   echo "Arquivo de configuração inválido.";
   exit;

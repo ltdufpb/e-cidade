@@ -62,7 +62,7 @@ final class custoPlanilhaConsumoAlmox implements iCustoPlanilha {
    *
    * @var array
    */
-  protected $aCustos = array();
+  protected $aCustos = [];
   /**
    *  
    * 

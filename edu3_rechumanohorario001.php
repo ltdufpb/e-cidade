@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,7 +39,7 @@ require_once(modification("classes/db_diasemana_classe.php"));
 require_once(modification("classes/db_turmaachorario_classe.php"));
 require_once(modification("classes/db_rechumanoativ_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldiasemana         = new cl_diasemana;
 $clperiodoescola     = new cl_periodoescola;
 $clregenciahorario   = new cl_regenciahorario;
@@ -59,8 +59,8 @@ $result_per = $clperiodoescola->sql_record($clperiodoescola->sql_query("",
                                                                       )
                                           );
 db_fieldsmemory($result_per,0);
-$hora1         = (int)substr($menorhorario,0,2);
-$hora2         = (int)substr($maiorhorario,0,2)+1;
+$hora1         = (int)substr((string) $menorhorario,0,2);
+$hora2         = (int)substr((string) $maiorhorario,0,2)+1;
 $horainicial   = $hora1*100;
 $horafinal     = $hora2*100;
 $tempo_ini     = mktime($hora1,0,0,date("m"),date("d"),date("Y"));
@@ -97,7 +97,7 @@ if (isset($cod_matricula)) {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<?
+<?php 
 if (!isset($larg_obj)) {
 	
   if (isset($cod_matricula)) {
@@ -113,7 +113,7 @@ if (!isset($larg_obj)) {
    location.href = "edu3_rechumanohorario001.php?<?=$destino?>&larg_obj="+largura;
    
   </script>
-  <?
+  <?php 
   exit;
 }
 ///////////////Ano
@@ -155,7 +155,7 @@ $result_ano .= " where $where order by ed52_i_ano desc";
 $resultano   = db_query($result_ano) ;
 $linhas2     = pg_num_rows($resultano);
 if (!isset($calendario) && $linhas2 > 0) {
-  $calendario = pg_result($resultano,0,'ed52_i_ano');
+  $calendario = pg_fetch_result($resultano,0,'ed52_i_ano');
 } else {
   $calendario = date("Y");
 }
@@ -163,18 +163,18 @@ if (!isset($calendario) && $linhas2 > 0) {
 <center>
 <b>Ano:</b>
 <select id="calendario" name="calendario" onchange="js_trocaAno(this.value);">
- <?
+ <?php 
  for ($x = 0; $x < $linhas2; $x++) {
  	
-   $ed52_i_ano=pg_result($resultano,$x,'ed52_i_ano');
+   $ed52_i_ano=pg_fetch_result($resultano,$x,'ed52_i_ano');
    ?>
    <option value="<?=$ed52_i_ano?>" <?=$ed52_i_ano==@$calendario?"selected":""?>><?=$ed52_i_ano?></option>
-   <?
+   <?php 
    
  }
  ?>
 </select>
-<?
+<?php 
 ///////////////Escolas
 $resultano  = " select distinct ed18_i_codigo,ed18_c_nome from regenciahorario"; 
 $resultano .= " inner join regencia  on  regencia.ed59_i_codigo = regenciahorario.ed58_i_regencia";
@@ -206,15 +206,15 @@ $linhas3    = pg_num_rows($resultano1);
 <b>Escola:</b>
 <select id="esc_horario" style="width:300px;" name="esc_horario" onchange="js_trocaEscola(this.value);">
  <option value="">TODAS</option>
- <?
+ <?php 
  for ($x = 0; $x < $linhas3; $x++) {
  	
-   $ed18_i_codigo = pg_result($resultano1,$x,'ed18_i_codigo');
-   $ed18_c_nome   = pg_result($resultano1,$x,'ed18_c_nome');
+   $ed18_i_codigo = pg_fetch_result($resultano1,$x,'ed18_i_codigo');
+   $ed18_c_nome   = pg_fetch_result($resultano1,$x,'ed18_c_nome');
    ?>
    <option value="<?=$ed18_i_codigo?>" <?=$ed18_i_codigo == @$esc_horario?"selected":""?>>
            <?=$ed18_i_codigo?> - <?=$ed18_c_nome?></option>
-   <?
+   <?php 
    
  }
  ?>
@@ -228,7 +228,7 @@ $linhas3    = pg_num_rows($resultano1);
       style="background:#444444;color:#DEB887"><a style="color:#DEB887;"><b>Horas</b></td>
   <td align="center" width="<?=$larg_coluna2?>" 
       style="background:#444444;color:#DEB887"><a style="color:#DEB887;">&nbsp;</td>
-  <?
+  <?php 
   $result = $cldiasemana->sql_record($cldiasemana->sql_query_rh("",
                                                                 "ed32_i_codigo,ed32_c_abrev,ed32_c_descr",
                                                                 "ed32_i_codigo",
@@ -241,7 +241,7 @@ $linhas3    = pg_num_rows($resultano1);
     db_fieldsmemory($result,$x)
     ?>
     <td align="center" width="<?=$larg_dia?>" style="background:#444444;color:#DEB887"><b><?=$ed32_c_descr?></b></td>
-    <?
+    <?php 
     
   }
   ?>
@@ -250,7 +250,7 @@ $linhas3    = pg_num_rows($resultano1);
 <!--Tabela de fundo-->
 <table id="id_fundo" style=";position:absolute;top:<?=$tabela1_top+25?>px;left:<?=$tabela1_left+$larg_coluna1?>px;" 
        cellspacing="0" cellpadding="0">
- <?for ($x = 0; $x < $qtd_hora; $x++) {?>
+ <?php for ($x = 0; $x < $qtd_hora; $x++) {?>
  
     <tr bgcolor="#f3f3f3">
      <td align="center" width="<?=$larg_coluna2?>" height="<?=$alt_tab_hora/$qtd_hora?>" 
@@ -259,16 +259,16 @@ $linhas3    = pg_num_rows($resultano1);
          style="border:1px solid #f3f3f3;">&nbsp;</td>
     </tr>
     
- <?}?>
+ <?php }?>
 </table>
-<?
+<?php 
 ////////Grade dos horários
 $top_ini = $tabela1_top+20; 
 $tt      = 0;
 for ($t = $horainicial; $t <= $horafinal; $t += 1) {
 	
   $hora         = strlen($t) == 3?"0".$t:$t;
-  $hora         = substr($hora,0,2).":".substr($hora,2,2);
+  $hora         = substr((string) $hora,0,2).":".substr((string) $hora,2,2);
   $id_hora      = "H".$hora;
   $id_hora2     = "HH".$hora;
   $id_linhahora = "LH".$hora;
@@ -310,15 +310,15 @@ for ($x = 0; $x < $cldiasemana->numrows+1; $x++) {
      <td width="1" bgcolor="#000000" height="<?=$alt_tab_hora?>"></td>
     </tr>
   </table>
-  <?
+  <?php 
   $left_ini+=$larg_dia;
   
 }
 ////////Horário do Docente
 ?>
-<table style="top:<?=isset( $ini_top ) ? $ini_top : ""?>px;left:<?=isset( $ini_left ) ? $ini_left : ""?>px;"  cellspacing="0" cellpadding="0">
+<table style="top:<?=$ini_top ?? ""?>px;left:<?=$ini_left ?? ""?>px;"  cellspacing="0" cellpadding="0">
 <tbody id="disp_rechumano" style="position:absolute;z-index:1"><tr><td>
-<?
+<?php 
 $result0  = $clrechumano->sql_record($clrechumano->sql_query_escola("",
                                                                     "ed75_i_escola as esc_regente",
                                                                     "",
@@ -351,8 +351,7 @@ for ($x = 0; $x < $cldiasemana->numrows; $x++) {
   $result1  = $clregenciahorario->sql_record($clregenciahorario->sql_query("",
                                                                            $sCampos,
                                                                            $sOrder,
-                                                                           $sWhere,
-                                                                           $sGroupBy
+                                                                           $sWhere
                                                                           )
                                             );
                                             
@@ -424,17 +423,17 @@ for ($x = 0; $x < $cldiasemana->numrows; $x++) {
   for ($t = $horainicial; $t <= $horafinal; $t += 1) {
   	
     $hora = strlen($t) == 3?"0".$t:$t;
-    $hora = substr($hora,0,2).":".substr($hora,2,2);
+    $hora = substr((string) $hora,0,2).":".substr((string) $hora,2,2);
       
     if ($clregenciahorario->numrows > 0) {
     	  	  	
       for ($y = 0; $y < $clregenciahorario->numrows; $y++) {
       	   	
         db_fieldsmemory($result1,$y);       
-        if (trim($hora) == trim($ed17_h_inicio)) {
+        if (trim($hora) == trim((string) $ed17_h_inicio)) {
         	
-          $tempo_ini = mktime(substr($ed17_h_inicio,0,2),substr($ed17_h_inicio,3,2),0,1,1,1999);
-          $tempo_fim = mktime(substr($ed17_h_fim,0,2),substr($ed17_h_fim,3,2),0,1,1,1999);
+          $tempo_ini = mktime(substr((string) $ed17_h_inicio,0,2),substr((string) $ed17_h_inicio,3,2),0,1,1,1999);
+          $tempo_fim = mktime(substr((string) $ed17_h_fim,0,2),substr((string) $ed17_h_fim,3,2),0,1,1,1999);
           $difermin  = ($tempo_fim-$tempo_ini)/60;
           $difer     = ceil($difermin/2);
           ?>
@@ -443,10 +442,10 @@ for ($x = 0; $x < $cldiasemana->numrows; $x++) {
             style="background:<?=$_SESSION["sess_corhorario"][$ed57_i_escola]?>;border:1px outset #000000;
                    position:absolute;top:<?=$ini_top?>px;left:<?=$ini_left?>px;" cellspacing="0" cellpadding="0">
           <tr>
-          <?
+          <?php 
           $conta   = $y;
           $proximo = true;
-          $array   = array();
+          $array   = [];
           while ($proximo == true) {
           	
             $conta++;
@@ -529,7 +528,7 @@ for ($x = 0; $x < $cldiasemana->numrows; $x++) {
                   Atende Simultâneo 	 
                               </td>
            </div> 	
-        <?} else {?>
+        <?php } else {?>
         <div id="teste11" style="position:absolute;border-width:2;border-color:black;border-style:solid; z-index:2">
            	<td id="teste11" style="font-size:8px;" align="center" 
            	    onclick ="js_testesimultaneo('<?=$ed17_h_inicio?>','<?=$ed17_h_fim?>','<?=$ed57_i_escola?>',
@@ -543,15 +542,15 @@ for ($x = 0; $x < $cldiasemana->numrows; $x++) {
                                       '<?=$ed10_c_abrev?>','<?=$_SESSION["sess_corhorario"][$ed57_i_escola]?>',
                                       '<?=$identificacao?>','<?=$nomeprof?>')" 
                 onmouseout="js_Mout('tab<?=$ed58_i_codigo?>','<?=$ed17_h_inicio?>','<?=$ed17_h_fim?>')">
-                Escola: <?=$ed57_i_escola?> Turma: <?=substr($ed57_c_descr,0,10)?><br><?=substr($ed232_c_descr,0,20)?>           	  
-        <?}
+                Escola: <?=$ed57_i_escola?> Turma: <?=substr((string) $ed57_c_descr,0,10)?><br><?=substr((string) $ed232_c_descr,0,20)?>           	  
+        <?php }
            ?>
             </td>
            </div>
           </tr>
          </table>
    
-     <?
+     <?php 
         }
       }
     }
@@ -560,29 +559,29 @@ for ($x = 0; $x < $cldiasemana->numrows; $x++) {
       for ($y = 0; $y < $clrechumanohoradisp->numrows; $y++) {
       	
         db_fieldsmemory($result2,$y);
-        if (trim($hora) == trim($ed17_h_inicio)) {
+        if (trim($hora) == trim((string) $ed17_h_inicio)) {
         	
-          $tempo_ini = mktime(substr($ed17_h_inicio,0,2),substr($ed17_h_inicio,3,2),0,1,1,1999);
-          $tempo_fim = mktime(substr($ed17_h_fim,0,2),substr($ed17_h_fim,3,2),0,1,1,1999);
+          $tempo_ini = mktime(substr((string) $ed17_h_inicio,0,2),substr((string) $ed17_h_inicio,3,2),0,1,1,1999);
+          $tempo_fim = mktime(substr((string) $ed17_h_fim,0,2),substr((string) $ed17_h_fim,3,2),0,1,1,1999);
           $difermin  = ($tempo_fim-$tempo_ini)/60;
           $difer     = ceil($difermin/2);
      ?>
      <table id="tabb<?=$ed33_i_codigo?>" width="<?=$larg_dia?>" border="0" height="<?=$difer?>" 
-            style="background:<?=isset($_SESSION["sess_corhorario"][$ed17_i_escola])?$_SESSION["sess_corhorario"]
-                   [$ed17_i_escola]:$_SESSION["sess_cordisp"][$ed17_i_escola]?>;border:1px outset #000000;
+            style="background:<?=$_SESSION["sess_corhorario"]
+                   [$ed17_i_escola] ?? $_SESSION["sess_cordisp"][$ed17_i_escola]?>;border:1px outset #000000;
                    position:absolute;top:<?=$ini_top?>px;left:<?=$ini_left?>px;" cellspacing="0" cellpadding="0">
       <tr>
        <td style="font-size:8px;" align="center" 
            onmouseover="js_Mover2('tabb<?=$ed33_i_codigo?>','<?=$ed17_h_inicio?>','<?=$ed17_h_fim?>',
                                   '<?=$ed17_i_escola?>','<?=$ed18_c_nome?>','<?=$ed08_c_descr?>','<?=$ed15_c_nome?>',
-                                  '<?=isset($_SESSION["sess_corhorario"][$ed17_i_escola])?$_SESSION["sess_corhorario"]
-                                      [$ed17_i_escola]:$_SESSION["sess_cordisp"][$ed17_i_escola]?>',
-                                      '<?=$identificacao?>','<?$nomeprof?>',event)" 
+                                  '<?=$_SESSION["sess_corhorario"]
+                                      [$ed17_i_escola] ?? $_SESSION["sess_cordisp"][$ed17_i_escola]?>',
+                                      '<?=$identificacao?>','<?php $nomeprof?>',event)" 
            onmouseout="js_Mout2('tabb<?=$ed33_i_codigo?>','<?=$ed17_h_inicio?>','<?=$ed17_h_fim?>')">        
        </td>
       </tr>
      </table>
-     <?
+     <?php 
         }
       }
     }
@@ -591,10 +590,10 @@ for ($x = 0; $x < $cldiasemana->numrows; $x++) {
       for ($q = 0; $q < $clturmaachorario->numrows; $q++) {
       	
         db_fieldsmemory($result11,$q);
-        if (trim($hora) == trim($ed17_h_inicio)) {
+        if (trim($hora) == trim((string) $ed17_h_inicio)) {
         	 
-          $tempo_ini = mktime(substr($ed17_h_inicio,0,2),substr($ed17_h_inicio,3,2),0,1,1,1999);
-          $tempo_fim = mktime(substr($ed17_h_fim,0,2),substr($ed17_h_fim,3,2),0,1,1,1999);
+          $tempo_ini = mktime(substr((string) $ed17_h_inicio,0,2),substr((string) $ed17_h_inicio,3,2),0,1,1,1999);
+          $tempo_fim = mktime(substr((string) $ed17_h_fim,0,2),substr((string) $ed17_h_fim,3,2),0,1,1,1999);
           $difermin  = ($tempo_fim-$tempo_ini)/60;
           $difer     = ceil($difermin/2);
           
@@ -609,11 +608,11 @@ for ($x = 0; $x < $cldiasemana->numrows; $x++) {
                                            '<?=$ed15_c_nome?>','<?=$ed268_c_descr?>','<?=$identificacao?>',
                                            '<?=$nomeprof?>','<?=$_SESSION["sess_corhorario"][$ed17_i_escola]?>',event)"
                   onmouseout="js_Mout('tab<?=$ed270_i_codigo?>','<?=$ed17_h_inicio?>','<?=$ed17_h_fim?>')">
-                 Escola: <?=$ed17_i_escola?> Turma: <?=substr($ed268_c_descr,0,10)?><br>
+                 Escola: <?=$ed17_i_escola?> Turma: <?=substr((string) $ed268_c_descr,0,10)?><br>
               </td>
             </tr>
           </table>
-       <?
+       <?php 
         }
       }
     }

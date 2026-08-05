@@ -149,7 +149,7 @@ class AcordoComissaoMembro
         $oDaoComissaoMembro->ac07_numeroatodesignacao = $this->getNumeroAtoDesignacao();
         $oDaoComissaoMembro->ac07_anoatodesignacao = $this->getAnoAtoDesignacao();
         $oDaoComissaoMembro->ac07_nomearquivo = $this->getNomeArquivo();
-        $oDaoComissaoMembro->ac07_arquivo = $this->getArquivo() === null ? 'null' : $this->getArquivo();
+        $oDaoComissaoMembro->ac07_arquivo = $this->getArquivo() ?? 'null';
         $sPathArquivo = null;
         if($this->getNomeArquivo() != null && $this->getNomeArquivo() != "") {
         
@@ -187,7 +187,7 @@ class AcordoComissaoMembro
           
           $rsValidaExistencia = db_query($sSqlValidaExistencia);
 
-          if(pg_numrows($rsValidaExistencia) > 0) {
+          if(pg_num_rows($rsValidaExistencia) > 0) {
 
             throw new FileException("O arquivo já Existe no Cadastro. Renomeie o Arquivo. {$this->getNomeArquivo()}");           
           }
@@ -416,7 +416,7 @@ class AcordoComissaoMembro
             $titulo = mb_strtolower($titulo);
             $titulo = preg_replace('/[^a-zA-Z0-9_.-]/', '', $titulo);
 
-            $this->nomeArquivo = trim($titulo, $separador);
+            $this->nomeArquivo = trim((string) $titulo, $separador);
         }
     }
 

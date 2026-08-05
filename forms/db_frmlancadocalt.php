@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clrotulo->label("pc74_solicitante");
 $clrotulo->label("pc74_pctipocertif");
 ?>
 <form name="form1" method="post" action="">
-<?
+<?php 
 db_input('pc74_codigo',40,"",true,'hidden',3,'')
 ?>
 <center>
@@ -50,15 +50,15 @@ db_input('pc74_codigo',40,"",true,'hidden',3,'')
 <table border="0">
   <tr>
     <td nowrap title="<?=@$Tpc60_numcgm?>" align="left">
-       <?
+       <?php 
        db_ancora(@$Lpc60_numcgm,"js_pesquisapc60_numcgm(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('pc60_numcgm',4,$Ipc60_numcgm,true,'text',3," onchange='js_pesquisapc60_numcgm(false);'")
 ?>
-       <?
+       <?php 
 db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -68,7 +68,7 @@ db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')
        <b>Solicitante :</b>
     </td>
     <td> 
-       <?db_input('pc74_solicitante',47,@$Ipc74_solicitante,true,'text',$db_opcao,'')?>
+       <?php db_input('pc74_solicitante',47,@$Ipc74_solicitante,true,'text',$db_opcao,'')?>
     </td>
   </tr>
   
@@ -77,7 +77,7 @@ db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')
        <b>Validade do Certificado: </b>
     </td>
     <td> 
-       <?
+       <?php 
        if(isset($pc74_validade) && $pc74_validade!="") {
        	 $pc74_validade_dia = date("d", strtotime($pc74_validade));
        	 $pc74_validade_mes = date("m", strtotime($pc74_validade));
@@ -93,15 +93,15 @@ db_inputdata('pc74_validade', @$pc74_validade_dia, @$pc74_validade_mes, @$pc74_v
   
   <tr>
     <td nowrap title="<?=@$Tpc74_pctipocertif?>" align="left">
-       <?
+       <?php 
        db_ancora(@$Lpc74_pctipocertif,"js_pesquisapc72_pctipocertif(true);",3);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('pc74_pctipocertif',4,$Ipc74_pctipocertif,true,'text',3," onchange='js_pesquisapc72_pctipocertif(false);'")
 ?>
-       <?
+       <?php 
 db_input('pc70_descr',40,$Ipc70_descr,true,'text',3,'')
        ?>
     </td>
@@ -109,7 +109,7 @@ db_input('pc70_descr',40,$Ipc70_descr,true,'text',3,'')
   <tr>
     <td align="left"><b>Imprimir Objeto Social:</b></td>
     <td >
-      <?
+      <?php 
       $db_matriz = array("0"=>'Sim',"1"=>"Não");
       db_select('oSocial',$db_matriz,TRUE,1); 
       ?>
@@ -144,10 +144,10 @@ db_input('pc70_descr',40,$Ipc70_descr,true,'text',3,'')
 <script>
 
 
-<?if (isset($pc74_pctipocertif)&&$pc74_pctipocertif!=""){?>
+<?php if (isset($pc74_pctipocertif)&&$pc74_pctipocertif!=""){?>
       document.form1.atualizar.disabled=false;
       documentos.location.href="com4_lancadocalt002.php?pc72_pctipocertif="+document.form1.pc74_pctipocertif.value+"&pc74_codigo="+document.form1.pc74_codigo.value;
-<?}?>
+<?php }?>
 function js_pesquisapc72_pctipocertif(mostra){
     if(mostra==true){
       js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_pctipocertif','func_pctipocertif.php?funcao_js=parent.js_mostrapctipocertif1|pc70_codigo|pc70_descr','Pesquisa',true);
@@ -187,7 +187,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_pcforne.hide();
-  <?
+  <?php 
   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }

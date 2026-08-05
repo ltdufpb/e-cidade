@@ -99,7 +99,7 @@ class cl_veiculos
                  ";
 
     //funcao construtor da classe
-    function cl_veiculos()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("veiculos");

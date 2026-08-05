@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_sau_formaorganizacao_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oDaoSauFormaOrganizacao = new cl_sau_formaorganizacao;
 $oDaoSauFormaOrganizacao->rotulo->label("sd62_i_codigo");
@@ -57,7 +58,7 @@ $oDaoSauFormaOrganizacao->rotulo->label("sd62_c_formaorganizacao");
               <?=$Lsd62_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
               db_input("sd62_i_codigo", 5, $Isd62_i_codigo, true, "text", 4, "", "chave_sd62_i_codigo");
               ?>
             </td>
@@ -67,7 +68,7 @@ $oDaoSauFormaOrganizacao->rotulo->label("sd62_c_formaorganizacao");
               <?=$Lsd62_c_formaorganizacao?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
               db_input("sd62_c_formaorganizacao", 5, $Isd62_c_formaorganizacao, 
                        true, "text", 4, "", "chave_sd62_c_formaorganizacao"
                       );
@@ -79,7 +80,7 @@ $oDaoSauFormaOrganizacao->rotulo->label("sd62_c_formaorganizacao");
               <?=$Lsd62_c_nome?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
                  db_input("sd62_c_nome",60,$Isd62_c_nome,true,"text",4,"","chave_sd62_c_nome");
                  ?>
             </td>
@@ -97,7 +98,7 @@ $oDaoSauFormaOrganizacao->rotulo->label("sd62_c_formaorganizacao");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if (!isset($pesquisa_chave)) {
         if (isset($campos)==false) {
            if (file_exists("funcoes/db_func_sau_formaorganizacao.php")==true) {
@@ -194,12 +195,12 @@ $oDaoSauFormaOrganizacao->rotulo->label("sd62_c_formaorganizacao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

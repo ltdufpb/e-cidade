@@ -98,6 +98,7 @@ class LancamentoAuxiliarReconhecimentoCompetencia extends LancamentoAuxiliarBase
   /**
    * @return bool
    */
+  #[Override]
   public function salvarVinculoNotaDeLiquidacao() {
 
     if ($this->getCodigoNotaLiquidacao() != "") {
@@ -109,6 +110,7 @@ class LancamentoAuxiliarReconhecimentoCompetencia extends LancamentoAuxiliarBase
   /**
    * @return bool
    */
+  #[Override]
   protected function salvarVinculoEmpenho() {
 
     if (!empty($this->oEmpenhoFinanceiro)) {
@@ -216,6 +218,7 @@ class LancamentoAuxiliarReconhecimentoCompetencia extends LancamentoAuxiliarBase
    * Retorna o empenho financeiro
    * @return EmpenhoFinanceiro
    */
+  #[Override]
   public function getEmpenho() {
     return $this->oEmpenhoFinanceiro;
   }

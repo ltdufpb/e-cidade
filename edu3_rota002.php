@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -37,7 +37,7 @@ include(modification("classes/db_rotaaluno_classe.php"));
 include(modification("classes/db_veicretirada_classe.php"));
 include(modification("classes/db_rotamov_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $claluno = new cl_aluno;
 $cllinha = new cl_linha;
 $clitinerario = new cl_itinerario;
@@ -99,7 +99,7 @@ if(isset($chavepesquisa)){
  <tr>
   <td valign="top" bgcolor="#CCCCCC">
    <table border="0" bgcolor="#f3f3f3" width="100%" cellspacing="0" cellpading="0" height="800" >
-    <?if($evento==1){?>
+    <?php if($evento==1){?>
     <tr>
      <td valign="top" >
       <fieldset style="background:#f3f3f3;border:2px solid #000000"><legend class="cabec"><b>Itinerários</b></legend>
@@ -115,13 +115,13 @@ if(isset($chavepesquisa)){
       </fieldset>
      </td>
     </tr>
-    <?}?>
-    <?if($evento==2){?>
+    <?php }?>
+    <?php if($evento==2){?>
      <tr>
     <td valign="top" >
      <fieldset style="background:#f3f3f3;border:2px solid #000000"><legend class="cabec"><b>Alunos por Rota</b></legend>
      <table border="1" width="100%" bgcolor="#f3f3f3" cellspacing="0" cellpading="0">
-      <?
+      <?php 
       $result = $clrotaaluno->sql_record($clrotaaluno->sql_query("","*","ed219_i_codigo"," ed219_i_rota = $chavepesquisa"));
       if($clrotaaluno->numrows>0){
        ?>
@@ -142,7 +142,7 @@ if(isset($chavepesquisa)){
            </table>
           </td>
          </tr>
-       <?
+       <?php 
        for($f=0;$f<$clrotaaluno->numrows;$f++){
         db_fieldsmemory($result,$f);
         ?>
@@ -163,7 +163,7 @@ if(isset($chavepesquisa)){
           </table>
          </td>
         </tr>
-       <?
+       <?php 
        }
       }else{
        ?>
@@ -172,20 +172,20 @@ if(isset($chavepesquisa)){
          Nenhum registro.
         </td>
        </tr>
-       <?
+       <?php 
       }
       ?>
      </table>
      </fieldset>
     </td>
    </tr>
-   <?}?>
-    <?if($evento==3){?>
+   <?php }?>
+    <?php if($evento==3){?>
      <tr>
     <td valign="top" >
      <fieldset style="background:#f3f3f3;border:2px solid #000000"><legend class="cabec"><b>Movimentação das Rotas</b></legend>
      <table border="1" width="100%" bgcolor="#f3f3f3" cellspacing="0" cellpading="0">
-      <?
+      <?php 
       $result1 = $clrotamov->sql_record($clrotamov->sql_query("","*","ed220_i_codigo"," ed220_i_rota = $chavepesquisa"));
       if($clrotamov->numrows>0){
        ?>
@@ -212,7 +212,7 @@ if(isset($chavepesquisa)){
            </table>
           </td>
          </tr>
-       <?
+       <?php 
        for($f=0;$f<$clrotamov->numrows;$f++){
         db_fieldsmemory($result1,$f);
         ?>
@@ -239,7 +239,7 @@ if(isset($chavepesquisa)){
           </table>
          </td>
         </tr>
-       <?
+       <?php 
        }
       }else{
        ?>
@@ -248,14 +248,14 @@ if(isset($chavepesquisa)){
          Nenhum registro.
         </td>
        </tr>
-       <?
+       <?php 
       }
       ?>
      </table>
      </fieldset>
     </td>
    </tr>
-   <?}?>
+   <?php }?>
    </table>
   </td>
  </tr>

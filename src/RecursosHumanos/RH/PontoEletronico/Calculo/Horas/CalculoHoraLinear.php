@@ -27,6 +27,8 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas;
 
+use DateTime;
+use DateInterval;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\Jornada;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\RegrasCalculo\RegraCalculo;
@@ -43,57 +45,57 @@ class CalculoHoraLinear extends BaseHora
 {
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $horaInicio = null;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $horaFim    = null;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $oHorasExtra50                = null;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $oHorasExtra50Noturna         = null;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $oHorasExtra75                = null;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $oHorasExtra75Noturna         = null;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $oHorasExtra100               = null;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $oHorasExtra100Noturna        = null;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $oHorasAdicionalNoturno       = null;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $oHorasNoturnas  = null;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $oHorasDiurnas   = null;
 
@@ -207,35 +209,35 @@ class CalculoHoraLinear extends BaseHora
             }
         }
 
-        $this->horaNoturnaInicio        = \DateTime::createFromFormat('H:i', '22:00');
-        $this->horaNoturnaFim           = \DateTime::createFromFormat('H:i', '04:59');
-        $this->horaNoturnaFimNoMesmoDia = \DateTime::createFromFormat('H:i', '04:59');
+        $this->horaNoturnaInicio        = DateTime::createFromFormat('H:i', '22:00');
+        $this->horaNoturnaFim           = DateTime::createFromFormat('H:i', '04:59');
+        $this->horaNoturnaFimNoMesmoDia = DateTime::createFromFormat('H:i', '04:59');
 
         $this->horaNoturnaInicio->setDate($iAnoDataAtual, $iMesDataAtual, $iDiaDataAtual);
         $this->horaNoturnaFim->setDate($iAnoDataAtual, $iMesDataAtual, $iDiaDataAtual);
         $this->horaNoturnaFimNoMesmoDia->setDate($iAnoDataAtual, $iMesDataAtual, $iDiaDataAtual);
         $this->horaNoturnaFim->modify('+1 day');
 
-        $this->oHorasExtra50Noturna = \DateTime::createFromFormat(
+        $this->oHorasExtra50Noturna = DateTime::createFromFormat(
             'Y-m-d H:i',
             $oDiaTrabalho->getData()->getDate() .' 0:00'
         );
-        $this->oHorasExtra75Noturna = \DateTime::createFromFormat(
+        $this->oHorasExtra75Noturna = DateTime::createFromFormat(
             'Y-m-d H:i',
             $oDiaTrabalho->getData()->getDate() .' 0:00'
         );
-        $this->oHorasExtra100Noturna = \DateTime::createFromFormat(
+        $this->oHorasExtra100Noturna = DateTime::createFromFormat(
             'Y-m-d H:i',
             $oDiaTrabalho->getData()->getDate() .' 0:00'
         );
-        $this->oHorasNoturnas = \DateTime::createFromFormat('Y-m-d H:i', $oDiaTrabalho->getData()->getDate() .' 0:00');
-        $this->oHorasExtra50 = \DateTime::createFromFormat('Y-m-d H:i', $oDiaTrabalho->getData()->getDate() .' 0:00');
-        $this->oHorasExtra75 = \DateTime::createFromFormat('Y-m-d H:i', $oDiaTrabalho->getData()->getDate() .' 0:00');
-        $this->oHorasExtra100 = \DateTime::createFromFormat('Y-m-d H:i', $oDiaTrabalho->getData()->getDate() .' 0:00');
-        $this->oHorasDiurnas = \DateTime::createFromFormat('Y-m-d H:i', $oDiaTrabalho->getData()->getDate() .' 0:00');
+        $this->oHorasNoturnas = DateTime::createFromFormat('Y-m-d H:i', $oDiaTrabalho->getData()->getDate() .' 0:00');
+        $this->oHorasExtra50 = DateTime::createFromFormat('Y-m-d H:i', $oDiaTrabalho->getData()->getDate() .' 0:00');
+        $this->oHorasExtra75 = DateTime::createFromFormat('Y-m-d H:i', $oDiaTrabalho->getData()->getDate() .' 0:00');
+        $this->oHorasExtra100 = DateTime::createFromFormat('Y-m-d H:i', $oDiaTrabalho->getData()->getDate() .' 0:00');
+        $this->oHorasDiurnas = DateTime::createFromFormat('Y-m-d H:i', $oDiaTrabalho->getData()->getDate() .' 0:00');
     }
 
-    protected function adicionarHorasExtras(\DateTime $momentoAtual, $tipoExtra)
+    protected function adicionarHorasExtras(DateTime $momentoAtual, $tipoExtra)
     {
 
         /**
@@ -243,47 +245,19 @@ class CalculoHoraLinear extends BaseHora
          */
         if ($this->horaEstaNoIntervalo($momentoAtual, $this->horaNoturnaInicio, $this->horaNoturnaFim)
             || $momentoAtual->getTimestamp() <= $this->horaNoturnaFimNoMesmoDia->getTimestamp()) {
-            switch ($tipoExtra) {
-                case BaseHora::HORAS_EXTRA50:
-                case BaseHora::HORAS_EXTRA50_NOTURNA:
-                    $this->oHorasExtra50Noturna->add(new \DateInterval('PT1M'));
-                    break;
-
-                case BaseHora::HORAS_EXTRA75:
-                case BaseHora::HORAS_EXTRA75_NOTURNA:
-                    $this->oHorasExtra75Noturna->add(new \DateInterval('PT1M'));
-                    break;
-
-                case BaseHora::HORAS_EXTRA100:
-                case BaseHora::HORAS_EXTRA100_NOTURNA:
-                    $this->oHorasExtra100Noturna->add(new \DateInterval('PT1M'));
-                    break;
-
-                default:
-                    $this->oHorasNoturnas->add(new \DateInterval('PT1M'));
-                    break;
-            }
+            match ($tipoExtra) {
+                BaseHora::HORAS_EXTRA50, BaseHora::HORAS_EXTRA50_NOTURNA => $this->oHorasExtra50Noturna->add(new DateInterval('PT1M')),
+                BaseHora::HORAS_EXTRA75, BaseHora::HORAS_EXTRA75_NOTURNA => $this->oHorasExtra75Noturna->add(new DateInterval('PT1M')),
+                BaseHora::HORAS_EXTRA100, BaseHora::HORAS_EXTRA100_NOTURNA => $this->oHorasExtra100Noturna->add(new DateInterval('PT1M')),
+                default => $this->oHorasNoturnas->add(new DateInterval('PT1M')),
+            };
         } else {
-            switch ($tipoExtra) {
-                case BaseHora::HORAS_EXTRA50:
-                case BaseHora::HORAS_EXTRA50_NOTURNA:
-                    $this->oHorasExtra50->add(new \DateInterval('PT1M'));
-                    break;
-
-                case BaseHora::HORAS_EXTRA75:
-                case BaseHora::HORAS_EXTRA75_NOTURNA:
-                    $this->oHorasExtra75->add(new \DateInterval('PT1M'));
-                    break;
-
-                case BaseHora::HORAS_EXTRA100:
-                case BaseHora::HORAS_EXTRA100_NOTURNA:
-                    $this->oHorasExtra100->add(new \DateInterval('PT1M'));
-                    break;
-
-                default:
-                    $this->oHorasDiurnas->add(new \DateInterval('PT1M'));
-                    break;
-            }
+            match ($tipoExtra) {
+                BaseHora::HORAS_EXTRA50, BaseHora::HORAS_EXTRA50_NOTURNA => $this->oHorasExtra50->add(new DateInterval('PT1M')),
+                BaseHora::HORAS_EXTRA75, BaseHora::HORAS_EXTRA75_NOTURNA => $this->oHorasExtra75->add(new DateInterval('PT1M')),
+                BaseHora::HORAS_EXTRA100, BaseHora::HORAS_EXTRA100_NOTURNA => $this->oHorasExtra100->add(new DateInterval('PT1M')),
+                default => $this->oHorasDiurnas->add(new DateInterval('PT1M')),
+            };
         }
     }
 
@@ -311,7 +285,7 @@ class CalculoHoraLinear extends BaseHora
     {
         $this->logger->debug("------------------------------------------------------");
         $this->logger->debug("----------------- CALCULO HORA LINEAR ----------------");
-        $this->logger->debug("-- Executando regra: ". get_class($regraCalculo));
+        $this->logger->debug("-- Executando regra: ". $regraCalculo::class);
 
         $debug = "-- MarcacoesCollection....: ";
         $entrada1 = $marcacoesCollection->getMarcacaoEntrada1()->getMarcacao();
@@ -355,7 +329,7 @@ class CalculoHoraLinear extends BaseHora
         }
 
         $debug = "-- MomentoAtual...........:";
-        if ($momentoAtual instanceof \DateTime) {
+        if ($momentoAtual instanceof DateTime) {
             $debug .= $momentoAtual->format('H:i');
         } else {
             $debug .= '__:__';
@@ -363,7 +337,7 @@ class CalculoHoraLinear extends BaseHora
         $this->logger->debug($debug);
 
         $debug = "-- HoraFim................:";
-        $debug .= ($horaFim instanceof \DateTime ? $horaFim->format('H:i') : '__:__');
+        $debug .= ($horaFim instanceof DateTime ? $horaFim->format('H:i') : '__:__');
         
         $this->logger->debug($debug);
 
@@ -372,7 +346,7 @@ class CalculoHoraLinear extends BaseHora
             throw new BusinessException('Não foi possível percorrer o intervalo para o cálculo de horas extras.');
         }
 
-        $momentoCalculado = array();
+        $momentoCalculado = [];
 
         do {
             $lCalculou = $regraCalculo->processar($momentoAtual);
@@ -396,7 +370,7 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getHoraInicio()
     {
@@ -404,11 +378,11 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @param \DateTime $horaInicio
+     * @param DateTime $horaInicio
      *
      * @return self
      */
-    public function setHoraInicio(\DateTime $horaInicio)
+    public function setHoraInicio(DateTime $horaInicio)
     {
         $this->horaInicio = $horaInicio;
 
@@ -416,7 +390,7 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getHoraFim()
     {
@@ -424,11 +398,11 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @param \DateTime $horaFim
+     * @param DateTime $horaFim
      *
      * @return self
      */
-    public function setHoraFim(\DateTime $horaFim)
+    public function setHoraFim(DateTime $horaFim)
     {
         $this->horaFim = $horaFim;
 
@@ -436,7 +410,7 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getHorasExtra50()
     {
@@ -444,11 +418,11 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @param \DateTime $oHorasExtra50
+     * @param DateTime $oHorasExtra50
      *
      * @return self
      */
-    public function setHorasExtra50(\DateTime $oHorasExtra50)
+    public function setHorasExtra50(DateTime $oHorasExtra50)
     {
         $this->oHorasExtra50 = $oHorasExtra50;
 
@@ -456,7 +430,7 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getHorasExtra50Noturna()
     {
@@ -464,11 +438,11 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @param \DateTime $oHorasExtra50Noturna
+     * @param DateTime $oHorasExtra50Noturna
      *
      * @return self
      */
-    public function setHorasExtra50Noturna(\DateTime $oHorasExtra50Noturna)
+    public function setHorasExtra50Noturna(DateTime $oHorasExtra50Noturna)
     {
         $this->oHorasExtra50Noturna = $oHorasExtra50Noturna;
 
@@ -476,7 +450,7 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getHorasExtra75()
     {
@@ -484,11 +458,11 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @param \DateTime $oHorasExtra75
+     * @param DateTime $oHorasExtra75
      *
      * @return self
      */
-    public function setHorasExtra75(\DateTime $oHorasExtra75)
+    public function setHorasExtra75(DateTime $oHorasExtra75)
     {
         $this->oHorasExtra75 = $oHorasExtra75;
 
@@ -496,7 +470,7 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getHorasExtra75Noturna()
     {
@@ -504,11 +478,11 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @param \DateTime $oHorasExtra75Noturna
+     * @param DateTime $oHorasExtra75Noturna
      *
      * @return self
      */
-    public function setHorasExtra75Noturna(\DateTime $oHorasExtra75Noturna)
+    public function setHorasExtra75Noturna(DateTime $oHorasExtra75Noturna)
     {
         $this->oHorasExtra75Noturna = $oHorasExtra75Noturna;
 
@@ -516,7 +490,7 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getHorasExtra100()
     {
@@ -524,11 +498,11 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @param \DateTime $oHorasExtra100
+     * @param DateTime $oHorasExtra100
      *
      * @return self
      */
-    public function setHorasExtra100(\DateTime $oHorasExtra100)
+    public function setHorasExtra100(DateTime $oHorasExtra100)
     {
         $this->oHorasExtra100 = $oHorasExtra100;
 
@@ -536,7 +510,7 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getHorasExtra100Noturna()
     {
@@ -544,11 +518,11 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @param \DateTime $oHorasExtra100Noturna
+     * @param DateTime $oHorasExtra100Noturna
      *
      * @return self
      */
-    public function setHorasExtra100Noturna(\DateTime $oHorasExtra100Noturna)
+    public function setHorasExtra100Noturna(DateTime $oHorasExtra100Noturna)
     {
         $this->oHorasExtra100Noturna = $oHorasExtra100Noturna;
 
@@ -556,7 +530,7 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getHorasAdicionalNoturno()
     {
@@ -564,11 +538,11 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @param \DateTime $oHorasAdicionalNoturno
+     * @param DateTime $oHorasAdicionalNoturno
      *
      * @return self
      */
-    public function setHorasAdicionalNoturno(\DateTime $oHorasAdicionalNoturno)
+    public function setHorasAdicionalNoturno(DateTime $oHorasAdicionalNoturno)
     {
         $this->oHorasAdicionalNoturno = $oHorasAdicionalNoturno;
 
@@ -576,7 +550,7 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getHorasNoturnas()
     {
@@ -584,11 +558,11 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @param \DateTime $oHorasNoturnas
+     * @param DateTime $oHorasNoturnas
      *
      * @return self
      */
-    public function setHorasNoturnas(\DateTime $oHorasNoturnas)
+    public function setHorasNoturnas(DateTime $oHorasNoturnas)
     {
         $this->oHorasNoturnas = $oHorasNoturnas;
 
@@ -596,7 +570,7 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getHorasDiurnas()
     {
@@ -604,11 +578,11 @@ class CalculoHoraLinear extends BaseHora
     }
 
     /**
-     * @param \DateTime $oHorasDiurnas
+     * @param DateTime $oHorasDiurnas
      *
      * @return self
      */
-    public function setHorasDiurnas(\DateTime $oHorasDiurnas)
+    public function setHorasDiurnas(DateTime $oHorasDiurnas)
     {
         $this->oHorasDiurnas = $oHorasDiurnas;
 

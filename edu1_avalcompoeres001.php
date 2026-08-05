@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -52,11 +52,11 @@ if (isset($incluir)) {
   if($forma=="NIVEL"){
     $ed44_i_peso = 1;
   }
-  if (trim($ed14_c_descr) == "AVALIAÇÃO PERIÓDICA") {
+  if (trim((string) $ed14_c_descr) == "AVALIAÇÃO PERIÓDICA") {
 
     $clavalcompoeres->ed44_i_peso = $ed44_i_peso;
     $clavalcompoeres->incluir($ed44_i_codigo);
-  } elseif (trim($ed14_c_descr) == "RESULTADO"){
+  } elseif (trim((string) $ed14_c_descr) == "RESULTADO"){
 
     $clrescompoeres->ed68_i_procresultado  = $ed44_i_procresultado;
     $clrescompoeres->ed68_i_procresultcomp = $ed44_i_procavaliacao;
@@ -74,9 +74,9 @@ if (isset($alterar)) {
   $db_opcao  = 2;
   $db_opcao1 = 3;
   db_inicio_transacao();
-  if (trim($ed14_c_descr)=="AVALIAÇÃO PERIÓDICA") {
+  if (trim((string) $ed14_c_descr)=="AVALIAÇÃO PERIÓDICA") {
     $clavalcompoeres->alterar($ed44_i_codigo);
-  } elseif(trim($ed14_c_descr)=="RESULTADO") {
+  } elseif(trim((string) $ed14_c_descr)=="RESULTADO") {
 
     $clrescompoeres->ed68_i_procresultado  = $ed44_i_procresultado;
     $clrescompoeres->ed68_i_procresultcomp = $ed44_i_procavaliacao;
@@ -95,9 +95,9 @@ if ( isset($excluir) ) {
   $db_opcao  = 3;
   $db_opcao1 = 3;
   db_inicio_transacao();
-  if( trim($ed14_c_descr) == "AVALIAÇÃO PERIÓDICA" ) {
+  if( trim((string) $ed14_c_descr) == "AVALIAÇÃO PERIÓDICA" ) {
     $clavalcompoeres->excluir($ed44_i_codigo);
-  } elseif (trim($ed14_c_descr) == "RESULTADO") {
+  } elseif (trim((string) $ed14_c_descr) == "RESULTADO") {
     $clrescompoeres->excluir($ed44_i_codigo);
   }
   db_fim_transacao();
@@ -147,14 +147,14 @@ if (isset($incluir)) {
 
     if ($fobtencao!="") {
 
-      $fobtencao = trim($fobtencao);
+      $fobtencao = trim((string) $fobtencao);
       $sql       = " UPDATE procresultado SET ed43_c_obtencao = '$fobtencao'";
       $sql      .= "  WHERE ed43_i_codigo = $ed44_i_procresultado ";
       $query     = db_query($sql);
     }
-    if (trim($ed14_c_descr)=="AVALIAÇÃO PERIÓDICA") {
+    if (trim((string) $ed14_c_descr)=="AVALIAÇÃO PERIÓDICA") {
       $clavalcompoeres->erro(true,true);
-    } elseif(trim($ed14_c_descr)=="RESULTADO") {
+    } elseif(trim((string) $ed14_c_descr)=="RESULTADO") {
       $clrescompoeres->erro(true,true);
     };
   }
@@ -175,14 +175,14 @@ if (isset($alterar)) {
 
     if ($fobtencao!="") {
 
-      $fobtencao = trim($fobtencao);
+      $fobtencao = trim((string) $fobtencao);
       $sql       = "UPDATE procresultado SET ed43_c_obtencao = '$fobtencao' ";
       $sql      .=" WHERE ed43_i_codigo = $ed44_i_procresultado";
       $query     = db_query($sql);
     }
-    if (trim($ed14_c_descr)=="AVALIAÇÃO PERIÓDICA") {
+    if (trim((string) $ed14_c_descr)=="AVALIAÇÃO PERIÓDICA") {
       $clavalcompoeres->erro(true,true);
-    } elseif (trim($ed14_c_descr)=="RESULTADO") {
+    } elseif (trim((string) $ed14_c_descr)=="RESULTADO") {
       $clrescompoeres->erro(true,true);
     }
   };
@@ -195,9 +195,9 @@ if (isset($excluir)) {
 
     if (Elementos($ed44_i_procresultado)==0) {
 
-      if (trim($ed14_c_descr)=="AVALIAÇÃO PERIÓDICA") {
+      if (trim((string) $ed14_c_descr)=="AVALIAÇÃO PERIÓDICA") {
         $clavalcompoeres->erro(true,false);
-      } elseif(trim($ed14_c_descr)=="RESULTADO") {
+      } elseif(trim((string) $ed14_c_descr)=="RESULTADO") {
         $clrescompoeres->erro(true,false);
       }
       ?>
@@ -208,12 +208,12 @@ if (isset($excluir)) {
         parent.iframe_c1.location = sUrl ;
         parent.mo_camada('c1');
       </script>
-      <?
+      <?php 
     } else {
 
-      if (trim($ed14_c_descr)=="AVALIAÇÃO PERIÓDICA") {
+      if (trim((string) $ed14_c_descr)=="AVALIAÇÃO PERIÓDICA") {
         $clavalcompoeres->erro(true,true);
-      } elseif(trim($ed14_c_descr)=="RESULTADO") {
+      } elseif(trim((string) $ed14_c_descr)=="RESULTADO") {
         $clrescompoeres->erro(true,true);
       }
     }

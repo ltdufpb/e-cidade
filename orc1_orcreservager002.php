@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -163,7 +163,7 @@ $clrotulo->label("atual_menos_reservado");
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <form name='form1' method='post'>
 <table width="100%" border="1" cellspacing="0" cellpadding="0">
-  <?
+  <?php 
   if($erro==false){
     echo "<tr><td title='$Lo55_descr' >";
     echo $Lo58_projativ;
@@ -271,7 +271,7 @@ function js_mudarprevis(campo){
   }
 }
 </script>
-<?
+<?php 
 if($erro==true)
   db_msgbox($msg_erro);
 

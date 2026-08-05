@@ -227,7 +227,7 @@ class Conta {
 	}
 
   /**
-   * @return \ECidade\Financeiro\Contabilidade\PlanoDeContas\PCASP\Importacao\Modelo
+   * @return Modelo
    */
   public function getModelo() {
     

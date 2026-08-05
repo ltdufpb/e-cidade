@@ -36,7 +36,7 @@ use UsuarioSistema;
 
 class RubricasUsuarioRepository
 {
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param $sequencial
@@ -94,7 +94,7 @@ class RubricasUsuarioRepository
             throw new Exception("Não foi possível buscar as rubricas do usuário.\nContate o suporte.");
         }
 
-        $rubricasUsuarios = array();
+        $rubricasUsuarios = [];
 
         if (pg_num_rows($rs) === 0) {
             return $rubricasUsuarios;

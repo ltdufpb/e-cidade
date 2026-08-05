@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -35,7 +35,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clserie       = new cl_serie;
 $clbaseserie   = new cl_baseserie;
@@ -61,7 +62,7 @@ $clserie->rotulo->label("ed11_c_descr");
                   <?=$Led11_i_codigo?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?db_input( "ed11_i_codigo", 10, $Ied11_i_codigo, true, "text", 4, "", "chave_ed11_i_codigo" );?>
+                  <?php db_input( "ed11_i_codigo", 10, $Ied11_i_codigo, true, "text", 4, "", "chave_ed11_i_codigo" );?>
                 </td>
               </tr>
               <tr>
@@ -69,15 +70,15 @@ $clserie->rotulo->label("ed11_c_descr");
                   <?=$Led11_c_descr?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?db_input( "ed11_c_descr", 30, $Ied11_c_descr, true, "text", 4, "", "chave_ed11_c_descr" );?>
+                  <?php db_input( "ed11_c_descr", 30, $Ied11_c_descr, true, "text", 4, "", "chave_ed11_c_descr" );?>
                 </td>
               </tr>
               <tr>
                 <td colspan="2" align="center">
                   <input name="curso" type="hidden" value="<?=isset( $curso ) && !empty( $curso ) ? $curso : ""?>">
-                  <?if(isset($inicial)){?>
+                  <?php if(isset($inicial)){?>
                    <input name="inicial" type="hidden" value="<?=$inicial?>">
-                  <?}?>
+                  <?php }?>
                   <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar">
                   <input name="limpar"    type="reset"  id="limpar"     value="Limpar" >
                   <input name="Fechar"    type="button" id="fechar"     value="Fechar" onClick="parent.db_iframe_serie.hide();">

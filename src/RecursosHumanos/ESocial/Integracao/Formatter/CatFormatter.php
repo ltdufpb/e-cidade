@@ -2,6 +2,7 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
 use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\Formatter;
 
 /**
@@ -18,6 +19,7 @@ class CatFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[Override]
     public function formatar($dados)
     {
         $dadosFormatado = parent::formatar($dados);

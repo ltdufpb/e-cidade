@@ -48,7 +48,7 @@ class RegraLancamentoContabilFactory
     private static function getInstanciaPorDocumento($iDocumento)
     {
 
-        $aRegras = array(
+        $aRegras = [
             1 => "RegraLancamentoEmpenhoFinanceiro",
             2 => "RegraLancamentoEmpenhoFinanceiro",
             3 => "RegraLancamentoLiquidacaoEmpenho",
@@ -295,7 +295,7 @@ class RegraLancamentoContabilFactory
             6012 => 'RegraLancamentoApropriacaoRetencao',
             6013 => 'RegraLancamentoApropriacaoRetencao',
 
-        );
+        ];
 
         if (!array_key_exists($iDocumento, $aRegras)) {
             $erro = "ERRO TÉCNICO : Não foi possivel localizar a regra para o documento {$iDocumento}.";
@@ -345,8 +345,8 @@ class RegraLancamentoContabilFactory
         }
 
         $sNomeArquivo = "cache/mapeamento_lancamentoauxiliar_documento.csv";
-        $sLinhaArquivo = "{$iCodigoDocumento}," . get_class($oLancamentoAuxiliar) . "\n";
-        $aDadosArquivo = array();
+        $sLinhaArquivo = "{$iCodigoDocumento}," . $oLancamentoAuxiliar::class . "\n";
+        $aDadosArquivo = [];
         if (file_exists($sNomeArquivo)) {
             $aDadosArquivo = file($sNomeArquivo);
         }

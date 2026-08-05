@@ -36,7 +36,7 @@
      * Collection de Avaliacao 
      * @var array
      */    
-    private $aAvaliacao = array();
+    private $aAvaliacao = [];
     
     /**
      * Instancia da classe 
@@ -58,7 +58,7 @@
      */
     public static function getAvaliacaoByCodigo($iCodigoAvaliacao) {
       
-      if (!array_key_exists($iCodigoAvaliacao, AvaliacaoRepository::getInstance()->aAvaliacao)) {
+      if (!array_key_exists((string) $iCodigoAvaliacao, AvaliacaoRepository::getInstance()->aAvaliacao)) {
         AvaliacaoRepository::getInstance()->aAvaliacao[$iCodigoAvaliacao] = new Avaliacao($iCodigoAvaliacao);
       }
       return AvaliacaoRepository::getInstance()->aAvaliacao[$iCodigoAvaliacao];

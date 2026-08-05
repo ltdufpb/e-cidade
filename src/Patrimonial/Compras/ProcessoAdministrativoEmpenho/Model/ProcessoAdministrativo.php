@@ -1,6 +1,8 @@
 <?php
 namespace ECidade\Patrimonial\Compras\ProcessoAdministrativoEmpenho\Model;
 
+use cl_empautorizaprocesso;
+
 class ProcessoAdministrativo
 {
     /**
@@ -21,7 +23,7 @@ class ProcessoAdministrativo
     public function __construct($codigoAutorizacao = null)
     {
         if ($codigoAutorizacao) {
-            $dao = new \cl_empautorizaprocesso();
+            $dao = new cl_empautorizaprocesso();
             $sql = $dao->sql_query_file(null, null, null, "e150_empautoriza = {$codigoAutorizacao}");
             $rs = $dao->sql_record($sql);
 
@@ -103,11 +105,11 @@ class ProcessoAdministrativo
 
     public function toArray()
     {
-        $retorno = array(
+        $retorno = [
             'e150_sequencial' => $this->getSequencial(),
             'e150_empautoriza' => $this->getCodigoAutorizacao(),
             'e150_numeroprocesso' => $this->getNumeroProcesso()
-        );
+        ];
 
         return $retorno;
     }

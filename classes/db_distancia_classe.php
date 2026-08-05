@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE distancia
 class cl_distancia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed223_i_codigo = 0; 
-   var $ed223_f_km = 0; 
-   var $ed223_i_bairroorigem = 0; 
-   var $ed223_i_bairrodestino = 0; 
+   public $ed223_i_codigo = 0; 
+   public $ed223_f_km = 0; 
+   public $ed223_i_bairroorigem = 0; 
+   public $ed223_i_bairrodestino = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed223_i_codigo = int4 = Código 
                  ed223_f_km = float4 = Distancia entre Bairros (em metros) 
                  ed223_i_bairroorigem = int4 = Bairro Origem 
                  ed223_i_bairrodestino = int4 = Bairro Destino 
                  ";
    //funcao construtor da classe 
-   function cl_distancia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("distancia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_distancia {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed223_i_codigo = pg_result($result,0,0); 
+       $this->ed223_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from distancia_ed223_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed223_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed223_i_codigo)){
          $this->erro_sql = " Campo ed223_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_distancia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "distancia ($this->ed223_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "distancia já Cadastrado";
@@ -180,13 +180,13 @@ class cl_distancia {
      $resaco = $this->sql_record($this->sql_query_file($this->ed223_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11157,'$this->ed223_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1926,11157,'','".AddSlashes(pg_result($resaco,0,'ed223_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1926,11158,'','".AddSlashes(pg_result($resaco,0,'ed223_f_km'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1926,11159,'','".AddSlashes(pg_result($resaco,0,'ed223_i_bairroorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1926,11160,'','".AddSlashes(pg_result($resaco,0,'ed223_i_bairrodestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1926,11157,'','".AddSlashes(pg_fetch_result($resaco,0,'ed223_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1926,11158,'','".AddSlashes(pg_fetch_result($resaco,0,'ed223_f_km'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1926,11159,'','".AddSlashes(pg_fetch_result($resaco,0,'ed223_i_bairroorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1926,11160,'','".AddSlashes(pg_fetch_result($resaco,0,'ed223_i_bairrodestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_distancia {
       $this->atualizacampos();
      $sql = " update distancia set ";
      $virgula = "";
-     if(trim($this->ed223_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed223_i_codigo"])){ 
+     if(trim((string) $this->ed223_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed223_i_codigo"])){ 
        $sql  .= $virgula." ed223_i_codigo = $this->ed223_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed223_i_codigo) == null ){ 
+       if(trim((string) $this->ed223_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed223_i_codigo";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_distancia {
          return false;
        }
      }
-     if(trim($this->ed223_f_km)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed223_f_km"])){ 
+     if(trim((string) $this->ed223_f_km)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed223_f_km"])){ 
        $sql  .= $virgula." ed223_f_km = $this->ed223_f_km ";
        $virgula = ",";
-       if(trim($this->ed223_f_km) == null ){ 
+       if(trim((string) $this->ed223_f_km) == null ){ 
          $this->erro_sql = " Campo Distancia entre Bairros (em metros) nao Informado.";
          $this->erro_campo = "ed223_f_km";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_distancia {
          return false;
        }
      }
-     if(trim($this->ed223_i_bairroorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed223_i_bairroorigem"])){ 
+     if(trim((string) $this->ed223_i_bairroorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed223_i_bairroorigem"])){ 
        $sql  .= $virgula." ed223_i_bairroorigem = $this->ed223_i_bairroorigem ";
        $virgula = ",";
-       if(trim($this->ed223_i_bairroorigem) == null ){ 
+       if(trim((string) $this->ed223_i_bairroorigem) == null ){ 
          $this->erro_sql = " Campo Bairro Origem nao Informado.";
          $this->erro_campo = "ed223_i_bairroorigem";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_distancia {
          return false;
        }
      }
-     if(trim($this->ed223_i_bairrodestino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed223_i_bairrodestino"])){ 
+     if(trim((string) $this->ed223_i_bairrodestino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed223_i_bairrodestino"])){ 
        $sql  .= $virgula." ed223_i_bairrodestino = $this->ed223_i_bairrodestino ";
        $virgula = ",";
-       if(trim($this->ed223_i_bairrodestino) == null ){ 
+       if(trim((string) $this->ed223_i_bairrodestino) == null ){ 
          $this->erro_sql = " Campo Bairro Destino nao Informado.";
          $this->erro_campo = "ed223_i_bairrodestino";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_distancia {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11157,'$this->ed223_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed223_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1926,11157,'".AddSlashes(pg_result($resaco,$conresaco,'ed223_i_codigo'))."','$this->ed223_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1926,11157,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed223_i_codigo'))."','$this->ed223_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed223_f_km"]))
-           $resac = db_query("insert into db_acount values($acount,1926,11158,'".AddSlashes(pg_result($resaco,$conresaco,'ed223_f_km'))."','$this->ed223_f_km',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1926,11158,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed223_f_km'))."','$this->ed223_f_km',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed223_i_bairroorigem"]))
-           $resac = db_query("insert into db_acount values($acount,1926,11159,'".AddSlashes(pg_result($resaco,$conresaco,'ed223_i_bairroorigem'))."','$this->ed223_i_bairroorigem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1926,11159,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed223_i_bairroorigem'))."','$this->ed223_i_bairroorigem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed223_i_bairrodestino"]))
-           $resac = db_query("insert into db_acount values($acount,1926,11160,'".AddSlashes(pg_result($resaco,$conresaco,'ed223_i_bairrodestino'))."','$this->ed223_i_bairrodestino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1926,11160,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed223_i_bairrodestino'))."','$this->ed223_i_bairrodestino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_distancia {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11157,'$ed223_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1926,11157,'','".AddSlashes(pg_result($resaco,$iresaco,'ed223_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1926,11158,'','".AddSlashes(pg_result($resaco,$iresaco,'ed223_f_km'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1926,11159,'','".AddSlashes(pg_result($resaco,$iresaco,'ed223_i_bairroorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1926,11160,'','".AddSlashes(pg_result($resaco,$iresaco,'ed223_i_bairrodestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1926,11157,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed223_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1926,11158,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed223_f_km'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1926,11159,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed223_i_bairroorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1926,11160,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed223_i_bairrodestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from distancia
@@ -376,7 +376,7 @@ class cl_distancia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:distancia";
@@ -390,7 +390,7 @@ class cl_distancia {
    function sql_query ( $ed223_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -413,7 +413,7 @@ class cl_distancia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -425,7 +425,7 @@ class cl_distancia {
    function sql_query_file ( $ed223_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,7 +446,7 @@ class cl_distancia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

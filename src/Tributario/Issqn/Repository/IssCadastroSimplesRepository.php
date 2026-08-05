@@ -10,11 +10,6 @@ use Exception;
 class IssCadastroSimplesRepository
 {
     /**
-     * @var cl_isscadsimples
-     */
-    private $dao;
-
-    /**
      * @var IssCadastroSimplesRepository
      */
     private static $instance;
@@ -23,9 +18,8 @@ class IssCadastroSimplesRepository
      * IssCadastroSimplesRepository constructor.
      * @param cl_isscadsimples $dao
      */
-    private function __construct($dao)
+    private function __construct(private $dao)
     {
-        $this->dao = $dao;
     }
 
     /**

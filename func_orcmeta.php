@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_orcmeta_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcmeta = new cl_orcmeta;
 $clorcmeta->rotulo->label("o145_sequencial");
 $clorcmeta->rotulo->label("o145_descricao");
@@ -60,7 +61,7 @@ if (!empty($iObjetivo)) {
               <?=$Lo145_sequencial?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("o145_sequencial",10,$Io145_sequencial,true,"text",4,"","chave_o145_sequencial");
 		       ?>
             </td>
@@ -70,7 +71,7 @@ if (!empty($iObjetivo)) {
               <?=$Lo145_descricao?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("o145_descricao",50,$Io145_descricao,true,"text",4,"","chave_o145_descricao");
 		       ?>
             </td>
@@ -88,7 +89,7 @@ if (!empty($iObjetivo)) {
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcmeta.php")==true){
@@ -132,12 +133,12 @@ if (!empty($iObjetivo)) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

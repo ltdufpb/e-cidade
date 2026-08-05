@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -59,7 +59,7 @@ $oDaoEscolaProc->rotulo->label();
         </td>
         <td>
           <?php
-            $x = array('1'=>'MUNICIPAL','2'=>'ESTADUAL','3'=>'FEDERAL','4'=>'PARTICULAR');
+            $x = ['1'=>'MUNICIPAL','2'=>'ESTADUAL','3'=>'FEDERAL','4'=>'PARTICULAR'];
             db_select('ed82_c_mantenedora', $x, true, $oGet->db_opcao,"");
           ?>
         </td>
@@ -99,9 +99,9 @@ $oDaoEscolaProc->rotulo->label();
           <label for="ed82_c_complemento"><?=$Led82_c_complemento?></label>
         </td>
         <td>
-          <?db_input('ed82_c_complemento',20,$Ied82_c_complemento,true,'text',$oGet->db_opcao,"")?>
+          <?php db_input('ed82_c_complemento',20,$Ied82_c_complemento,true,'text',$oGet->db_opcao,"")?>
           <label for="ed82_c_bairro"><?=$Led82_c_bairro?></label>
-          <?db_input('ed82_c_bairro',50,$Ied82_c_bairro,true,'text',$oGet->db_opcao,"")?>
+          <?php db_input('ed82_c_bairro',50,$Ied82_c_bairro,true,'text',$oGet->db_opcao,"")?>
         </td>
       </tr>
       <tr>

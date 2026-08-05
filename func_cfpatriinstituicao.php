@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cfpatriinstituicao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcfpatriinstituicao = new cl_cfpatriinstituicao;
 $clcfpatriinstituicao->rotulo->label("t59_sequencial");
 ?>
@@ -53,7 +54,7 @@ $clcfpatriinstituicao->rotulo->label("t59_sequencial");
               <?=$Lt59_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t59_sequencial",10,$It59_sequencial,true,"text",4,"","chave_t59_sequencial");
 		       ?>
             </td>
@@ -71,7 +72,7 @@ $clcfpatriinstituicao->rotulo->label("t59_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cfpatriinstituicao.php")==true){
@@ -111,12 +112,12 @@ $clcfpatriinstituicao->rotulo->label("t59_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

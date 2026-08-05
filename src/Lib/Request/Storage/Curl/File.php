@@ -66,9 +66,9 @@ class File
     /**
      * @var array
      */
-    protected $headers    = array();
-    private $options    = array();
-    protected $postFields = array();
+    protected $headers    = [];
+    private $options    = [];
+    protected $postFields = [];
 
     /**
      * @var string
@@ -146,7 +146,7 @@ class File
             $this->options[CURLOPT_HTTPHEADER] = $this->headers;
         }
 
-        if (in_array($this->tipoRequisicao, array(self::REQUISICAO_PUT, self::REQUISICAO_POST))) {
+        if (in_array($this->tipoRequisicao, [self::REQUISICAO_PUT, self::REQUISICAO_POST])) {
             $this->options[CURLOPT_POSTFIELDS] = $this->headers;
         }
 
@@ -185,7 +185,7 @@ class File
 
     public function setRoute($route)
     {
-        $this->route  = is_null($this->routePrefix) ? self::ROUTE_PREFIX : $this->routePrefix;
+        $this->route  = $this->routePrefix ?? self::ROUTE_PREFIX;
         $this->route .= $route;
         return $this;
     }

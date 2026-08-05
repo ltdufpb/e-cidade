@@ -46,7 +46,7 @@ class Session extends \ECidade\V3\Extension\Session {
 
   /**
    * @todo - guardar id das sessoes criadas para usar no metodo destroyAll
-   * @return \ECidade\V3\Window\Session
+   * @return Session
    */
   public function create() {
 
@@ -96,7 +96,7 @@ class Session extends \ECidade\V3\Extension\Session {
     // Limpa as sessoes e cookies criados
     foreach ($_COOKIE as $key => $value) {
 
-      if (strpos($key, static::PREFIX) !== 0) {
+      if (!str_starts_with((string) $key, (string) static::PREFIX)) {
         continue;
       } 
 
@@ -153,12 +153,12 @@ class Session extends \ECidade\V3\Extension\Session {
 
     Session::iterateAll(function($name, $id) {
 
-      if (strpos($name, Session::PREFIX) !== 0 || $name == Session::MAIN_NAME) {
+      if (!str_starts_with($name, Session::PREFIX) || $name == Session::MAIN_NAME) {
         return false;
       } 
 
       $params = session_get_cookie_params();
-      setcookie($name, '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+      setcookie($name, '', ['expires' => time() - 42000, 'path' => $params["path"], 'domain' => $params["domain"], 'secure' => $params["secure"], 'httponly' => $params["httponly"]]);
       unset($_COOKIE[$id]);
       session_destroy();
       session_write_close();

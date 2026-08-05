@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -62,7 +62,7 @@ $escola = db_getsession("DB_nomedepto");
 <table width="100%" align="left" valign="top" marginwidth="0" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td align="left">
-   <?
+   <?php 
    if(isset($ed52_i_codigo)){
     $sql = "SELECT DISTINCT ed29_i_codigo,ed29_c_descr,ed10_c_descr,ed10_c_abrev
             FROM cursoedu
@@ -126,7 +126,7 @@ $escola = db_getsession("DB_nomedepto");
              inner join matriculaserie on ed221_i_matricula = ed60_i_codigo
              inner join serie on ed11_i_codigo = ed221_i_serie
              inner join base on ed31_i_codigo = ed57_i_base
-            WHERE ed11_i_sequencia >= ".pg_result($query3,0,"inicial")." AND ed11_i_sequencia <= ".pg_result($query3,0,"final")." AND ed11_i_ensino = ".pg_result($query3,0,"ensino")."
+            WHERE ed11_i_sequencia >= ".pg_fetch_result($query3,0,"inicial")." AND ed11_i_sequencia <= ".pg_fetch_result($query3,0,"final")." AND ed11_i_ensino = ".pg_fetch_result($query3,0,"ensino")."
             AND ed57_i_calendario = $calendario
             AND ed57_i_escola = $codescola
             AND ed31_i_regimemat = $ed31_i_regimemat
@@ -168,14 +168,14 @@ $escola = db_getsession("DB_nomedepto");
      <td class='titulo' align="center" colspan="<?=$ncampos?>"><b><?=$titulo?></b></td>
     </tr>
     <tr>
-     <?
+     <?php 
      $labels = explode("|",$labels);
      for($c=0;$c<$ncampos;$c++){
       ?>
       <td class='cabec' align="center"><b><?=$labels[$c]?></b></td>
-     <?}?>
+     <?php }?>
     </tr>
-    <?
+    <?php 
     if($linhas>0){
      $cor1 = "#f3f3f3";
      $cor2 = "#DBDBDB";
@@ -186,13 +186,13 @@ $escola = db_getsession("DB_nomedepto");
       }else{
        $cor = $cor1;
       }
-      $cod = pg_result($result,$c,0);
-      $proximo = pg_result($result,$c,1);
+      $cod = pg_fetch_result($result,$c,0);
+      $proximo = pg_fetch_result($result,$c,1);
       if(isset($mudar) && $mudar==true){?>
        <tr bgcolor="<?=$cor?>" onclick="javascript:location.href='<?=$destino.$cod?>&ed57_c_descr=<?=$proximo?>'" style="Cursor='hand';" onmouseover="bgColor='#DEB887'" onmouseout="bgColor='<?=$cor?>'">
-      <?}else{?>
+      <?php }else{?>
        <tr bgcolor="<?=$cor?>" onclick="javascript:location.href='<?=$destino.$cod?>&proximo=<?=$proximo?>'" style="Cursor='hand';" onmouseover="bgColor='#DEB887'" onmouseout="bgColor='<?=$cor?>'">
-      <?}
+      <?php }
        for($b=0;$b<$ncampos;$b++){
         if(pg_field_type($result,$b)=="int4"){
          $align = "center";
@@ -200,10 +200,10 @@ $escola = db_getsession("DB_nomedepto");
          $align = "";
         }
         ?>
-         <td class='aluno' align="<?=$align?>"><?=pg_result($result,$c,$b)?></td>
-       <?}?>
+         <td class='aluno' align="<?=$align?>"><?=pg_fetch_result($result,$c,$b)?></td>
+       <?php }?>
       </tr>
-      <?
+      <?php 
      }
     }?>
    </table>

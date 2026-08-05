@@ -2,6 +2,7 @@
 
 namespace ECidade\Tributario\Arrecadacao\Repository;
 
+use BaseClassRepository;
 use ECidade\Tributario\Arrecadacao\Model\TaxaEspecifica as TaxaEspecificaModel;
 
 use cl_tabdesc;
@@ -14,7 +15,7 @@ use stdClass;
  * Class TaxaEspecifica
  * @package ECidade\Tributario\Arrecadacao\Repository
  */
-class TaxaEspecifica extends \BaseClassRepository
+class TaxaEspecifica extends BaseClassRepository
 {
     /**
      * @var cl_tabdesc
@@ -53,10 +54,10 @@ class TaxaEspecifica extends \BaseClassRepository
 
         $dao = $this->getDao();
         $campos = "fc_infla('{$inflator}', {$valorFixo}, '{$dataCriacao}', '{$dataAtual}') as valor";
-        $where = array(
+        $where = [
             "k07_instit = {$taxaEspecificaModel->getCodigoInstituicao()}",
             "codsubrec = {$taxaEspecificaModel->getCodigoSubReceita()}"
-        );
+        ];
 
         $sql = $dao->sql_query_file(null, $campos, null, implode(' AND ', $where));
         $rs = db_query($sql);

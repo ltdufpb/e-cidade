@@ -58,32 +58,32 @@ class Layout
     /**
      * @var Registro20[]
      */
-    private $registros20 = array();
+    private $registros20 = [];
 
     /**
      * @var Registro30[]
      */
-    private $registros30 = array();
+    private $registros30 = [];
 
     /**
      * @var Registro40[]
      */
-    private $registros40 = array();
+    private $registros40 = [];
 
     /**
      * @var Registro50[]
      */
-    private $registros50 = array();
+    private $registros50 = [];
 
     /**
      * @var Registro60[]
      */
-    private $registros60 = array();
+    private $registros60 = [];
 
     /**
      * @var array
      */
-    private $dadosArquivo = array();
+    private $dadosArquivo = [];
 
     /**
      * @var string
@@ -246,7 +246,7 @@ class Layout
 
         foreach ($this->dadosArquivo as $dados) {
             if (!is_array($dados)) {
-                $dados = array($dados);
+                $dados = [$dados];
             }
 
             fwrite($handle, implode('|', $dados) . "\n");

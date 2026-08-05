@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_disciplinas_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldisciplinas = new cl_disciplinas;
 $cldisciplinas->rotulo->label("ed27_i_codigo");
 $cldisciplinas->rotulo->label("ed27_c_nome");
@@ -56,7 +57,7 @@ $cldisciplinas->rotulo->label("ed27_c_nome");
               <?=$Led27_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                        db_input("ed27_i_codigo",5,$Ied27_i_codigo,true,"text",4,"","chave_ed27_i_codigo");
                        ?>
             </td>
@@ -66,7 +67,7 @@ $cldisciplinas->rotulo->label("ed27_c_nome");
               <?=$Led27_c_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                        db_input("ed27_c_nome",50,$Ied27_c_nome,true,"text",4,"","chave_ed27_c_nome");
                        ?>
             </td>
@@ -84,7 +85,7 @@ $cldisciplinas->rotulo->label("ed27_c_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_disciplinas.php")==true){
@@ -120,12 +121,12 @@ $cldisciplinas->rotulo->label("ed27_c_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

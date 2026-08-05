@@ -2,6 +2,8 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use stdClass;
+use CgmJuridico;
 use DBDate;
 use DBException;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
@@ -16,10 +18,10 @@ use ECidade\V3\Extension\Registry;
  */
 class Formatter
 {
-    protected $dePara = array();
+    protected $dePara = [];
     private $ignoraValidacao = false;
     /**
-     * @var \CgmJuridico | null
+     * @var CgmJuridico|null
      */
     private $empregador = null;
 
@@ -42,11 +44,11 @@ class Formatter
      * Formata o dados do formulário de acordo com o template
      *
      * @param array $dados
-     * @return \stdClass[]
+     * @return stdClass[]
      */
     public function formatar($dados)
     {
-        $aDadosIntegracao = array();
+        $aDadosIntegracao = [];
 
         foreach ($dados as $dadosPreenchimento) {
             $aDadosIntegracao[] = $this->formataPreenchimento($dadosPreenchimento);
@@ -57,12 +59,12 @@ class Formatter
     /**
      * Cria o objeto a ser enviado para a API já formatado
      *
-     * @param \stdClass $dadosPreenchimento
-     * @return \stdClass
+     * @param stdClass $dadosPreenchimento
+     * @return stdClass
      */
     private function formataPreenchimento($dadosPreenchimento)
     {
-        $preenchimento = new \stdClass();
+        $preenchimento = new stdClass();
 
         if (Tipo::isEFDReinf($dadosPreenchimento->tipo)) {
             $preenchimento->inscricao_contribuinte = $dadosPreenchimento->inscricao_contribuinte;
@@ -79,10 +81,10 @@ class Formatter
      * Cria o nível do grupo de dados.
      * Esse metodo é recursivo, criando os subgrupos também
      *
-     * @param \stdClass $preenchimento     objeto onde vai ser criado o grupo
+     * @param stdClass $preenchimento objeto onde vai ser criado o grupo
      * @param array    $dePara             com os dados do depara do grupo criado
-     * @param \stdClass $dadosPreenchimento dados do preenchimento do formulário no e-cidade
-     * @return \stdClass
+     * @param stdClass $dadosPreenchimento dados do preenchimento do formulário no e-cidade
+     * @return stdClass
      */
     private function criarGrupo($preenchimento, $dePara, $dadosPreenchimento)
     {
@@ -96,13 +98,13 @@ class Formatter
 
             if (!isset($preenchimento->{$sNomeGrupo})) {
                 // cria o objeto do grupo para envio na API
-                $preenchimento->{$sNomeGrupo} = new \stdClass();
+                $preenchimento->{$sNomeGrupo} = new stdClass();
             }
 
             // Quando o grupo é uma coleção de dados
             if (isset($dadosDePara['type']) && $dadosDePara['type'] == 'array') {
                 if (!is_array($preenchimento->{$sNomeGrupo})) {
-                    $preenchimento->{$sNomeGrupo} = array();
+                    $preenchimento->{$sNomeGrupo} = [];
                 }
             }
 
@@ -159,7 +161,7 @@ class Formatter
      */
     private function criarItens(array &$grupo, $itens, $respostasPerguntasFormulario)
     {
-        $data = new \stdClass();
+        $data = new stdClass();
         $this->criaPropriedades($data, $itens['properties'], $respostasPerguntasFormulario);
         $grupo[] = $data;
     }
@@ -167,7 +169,7 @@ class Formatter
     /**
      * Cria as propriedades do grupo recebido por parâmetro
      *
-     * @param \stdClass $grupo
+     * @param stdClass $grupo
      * @param array $propriedades
      * @param array $respostasPerguntasFormulario
      */
@@ -189,7 +191,7 @@ class Formatter
                     settype($valorCampo, $valor['type']);
                 }
 
-                if (isset($valor['type']) && in_array($valor['type'], array('int', 'integer', 'float', 'numeric'))
+                if (isset($valor['type']) && in_array($valor['type'], ['int', 'integer', 'float', 'numeric'])
                     && $valorCampo === ''
                 ) {
                     $valorCampo = null;
@@ -300,7 +302,7 @@ class Formatter
         return $this;
     }
 
-    public function validaEnvioMatricula($matricula, \CgmJuridico $empregador)
+    public function validaEnvioMatricula($matricula, CgmJuridico $empregador)
     {
         $enviaMatricula = true;
         $sql = <<<SQL
@@ -317,7 +319,7 @@ SQL;
             $msg = "Houve um erro ao validar informações de envio do arquivo S-2300 para a matricula {$matricula}.";
             throw new DBException($msg);
         }
-        if (pg_numrows($rs) == 0) {
+        if (pg_num_rows($rs) == 0) {
             return true;
         }
 
@@ -325,7 +327,7 @@ SQL;
 
         $dataInicioS10 = new DBDate('2022-06-07');
 
-        $parametros = new \stdClass();
+        $parametros = new stdClass();
         $parametros->inscricaoEmpregador = $empregador->getCnpj();
         $parametros->idEvento = '2300';
         $parametros->idReferencia = $matricula;
@@ -345,7 +347,7 @@ SQL;
                         if ($recibo->excluido) {
                             $processado = true;
                         } else {
-                            $dataRecibo = new DBDate(substr($recibo->created_at, 0, 10));
+                            $dataRecibo = new DBDate(substr((string) $recibo->created_at, 0, 10));
                             if ($dataRecibo->getTimeStamp() <= $dataInicioS10->getTimeStamp()) {
                                 $enviaMatricula = false;
                                 $processado = true;
@@ -353,7 +355,7 @@ SQL;
                         }
                     }
                 }
-                if (empty(json_decode($dado->evento)->infoTSVInicio->matricula)) {
+                if (empty(json_decode((string) $dado->evento)->infoTSVInicio->matricula)) {
                     $enviaMatricula = false;
                 }
             }
@@ -378,7 +380,7 @@ SQL;
      *
      * @return  self
      */
-    public function setEmpregador(\CgmJuridico $empregador)
+    public function setEmpregador(CgmJuridico $empregador)
     {
         $this->empregador = $empregador;
     }

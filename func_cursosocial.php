@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cursosocial_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcursosocial = new cl_cursosocial;
 $clcursosocial->rotulo->label("as19_sequencial");
 $clcursosocial->rotulo->label("as19_nome");
@@ -54,7 +55,7 @@ $clcursosocial->rotulo->label("as19_nome");
               <?=$Las19_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("as19_sequencial",10,$Ias19_sequencial,true,"text",4,"","chave_as19_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcursosocial->rotulo->label("as19_nome");
               <?=$Las19_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("as19_nome",70,$Ias19_nome,true,"text",4,"","chave_as19_nome");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clcursosocial->rotulo->label("as19_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sWhere     = '';
       $sSeparador = '';
       $dtAtual    = date("Y-m-d");
@@ -142,12 +143,12 @@ $clcursosocial->rotulo->label("as19_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

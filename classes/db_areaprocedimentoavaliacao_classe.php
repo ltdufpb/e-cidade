@@ -41,7 +41,7 @@ class cl_areaprocedimentoavaliacao
     public function __construct()
     {
         $this->rotulo = new rotulo("areaprocedimentoavaliacao"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -144,10 +144,10 @@ class cl_areaprocedimentoavaliacao
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed158_codigo = pg_result($result,0,0); 
+       $this->ed158_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from areaprocedimentoavaliacao_ed158_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed158_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed158_codigo)){
          $this->erro_sql = " Campo ed158_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -191,7 +191,7 @@ class cl_areaprocedimentoavaliacao
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Avaliação da área ($this->ed158_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Avaliação da área já Cadastrado";
@@ -220,18 +220,18 @@ class cl_areaprocedimentoavaliacao
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1011093,'$this->ed158_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,1010534,1011093,'','".AddSlashes(pg_result($resaco,0,'ed158_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010534,1011094,'','".AddSlashes(pg_result($resaco,0,'ed158_areaprocedimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010534,1011095,'','".AddSlashes(pg_result($resaco,0,'ed158_formaavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010534,1011096,'','".AddSlashes(pg_result($resaco,0,'ed158_periodoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010534,1011097,'','".AddSlashes(pg_result($resaco,0,'ed158_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010534,1011098,'','".AddSlashes(pg_result($resaco,0,'ed158_ordem_elemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010534,1011099,'','".AddSlashes(pg_result($resaco,0,'ed158_formaobtencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010534,1011100,'','".AddSlashes(pg_result($resaco,0,'ed158_peso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010534,1011101,'','".AddSlashes(pg_result($resaco,0,'ed158_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010534,1011093,'','".AddSlashes(pg_fetch_result($resaco,0,'ed158_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010534,1011094,'','".AddSlashes(pg_fetch_result($resaco,0,'ed158_areaprocedimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010534,1011095,'','".AddSlashes(pg_fetch_result($resaco,0,'ed158_formaavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010534,1011096,'','".AddSlashes(pg_fetch_result($resaco,0,'ed158_periodoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010534,1011097,'','".AddSlashes(pg_fetch_result($resaco,0,'ed158_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010534,1011098,'','".AddSlashes(pg_fetch_result($resaco,0,'ed158_ordem_elemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010534,1011099,'','".AddSlashes(pg_fetch_result($resaco,0,'ed158_formaobtencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010534,1011100,'','".AddSlashes(pg_fetch_result($resaco,0,'ed158_peso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010534,1011101,'','".AddSlashes(pg_fetch_result($resaco,0,'ed158_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -242,10 +242,10 @@ class cl_areaprocedimentoavaliacao
       $this->atualizacampos();
      $sql = " update areaprocedimentoavaliacao set ";
      $virgula = "";
-     if(trim($this->ed158_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed158_codigo"])){ 
+     if(trim((string) $this->ed158_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed158_codigo"])){ 
        $sql  .= $virgula." ed158_codigo = $this->ed158_codigo ";
        $virgula = ",";
-       if(trim($this->ed158_codigo) == null ){ 
+       if(trim((string) $this->ed158_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed158_codigo";
          $this->erro_banco = "";
@@ -255,10 +255,10 @@ class cl_areaprocedimentoavaliacao
          return false;
        }
      }
-     if(trim($this->ed158_areaprocedimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed158_areaprocedimento"])){ 
+     if(trim((string) $this->ed158_areaprocedimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed158_areaprocedimento"])){ 
        $sql  .= $virgula." ed158_areaprocedimento = $this->ed158_areaprocedimento ";
        $virgula = ",";
-       if(trim($this->ed158_areaprocedimento) == null ){ 
+       if(trim((string) $this->ed158_areaprocedimento) == null ){ 
          $this->erro_sql = " Campo Procedimento da área não informado.";
          $this->erro_campo = "ed158_areaprocedimento";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_areaprocedimentoavaliacao
          return false;
        }
      }
-     if(trim($this->ed158_formaavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed158_formaavaliacao"])){ 
+     if(trim((string) $this->ed158_formaavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed158_formaavaliacao"])){ 
        $sql  .= $virgula." ed158_formaavaliacao = $this->ed158_formaavaliacao ";
        $virgula = ",";
-       if(trim($this->ed158_formaavaliacao) == null ){ 
+       if(trim((string) $this->ed158_formaavaliacao) == null ){ 
          $this->erro_sql = " Campo Forma de avaliação não informado.";
          $this->erro_campo = "ed158_formaavaliacao";
          $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_areaprocedimentoavaliacao
          return false;
        }
      }
-     if(trim($this->ed158_periodoavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed158_periodoavaliacao"])){ 
+     if(trim((string) $this->ed158_periodoavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed158_periodoavaliacao"])){ 
        $sql  .= $virgula." ed158_periodoavaliacao = $this->ed158_periodoavaliacao ";
        $virgula = ",";
-       if(trim($this->ed158_periodoavaliacao) == null ){ 
+       if(trim((string) $this->ed158_periodoavaliacao) == null ){ 
          $this->erro_sql = " Campo Período de Avaliação não informado.";
          $this->erro_campo = "ed158_periodoavaliacao";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_areaprocedimentoavaliacao
          return false;
        }
      }
-     if(trim($this->ed158_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed158_tipo"])){ 
+     if(trim((string) $this->ed158_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed158_tipo"])){ 
        $sql  .= $virgula." ed158_tipo = '$this->ed158_tipo' ";
        $virgula = ",";
-       if(trim($this->ed158_tipo) == null ){ 
+       if(trim((string) $this->ed158_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo do Elemento não informado.";
          $this->erro_campo = "ed158_tipo";
          $this->erro_banco = "";
@@ -307,10 +307,10 @@ class cl_areaprocedimentoavaliacao
          return false;
        }
      }
-     if(trim($this->ed158_ordem_elemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed158_ordem_elemento"])){ 
+     if(trim((string) $this->ed158_ordem_elemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed158_ordem_elemento"])){ 
        $sql  .= $virgula." ed158_ordem_elemento = $this->ed158_ordem_elemento ";
        $virgula = ",";
-       if(trim($this->ed158_ordem_elemento) == null ){ 
+       if(trim((string) $this->ed158_ordem_elemento) == null ){ 
          $this->erro_sql = " Campo Ordem do Elemento não informado.";
          $this->erro_campo = "ed158_ordem_elemento";
          $this->erro_banco = "";
@@ -320,10 +320,10 @@ class cl_areaprocedimentoavaliacao
          return false;
        }
      }
-     if(trim($this->ed158_formaobtencao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed158_formaobtencao"])){ 
+     if(trim((string) $this->ed158_formaobtencao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed158_formaobtencao"])){ 
        $sql  .= $virgula." ed158_formaobtencao = '$this->ed158_formaobtencao' ";
        $virgula = ",";
-       if(trim($this->ed158_formaobtencao) == null ){ 
+       if(trim((string) $this->ed158_formaobtencao) == null ){ 
          $this->erro_sql = " Campo Forma de Cálculo não informado.";
          $this->erro_campo = "ed158_formaobtencao";
          $this->erro_banco = "";
@@ -333,15 +333,15 @@ class cl_areaprocedimentoavaliacao
          return false;
        }
      }
-     if(trim($this->ed158_peso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed158_peso"])){ 
-        if(trim($this->ed158_peso)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed158_peso"])){ 
+     if(trim((string) $this->ed158_peso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed158_peso"])){ 
+        if(trim((string) $this->ed158_peso)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed158_peso"])){ 
            $this->ed158_peso = "0" ; 
         } 
        $sql  .= $virgula." ed158_peso = $this->ed158_peso ";
        $virgula = ",";
      }
-     if(trim($this->ed158_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed158_ordem"])){ 
-        if(trim($this->ed158_ordem)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed158_ordem"])){ 
+     if(trim((string) $this->ed158_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed158_ordem"])){ 
+        if(trim((string) $this->ed158_ordem)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ed158_ordem"])){ 
            $this->ed158_ordem = "0" ; 
         } 
        $sql  .= $virgula." ed158_ordem = $this->ed158_ordem ";
@@ -361,27 +361,27 @@ class cl_areaprocedimentoavaliacao
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1011093,'$this->ed158_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed158_codigo"]) || $this->ed158_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,1010534,1011093,'".AddSlashes(pg_result($resaco,$conresaco,'ed158_codigo'))."','$this->ed158_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010534,1011093,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed158_codigo'))."','$this->ed158_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed158_areaprocedimento"]) || $this->ed158_areaprocedimento != "")
-             $resac = db_query("insert into db_acount values($acount,1010534,1011094,'".AddSlashes(pg_result($resaco,$conresaco,'ed158_areaprocedimento'))."','$this->ed158_areaprocedimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010534,1011094,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed158_areaprocedimento'))."','$this->ed158_areaprocedimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed158_formaavaliacao"]) || $this->ed158_formaavaliacao != "")
-             $resac = db_query("insert into db_acount values($acount,1010534,1011095,'".AddSlashes(pg_result($resaco,$conresaco,'ed158_formaavaliacao'))."','$this->ed158_formaavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010534,1011095,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed158_formaavaliacao'))."','$this->ed158_formaavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed158_periodoavaliacao"]) || $this->ed158_periodoavaliacao != "")
-             $resac = db_query("insert into db_acount values($acount,1010534,1011096,'".AddSlashes(pg_result($resaco,$conresaco,'ed158_periodoavaliacao'))."','$this->ed158_periodoavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010534,1011096,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed158_periodoavaliacao'))."','$this->ed158_periodoavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed158_tipo"]) || $this->ed158_tipo != "")
-             $resac = db_query("insert into db_acount values($acount,1010534,1011097,'".AddSlashes(pg_result($resaco,$conresaco,'ed158_tipo'))."','$this->ed158_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010534,1011097,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed158_tipo'))."','$this->ed158_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed158_ordem_elemento"]) || $this->ed158_ordem_elemento != "")
-             $resac = db_query("insert into db_acount values($acount,1010534,1011098,'".AddSlashes(pg_result($resaco,$conresaco,'ed158_ordem_elemento'))."','$this->ed158_ordem_elemento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010534,1011098,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed158_ordem_elemento'))."','$this->ed158_ordem_elemento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed158_formaobtencao"]) || $this->ed158_formaobtencao != "")
-             $resac = db_query("insert into db_acount values($acount,1010534,1011099,'".AddSlashes(pg_result($resaco,$conresaco,'ed158_formaobtencao'))."','$this->ed158_formaobtencao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010534,1011099,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed158_formaobtencao'))."','$this->ed158_formaobtencao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed158_peso"]) || $this->ed158_peso != "")
-             $resac = db_query("insert into db_acount values($acount,1010534,1011100,'".AddSlashes(pg_result($resaco,$conresaco,'ed158_peso'))."','$this->ed158_peso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010534,1011100,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed158_peso'))."','$this->ed158_peso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed158_ordem"]) || $this->ed158_ordem != "")
-             $resac = db_query("insert into db_acount values($acount,1010534,1011101,'".AddSlashes(pg_result($resaco,$conresaco,'ed158_ordem'))."','$this->ed158_ordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010534,1011101,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed158_ordem'))."','$this->ed158_ordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -435,18 +435,18 @@ class cl_areaprocedimentoavaliacao
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1011093,'$ed158_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010534,1011093,'','".AddSlashes(pg_result($resaco,$iresaco,'ed158_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010534,1011094,'','".AddSlashes(pg_result($resaco,$iresaco,'ed158_areaprocedimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010534,1011095,'','".AddSlashes(pg_result($resaco,$iresaco,'ed158_formaavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010534,1011096,'','".AddSlashes(pg_result($resaco,$iresaco,'ed158_periodoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010534,1011097,'','".AddSlashes(pg_result($resaco,$iresaco,'ed158_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010534,1011098,'','".AddSlashes(pg_result($resaco,$iresaco,'ed158_ordem_elemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010534,1011099,'','".AddSlashes(pg_result($resaco,$iresaco,'ed158_formaobtencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010534,1011100,'','".AddSlashes(pg_result($resaco,$iresaco,'ed158_peso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010534,1011101,'','".AddSlashes(pg_result($resaco,$iresaco,'ed158_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010534,1011093,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed158_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010534,1011094,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed158_areaprocedimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010534,1011095,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed158_formaavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010534,1011096,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed158_periodoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010534,1011097,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed158_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010534,1011098,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed158_ordem_elemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010534,1011099,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed158_formaobtencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010534,1011100,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed158_peso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010534,1011101,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed158_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

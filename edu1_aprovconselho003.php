@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,8 +34,8 @@ include(modification("classes/db_aprovconselho_classe.php"));
 include(modification("classes/db_regencia_classe.php"));
 include(modification("classes/db_diariofinal_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 $claprovconselho = new cl_aprovconselho;
 $cldiariofinal = new cl_diariofinal;
 $clregencia = new cl_regencia;
@@ -57,7 +57,7 @@ if(isset($excluir)){
   parent.parent.location.href = "edu1_diariofinal001.php?regencia=<?=$regencia?>&iTrocaTurma=<?=$iTrocaTurma?>";
   parent.parent.db_iframe_alteraresultado.hide();
  </script>
- <?
+ <?php 
 }
 ?>
 <html>
@@ -73,7 +73,7 @@ if(isset($excluir)){
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <center>
-    <?include(modification("forms/db_frmaprovconselhoexc.php"));?>
+    <?php include(modification("forms/db_frmaprovconselhoexc.php"));?>
    </center>
   </td>
  </tr>

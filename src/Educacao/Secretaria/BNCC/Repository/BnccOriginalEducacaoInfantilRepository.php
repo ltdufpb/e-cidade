@@ -3,6 +3,7 @@
 
 namespace ECidade\Educacao\Secretaria\BNCC\Repository;
 
+use cl_bncceducacaoinfantiloriginal;
 use ECidade\Educacao\Escola\Repository\Repository;
 use ECidade\Educacao\Secretaria\BNCC\Model\BnccOriginalEducacaoInfantil;
 use ECidade\Educacao\Secretaria\BNCC\Model\HabilidadeEducacaoInfantil;
@@ -26,7 +27,7 @@ class BnccOriginalEducacaoInfantilRepository extends Repository
         $campos = implode(', ', $campos);
         $order = !empty($order) ? implode(', ', $order) : null;
 
-        $dao = new \cl_bncceducacaoinfantiloriginal();
+        $dao = new cl_bncceducacaoinfantiloriginal();
         $sql = $dao->sql_query(null, $campos, $order, implode(' and ', $this->scopes));
         $rs = db_query($sql);
 
@@ -74,7 +75,7 @@ class BnccOriginalEducacaoInfantilRepository extends Repository
         $campos = implode(', ', $campos);
         $order = !empty($order) ? implode(', ', $order) : null;
 
-        $dao = new \cl_bncceducacaoinfantiloriginal();
+        $dao = new cl_bncceducacaoinfantiloriginal();
         $sql = $dao->sql_query_completa(null, $campos, $order, implode(' and ', $this->scopes), $ano);
         $rs = db_query($sql);
 

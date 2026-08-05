@@ -13,7 +13,7 @@ class UnidadeMaterialRepository {
    *
    * @var array
    */
-  private $aItens = array();
+  private $aItens = [];
   /**
    * Instancia da classe
    *
@@ -65,7 +65,7 @@ class UnidadeMaterialRepository {
    */
   public static function adicionarUnidadeMaterial(UnidadeMaterial $oUnidadeMaterial) {
 
-    if (!array_key_exists($oUnidadeMaterial->getCodigo(), UnidadeMaterialRepository::getInstance()->aItens)) {
+    if (!array_key_exists((string) $oUnidadeMaterial->getCodigo(), UnidadeMaterialRepository::getInstance()->aItens)) {
       UnidadeMaterialRepository::getInstance()->aItens[$oUnidadeMaterial->getCodigo()] = $oUnidadeMaterial;
     }
     return true;
@@ -81,7 +81,7 @@ class UnidadeMaterialRepository {
     /**
      *
      */
-    if (array_key_exists($oUnidadeMaterial->getCodigo(), UnidadeMaterialRepository::getInstance()->aItens)) {
+    if (array_key_exists((string) $oUnidadeMaterial->getCodigo(), UnidadeMaterialRepository::getInstance()->aItens)) {
       unset(UnidadeMaterialRepository::getInstance()->aItens[$oUnidadeMaterial->getCodigo()]);
     }
     return true;

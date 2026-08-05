@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE empanuladoele
 class cl_empanuladoele { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e95_codanu = 0; 
-   var $e95_codele = 0; 
-   var $e95_valor = 0; 
+   public $e95_codanu = 0; 
+   public $e95_codele = 0; 
+   public $e95_valor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e95_codanu = int4 = Código anulação 
                  e95_codele = int4 = Código Elemento 
                  e95_valor = float8 = Valor elemento 
                  ";
    //funcao construtor da classe 
-   function cl_empanuladoele() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empanuladoele"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -118,7 +118,7 @@ class cl_empanuladoele {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "ELementos anulados ($this->e95_codanu."-".$this->e95_codele) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "ELementos anulados já Cadastrado";
@@ -142,13 +142,13 @@ class cl_empanuladoele {
      $resaco = $this->sql_record($this->sql_query_file($this->e95_codanu));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6326,'$this->e95_codanu','I')");
        $resac = db_query("insert into db_acountkey values($acount,6327,'$this->e95_codele','I')");
-       $resac = db_query("insert into db_acount values($acount,1031,6326,'','".AddSlashes(pg_result($resaco,0,'e95_codanu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1031,6327,'','".AddSlashes(pg_result($resaco,0,'e95_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1031,6328,'','".AddSlashes(pg_result($resaco,0,'e95_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1031,6326,'','".AddSlashes(pg_fetch_result($resaco,0,'e95_codanu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1031,6327,'','".AddSlashes(pg_fetch_result($resaco,0,'e95_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1031,6328,'','".AddSlashes(pg_fetch_result($resaco,0,'e95_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -157,10 +157,10 @@ class cl_empanuladoele {
       $this->atualizacampos();
      $sql = " update empanuladoele set ";
      $virgula = "";
-     if(trim($this->e95_codanu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e95_codanu"])){ 
+     if(trim((string) $this->e95_codanu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e95_codanu"])){ 
        $sql  .= $virgula." e95_codanu = $this->e95_codanu ";
        $virgula = ",";
-       if(trim($this->e95_codanu) == null ){ 
+       if(trim((string) $this->e95_codanu) == null ){ 
          $this->erro_sql = " Campo Código anulação nao Informado.";
          $this->erro_campo = "e95_codanu";
          $this->erro_banco = "";
@@ -170,10 +170,10 @@ class cl_empanuladoele {
          return false;
        }
      }
-     if(trim($this->e95_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e95_codele"])){ 
+     if(trim((string) $this->e95_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e95_codele"])){ 
        $sql  .= $virgula." e95_codele = $this->e95_codele ";
        $virgula = ",";
-       if(trim($this->e95_codele) == null ){ 
+       if(trim((string) $this->e95_codele) == null ){ 
          $this->erro_sql = " Campo Código Elemento nao Informado.";
          $this->erro_campo = "e95_codele";
          $this->erro_banco = "";
@@ -183,10 +183,10 @@ class cl_empanuladoele {
          return false;
        }
      }
-     if(trim($this->e95_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e95_valor"])){ 
+     if(trim((string) $this->e95_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e95_valor"])){ 
        $sql  .= $virgula." e95_valor = $this->e95_valor ";
        $virgula = ",";
-       if(trim($this->e95_valor) == null ){ 
+       if(trim((string) $this->e95_valor) == null ){ 
          $this->erro_sql = " Campo Valor elemento nao Informado.";
          $this->erro_campo = "e95_valor";
          $this->erro_banco = "";
@@ -204,16 +204,16 @@ class cl_empanuladoele {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6326,'$this->e95_codanu','A')");
          $resac = db_query("insert into db_acountkey values($acount,6327,'$this->e95_codele','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e95_codanu"]))
-           $resac = db_query("insert into db_acount values($acount,1031,6326,'".AddSlashes(pg_result($resaco,$conresaco,'e95_codanu'))."','$this->e95_codanu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1031,6326,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e95_codanu'))."','$this->e95_codanu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e95_codele"]))
-           $resac = db_query("insert into db_acount values($acount,1031,6327,'".AddSlashes(pg_result($resaco,$conresaco,'e95_codele'))."','$this->e95_codele',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1031,6327,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e95_codele'))."','$this->e95_codele',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e95_valor"]))
-           $resac = db_query("insert into db_acount values($acount,1031,6328,'".AddSlashes(pg_result($resaco,$conresaco,'e95_valor'))."','$this->e95_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1031,6328,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e95_valor'))."','$this->e95_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -258,13 +258,13 @@ class cl_empanuladoele {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6326,'$e95_codanu','E')");
          $resac = db_query("insert into db_acountkey values($acount,6327,'$e95_codele','E')");
-         $resac = db_query("insert into db_acount values($acount,1031,6326,'','".AddSlashes(pg_result($resaco,$iresaco,'e95_codanu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1031,6327,'','".AddSlashes(pg_result($resaco,$iresaco,'e95_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1031,6328,'','".AddSlashes(pg_result($resaco,$iresaco,'e95_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1031,6326,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e95_codanu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1031,6327,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e95_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1031,6328,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e95_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from empanuladoele
@@ -330,7 +330,7 @@ class cl_empanuladoele {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:empanuladoele";
@@ -344,7 +344,7 @@ class cl_empanuladoele {
    function sql_query ( $e95_codanu=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -367,7 +367,7 @@ class cl_empanuladoele {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -379,7 +379,7 @@ class cl_empanuladoele {
    function sql_query_file ( $e95_codanu=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -400,7 +400,7 @@ class cl_empanuladoele {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

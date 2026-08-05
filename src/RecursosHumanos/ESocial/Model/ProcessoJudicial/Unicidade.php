@@ -43,7 +43,7 @@ class Unicidade
     private $codigoCategoriaUnicidade;
 
     /**
-     * @var \DBDate | null
+     * @var DBDate|null
      */
     private $dataInicioUnicidade;
 
@@ -143,7 +143,7 @@ class Unicidade
     /**
      * Get | null
      *
-     * @return  \DBDate
+     * @return DBDate
      */
     public function getDataInicioUnicidade()
     {
@@ -153,7 +153,7 @@ class Unicidade
     /**
      * Set | null
      *
-     * @param  \DBDate  $dataInicioUnicidade  | null
+     * @param DBDate $dataInicioUnicidade | null
      *
      * @return  self
      */

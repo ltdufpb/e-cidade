@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiccaditensobrig_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clveiccaditensobrig = new cl_veiccaditensobrig;
 $clveiccaditensobrig->rotulo->label("ve08_sequencial");
@@ -56,7 +57,7 @@ $clveiccaditensobrig->rotulo->label("ve08_descr");
               <?=$Lve08_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ve08_sequencial",10,$Ive08_sequencial,true,"text",4,"","chave_ve08_sequencial");
 		       ?>
             </td>
@@ -66,7 +67,7 @@ $clveiccaditensobrig->rotulo->label("ve08_descr");
               <?=$Lve08_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ve08_descr",40,$Ive08_descr,true,"text",4,"","chave_ve08_descr");
 		       ?>
             </td>
@@ -84,7 +85,7 @@ $clveiccaditensobrig->rotulo->label("ve08_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veiccaditensobrig.php")==true){
@@ -124,12 +125,12 @@ $clveiccaditensobrig->rotulo->label("ve08_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

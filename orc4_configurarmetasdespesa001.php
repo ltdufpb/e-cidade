@@ -78,12 +78,12 @@ unset($_SESSION["cronogramabasespages"]);
         <table>
           <tr>
             <td>
-              <?
+              <?php 
               db_ancora("<b>Perspectiva:</b>","js_pesquisao125_cronogramaperspectiva(true);",$db_opcao);
               ?>
             </td>
             <td>
-              <?
+              <?php 
               db_input('o124_sequencial',10,$Io124_sequencial,true,'text',
                 $db_opcao," onchange='js_pesquisao125_cronogramaperspectiva(false);'");
               db_input('o124_descricao',40,$Io124_descricao,true,'text',3,'')
@@ -95,7 +95,7 @@ unset($_SESSION["cronogramabasespages"]);
               <b>Ano:</b>
             </td>
             <td>
-              <?
+              <?php 
               db_input('ano',10,0,true,'text',3,'');
 
               ?>
@@ -118,7 +118,7 @@ unset($_SESSION["cronogramabasespages"]);
           <b>Nível:</b>
         </td>
         <td>
-          <?
+          <?php 
           $aNiveis = array(
             1 => "Orgão",
             2 => "Unidade",
@@ -188,7 +188,7 @@ unset($_SESSION["cronogramabasespages"]);
                 <td class='table_header' style="width: 17px" width="17px">&nbsp;</td>
               </tr>
               <tr>
-                <?
+                <?php 
                 for ($i = 1; $i <=12; $i++) {
                   echo " <td class='table_header' style='width:50px'><b>%</b></td> ";
                   echo " <td class='table_header' style='width:200px'>Valor</td> ";

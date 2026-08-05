@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -35,7 +35,8 @@ include(modification("classes/db_db_config_classe.php"));
 include(modification("classes/db_orcorgao_classe.php"));
 include(modification("classes/db_orcunidade_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_depart   	= new cl_db_depart;
 $cldb_config   	= new cl_db_config;
 $clorcorgao 		= new cl_orcorgao;
@@ -59,7 +60,7 @@ $clorcorgao->rotulo->label("o40_descr");
 <table width="35%" border="0" align="center" cellspacing="0">
 <form name="form1" method="post" action="" >
 
-<?
+<?php 
 if (isset($todasinstit) and $todasinstit == 1) {
 ?>
 <tr>
@@ -67,7 +68,7 @@ if (isset($todasinstit) and $todasinstit == 1) {
 <?=$Lcodigo?>
 </td>
 <td width="96%" align="left" nowrap>
-<?
+<?php 
 	if (!isset($instituicao)) {
 		$instituicao = db_getsession("DB_instit");
 	}
@@ -76,16 +77,16 @@ if (isset($todasinstit) and $todasinstit == 1) {
 ?>
 </td>
 </tr>
-<?
+<?php 
 }
 ?>
 
 <tr>
 <td width="4%" align="right" nowrap title="<?=$To40_descr?>">
-<?//=$Lo40_descr?><b>Orgão:</b>
+<?php //=$Lo40_descr?><b>Orgão:</b>
 </td>
 <td width="96%" align="left" nowrap>
-<?
+<?php 
 $instit=db_getsession("DB_instit");
 $anousu=db_getsession("DB_anousu");
 if (isset($instituicao) && $instituicao != 0) {
@@ -101,10 +102,10 @@ db_selectrecord('orgao',$resultorgao,true,1,"", "", "", "0-Todos", "js_orgao()")
 
 <tr>
 <td width="4%" align="right" nowrap title="<?=$To40_descr?>">
-<?//=$Lo40_descr?><b>Unidade:</b>
+<?php //=$Lo40_descr?><b>Unidade:</b>
 </td>
 <td width="96%" align="left" nowrap>
-<?
+<?php 
 $instit=db_getsession("DB_instit");
 $anousu=db_getsession("DB_anousu");
 if (isset($instituicao) && $instituicao != 0) {
@@ -130,7 +131,7 @@ db_selectrecord('unidade',$resultunidade,true,1,"", "", "", "0-Todos", "js_unida
 <?=$Lcoddepto?>
 </td>
 <td width="96%" align="left" nowrap>
-<?
+<?php 
 db_input("coddepto",5,$Icoddepto,true,"text",4,"","chave_coddepto");
 ?>
 </td>
@@ -140,7 +141,7 @@ db_input("coddepto",5,$Icoddepto,true,"text",4,"","chave_coddepto");
 <?=$Ldescrdepto?>
 </td>
 <td width="96%" align="left" nowrap>
-<?
+<?php 
 db_input("descrdepto",40,$Idescrdepto,true,"text",4,"","chave_descrdepto");
 ?>
 </td>
@@ -160,7 +161,7 @@ db_input("descrdepto",40,$Idescrdepto,true,"text",4,"","chave_descrdepto");
 </tr>
 <tr>
 <td align="center" valign="top">
-<?
+<?php 
 
 if (isset($todasinstit) and $todasinstit == 1) {
 

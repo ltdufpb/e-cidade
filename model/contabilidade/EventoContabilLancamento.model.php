@@ -95,7 +95,7 @@ class EventoContabilLancamento {
    * Regras localizadas para o Lançamento
    * @var array
    */
-  protected $aRegrasLancamento = array();
+  protected $aRegrasLancamento = [];
 
   static $iTotalInstancias = 0;
 
@@ -422,8 +422,7 @@ class EventoContabilLancamento {
      */
     $oRegraLancamento = RegraLancamentoContabilFactory::getRegraLancamento( $iDocumento,
                                                                             $iSequencialLancamento,
-                                                                            $oLancamentoAuxiliar,
-                                                                            $dtDataUsu );
+                                                                            $oLancamentoAuxiliar );
 
     return $oRegraLancamento;
 

@@ -34,7 +34,7 @@ require_once(modification("libs/exceptions/DBException.php"));
 
 $oGet = db_utils::postMemory($_GET);
 
-$oGet->obs1 = base64_decode($oGet->obs1);
+$oGet->obs1 = base64_decode((string) $oGet->obs1);
 $oFiltros   = new stdClass();
 
 /**
@@ -60,7 +60,7 @@ $oFiltros->lParecerUnico = $oGet->punico == 'yes' ? true : false;
  *      R => Resultado
  * @var string
  */
-$sPeriodo                 = explode("|", $oGet->periodo);
+$sPeriodo                 = explode("|", (string) $oGet->periodo);
 $oFiltros->sTipoAvaliacao = $sPeriodo[0];
 $oFiltros->iPeriodo       = $sPeriodo[1];
 
@@ -75,14 +75,14 @@ $oFiltros->lAssinatura = $oGet->assinaturaregente == 'S' ? true : false;
  * Array com o codigo da regencia da disciplina
  * @var array
  */
-$aDisciplinas = explode(",", $oGet->disciplinas);
+$aDisciplinas = explode(",", (string) $oGet->disciplinas);
 
 /**
  * Array com o código dos alunos selecionados para impressao
  * Ex.: 49740,49741,49742,49743
  * @var string
  */
-$aAlunos = explode(",", $oGet->alunos);
+$aAlunos = explode(",", (string) $oGet->alunos);
 
 /**
  * Observacao a ser impressa no boletim
@@ -142,7 +142,7 @@ $iAno = $oFiltros->oTurma->getCalendario()->getAnoExecucao();
 /**
  * Array com dos dados dos alunos que serão impressos no relatório
  */
-$aAlunosImpressao = array();
+$aAlunosImpressao = [];
 
 
 foreach ($aAlunos as $iMatricula) {
@@ -163,7 +163,7 @@ foreach ($aAlunos as $iMatricula) {
                                                  $oMatricula->getSituacao(),
                                                  $oMatricula->isConcluida() ? 'S' : 'N');
 
-  $oDadosAluno->aDisciplinas = array();
+  $oDadosAluno->aDisciplinas = [];
 
   foreach ($aDisciplinas as $iDisciplina) {
 
@@ -173,7 +173,7 @@ foreach ($aAlunos as $iMatricula) {
     $oDadosDisciplina->iRegencia    = $oRegencia->getCodigo();
     $oDadosDisciplina->sAbreviatura = $oRegencia->getDisciplina()->getAbreviatura();
     $oDadosDisciplina->sDisciplina  = $oRegencia->getDisciplina()->getNomeDisciplina();
-    $oDadosDisciplina->aAvaliacoes  = array();
+    $oDadosDisciplina->aAvaliacoes  = [];
     $oDadosDisciplina->iTotalFaltas = '';
 
     db_inicio_transacao();
@@ -319,7 +319,7 @@ foreach ($aAlunosImpressao as $oAluno) {
   //Imprime a Observação informada na tela de filtros
   imprimeObservacaoGeral($oPdf, $oFiltros);
   //Imprime assinatura
-  imprimeAssinatura($oPdf, $oFiltros);
+  imprimeAssinatura($oPdf);
 
 }
 
@@ -337,11 +337,11 @@ function imprimeParecerPadronizado(FpdfMultiCellBorder$oPdf, $oFiltros, $oPeriod
     if ($oFiltros->lConcatenaParecerPadrao) {
       $iLinhasParecerPadronizado = $oPdf->NbLines(192, $oPeriodoAvaliacao->oParecer->sParecerPadronizado);
     } else {
-      $iLinhasParecerPadronizado = count(explode("**", $oPeriodoAvaliacao->oParecer->sParecerPadronizado));
+      $iLinhasParecerPadronizado = count(explode("**", (string) $oPeriodoAvaliacao->oParecer->sParecerPadronizado));
     }
     $iLinhasParecerPadronizado += 2;  //linhas de header do parecer padronizado
 
-    validaQuebraPagina($oPdf, $oFiltros->iLinha, "", $iLinhasParecerPadronizado);
+    validaQuebraPagina($oPdf);
 
     $oPdf->SetFont('arial', 'B', 8);
     $oPdf->cell(192, 4, "Parecer Padronizado:", 1, 1, "C");
@@ -353,7 +353,7 @@ function imprimeParecerPadronizado(FpdfMultiCellBorder$oPdf, $oFiltros, $oPeriod
       $oPdf->SetFont('arial', 'B', 8);
       $oPdf->Cell(192, 4, "Seq - Parecer => Legenda", 1, 1, "L");
       $oPdf->SetFont('arial', '', 8);
-      $aPareceres = explode("**", $oPeriodoAvaliacao->oParecer->sParecerPadronizado);
+      $aPareceres = explode("**", (string) $oPeriodoAvaliacao->oParecer->sParecerPadronizado);
 
       foreach ($aPareceres as $sParecer) {
         $oPdf->cell(192, 4, trim($sParecer), 1, 1, "L");
@@ -372,7 +372,7 @@ function imprimeParecerPadronizado(FpdfMultiCellBorder$oPdf, $oFiltros, $oPeriod
 function imprimeParecer(FpdfMultiCellBorder $oPdf, $oFiltros, $oPeriodoAvaliacao) {
 
   $iLinhasParecer = 5;
-  validaQuebraPagina($oPdf, $oFiltros->iLinha, $oPeriodoAvaliacao->oParecer->sParecer, $iLinhasParecer);
+  validaQuebraPagina($oPdf);
 
   $oPdf->SetFont("Arial", "B", 8);
   $oPdf->Cell(192, $oFiltros->iLinha, "Parecer", 1, 1, "C");
@@ -399,7 +399,7 @@ function imprimeObservacaoAluno(FpdfMultiCellBorder $oPdf, $oFiltros, $oPeriodoA
 
   if (!empty($oPeriodoAvaliacao->sObservacao)) {
 
-    validaQuebraPagina($oPdf, $oFiltros->iLinha, $oPeriodoAvaliacao->sObservacao);
+    validaQuebraPagina($oPdf);
     $oPdf->SetFont("Arial", "B", 8);
     $oPdf->Cell(192, $oFiltros->iLinha, "Observações", 1, 1, "L", 1);
     $oPdf->SetFont("Arial", "", 8);
@@ -416,7 +416,7 @@ function imprimeObservacaoGeral(FpdfMultiCellBorder $oPdf, $oFiltros) {
 
   if (!empty($oFiltros->sObservacao)) {
 
-    validaQuebraPagina($oPdf, $oFiltros->iLinha, $oFiltros->sObservacao);
+    validaQuebraPagina($oPdf);
 
     $oPdf->SetFont("Arial", "B", 8);
     $oPdf->Cell(192, $oFiltros->iLinha, "Observações", 1, 1, "L", 1);
@@ -451,7 +451,7 @@ function imprimeAssinatura(FpdfMultiCellBorder $oPdf, $oFiltros) {
 
   if ($oFiltros->lAssinatura) {
 
-    validaQuebraPagina($oPdf, $oFiltros->iLinha, '', 7);
+    validaQuebraPagina($oPdf);
 
     $oPdf->SetY($oPdf->GetY() +5);
     $oPdf->SetFont("Arial", "", 8);

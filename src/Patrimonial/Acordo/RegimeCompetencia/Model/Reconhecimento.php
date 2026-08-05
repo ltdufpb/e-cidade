@@ -7,6 +7,13 @@
  */
 
 namespace ECidade\Patrimonial\Acordo\RegimeCompetencia\Model;
+use LancamentoAuxiliarReconhecimentoCompetencia;
+use BusinessException;
+use cl_translan;
+use ContaPlanoPCASPRepository;
+use DBCompetencia;
+use EventoContabil;
+use Acordo;
 use ECidade\Patrimonial\Acordo\RegimeCompetencia\Repository\RegimeCompetencia as RegimeCompetenciaRepository;
 
 /**
@@ -23,7 +30,7 @@ class Reconhecimento {
 
 
   /**
-   * @var \Acordo
+   * @var Acordo
    */
   protected $acordo;
 
@@ -71,14 +78,14 @@ class Reconhecimento {
   }
 
   /**
-   * @return \Acordo
+   * @return Acordo
    */
   public function getAcordo() {
     return $this->acordo;
   }
 
   /**
-   * @param \Acordo $acordo
+   * @param Acordo $acordo
    */
   public function setAcordo($acordo) {
     $this->acordo = $acordo;
@@ -149,7 +156,7 @@ class Reconhecimento {
   /**
    * @param integer $ano
    *
-   * @throws \BusinessException
+   * @throws BusinessException
    */
   public function processar($ano) {
 
@@ -159,7 +166,7 @@ class Reconhecimento {
     $documento         = 4000;
     $iContaLiquidacao  = null;
 
-    $oLancamentoAuxiliar = new \LancamentoAuxiliarReconhecimentoCompetencia();
+    $oLancamentoAuxiliar = new LancamentoAuxiliarReconhecimentoCompetencia();
     $oLancamentoAuxiliar->setContaDebito($regimeCompetencia->getConta());
 
     if ($regimeCompetencia->isDespesaAntecipada()) {
@@ -174,30 +181,30 @@ class Reconhecimento {
 
         $sMensagemEmpenho  = "Para o acordo ({$this->getAcordo()->getCodigo()}), foi realizada a programação do regime de competência como despesa antecipada.\n";
         $sMensagemEmpenho .= "Não foram encontrados empenhos para esse acordo.\nVerifique.";
-        throw new \BusinessException($sMensagemEmpenho);
+        throw new BusinessException($sMensagemEmpenho);
       }
-      $contaLiquidacao = \cl_translan::getContaLiquidacao($aEmpenhos[0]->getNumero(), array(3, 23), $ano, 2);
+      $contaLiquidacao = cl_translan::getContaLiquidacao($aEmpenhos[0]->getNumero(), [3, 23], $ano, 2);
       if (empty($contaLiquidacao)) {
 
         $sMensagemLiquidacao = "Para o acordo ({$this->getAcordo()->getCodigo()}), foi realizada a programação do regime de competência como despesa antecipada.\n";
         $sMensagemLiquidacao.= "Não foram encontradas liquidações para os empenhos  deste acordo.\nVerifique.";
-        throw new \BusinessException($sMensagemLiquidacao);
+        throw new BusinessException($sMensagemLiquidacao);
       }
 
-      $oLancamentoAuxiliar->setContaCredito(\ContaPlanoPCASPRepository::getContaPorReduzido($contaLiquidacao, $ano));
+      $oLancamentoAuxiliar->setContaCredito(ContaPlanoPCASPRepository::getContaPorReduzido($contaLiquidacao, $ano));
     }
 
     $parcela->setReconhecida(true);
     $regimeRepository->persistirParcela($regimeCompetencia, $parcela);
     $oAcordo = $this->getAcordo();
-    $sTexto  = "Reconhecimento de regime da competência ".$parcela->getCompetencia()->getCompetencia(\DBCompetencia::FORMATO_MMAAAA);
+    $sTexto  = "Reconhecimento de regime da competência ".$parcela->getCompetencia()->getCompetencia(DBCompetencia::FORMATO_MMAAAA);
     $sTexto .= " do acordo {$oAcordo->getNumero()}/{$oAcordo->getAno()}";
     $oLancamentoAuxiliar->setAcordo($this->getAcordo());
     $oLancamentoAuxiliar->setParcela($parcela);
     $oLancamentoAuxiliar->setObservacaoHistorico($sTexto);
     $oLancamentoAuxiliar->setValorTotal($parcela->getValor());
     $oLancamentoAuxiliar->setFavorecido($this->getAcordo()->getContratado()->getCodigo());
-    $oEventoContabil = new \EventoContabil($documento, $ano);
+    $oEventoContabil = new EventoContabil($documento, $ano);
     $oEventoContabil->executaLancamento($oLancamentoAuxiliar);
   }
 

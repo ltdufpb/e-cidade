@@ -35,7 +35,8 @@ db_postmemory($HTTP_POST_VARS);
 
 $chave_o55_descr = isset($chave_o55_descr) ? stripslashes($chave_o55_descr) : '';
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcprojativ = new cl_orcprojativ;
 $clorcprojativ->rotulo->label("o55_anousu");
 $clorcprojativ->rotulo->label("o55_projativ");
@@ -176,7 +177,7 @@ $where = ["o55_anousu = {$ano}"];
 </table>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
     ?>
     <script>
@@ -193,7 +194,7 @@ if (!isset($pesquisa_chave)) {
 
         })();
     </script>
-    <?
+    <?php 
 }
 ?>
 <script type="text/javascript">

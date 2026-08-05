@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_jazigos_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cljazigos = new cl_jazigos;
 $cljazigos->rotulo->label("cm03_i_codigo");
 $cljazigos->rotulo->label("cm03_i_proprietario");
@@ -54,7 +55,7 @@ $cljazigos->rotulo->label("cm03_i_proprietario");
               <?=$Lcm03_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("cm03_i_codigo",10,$Icm03_i_codigo,true,"text",4,"","chave_cm03_i_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cljazigos->rotulo->label("cm03_i_proprietario");
               <?=$Lcm03_i_proprietario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("cm03_i_proprietario",10,$Icm03_i_proprietario,true,"text",4,"","chave_cm03_i_proprietario");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cljazigos->rotulo->label("cm03_i_proprietario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_jazigos.php")==true){
@@ -118,12 +119,12 @@ $cljazigos->rotulo->label("cm03_i_proprietario");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

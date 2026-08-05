@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -70,7 +70,7 @@ class cl_gavetas_old {
                  cm13_c_campa = char(1) = Campa
                  ";
    //funcao construtor da classe
-   function cl_gavetas_old() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("gavetas_old");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

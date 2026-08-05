@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_tfd_documento_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $oDaotfd_documento = new cl_tfd_documento;
 $oDaotfd_documento->rotulo->label("tf07_i_codigo");
 $oDaotfd_documento->rotulo->label("tf07_c_descr");
@@ -54,7 +55,7 @@ $oDaotfd_documento->rotulo->label("tf07_c_descr");
               <?=$Ltf07_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("tf07_i_codigo",10,$Itf07_i_codigo,true,"text",4,"","chave_tf07_i_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $oDaotfd_documento->rotulo->label("tf07_c_descr");
               <?=$Ltf07_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("tf07_c_descr",40,$Itf07_c_descr,true,"text",4,"","chave_tf07_c_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $oDaotfd_documento->rotulo->label("tf07_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sSepVal = '';
       $sValidade = '';
       if(isset($chave_validade)) {
@@ -149,12 +150,12 @@ $oDaotfd_documento->rotulo->label("tf07_c_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

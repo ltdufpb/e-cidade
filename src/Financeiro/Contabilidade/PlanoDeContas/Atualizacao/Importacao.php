@@ -1,8 +1,11 @@
 <?php
 namespace ECidade\Financeiro\Contabilidade\PlanoDeContas\Atualizacao;
 
-use PhpOffice\PhpWord\Exception\Exception;
-
+use DBDate;
+use ParameterException;
+use cl_importacaoplanoconta;
+use DBException;
+use db_utils;
 /**
  * Class Importacao
  * @package ECidade\Financeiro\Contabilidade\PlanoDeContas\Atualizacao
@@ -16,28 +19,22 @@ class Importacao
     private $codigo;
 
     /**
-     * @var integer
-     */
-    protected $modeloPlanoConta;
-
-    /**
-     * @var \DBDate
+     * @var DBDate
      */
     protected $dataImportacao;
 
     /**
      * Importacao constructor.
-     * @param integer $modeloImportacao
+     * @param integer $modeloPlanoConta
      */
-    public function __construct($modeloImportacao)
+    public function __construct(protected $modeloPlanoConta)
     {
-        $this->modeloPlanoConta = $modeloImportacao;
     }
 
     /**
-     * @param \DBDate $dataImportacao
+     * @param DBDate $dataImportacao
      */
-    public function setDataImportacao(\DBDate $dataImportacao)
+    public function setDataImportacao(DBDate $dataImportacao)
     {
         $this->dataImportacao = $dataImportacao;
     }
@@ -60,21 +57,21 @@ class Importacao
 
     /**
      * @return bool
-     * @throws \DBException|\ParameterException
+     * @throws DBException|ParameterException
      */
     public function salvar()
     {
         if (empty($this->dataImportacao)) {
-            throw new \ParameterException("Data de Importação não informada.");
+            throw new ParameterException("Data de Importação não informada.");
         }
 
-        $daoImportacao = new \cl_importacaoplanoconta();
+        $daoImportacao = new cl_importacaoplanoconta();
         $daoImportacao->c96_sequencial = null;
         $daoImportacao->c96_modeloplanoconta = $this->modeloPlanoConta;
-        $daoImportacao->c96_data = $this->dataImportacao->getDate(\DBDate::DATA_EN);
+        $daoImportacao->c96_data = $this->dataImportacao->getDate(DBDate::DATA_EN);
         $daoImportacao->incluir(null);
         if ($daoImportacao->erro_status === '0') {
-            throw new \DBException("Ocorreu um erro ao salvar as informações de importação.");
+            throw new DBException("Ocorreu um erro ao salvar as informações de importação.");
         }
         return true;
     }
@@ -86,7 +83,7 @@ class Importacao
      */
     public function getUltimaImportacao($exercicio)
     {
-        $daoImportacao = new \cl_importacaoplanoconta();
+        $daoImportacao = new cl_importacaoplanoconta();
 
         $sSql = $daoImportacao->sql_query(null, null, 'c96_sequencial DESC LIMIT 1', 'c94_exercicio = ' . $exercicio . ' AND c94_sequencial = ' . $this->modeloPlanoConta, null);
 
@@ -96,9 +93,7 @@ class Importacao
             return false;
         }
 
-        $ultimaImportacao = \db_utils::makeFromRecord($result, function($item) {
-            return $item;
-        });
+        $ultimaImportacao = db_utils::makeFromRecord($result, fn($item) => $item);
 
         return $ultimaImportacao;
     }
@@ -106,19 +101,19 @@ class Importacao
     /**
      * @param $codigoImportacao
      * @return Importacao
-     * @throws \DBException
+     * @throws DBException
      */
     public static function get($codigoImportacao)
     {
-        $daoImportacao   = new \cl_importacaoplanoconta();
+        $daoImportacao   = new cl_importacaoplanoconta();
         $buscaImportacao = $daoImportacao->sql_query_file($codigoImportacao);
         $resImportacao   = db_query($buscaImportacao);
         if (!$resImportacao) {
-            throw new \DBException("Ocorreu um erro ao consultar a importação realizada.");
+            throw new DBException("Ocorreu um erro ao consultar a importação realizada.");
         }
-        $stdImportacao = \db_utils::fieldsMemory($resImportacao, 0);
+        $stdImportacao = db_utils::fieldsMemory($resImportacao, 0);
         $importacao = new Importacao($stdImportacao->c96_modeloplanoconta);
-        $importacao->setDataImportacao(new \DBDate($stdImportacao->c96_data));
+        $importacao->setDataImportacao(new DBDate($stdImportacao->c96_data));
         $importacao->setCodigo($stdImportacao->c96_sequencial);
         return $importacao;
 

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -201,12 +201,12 @@ $db_opcao = 1;
   			  <table  height="140px;">
 				<tr>
 				  <td>
-				  	<?
+				  	<?php 
 					  db_ancora("<b>Processo de Suspensão:</b>","js_pesquisaar18_procjur(true);",$db_opcao,"");
 				  	?>
 				  </td>
 				  <td>
-				  	<?
+				  	<?php 
 					  db_input("ar18_procjur",10,$Iar18_procjur,true,"text",$db_opcao,"onChange='js_pesquisaar18_procjur(false);'");
 					  db_input("v62_descricao",40,"",true,"text",3,"");
 					  
@@ -217,10 +217,10 @@ $db_opcao = 1;
 				</tr>
 				<tr>
 				  <td>
-				  	<? echo $Lar18_obs ?>
+				  	<?php  echo $Lar18_obs ?>
 				  </td>
 				  <td>
-				  	<? 
+				  	<?php  
 				  	  db_textarea("ar18_obs"  ,3,51,$Iar18_obs,true,"text",1);
 				  	?>
 				  </td>
@@ -230,7 +230,7 @@ $db_opcao = 1;
 				  	<b>Usuário :</b>
 				  </td>
 				  <td>
-				  	<?
+				  	<?php 
 				  	   $rsNomeUsu 	 = $cldb_usuarios->sql_record($cldb_usuarios->sql_query(db_getsession('DB_id_usuario'),"id_usuario,nome",null,""));
 				  	   $oNomeUsu  	 = db_utils::fieldsMemory($rsNomeUsu,0);
 				  	   $nomeUsu 	 = $oNomeUsu->nome;
@@ -252,7 +252,7 @@ $db_opcao = 1;
 			  </table>
 			  </fieldset>
 			</td>
-  			  <?				  	
+  			  <?php 				  	
 				echo "<td valign='top'>";
 				echo "	<fieldset>";
 				echo "	<legend><b>Lista Débitos : </b></legend>";
@@ -414,7 +414,7 @@ function js_validaCampos(){
 
 
 </script>
-<?
+<?php 
 	if ( isset($oPost->incluir) ) {
 	  if($lSqlErro){	
 		db_msgbox($sMsgErro);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -101,7 +101,7 @@ db_app::load("strings.js");
 		            </b>
 		          </td>
 		          <td align="left">
-		            <?
+		            <?php 
 		              db_input("v83_nomearq",  40, $Iv83_nomearq, true, "text", 3, "");
 		            ?>
 		          </td>
@@ -111,7 +111,7 @@ db_app::load("strings.js");
 		            <b>Data do Arquivo :</b>
 		          </td>
 		          <td align="left">
-		           <? db_inputdata("v83_dtgeracao",@$v83_dtgeracao_dia,@$v83_dtgeracao_mes,@$v83_dtgeracao_ano,true,'text', 3);?>
+		           <?php  db_inputdata("v83_dtgeracao",@$v83_dtgeracao_dia,@$v83_dtgeracao_mes,@$v83_dtgeracao_ano,true,'text', 3);?>
 		          </td>
 		        </tr>        
 		      </table>
@@ -127,7 +127,7 @@ db_app::load("strings.js");
                 </b>
               </td>
               <td align="left">
-                <?
+                <?php 
                   db_input("v84_nomearq",  40, $Iv83_nomearq, true, "text", 3, "");
                   db_input("v84_sequencial",  5, null, true, "hidden", 3, "");
                 ?>
@@ -138,7 +138,7 @@ db_app::load("strings.js");
                 <b>Data do Arquivo :</b>
               </td>
               <td align="left">
-               <? db_inputdata("v84_dtarquivo",@$v84_dtarquivo_dia,@$v84_dtarquivo_mes,@$v84_dtarquivo_ano,true,'text', 3);?>
+               <?php  db_inputdata("v84_dtarquivo",@$v84_dtarquivo_dia,@$v84_dtarquivo_mes,@$v84_dtarquivo_ano,true,'text', 3);?>
               </td>
             </tr>        
           </table>
@@ -153,8 +153,8 @@ db_app::load("strings.js");
                 </b>
               </td>
               <td align="left">
-                <?db_input("iCdaIni",  10, '', true, "text", 3, "");?> <b>à</b>
-                <?db_input("iCdaFim",  10, '', true, "text", 3, "");?>
+                <?php db_input("iCdaIni",  10, '', true, "text", 3, "");?> <b>à</b>
+                <?php db_input("iCdaFim",  10, '', true, "text", 3, "");?>
               </td>
             </tr>
             <tr>
@@ -162,8 +162,8 @@ db_app::load("strings.js");
                 <b>Intervalo de Inicial :</b>
               </td>
               <td align="left">
-                <?db_input("iInicialIni",  10, '', true, "text", 3, "");?> <b>à</b>
-                <?db_input("iInicialFim",  10, '', true, "text", 3, "");?>
+                <?php db_input("iInicialIni",  10, '', true, "text", 3, "");?> <b>à</b>
+                <?php db_input("iInicialFim",  10, '', true, "text", 3, "");?>
               </td>
             </tr>        
           </table>
@@ -179,7 +179,7 @@ db_app::load("strings.js");
   
 </center>
 
-<? 
+<?php  
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>

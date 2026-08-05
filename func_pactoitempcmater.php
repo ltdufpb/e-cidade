@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pactoitempcmater_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpactoitempcmater = new cl_pactoitempcmater;
 $clpactoitempcmater->rotulo->label("o89_sequencial");
 $clpactoitempcmater->rotulo->label("o89_pactoitem");
@@ -54,7 +55,7 @@ $clpactoitempcmater->rotulo->label("o89_pactoitem");
               <?=$Lo89_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o89_sequencial",10,$Io89_sequencial,true,"text",4,"","chave_o89_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clpactoitempcmater->rotulo->label("o89_pactoitem");
               <?=$Lo89_pactoitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o89_pactoitem",10,$Io89_pactoitem,true,"text",4,"","chave_o89_pactoitem");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clpactoitempcmater->rotulo->label("o89_pactoitem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pactoitempcmater.php")==true){
@@ -122,12 +123,12 @@ $clpactoitempcmater->rotulo->label("o89_pactoitem");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

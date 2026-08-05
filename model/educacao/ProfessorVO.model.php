@@ -36,13 +36,11 @@
  */
 class ProfessorVO {
 	
-	private $iMatricula;
 	private $oCgm;
 	
 	
-	public function __construct($iMatricula, $iCgm) {
+	public function __construct(private $iMatricula, $iCgm) {
 		
-		$this->iMatricula = $iMatricula;
 		$this->oCgm       = CgmFactory::getInstanceByCgm($iCgm);
 	}
 	

@@ -36,7 +36,7 @@ class DBDepartamentoRepository {
    * Collection de DBDepartamento 
    * @var array
    */    
-  private $aDBDepartamento = array();
+  private $aDBDepartamento = [];
   
   /**
    * Instancia da classe 
@@ -59,7 +59,7 @@ class DBDepartamentoRepository {
    */
   public static function getDBDepartamentoByCodigo($iCodigoDBDepartamento) {
     
-    if (!array_key_exists($iCodigoDBDepartamento, DBDepartamentoRepository::getInstance()->aDBDepartamento)) {
+    if (!array_key_exists((string) $iCodigoDBDepartamento, DBDepartamentoRepository::getInstance()->aDBDepartamento)) {
       DBDepartamentoRepository::getInstance()->aDBDepartamento[$iCodigoDBDepartamento] = new DBDepartamento($iCodigoDBDepartamento);
     }
     return DBDepartamentoRepository::getInstance()->aDBDepartamento[$iCodigoDBDepartamento];
@@ -73,7 +73,7 @@ class DBDepartamentoRepository {
    */
   public static function getIdOrgaoByCodigo($iCodigoDBDepartamento) {
     
-    if (!array_key_exists($iCodigoDBDepartamento, DBDepartamentoRepository::getInstance()->aDBDepartamento)) {
+    if (!array_key_exists((string) $iCodigoDBDepartamento, DBDepartamentoRepository::getInstance()->aDBDepartamento)) {
       DBDepartamentoRepository::getInstance()->aDBDepartamento[$iCodigoDBDepartamento] = new DBDepartamento($iCodigoDBDepartamento);
     }
     

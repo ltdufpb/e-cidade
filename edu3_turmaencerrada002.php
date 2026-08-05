@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -35,7 +35,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matricula_classe.php"));
 db_postmemory($_POST);
 db_postmemory($_GET);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 $clmatricula = new cl_matricula;
 $camp = "ed60_d_datasaida as datasaida,
          turma.ed57_c_descr,serie.ed11_c_descr,calendario.ed52_c_descr,cursoedu.ed29_c_descr,ed60_i_numaluno,
@@ -71,10 +71,10 @@ $result = $clmatricula->sql_record($clmatricula->sql_query("",$camp,"ed60_i_numa
   <table border='1px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px">
    <tr class='cabec'>
     <td align='center' colspan='7'>
-      Turma: <?=pg_result($result,0,"ed57_c_descr")?>&nbsp;&nbsp;&nbsp;&nbsp;
-      Etapa: <?=pg_result($result,0,"ed11_c_descr")?>&nbsp;&nbsp;&nbsp;&nbsp;
-      Calendário: <?=pg_result($result,0,"ed52_c_descr")?><br>
-      Ensino: <?=pg_result($result,0,"ed29_c_descr")?>
+      Turma: <?=pg_fetch_result($result,0,"ed57_c_descr")?>&nbsp;&nbsp;&nbsp;&nbsp;
+      Etapa: <?=pg_fetch_result($result,0,"ed11_c_descr")?>&nbsp;&nbsp;&nbsp;&nbsp;
+      Calendário: <?=pg_fetch_result($result,0,"ed52_c_descr")?><br>
+      Ensino: <?=pg_fetch_result($result,0,"ed29_c_descr")?>
     </td>
    </tr>
    <tr><td height='2' colspan='7' bgcolor='#444444'></td></tr>
@@ -87,12 +87,12 @@ $result = $clmatricula->sql_record($clmatricula->sql_query("",$camp,"ed60_i_numa
     <td><b>Data Saída</b></td>
     <td>&nbsp;</td>
    </tr>
-   <?
+   <?php 
    for($c=0;$c<$clmatricula->numrows;$c++) {
      
      db_fieldsmemory($result,$c);
     
-     if ($trocaturma == 1 && trim($ed60_c_situacao) == "TROCA DE TURMA") {
+     if ($trocaturma == 1 && trim((string) $ed60_c_situacao) == "TROCA DE TURMA") {
        continue;
      }
     
@@ -107,7 +107,7 @@ $result = $clmatricula->sql_record($clmatricula->sql_query("",$camp,"ed60_i_numa
       <td class="aluno" align="center"><?=$datasaida==""?"&nbsp;":db_formatar($datasaida,'d')?></td>
       <td class="aluno" align="center" style="color:<?=$color?>;font-weight:bold"><?=$ed60_c_concluida=="N"?"NÃO ENCERRADO":"ENCERRADO"?></td>
      </tr>
-    <?
+    <?php 
    }
    ?>
   </table>

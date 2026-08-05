@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_selecaopontorubricastipo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clselecaopontorubricastipo = new cl_selecaopontorubricastipo;
 $clselecaopontorubricastipo->rotulo->label("r74_sequencial");
 $clselecaopontorubricastipo->rotulo->label("r74_descricao");
@@ -54,7 +55,7 @@ $clselecaopontorubricastipo->rotulo->label("r74_descricao");
               <?=$Lr74_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r74_sequencial",10,$Ir74_sequencial,true,"text",4,"","chave_r74_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clselecaopontorubricastipo->rotulo->label("r74_descricao");
               <?=$Lr74_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r74_descricao",50,$Ir74_descricao,true,"text",4,"","chave_r74_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clselecaopontorubricastipo->rotulo->label("r74_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_selecaopontorubricastipo.php")==true){
@@ -122,12 +123,12 @@ $clselecaopontorubricastipo->rotulo->label("r74_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

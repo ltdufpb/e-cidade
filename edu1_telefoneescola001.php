@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -93,7 +93,7 @@ if ($clescola->numrows != 0) {
    <br>
 
    <fieldset style="width:95%"><legend><b>Contato da Escola</b></legend>
-    <?include(modification("forms/db_frmtelefoneescola.php"));?>
+    <?php include(modification("forms/db_frmtelefoneescola.php"));?>
    </fieldset>
 
   </td>
@@ -101,7 +101,7 @@ if ($clescola->numrows != 0) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)||isset($incluir1)){
 
   $lTelefoneValido = validaTelefone($ed26_i_numero);
@@ -172,8 +172,8 @@ if(isset($cancelar)){
  */
 function validaTelefone( $sTelefone ) {
 
-  $iPrimeiroNumero = substr($sTelefone, 0, 1);
-  $iTotalNumeros   = strlen($sTelefone);
+  $iPrimeiroNumero = substr((string) $sTelefone, 0, 1);
+  $iTotalNumeros   = strlen((string) $sTelefone);
   $sString         = str_replace($iPrimeiroNumero, " ", $sTelefone, $iContador);
 
   if ($iContador == $iTotalNumeros) {

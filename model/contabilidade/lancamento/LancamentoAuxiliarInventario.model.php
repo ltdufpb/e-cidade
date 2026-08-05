@@ -224,7 +224,8 @@ class LancamentoAuxiliarInventario extends LancamentoAuxiliarBase implements ILa
 	 * Retorna a observação do histórico da operação
 	 * @return string
 	 */
-	public function getObservacaoHistorico() {
+	#[Override]
+    public function getObservacaoHistorico() {
 		return $this->sObservacaoHistorico;
 	}
 
@@ -233,7 +234,8 @@ class LancamentoAuxiliarInventario extends LancamentoAuxiliarBase implements ILa
 	 * Seta a observação do histórico da operação
 	 * @param string
 	 */
-	public function setObservacaoHistorico($sObservacaoHistorico) {
+	#[Override]
+    public function setObservacaoHistorico($sObservacaoHistorico) {
 		$this->sObservacaoHistorico = $sObservacaoHistorico;
 	}
 

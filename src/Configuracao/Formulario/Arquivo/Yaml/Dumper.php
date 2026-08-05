@@ -27,6 +27,8 @@
 
 namespace ECidade\Configuracao\Formulario\Arquivo\Yaml;
 
+use DBString;
+use Exception;
 use Avaliacao;
 use ECidade\Configuracao\Formulario\Arquivo\DumperInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -43,23 +45,17 @@ use Symfony\Component\Yaml\Yaml;
 class Dumper implements DumperInterface
 {
     /**
-     * @var Avaliacao
-     */
-    private $evaluation;
-
-    /**
      * @param Avaliacao $evaluation
      */
-    public function __construct(Avaliacao $evaluation)
+    public function __construct(private readonly Avaliacao $evaluation)
     {
-        $this->evaluation = $evaluation;
     }
 
     /**
      * Converte a Avaliação (Objeto) em um arquivo yaml
      *
      * @return mixed|null|string no formato yaml
-     * @throws \Exception
+     * @throws Exception
      */
     public function dump()
     {
@@ -76,18 +72,18 @@ class Dumper implements DumperInterface
         $content = Yaml::dump($data, $inline, $indent);
 
         // retorna o conteudo em utf8
-        return \DBString::utf8_encode_all($content);
+        return DBString::utf8_encode_all($content);
     }
 
     /**
      * Organiza a avaliação em um array
      *
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     private function dumpEvaluation()
     {
-        $data = array(
+        $data = [
           'id'             => $this->evaluation->getCodigo(),
           'tipo'           => $this->evaluation->getTipoAvaliacao(),
           'descricao'      => $this->evaluation->getDescricao(),
@@ -97,7 +93,7 @@ class Dumper implements DumperInterface
           'ativo'          => $this->evaluation->isAtivo(),
           'carga'          => $this->evaluation->getSqlCargaDados(),
           'grupos'         => $this->dumpGroup($this->evaluation->getGrupos()),
-        );
+        ];
 
         if (empty($data['grupos'])) {
             unset($data['grupos']);
@@ -113,17 +109,17 @@ class Dumper implements DumperInterface
      */
     private function dumpGroup($groups)
     {
-        $data = array();
+        $data = [];
 
         foreach ($groups as $group) {
-            $current = array(
+            $current = [
               'id'                  => $group->getCodigo(),
               'descricao'           => $group->getDescricao(),
               'identificador'       => $group->getIdentificador(),
               'identificador_campo' => $group->getIdentificadorCampo(),
               'ordem'               => $group->getOrdem(),
               'perguntas'           => $this->dumpQuestions($group->getPerguntas()),
-            );
+            ];
 
             if (empty($current['perguntas'])) {
                 unset($current['perguntas']);
@@ -142,10 +138,10 @@ class Dumper implements DumperInterface
      */
     private function dumpQuestions($questions)
     {
-        $data = array();
+        $data = [];
 
         foreach ($questions as $question) {
-            $current = array(
+            $current = [
               'id'                                 => $question->getCodigo(),
               'identificador'                      => $question->getIdentificador(),
               'descricao'                          => $question->getDescricao(),
@@ -161,7 +157,7 @@ class Dumper implements DumperInterface
               'identificador_campo'                => $question->getIdentificadorCampo(),
               'respostas'                          => $this->dumpOption($question->getOpcoes()),
               'somente_leitura'                    => $question->somenteLeitura()
-            );
+            ];
 
             if (empty($current['respostas'])) {
                 unset($current['respostas']);
@@ -180,10 +176,10 @@ class Dumper implements DumperInterface
      */
     private function dumpOption($options)
     {
-        $data = array();
+        $data = [];
 
         foreach ($options as $option) {
-            $data[] = array(
+            $data[] = [
               'id'                  => $option->getCodigo(),
               'identificador'       => $option->getIdentificador(),
               'descricao'           => $option->getDescricao(),
@@ -191,7 +187,7 @@ class Dumper implements DumperInterface
               'aceita_texto'        => $option->getAceitaTexto(),
               'peso'                => $option->getPeso(),
               'identificador_campo' => $option->getIdentificadorCampo(),
-            );
+            ];
         }
 
         return $data;

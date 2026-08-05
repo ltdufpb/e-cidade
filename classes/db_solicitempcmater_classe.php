@@ -50,7 +50,7 @@ class cl_solicitempcmater {
                  pc16_solicitem = int8 = Código do registro 
                  ";
    //funcao construtor da classe 
-   function cl_solicitempcmater() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("solicitempcmater"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

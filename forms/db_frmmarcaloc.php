@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,28 +55,28 @@ if(isset($opcao) && $opcao=="alterar"){
 <table border="0">
  <tr>
   <td nowrap title="<?=@$Tma05_i_codigo?>">
-   <?db_ancora(@$Lma05_i_codigo,"",3);?>
+   <?php db_ancora(@$Lma05_i_codigo,"",3);?>
   </td>
   <td>
-   <?db_input('ma05_i_codigo',10,@$ma05_i_codigo,true,'text',3)?>
+   <?php db_input('ma05_i_codigo',10,@$ma05_i_codigo,true,'text',3)?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tma05_i_marca?>">
-   <?db_ancora(@$Lma05_i_marca,"",3);?>
+   <?php db_ancora(@$Lma05_i_marca,"",3);?>
   </td>
   <td>
-   <?db_input('ma05_i_marca',10,@$ma05_i_marca,true,'text',3)?>
-   <?db_input('z01_nome',40,@$z01_nome,true,'text',3,'')?>
+   <?php db_input('ma05_i_marca',10,@$ma05_i_marca,true,'text',3)?>
+   <?php db_input('z01_nome',40,@$z01_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Tma05_i_local?>">
-   <?db_ancora(@$Lma05_i_local,"js_pesquisama05_i_local(true);",$db_opcao);?>
+   <?php db_ancora(@$Lma05_i_local,"js_pesquisama05_i_local(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ma05_i_local',10,@$Ima05_i_local,true,'text',$db_opcao," onchange='js_pesquisama05_i_local(false);'")?>
-   <?db_input('ma04_c_descr',40,@$Ima04_c_descr,true,'text',3,'')?>
+   <?php db_input('ma05_i_local',10,@$Ima05_i_local,true,'text',$db_opcao," onchange='js_pesquisama05_i_local(false);'")?>
+   <?php db_input('ma04_c_descr',40,@$Ima04_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -89,7 +89,7 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top"><br>
-  <?
+  <?php 
    $chavepri= array("ma05_i_codigo"=>@$ma05_i_codigo,"ma05_i_marca"=>@$ma05_i_marca,"ma05_i_local"=>@$ma05_i_local,"ma04_c_descr"=>@$ma04_c_descr);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $cliframe_alterar_excluir->sql = $clmarcaloc->sql_query("","marcaloc.ma05_i_codigo,marcaloc.ma05_i_marca,marcaloc.ma05_i_local,localmarca.ma04_i_codigo,localmarca.ma04_c_descr,localmarca.ma04_c_subdistrito","","marcaloc.ma05_i_marca = ".@$ma05_i_marca);

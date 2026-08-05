@@ -154,7 +154,7 @@ class DBDepartamento
         }
 
         $departamentos  = pg_fetch_all($rsDadosDepartamento);
-        $departamentosResult = array();
+        $departamentosResult = [];
         foreach($departamentos as $departamento){
             $departamento = (object) $departamento;
             $departAux = new DBDepartamento();
@@ -183,7 +183,7 @@ class DBDepartamento
     $sWhere        = "t30_ativo = true and t30_depto= {$this->getCodigo()}";
     $sSql          = $oDaoDepartDiv->sql_query_file(null, "t30_codigo", 't30_descr', $sWhere);
     $rsDivisao     = $oDaoDepartDiv->sql_record($sSql);
-    $aDivisoes     = array();
+    $aDivisoes     = [];
 
         if ($oDaoDepartDiv->numrows == 0) {
             throw new Exception("Não foram encontradas divisões para o departamento " . $this->getCodigo() . " - " . $this->getNomeDepartamento());
@@ -407,7 +407,7 @@ class DBDepartamento
          ) as y";
          
         $rsUsuarios = db_query($sql);
-        $usuarios  = array();
+        $usuarios  = [];
 
         $rs = pg_fetch_all($rsUsuarios);
         foreach($rs as $usuario){
@@ -440,7 +440,7 @@ class DBDepartamento
       ";
 
       $rsUsuarios = db_query($sql);
-      $usuarios = array();
+      $usuarios = [];
 
       $rs = pg_fetch_all($rsUsuarios);
       foreach($rs as $usuario){
@@ -455,10 +455,10 @@ class DBDepartamento
      */
     public function toArray()
     {
-        return array(
+        return [
             'sequencial' => $this->getCodigo(),
             'descricao' => $this->getNomeDepartamento()
-        );
+        ];
     }
 }
 

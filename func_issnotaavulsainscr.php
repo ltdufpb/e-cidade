@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issnotaavulsainscr_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clissnotaavulsainscr = new cl_issnotaavulsainscr;
 $clissnotaavulsainscr->rotulo->label("q52_sequencial");
 $clissnotaavulsainscr->rotulo->label("q52_sequencial");
@@ -54,7 +55,7 @@ $clissnotaavulsainscr->rotulo->label("q52_sequencial");
               <?=$Lq52_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q52_sequencial",10,$Iq52_sequencial,true,"text",4,"","chave_q52_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clissnotaavulsainscr->rotulo->label("q52_sequencial");
               <?=$Lq52_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q52_sequencial",10,$Iq52_sequencial,true,"text",4,"","chave_q52_sequencial");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clissnotaavulsainscr->rotulo->label("q52_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_issnotaavulsainscr.php")==true){
@@ -122,12 +123,12 @@ $clissnotaavulsainscr->rotulo->label("q52_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

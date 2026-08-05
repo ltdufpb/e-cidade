@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -45,7 +45,7 @@ $clrotulo->label("");
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?$cor="#999999"?>
+<?php $cor="#999999"?>
 .bordas{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -53,7 +53,7 @@ $clrotulo->label("");
          border-bottom-color: <?=$cor?>;
          background-color: #999999;
 }
-<?$cor="999999"?>
+<?php $cor="999999"?>
 .bordas_corp{
          border: 1px solid #cccccc;
          border-right-color: <?=$cor?>;
@@ -69,7 +69,7 @@ $clrotulo->label("");
     <center>
  <table border='1' cellspacing="0" cellpadding="0">
 
- <?
+ <?php 
  $where="";
 
  if (isset($pc01_codmater) && $pc01_codmater!= "") {

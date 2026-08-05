@@ -2,18 +2,15 @@
 
 namespace ECidade\Tributario\Library;
 
+use Override;
 use ECidade\V3\Extension\Container as ContainerAbstract;
 
 abstract class Container extends ContainerAbstract
 {
-    protected $container;
-
     protected $content;
 
-    public function __construct($container)
+    public function __construct(protected $container)
     {
-        $this->container = $container;
-
         $this->charge();
     }
 
@@ -27,6 +24,7 @@ abstract class Container extends ContainerAbstract
         return $this->content;
     }
 
+    #[Override]
     public function has($index)
     {
         return $this->content[$index] != null;

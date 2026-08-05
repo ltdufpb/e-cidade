@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_retencaotiporecgrupo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clretencaotiporecgrupo = new cl_retencaotiporecgrupo;
 $clretencaotiporecgrupo->rotulo->label("e01_sequencial");
 $clretencaotiporecgrupo->rotulo->label("e01_descricao");
@@ -54,7 +55,7 @@ $clretencaotiporecgrupo->rotulo->label("e01_descricao");
               <?=$Le01_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e01_sequencial",10,$Ie01_sequencial,true,"text",4,"","chave_e01_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clretencaotiporecgrupo->rotulo->label("e01_descricao");
               <?=$Le01_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e01_descricao",50,$Ie01_descricao,true,"text",4,"","chave_e01_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clretencaotiporecgrupo->rotulo->label("e01_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_retencaotiporecgrupo.php")==true){
@@ -122,12 +123,12 @@ $clretencaotiporecgrupo->rotulo->label("e01_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

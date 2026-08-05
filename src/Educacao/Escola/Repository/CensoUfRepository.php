@@ -85,7 +85,7 @@ class CensoUfRepository extends Repository
             throw new Exception("Erro ao buscar os Estados.");
         }
 
-        $ufs = array();
+        $ufs = [];
         while ($state = pg_fetch_array($rs)) {
             $ufs[] = CensoUf::fromState($state);
         }

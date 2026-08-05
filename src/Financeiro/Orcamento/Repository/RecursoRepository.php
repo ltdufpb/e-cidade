@@ -8,12 +8,13 @@
 
 namespace ECidade\Financeiro\Orcamento\Repository;
 
+use DateTime;
+use cl_orctiporec;
 use db_utils;
 use ECidade\Financeiro\Contabilidade\MatrizSaldoContabil\SaldoRecurso;
 use ECidade\Financeiro\Orcamento\Recurso\Recurso;
 use Exception;
 use Instituicao;
-use setasign\Fpdi\PdfParser\Filter\Lzw;
 use stdClass;
 
 /**
@@ -59,10 +60,7 @@ class RecursoRepository
 
         return self::getValorPorRecursoNaCompetencia($ano, $mes, $estrutural, $instituicoes, $processarSaldoAnterior);
 
-        $tribunais = array_map(function (Instituicao $instituicao) {
-
-            return $instituicao->getCodigoTribunal();
-        }, $instituicoes);
+        $tribunais = array_map(fn(Instituicao $instituicao) => $instituicao->getCodigoTribunal(), $instituicoes);
 
         $tribunais = implode('|', $tribunais);
 
@@ -121,16 +119,13 @@ class RecursoRepository
     ) {
 
 
-        $codigoInstituicoes = array_map(function (Instituicao $instituicao) {
-
-            return $instituicao->getCodigo();
-        }, $instituicoes);
+        $codigoInstituicoes = array_map(fn(Instituicao $instituicao) => $instituicao->getCodigo(), $instituicoes);
 
         $codigoInstituicoes = implode(', ', $codigoInstituicoes);
 
-        $dataInicioAno = new \DateTime("{$ano}-01-01");
+        $dataInicioAno = new DateTime("{$ano}-01-01");
         $dataInicioCompetencia = $dataInicioAno;
-        $dataFinal = new \DateTime("{$ano}-{$mes}-" . cal_days_in_month(CAL_GREGORIAN, $mes, $ano));
+        $dataFinal = new DateTime("{$ano}-{$mes}-" . cal_days_in_month(CAL_GREGORIAN, $mes, $ano));
         $saldo = new SaldoRecurso();
         $recursos = $saldo->getRecursos(
             $instituicoes,
@@ -140,10 +135,10 @@ class RecursoRepository
             $estrutural,
             $processarSaldoAnterior
         );
-        $rescursosParaRetorno = array();
+        $rescursosParaRetorno = [];
         foreach ($recursos as $recurso) {
             $total = $recurso->natureza_saldo_final == 'D' ? $recurso->saldo_final * -1 : $recurso->saldo_final;
-            $recursoStd = new \stdClass();
+            $recursoStd = new stdClass();
             $recursoStd->codigo = $recurso->recurso;
             $recursoStd->descricao = $recurso->descricao;
             $recursoStd->total = $total;
@@ -158,7 +153,7 @@ class RecursoRepository
      */
     public static function getByCodigo($recurso)
     {
-        if (!array_key_exists($recurso, self::getInstance()->recursos)) {
+        if (!array_key_exists((string) $recurso, self::getInstance()->recursos)) {
             self::getInstance()->recursos[$recurso] = new Recurso($recurso);
         }
         return self::getInstance()->recursos[$recurso];
@@ -197,7 +192,7 @@ class RecursoRepository
             $where .= " and {$outrosFiltros} ";
         }
 
-        $dao = new \cl_orctiporec();
+        $dao = new cl_orctiporec();
         $sql = $dao->sql_query_file(null, '*', 'o15_codigo', $where);
         $rs = db_query($sql);
 
@@ -223,8 +218,6 @@ class RecursoRepository
     {
         $recursos = self::getRecursosValidosPorFonteRecurso($fonteRecurso, $outrosFiltros);
 
-        return array_map(function ($recurso) {
-            return $recurso->o15_codigo;
-        }, $recursos);
+        return array_map(fn($recurso) => $recurso->o15_codigo, $recursos);
     }
 }

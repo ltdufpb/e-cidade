@@ -3,6 +3,7 @@
 
 namespace ECidade\Educacao\Escola\Repository;
 
+use cl_areaconhecimento;
 use ECidade\Educacao\Escola\Model\AreaConhecimento;
 use Exception;
 
@@ -20,7 +21,7 @@ class AreaConhecimentoRepository extends Repository
      */
     public static function find($id)
     {
-        $dao = new \cl_areaconhecimento();
+        $dao = new cl_areaconhecimento();
         $rs = db_query($dao->sql_query_file($id));
         if (!$rs) {
             throw new Exception("Erro ao buscar área de conhecimento.");

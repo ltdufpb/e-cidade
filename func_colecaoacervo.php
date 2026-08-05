@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_colecaoacervo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcolecaoacervo = new cl_colecaoacervo;
 $clcolecaoacervo->rotulo->label("bi29_sequencial");
 $clcolecaoacervo->rotulo->label("bi29_nome");
@@ -54,7 +55,7 @@ $clcolecaoacervo->rotulo->label("bi29_nome");
               <?=$Lbi29_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("bi29_sequencial",10,$Ibi29_sequencial,true,"text",4,"","chave_bi29_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcolecaoacervo->rotulo->label("bi29_nome");
               <?=$Lbi29_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("bi29_nome",70,$Ibi29_nome,true,"text",4,"","chave_bi29_nome");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clcolecaoacervo->rotulo->label("bi29_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_colecaoacervo.php")==true){
@@ -122,12 +123,12 @@ $clcolecaoacervo->rotulo->label("bi29_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

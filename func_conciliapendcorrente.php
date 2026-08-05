@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conciliapendcorrente_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clconciliapendcorrente = new cl_conciliapendcorrente;
 $clconciliapendcorrente->rotulo->label("k89_sequencial");
 $clconciliapendcorrente->rotulo->label("k89_concilia");
@@ -54,7 +55,7 @@ $clconciliapendcorrente->rotulo->label("k89_concilia");
               <?=$Lk89_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k89_sequencial",10,$Ik89_sequencial,true,"text",4,"","chave_k89_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clconciliapendcorrente->rotulo->label("k89_concilia");
               <?=$Lk89_concilia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k89_concilia",10,$Ik89_concilia,true,"text",4,"","chave_k89_concilia");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clconciliapendcorrente->rotulo->label("k89_concilia");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conciliapendcorrente.php")==true){
@@ -122,12 +123,12 @@ $clconciliapendcorrente->rotulo->label("k89_concilia");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

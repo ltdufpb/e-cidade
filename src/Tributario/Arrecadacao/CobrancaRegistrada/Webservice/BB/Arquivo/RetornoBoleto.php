@@ -28,6 +28,7 @@
 
 namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\BB\Arquivo;
 
+use DOMDocument;
 use BaseClassRepository;
 
 class RetornoBoleto extends BaseClassRepository
@@ -72,7 +73,7 @@ class RetornoBoleto extends BaseClassRepository
 
     public function getTreatReturn($sResponse)
     {
-        $oDom = new \DOMDocument('1.0', 'UTF-8');
+        $oDom = new DOMDocument('1.0', 'UTF-8');
 
         $sResponse = str_replace("\r\n", "", $sResponse);
 
@@ -80,7 +81,7 @@ class RetornoBoleto extends BaseClassRepository
             preg_match('/<SOAP-ENV:Body>(.*)<\/SOAP-ENV:Body>/', $sResponse, $aResponse);
 
             if ($oDom->loadXML($aResponse[0])) {
-                $aResultado = array();
+                $aResultado = [];
 
                 $this->createArrayStartingXml($oDom->documentElement->firstChild, $aResultado);
             }
@@ -119,7 +120,7 @@ class RetornoBoleto extends BaseClassRepository
                 $this->createArrayStartingXml($itemXml, $aResultado[$itemXml->localName]);
             }
         } else {
-            $aResultado = html_entity_decode(trim($noXml->nodeValue));
+            $aResultado = html_entity_decode(trim((string) $noXml->nodeValue));
         }
     }
 }

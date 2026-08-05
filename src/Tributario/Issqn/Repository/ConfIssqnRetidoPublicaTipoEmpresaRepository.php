@@ -2,6 +2,9 @@
 
 namespace ECidade\Tributario\Issqn\Repository;
 
+use cl_confissqnretidopublicatipoempresa;
+use Exception;
+use db_utils;
 use ECidade\Tributario\Issqn\Model\ConfIssqnRetidoPublicaTipoEmpresa;
 
 class ConfIssqnRetidoPublicaTipoEmpresaRepository
@@ -31,14 +34,14 @@ class ConfIssqnRetidoPublicaTipoEmpresaRepository
      */
     public function __construct()
     {
-        $this->dao = new \cl_confissqnretidopublicatipoempresa();
+        $this->dao = new cl_confissqnretidopublicatipoempresa();
     }
 
     /**
      * Salva os dados na base
      * @param ConfIssqnRetidoPublicaTipoEmpresa $entity
      * @return int
-     * @throws \Exception
+     * @throws Exception
      */
     public function persist(ConfIssqnRetidoPublicaTipoEmpresa $entity)
     {
@@ -53,13 +56,13 @@ class ConfIssqnRetidoPublicaTipoEmpresaRepository
         }
 
         if ($this->dao->erro_status == "0") {
-            throw new \Exception($this->dao->erro_msg);
+            throw new Exception($this->dao->erro_msg);
         }
     }
 
     /**
      * Função que deleta dados da base
-     * @throws \Exception
+     * @throws Exception
      */
     public function delete()
     {
@@ -69,7 +72,7 @@ class ConfIssqnRetidoPublicaTipoEmpresaRepository
         );
 
         if ($this->dao->erro_status == "0") {
-            throw new \Exception($this->dao->erro_msg);
+            throw new Exception($this->dao->erro_msg);
         }
     }
 
@@ -77,7 +80,7 @@ class ConfIssqnRetidoPublicaTipoEmpresaRepository
      * Faz uma cosulta na base
      * @param boolean $bAll | Se for true irá retornar uma coleção de linhas, senão somente uma linha
      * @return array | object
-     * @throws \Exception
+     * @throws Exception
      */
     public function get($bAll = false)
     {
@@ -89,14 +92,14 @@ class ConfIssqnRetidoPublicaTipoEmpresaRepository
         ));
 
         if (!$result) {
-            throw new \Exception("Erro ao buscar o(s) tipo(s). \n\n {$this->dao->erro_msg}");
+            throw new Exception("Erro ao buscar o(s) tipo(s). \n\n {$this->dao->erro_msg}");
         }
 
         if ($bAll) {
-            return \db_utils::getCollectionByRecord($result);
+            return db_utils::getCollectionByRecord($result);
         }
 
-        return \db_utils::fieldsMemory($result, 0);
+        return db_utils::fieldsMemory($result, 0);
     }
 
     /**

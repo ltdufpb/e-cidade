@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -43,9 +43,9 @@ db_fieldsmemory($result_obs,0);
   <td colspan="3" align="center">
    <b>Observações</b>:
    <br>
-   <?db_textarea('ed72_t_obs',5,120,@$Ied72_t_obs,true,'text',$db_opcao,@$encerrado=="S"?"readonly onclick=\"alert('Aluno possui avaliações encerradas para esta disciplina!')\"":"")?>
+   <?php db_textarea('ed72_t_obs',5,120,@$Ied72_t_obs,true,'text',$db_opcao,@$encerrado=="S"?"readonly onclick=\"alert('Aluno possui avaliações encerradas para esta disciplina!')\"":"")?>
    <br><br>
-   <?
+   <?php 
    $sql = "SELECT ed59_i_codigo,ed232_c_descr,ed59_i_ordenacao
            FROM regencia
             inner join disciplina on ed12_i_codigo = ed59_i_disciplina
@@ -68,17 +68,17 @@ db_fieldsmemory($result_obs,0);
     ?>
     <b>Selecione outras disciplinas para conter<br>esta observação no período <?=$periodo?></b>:<br>
     <select name="reg_outras[]" id="reg_outras" size="10" style="width:200px;font-size:10px;padding:0px;" multiple <?=@$encerrado=="S"?"readonly onclick=\"alert('Aluno possui avaliações encerradas para esta disciplina!')\"":""?> >
-    <?
+    <?php 
     for($r=0;$r<$linhas;$r++){
      db_fieldsmemory($result,$r);
      ?>
       <option value="<?=$ed59_i_codigo?>"> <?=$ed232_c_descr?></option>
-     <?
+     <?php 
     }
     ?>
     </select>
     <br><br>
-   <?}?>
+   <?php }?>
    <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Salvar":"Excluir"))?>" <?=($db_botao==false||@$encerrado=="S"?"disabled":"")?> >
   </td>
  </tr>

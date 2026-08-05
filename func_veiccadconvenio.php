@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiccadconvenio_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clveiccadconvenio = new cl_veiccadconvenio;
 $clveiccadconvenio->rotulo->label("ve17_sequencial");
 $clveiccadconvenio->rotulo->label("ve17_descr");
@@ -54,7 +55,7 @@ $clveiccadconvenio->rotulo->label("ve17_descr");
               <?=$Lve17_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ve17_sequencial",10,$Ive17_sequencial,true,"text",4,"","chave_ve17_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clveiccadconvenio->rotulo->label("ve17_descr");
               <?=$Lve17_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ve17_descr",40,$Ive17_descr,true,"text",4,"","chave_ve17_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clveiccadconvenio->rotulo->label("ve17_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veiccadconvenio.php")==true){
@@ -122,12 +123,12 @@ $clveiccadconvenio->rotulo->label("ve17_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

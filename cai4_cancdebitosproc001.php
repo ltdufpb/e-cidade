@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -163,7 +163,7 @@ if (isset ($chavepesquisa)) {
 <td align="left" valign="top" bgcolor="#CCCCCC">
 <br><br>
 <center>
-<?
+<?php 
 
 
 
@@ -173,7 +173,7 @@ include(modification("forms/db_frmcancdebitos.php"));
 </td>
 </tr>
 </table>
-<?
+<?php 
 
 
 
@@ -181,7 +181,7 @@ db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsessio
 ?>
 </body>
 </html>
-<?
+<?php 
 
 
 

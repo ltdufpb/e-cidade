@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE censoorgemissrg
 class cl_censoorgemissrg { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed132_i_codigo = 0; 
-   var $ed132_c_descr = null; 
+   public $ed132_i_codigo = 0; 
+   public $ed132_c_descr = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed132_i_codigo = int4 = Código 
                  ed132_c_descr = char(100) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_censoorgemissrg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("censoorgemissrg"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,7 +105,7 @@ class cl_censoorgemissrg {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tabela Nacional-Órgão Emissor de Entidade - CE ($this->ed132_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tabela Nacional-Órgão Emissor de Entidade - CE já Cadastrado";
@@ -129,11 +129,11 @@ class cl_censoorgemissrg {
      $resaco = $this->sql_record($this->sql_query_file($this->ed132_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,13443,'$this->ed132_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2352,13443,'','".AddSlashes(pg_result($resaco,0,'ed132_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2352,13444,'','".AddSlashes(pg_result($resaco,0,'ed132_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2352,13443,'','".AddSlashes(pg_fetch_result($resaco,0,'ed132_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2352,13444,'','".AddSlashes(pg_fetch_result($resaco,0,'ed132_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -142,10 +142,10 @@ class cl_censoorgemissrg {
       $this->atualizacampos();
      $sql = " update censoorgemissrg set ";
      $virgula = "";
-     if(trim($this->ed132_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed132_i_codigo"])){ 
+     if(trim((string) $this->ed132_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed132_i_codigo"])){ 
        $sql  .= $virgula." ed132_i_codigo = $this->ed132_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed132_i_codigo) == null ){ 
+       if(trim((string) $this->ed132_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed132_i_codigo";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_censoorgemissrg {
          return false;
        }
      }
-     if(trim($this->ed132_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed132_c_descr"])){ 
+     if(trim((string) $this->ed132_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed132_c_descr"])){ 
        $sql  .= $virgula." ed132_c_descr = '$this->ed132_c_descr' ";
        $virgula = ",";
-       if(trim($this->ed132_c_descr) == null ){ 
+       if(trim((string) $this->ed132_c_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "ed132_c_descr";
          $this->erro_banco = "";
@@ -176,13 +176,13 @@ class cl_censoorgemissrg {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13443,'$this->ed132_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed132_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,2352,13443,'".AddSlashes(pg_result($resaco,$conresaco,'ed132_i_codigo'))."','$this->ed132_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2352,13443,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed132_i_codigo'))."','$this->ed132_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed132_c_descr"]))
-           $resac = db_query("insert into db_acount values($acount,2352,13444,'".AddSlashes(pg_result($resaco,$conresaco,'ed132_c_descr'))."','$this->ed132_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2352,13444,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed132_c_descr'))."','$this->ed132_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -227,11 +227,11 @@ class cl_censoorgemissrg {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13443,'$ed132_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2352,13443,'','".AddSlashes(pg_result($resaco,$iresaco,'ed132_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2352,13444,'','".AddSlashes(pg_result($resaco,$iresaco,'ed132_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2352,13443,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed132_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2352,13444,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed132_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from censoorgemissrg
@@ -291,7 +291,7 @@ class cl_censoorgemissrg {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:censoorgemissrg";
@@ -306,7 +306,7 @@ class cl_censoorgemissrg {
    function sql_query ( $ed132_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -327,7 +327,7 @@ class cl_censoorgemissrg {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -340,7 +340,7 @@ class cl_censoorgemissrg {
    function sql_query_file ( $ed132_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -361,7 +361,7 @@ class cl_censoorgemissrg {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

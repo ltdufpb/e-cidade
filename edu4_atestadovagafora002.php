@@ -31,14 +31,14 @@ require_once modification("fpdf151/FpdfMultiCellBorder.php");
 
 $oGet = db_utils::postMemory($_GET);
 
-$oGet->sAluno      = base64_decode($oGet->sAluno);
-$oGet->sEscola     = base64_decode($oGet->sEscola);
-$oGet->sEtapa      = base64_decode($oGet->sEtapa);
-$oGet->sCurso      = base64_decode($oGet->sCurso);
-$oGet->sTurno      = base64_decode($oGet->sTurno);
-$oGet->sData       = base64_decode($oGet->sData);
-$oGet->iCalendario = base64_decode($oGet->iCalendario);
-$oGet->sObservacao = base64_decode($oGet->sObservacao);
+$oGet->sAluno      = base64_decode((string) $oGet->sAluno);
+$oGet->sEscola     = base64_decode((string) $oGet->sEscola);
+$oGet->sEtapa      = base64_decode((string) $oGet->sEtapa);
+$oGet->sCurso      = base64_decode((string) $oGet->sCurso);
+$oGet->sTurno      = base64_decode((string) $oGet->sTurno);
+$oGet->sData       = base64_decode((string) $oGet->sData);
+$oGet->iCalendario = base64_decode((string) $oGet->iCalendario);
+$oGet->sObservacao = base64_decode((string) $oGet->sObservacao);
 
 $oUsuario = new UsuarioSistema(db_getsession('DB_id_usuario'));
 $oData    = new DBDate($oGet->sData);

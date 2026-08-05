@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_serieregimemat_classe.php"));
 include(modification("classes/db_ensino_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clserieregimemat = new cl_serieregimemat;
 $clensino = new cl_ensino;
 $db_opcao = 1;
@@ -73,16 +73,16 @@ if(isset($salvar)){
        <b>Nível de Ensino:</b>
       </td>
       <td>
-       <?
+       <?php 
        $result = $clensino->sql_record($clensino->sql_query("","ed10_i_codigo,ed10_c_descr","ed10_c_abrev",""));
        ?>
        <select name="ensino" id="ensino" onchange="js_ensino(this.value);" style="width:500px;">
         <option value=""></option>
-        <?for($t=0;$t<$clensino->numrows;$t++){
+        <?php for($t=0;$t<$clensino->numrows;$t++){
           db_fieldsmemory($result,$t);
           ?>
           <option value="<?=$ed10_i_codigo?>"><?=$ed10_c_descr?></option>
-        <?}?>
+        <?php }?>
        </select>
       </td>
      </tr>
@@ -96,7 +96,7 @@ if(isset($salvar)){
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 $ed129_i_escola = db_getsession("DB_coddepto");
@@ -59,7 +59,7 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
   <td align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <fieldset style="width:95%"><legend><b>Exportar dados da escola para a secretaria</b></legend>
-    <?
+    <?php 
     if(isset($destino)){
      echo "<br><br>";
      ?>
@@ -69,18 +69,18 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
      <br><br>
      Para salvar arquivo, clique com o botão direito do mouse sobre
      o nome do arquivo. Após escolha <b>Salvar/Guardar Destino Como</b>.
-     <?
+     <?php 
     }else{
      ?>
      <form name="form1" method="post" action="">
      <table border="0">
       <tr>
        <td nowrap title="<?=@$Ted17_i_turno?>">
-        <?db_ancora("<b>Escola:</b>","js_pesquisaed129_i_escola(true);",3);?>
+        <?php db_ancora("<b>Escola:</b>","js_pesquisaed129_i_escola(true);",3);?>
        </td>
        <td>
-        <?db_input('ed129_i_escola',15,@$Ied129_i_escola,true,'text',3," onchange='js_pesquisaed129_i_escola(false);'")?>
-        <?db_input('ed18_c_nome',50,@$Ied18_c_nome,true,'text',3,'')?>
+        <?php db_input('ed129_i_escola',15,@$Ied129_i_escola,true,'text',3," onchange='js_pesquisaed129_i_escola(false);'")?>
+        <?php db_input('ed18_c_nome',50,@$Ied18_c_nome,true,'text',3,'')?>
         <input type="button" value="Processar" name="processar" onclick="js_processar();">
        </td>
       </tr>
@@ -102,7 +102,7 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
       </tr>
      </table>
      <br><br>
-     <?
+     <?php 
     }
     if(isset($escola) && $escola!=""){
      set_time_limit(0);
@@ -118,9 +118,9 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
              where ed129_i_escola = $depto
              ";
      $result = db_query($sql);
-     $iniciosequencia = pg_result($result,0,'ed129_i_inicio');
-     $finalsequencia = pg_result($result,0,'ed129_i_final');
-     $ultatualizse = pg_result($result,0,'ed129_i_ultatualizse');
+     $iniciosequencia = pg_fetch_result($result,0,'ed129_i_inicio');
+     $finalsequencia = pg_fetch_result($result,0,'ed129_i_final');
+     $ultatualizse = pg_fetch_result($result,0,'ed129_i_ultatualizse');
      //deletando registros da escola
      system("echo \"--\"> $destino");
      system("echo \"--DELETANDO REGISTROS DA ESCOLA\">> $destino");
@@ -140,8 +140,8 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
      $linhas1 = pg_num_rows($result1);
      for($t=0;$t<$linhas1;$t++){
       $dados1 = pg_fetch_array($result1);
-      $tabela = trim(strtolower($dados1["nomearq"]));
-      $prikey = trim(strtolower($dados1["nomecam"]));
+      $tabela = trim(strtolower((string) $dados1["nomearq"]));
+      $prikey = trim(strtolower((string) $dados1["nomecam"]));
       if($tabela!="rechumano"){
        $delete = "DELETE FROM $tabela WHERE $prikey >= $iniciosequencia AND $prikey <= $finalsequencia;";
        system("echo \"$delete\">> $destino");
@@ -168,8 +168,8 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
      $linhas_ins = pg_num_rows($result_ins);
      for($t=0;$t<$linhas_ins;$t++){
       $dados1 = pg_fetch_array($result_ins);
-      $tabela = trim(strtolower($dados1["nomearq"]));
-      $prikey = trim(strtolower($dados1["nomecam"]));
+      $tabela = trim(strtolower((string) $dados1["nomearq"]));
+      $prikey = trim(strtolower((string) $dados1["nomecam"]));
       if($tabela=="matricula"){
        ////////////////////////////////////////////////////////////////////////////////
        //Atualizando registros das tabelas alunocurso, alunopossib, aluno, historico
@@ -185,9 +185,9 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
         system("echo \"--\">> $destino");
         for($r=0;$r<$linhas;$r++){
          $insert_docaluno = "";
-         $cod_alunocurso = pg_result($result,$r,'ed56_i_codigo');
-         $cod_aluno = pg_result($result,$r,'ed56_i_aluno');
-         $cod_base = pg_result($result,$r,'ed56_i_base');
+         $cod_alunocurso = pg_fetch_result($result,$r,'ed56_i_codigo');
+         $cod_aluno = pg_fetch_result($result,$r,'ed56_i_aluno');
+         $cod_base = pg_fetch_result($result,$r,'ed56_i_base');
          system("echo \"--\">> $destino");
          system("echo \"--ATUALIZANDO Aluno ($cod_aluno)\">> $destino");
          system("echo \"--\">> $destino");
@@ -202,7 +202,7 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
           $insert1 = "";
           $update1 = "";
           $delete1 = "";
-          $cod_alunopossib = pg_result($result1,0,'ed79_i_codigo');
+          $cod_alunopossib = pg_fetch_result($result1,0,'ed79_i_codigo');
           if($cod_alunopossib>=$iniciosequencia && $cod_alunopossib<=$finalsequencia){
            $delete1 = "DELETE FROM alunopossib WHERE ed79_i_codigo = $cod_alunopossib;";
            $insert1 = "INSERT INTO alunopossib VALUES(";
@@ -213,7 +213,7 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
           for($w=0;$w<$ncampos1;$w++){
            $nomecampo = trim(pg_field_name($result1,$w));
            $tipocampo = trim(pg_field_type($result1,$w));
-           $valorcampo = trim(pg_result($result1,0,$w));
+           $valorcampo = trim(pg_fetch_result($result1,0,$w));
            if($tipocampo=="varchar" || $tipocampo=="bpchar" || $tipocampo=="text" || $tipocampo=="date"){
             if($valorcampo!=""){
              $aspas = "'";
@@ -252,7 +252,7 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
           for($k=0;$k<$linhas3;$k++){
            $insert3 = "";
            $delete3 = "";
-           $cod_docaluno = pg_result($result3,$k,'ed49_i_codigo');
+           $cod_docaluno = pg_fetch_result($result3,$k,'ed49_i_codigo');
            $delete3 = "DELETE FROM docaluno WHERE ed49_i_codigo = $cod_docaluno;";
            system("echo \"$delete3\" >> ".$destino);
            $insert_docaluno .= "INSERT INTO docaluno VALUES(";
@@ -260,7 +260,7 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
            for($w=0;$w<$ncampos3;$w++){
             $nomecampo = trim(pg_field_name($result3,$w));
             $tipocampo = trim(pg_field_type($result3,$w));
-            $valorcampo = trim(pg_result($result3,$k,$w));
+            $valorcampo = trim(pg_fetch_result($result3,$k,$w));
             if($tipocampo=="varchar" || $tipocampo=="bpchar" || $tipocampo=="text" || $tipocampo=="date"){
              if($valorcampo!=""){
               $aspas = "'";
@@ -294,7 +294,7 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
          for($w=0;$w<$ncampos;$w++){
           $nomecampo = trim(pg_field_name($result,$w));
           $tipocampo = trim(pg_field_type($result,$w));
-          $valorcampo = trim(pg_result($result,$r,$w));
+          $valorcampo = trim(pg_fetch_result($result,$r,$w));
           if($tipocampo=="varchar" || $tipocampo=="bpchar" || $tipocampo=="text" || $tipocampo=="date"){
            if($valorcampo!=""){
             $aspas = "'";
@@ -338,7 +338,7 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
           for($w=0;$w<$ncampos2;$w++){
            $nomecampo = trim(pg_field_name($result2,$w));
            $tipocampo = trim(pg_field_type($result2,$w));
-           $valorcampo = trim(pg_result($result2,0,$w));
+           $valorcampo = trim(pg_fetch_result($result2,0,$w));
            if($tipocampo=="varchar" || $tipocampo=="bpchar" || $tipocampo=="text" || $tipocampo=="date"){
             if($valorcampo!=""){
              $aspas = "'";
@@ -377,7 +377,7 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
                   WHERE ed56_i_codigo = $cod_alunocurso
                  ";
          $result3 = db_query($sql3);
-         $cod_curso = pg_result($result3,0,'ed31_i_curso');
+         $cod_curso = pg_fetch_result($result3,0,'ed31_i_curso');
          $sql4 = "SELECT * FROM historico WHERE ed61_i_aluno = $cod_aluno AND ed61_i_curso = $cod_curso";
          $result4 = db_query($sql4);
          $linhas4 = pg_num_rows($result4);
@@ -404,8 +404,8 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
           $ncampos5 = pg_num_fields($result5);
           if($linhas5>0){
            for($k=0;$k<$linhas5;$k++){
-            $cod_histmpsdisc = pg_result($result5,$k,'ed65_i_codigo');
-            $tipotabela = pg_result($result5,$k,'nametabela');
+            $cod_histmpsdisc = pg_fetch_result($result5,$k,'ed65_i_codigo');
+            $tipotabela = pg_fetch_result($result5,$k,'nametabela');
             $nametabela = trim($tipotabela)=="H"?"histmpsdisc":"histmpsdiscfora";
             $campochave = trim($tipotabela)=="H"?"ed65_i_codigo":"ed100_i_codigo";
             if($cod_histmpsdisc>=$iniciosequencia && $cod_histmpsdisc<=$finalsequencia){
@@ -419,7 +419,7 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
             for($w=1;$w<$ncampos5;$w++){
              $nomecampo = trim(pg_field_name($result5,$w));
              $tipocampo = trim(pg_field_type($result5,$w));
-             $valorcampo = trim(pg_result($result5,$k,$w));
+             $valorcampo = trim(pg_fetch_result($result5,$k,$w));
              if($tipotabela=="HF"){
               $nomecampo = str_replace("ed65","ed100",$nomecampo);
              }
@@ -466,7 +466,7 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
           $ncampos5 = pg_num_fields($result5);
           if($linhas5>0){
            for($k=0;$k<$linhas5;$k++){
-            $cod_historicomps = pg_result($result5,$k,'ed62_i_codigo');
+            $cod_historicomps = pg_fetch_result($result5,$k,'ed62_i_codigo');
             if($cod_historicomps>=$iniciosequencia && $cod_historicomps<=$finalsequencia){
              $delete5 = "DELETE FROM historicomps WHERE ed62_i_codigo = $cod_historicomps;";
              system("echo \"$delete5\" >> ".$destino);
@@ -478,7 +478,7 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
             for($w=0;$w<$ncampos5;$w++){
              $nomecampo = trim(pg_field_name($result5,$w));
              $tipocampo = trim(pg_field_type($result5,$w));
-             $valorcampo = trim(pg_result($result5,$k,$w));
+             $valorcampo = trim(pg_fetch_result($result5,$k,$w));
              if($tipocampo=="varchar" || $tipocampo=="bpchar" || $tipocampo=="text" || $tipocampo=="date"){
               if($valorcampo!=""){
                $aspas = "'";
@@ -519,7 +519,7 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
           $ncampos5 = pg_num_fields($result5);
           if($linhas5>0){
            for($k=0;$k<$linhas5;$k++){
-            $cod_historicompsfora = pg_result($result5,$k,'ed99_i_codigo');
+            $cod_historicompsfora = pg_fetch_result($result5,$k,'ed99_i_codigo');
             if($cod_historicompsfora>=$iniciosequencia && $cod_historicompsfora<=$finalsequencia){
              $delete5 = "DELETE FROM historicompsfora WHERE ed99_i_codigo = $cod_historicompsfora;";
              system("echo \"$delete5\" >> ".$destino);
@@ -531,7 +531,7 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
             for($w=0;$w<$ncampos5;$w++){
              $nomecampo = trim(pg_field_name($result5,$w));
              $tipocampo = trim(pg_field_type($result5,$w));
-             $valorcampo = trim(pg_result($result5,$k,$w));
+             $valorcampo = trim(pg_fetch_result($result5,$k,$w));
              if($tipocampo=="varchar" || $tipocampo=="bpchar" || $tipocampo=="text" || $tipocampo=="date"){
               if($valorcampo!=""){
                $aspas = "'";
@@ -571,7 +571,7 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
           $ncampos5 = pg_num_fields($result5);
           if($linhas5>0){
            for($k=0;$k<$linhas5;$k++){
-            $cod_historico = pg_result($result5,$k,'ed61_i_codigo');
+            $cod_historico = pg_fetch_result($result5,$k,'ed61_i_codigo');
             $sql_ver = "SELECT ed61_i_codigo as nada
                         FROM historico
                          inner join historicomps on ed62_i_historico = ed61_i_codigo
@@ -593,7 +593,7 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
             for($w=0;$w<$ncampos5;$w++){
              $nomecampo = trim(pg_field_name($result5,$w));
              $tipocampo = trim(pg_field_type($result5,$w));
-             $valorcampo = trim(pg_result($result5,$k,$w));
+             $valorcampo = trim(pg_fetch_result($result5,$k,$w));
              if($tipocampo=="varchar" || $tipocampo=="bpchar" || $tipocampo=="text" || $tipocampo=="date"){
               if($valorcampo!=""){
                $aspas = "'";
@@ -693,7 +693,7 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
         $sep = "";
         for($y=0;$y<$ncampos;$y++){
          $tipocampo = trim(pg_field_type($result2,$y));
-         $valorcampo = trim(pg_result($result2,$r,$y));
+         $valorcampo = trim(pg_fetch_result($result2,$r,$y));
          if($tipocampo=="varchar" || $tipocampo=="bpchar" || $tipocampo=="text" || $tipocampo=="date"){
           if($valorcampo!=""){
            $aspas = "'";
@@ -731,9 +731,9 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
       system("echo \"--ATUALIZANDO TRANSFERÊNCIAS\">> $destino");
       system("echo \"--\">> $destino");
       for($q=0;$q<$linhas_tr;$q++){
-       $cod_transflocal = pg_result($result_tr,$q,'ed131_i_codigo');
-       $cod_transfrede = pg_result($result_tr,$q,'ed131_i_transfrede');
-       $cod_alunocurso = pg_result($result_tr,$q,'ed131_i_alunocurso');
+       $cod_transflocal = pg_fetch_result($result_tr,$q,'ed131_i_codigo');
+       $cod_transfrede = pg_fetch_result($result_tr,$q,'ed131_i_transfrede');
+       $cod_alunocurso = pg_fetch_result($result_tr,$q,'ed131_i_alunocurso');
        $update4 = "UPDATE transfescolarede SET ed103_c_situacao = 'F' WHERE ed103_i_codigo = $cod_transfrede;";
        system("echo \"$update4\" >> ".$destino);
        $update5 = "UPDATE transflocal SET ed131_c_situacao = 'F' WHERE ed131_i_codigo = $cod_transflocal;";
@@ -752,8 +752,8 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
      $linhas_tl = pg_num_rows($result_tl);
      if($linhas_tl>0){
       for($q=0;$q<$linhas_tl;$q++){
-       $codescoladestino = pg_result($result_tl,$q,'codescoladestino');
-       $cod_alcurso = pg_result($result_tl,$q,'cod_alcurso');
+       $codescoladestino = pg_fetch_result($result_tl,$q,'codescoladestino');
+       $cod_alcurso = pg_fetch_result($result_tl,$q,'cod_alcurso');
        $update6 = "UPDATE alunocurso SET ed56_i_escola = $codescoladestino, ed56_c_situacao = 'TRANSFERIDO REDE' WHERE ed56_i_codigo = $cod_alcurso;";
        system("echo \"$update6\" >> ".$destino);
        db_query("UPDATE alunocurso SET ed56_i_escola = $codescoladestino, ed56_c_situacao = 'TRANSFERIDO REDE' WHERE ed56_i_codigo = $cod_alcurso");
@@ -780,12 +780,12 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
      if($linhas3>0){
       //pega codigo do perfil eduescolalocal
       $result4 = db_query("select id_usuario from db_usuarios where trim(login) = 'eduescolalocal'");
-      $perfil_local = pg_result($result4,0,'id_usuario');
+      $perfil_local = pg_fetch_result($result4,0,'id_usuario');
       //pega codigo do perfil edubloqueado
       $result5 = db_query("select id_usuario from db_usuarios where trim(login) = 'edubloqueado'");
-      $perfil_bloq = pg_result($result5,0,'id_usuario');
+      $perfil_bloq = pg_fetch_result($result5,0,'id_usuario');
       for($d=0;$d<$linhas3;$d++){
-       $cod_usu = pg_result($result3,$d,'cod_usuarios');
+       $cod_usu = pg_fetch_result($result3,$d,'cod_usuarios');
        $update_perfil = db_query("UPDATE db_permherda SET id_perfil = $perfil_bloq
                                  WHERE id_usuario = $cod_usu
                                  AND id_perfil = $perfil_local
@@ -801,7 +801,7 @@ $ed18_c_nome = db_getsession("DB_nomedepto");
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

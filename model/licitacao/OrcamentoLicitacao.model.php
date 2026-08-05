@@ -32,11 +32,6 @@
 class OrcamentoLicitacao
 {
     /**
-     * @var licitacao
-     */
-    private $oLicitacao;
-
-    /**
      * @var int
      */
     private $iCodigoItem;
@@ -56,9 +51,8 @@ class OrcamentoLicitacao
      *
      * @param licitacao $oLicitacao Licitação para os quais os valores serão buscados.
      */
-    public function __construct(licitacao $oLicitacao)
+    public function __construct(private readonly licitacao $oLicitacao)
     {
-        $this->oLicitacao = $oLicitacao;
     }
 
     /**
@@ -110,7 +104,7 @@ class OrcamentoLicitacao
      */
     private function montaWhere()
     {
-        $aWhereLicitacao = array();
+        $aWhereLicitacao = [];
         $aWhereLicitacao[] = " l21_codliclicita = {$this->oLicitacao->getCodigo()} ";
 
         if ($this->iCodigoItem != null) {
@@ -332,7 +326,7 @@ class OrcamentoLicitacao
         }
 
         if (pg_num_rows($rsVencedor) == 0) {
-            return array($oStdFornecedor);
+            return [$oStdFornecedor];
         }
 
         $iLicitacao = $this->oLicitacao->getCodigo();
@@ -359,7 +353,7 @@ class OrcamentoLicitacao
         }
 
         $iLinhas = pg_num_rows($rsVencedor);
-        $aFornecedores = array();
+        $aFornecedores = [];
 
         for ($i = 0; $i < $iLinhas; $i++) {
             $oStdVencedor = db_utils::fieldsMemory($rsVencedor, $i);

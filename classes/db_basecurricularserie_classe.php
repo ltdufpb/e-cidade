@@ -1,36 +1,36 @@
-<?
+<?php
 //MODULO: secretariadeeducacao
 //CLASSE DA ENTIDADE basecurricularserie
 class cl_basecurricularserie { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed142_sequencial = 0; 
-   var $ed142_basecurricular = 0; 
-   var $ed142_serie = 0; 
+   public $ed142_sequencial = 0; 
+   public $ed142_basecurricular = 0; 
+   public $ed142_serie = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed142_sequencial = int4 = Código 
                  ed142_basecurricular = int4 = Base 
                  ed142_serie = int4 = Etapa 
                  ";
                  
    //funcao construtor da classe 
-   function cl_basecurricularserie() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("basecurricularserie"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -82,10 +82,10 @@ class cl_basecurricularserie {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed142_sequencial = pg_result($result,0,0); 
+       $this->ed142_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from basecurricularserie_ed142_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed142_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed142_sequencial)){
          $this->erro_sql = " Campo ed142_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -117,7 +117,7 @@ class cl_basecurricularserie {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Etapa da Base ($this->ed142_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Etapa da Base já Cadastrado";
@@ -146,12 +146,12 @@ class cl_basecurricularserie {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,22352,'$this->ed142_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,4027,22352,'','".AddSlashes(pg_result($resaco,0,'ed142_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,4027,22353,'','".AddSlashes(pg_result($resaco,0,'ed142_basecurricular'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,4027,22354,'','".AddSlashes(pg_result($resaco,0,'ed142_serie'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,4027,22352,'','".AddSlashes(pg_fetch_result($resaco,0,'ed142_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,4027,22353,'','".AddSlashes(pg_fetch_result($resaco,0,'ed142_basecurricular'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,4027,22354,'','".AddSlashes(pg_fetch_result($resaco,0,'ed142_serie'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -161,10 +161,10 @@ class cl_basecurricularserie {
       $this->atualizacampos();
      $sql = " update basecurricularserie set ";
      $virgula = "";
-     if(trim($this->ed142_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed142_sequencial"])){ 
+     if(trim((string) $this->ed142_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed142_sequencial"])){ 
        $sql  .= $virgula." ed142_sequencial = $this->ed142_sequencial ";
        $virgula = ",";
-       if(trim($this->ed142_sequencial) == null ){ 
+       if(trim((string) $this->ed142_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed142_sequencial";
          $this->erro_banco = "";
@@ -174,10 +174,10 @@ class cl_basecurricularserie {
          return false;
        }
      }
-     if(trim($this->ed142_basecurricular)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed142_basecurricular"])){ 
+     if(trim((string) $this->ed142_basecurricular)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed142_basecurricular"])){ 
        $sql  .= $virgula." ed142_basecurricular = $this->ed142_basecurricular ";
        $virgula = ",";
-       if(trim($this->ed142_basecurricular) == null ){ 
+       if(trim((string) $this->ed142_basecurricular) == null ){ 
          $this->erro_sql = " Campo Base não informado.";
          $this->erro_campo = "ed142_basecurricular";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_basecurricularserie {
          return false;
        }
      }
-     if(trim($this->ed142_serie)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed142_serie"])){ 
+     if(trim((string) $this->ed142_serie)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed142_serie"])){ 
        $sql  .= $virgula." ed142_serie = $this->ed142_serie ";
        $virgula = ",";
-       if(trim($this->ed142_serie) == null ){ 
+       if(trim((string) $this->ed142_serie) == null ){ 
          $this->erro_sql = " Campo Etapa não informado.";
          $this->erro_campo = "ed142_serie";
          $this->erro_banco = "";
@@ -214,15 +214,15 @@ class cl_basecurricularserie {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,22352,'$this->ed142_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed142_sequencial"]) || $this->ed142_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,4027,22352,'".AddSlashes(pg_result($resaco,$conresaco,'ed142_sequencial'))."','$this->ed142_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,4027,22352,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed142_sequencial'))."','$this->ed142_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed142_basecurricular"]) || $this->ed142_basecurricular != "")
-             $resac = db_query("insert into db_acount values($acount,4027,22353,'".AddSlashes(pg_result($resaco,$conresaco,'ed142_basecurricular'))."','$this->ed142_basecurricular',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,4027,22353,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed142_basecurricular'))."','$this->ed142_basecurricular',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed142_serie"]) || $this->ed142_serie != "")
-             $resac = db_query("insert into db_acount values($acount,4027,22354,'".AddSlashes(pg_result($resaco,$conresaco,'ed142_serie'))."','$this->ed142_serie',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,4027,22354,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed142_serie'))."','$this->ed142_serie',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -276,12 +276,12 @@ class cl_basecurricularserie {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,22352,'$ed142_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,4027,22352,'','".AddSlashes(pg_result($resaco,$iresaco,'ed142_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,4027,22353,'','".AddSlashes(pg_result($resaco,$iresaco,'ed142_basecurricular'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,4027,22354,'','".AddSlashes(pg_result($resaco,$iresaco,'ed142_serie'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,4027,22352,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed142_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,4027,22353,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed142_basecurricular'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,4027,22354,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed142_serie'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

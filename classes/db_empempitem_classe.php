@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE empempitem
 class cl_empempitem {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $e62_sequencial = 0;
-   var $e62_numemp = 0;
-   var $e62_item = 0;
-   var $e62_sequen = 0;
-   var $e62_quant = 0;
-   var $e62_vltot = 0;
-   var $e62_descr = null;
-   var $e62_codele = 0;
-   var $e62_vlrun = 0;
-   var $e62_servicoquantidade = 'f';
+   public $e62_sequencial = 0;
+   public $e62_numemp = 0;
+   public $e62_item = 0;
+   public $e62_sequen = 0;
+   public $e62_quant = 0;
+   public $e62_vltot = 0;
+   public $e62_descr = null;
+   public $e62_codele = 0;
+   public $e62_vlrun = 0;
+   public $e62_servicoquantidade = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  e62_sequencial = int4 = Código Sequencial
                  e62_numemp = int4 = Número
                  e62_item = int4 = Código do Material
@@ -66,10 +66,10 @@ class cl_empempitem {
                  e62_servicoquantidade = bool = Serviço Controlado por Quantidade
                  ";
    //funcao construtor da classe
-   function cl_empempitem() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empempitem");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -170,7 +170,7 @@ class cl_empempitem {
          $this->erro_status = "0";
          return false;
        }
-       $this->e62_sequencial = pg_result($result,0,0);
+       $this->e62_sequencial = pg_fetch_result($result,0,0);
      /*
      }else{
        $result = db_query("select last_value from empempitem_e62_sequencial_seq");
@@ -221,7 +221,7 @@ class cl_empempitem {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Ítens dos empenhos ($this->e62_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Ítens dos empenhos já Cadastrado";
@@ -245,19 +245,19 @@ class cl_empempitem {
      $resaco = $this->sql_record($this->sql_query_file($this->e62_numemp,$this->e62_sequen));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10848,'$this->e62_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,891,10848,'','".AddSlashes(pg_result($resaco,0,'e62_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,891,5666,'','".AddSlashes(pg_result($resaco,0,'e62_numemp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,891,5667,'','".AddSlashes(pg_result($resaco,0,'e62_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,891,5668,'','".AddSlashes(pg_result($resaco,0,'e62_sequen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,891,5669,'','".AddSlashes(pg_result($resaco,0,'e62_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,891,5670,'','".AddSlashes(pg_result($resaco,0,'e62_vltot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,891,5671,'','".AddSlashes(pg_result($resaco,0,'e62_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,891,5717,'','".AddSlashes(pg_result($resaco,0,'e62_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,891,7427,'','".AddSlashes(pg_result($resaco,0,'e62_vlrun'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,891,19699,'','".AddSlashes(pg_result($resaco,0,'e62_servicoquantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,891,10848,'','".AddSlashes(pg_fetch_result($resaco,0,'e62_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,891,5666,'','".AddSlashes(pg_fetch_result($resaco,0,'e62_numemp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,891,5667,'','".AddSlashes(pg_fetch_result($resaco,0,'e62_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,891,5668,'','".AddSlashes(pg_fetch_result($resaco,0,'e62_sequen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,891,5669,'','".AddSlashes(pg_fetch_result($resaco,0,'e62_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,891,5670,'','".AddSlashes(pg_fetch_result($resaco,0,'e62_vltot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,891,5671,'','".AddSlashes(pg_fetch_result($resaco,0,'e62_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,891,5717,'','".AddSlashes(pg_fetch_result($resaco,0,'e62_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,891,7427,'','".AddSlashes(pg_fetch_result($resaco,0,'e62_vlrun'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,891,19699,'','".AddSlashes(pg_fetch_result($resaco,0,'e62_servicoquantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -266,10 +266,10 @@ class cl_empempitem {
       $this->atualizacampos();
      $sql = " update empempitem set ";
      $virgula = "";
-     if(trim($this->e62_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_sequencial"])){
+     if(trim((string) $this->e62_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_sequencial"])){
        $sql  .= $virgula." e62_sequencial = $this->e62_sequencial ";
        $virgula = ",";
-       if(trim($this->e62_sequencial) == null ){
+       if(trim((string) $this->e62_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "e62_sequencial";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_empempitem {
          return false;
        }
      }
-     if(trim($this->e62_numemp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_numemp"])){
+     if(trim((string) $this->e62_numemp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_numemp"])){
        $sql  .= $virgula." e62_numemp = $this->e62_numemp ";
        $virgula = ",";
-       if(trim($this->e62_numemp) == null ){
+       if(trim((string) $this->e62_numemp) == null ){
          $this->erro_sql = " Campo Número nao Informado.";
          $this->erro_campo = "e62_numemp";
          $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_empempitem {
          return false;
        }
      }
-     if(trim($this->e62_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_item"])){
+     if(trim((string) $this->e62_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_item"])){
        $sql  .= $virgula." e62_item = $this->e62_item ";
        $virgula = ",";
-       if(trim($this->e62_item) == null ){
+       if(trim((string) $this->e62_item) == null ){
          $this->erro_sql = " Campo Código do Material nao Informado.";
          $this->erro_campo = "e62_item";
          $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_empempitem {
          return false;
        }
      }
-     if(trim($this->e62_sequen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_sequen"])){
+     if(trim((string) $this->e62_sequen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_sequen"])){
        $sql  .= $virgula." e62_sequen = $this->e62_sequen ";
        $virgula = ",";
-       if(trim($this->e62_sequen) == null ){
+       if(trim((string) $this->e62_sequen) == null ){
          $this->erro_sql = " Campo Sequencia nao Informado.";
          $this->erro_campo = "e62_sequen";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_empempitem {
          return false;
        }
      }
-     if(trim($this->e62_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_quant"])){
+     if(trim((string) $this->e62_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_quant"])){
        $sql  .= $virgula." e62_quant = $this->e62_quant ";
        $virgula = ",";
-       if(trim($this->e62_quant) == null ){
+       if(trim((string) $this->e62_quant) == null ){
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "e62_quant";
          $this->erro_banco = "";
@@ -331,10 +331,10 @@ class cl_empempitem {
          return false;
        }
      }
-     if(trim($this->e62_vltot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_vltot"])){
+     if(trim((string) $this->e62_vltot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_vltot"])){
        $sql  .= $virgula." e62_vltot = $this->e62_vltot ";
        $virgula = ",";
-       if(trim($this->e62_vltot) == null ){
+       if(trim((string) $this->e62_vltot) == null ){
          $this->erro_sql = " Campo Valor total nao Informado.";
          $this->erro_campo = "e62_vltot";
          $this->erro_banco = "";
@@ -344,14 +344,14 @@ class cl_empempitem {
          return false;
        }
      }
-     if(trim($this->e62_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_descr"])){
+     if(trim((string) $this->e62_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_descr"])){
        $sql  .= $virgula." e62_descr = '$this->e62_descr' ";
        $virgula = ",";
      }
-     if(trim($this->e62_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_codele"])){
+     if(trim((string) $this->e62_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_codele"])){
        $sql  .= $virgula." e62_codele = $this->e62_codele ";
        $virgula = ",";
-       if(trim($this->e62_codele) == null ){
+       if(trim((string) $this->e62_codele) == null ){
          $this->erro_sql = " Campo Código Elemento nao Informado.";
          $this->erro_campo = "e62_codele";
          $this->erro_banco = "";
@@ -361,10 +361,10 @@ class cl_empempitem {
          return false;
        }
      }
-     if(trim($this->e62_vlrun)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_vlrun"])){
+     if(trim((string) $this->e62_vlrun)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_vlrun"])){
        $sql  .= $virgula." e62_vlrun = $this->e62_vlrun ";
        $virgula = ",";
-       if(trim($this->e62_vlrun) == null ){
+       if(trim((string) $this->e62_vlrun) == null ){
          $this->erro_sql = " Campo Valor Unitário nao Informado.";
          $this->erro_campo = "e62_vlrun";
          $this->erro_banco = "";
@@ -374,7 +374,7 @@ class cl_empempitem {
          return false;
        }
      }
-     if(trim($this->e62_servicoquantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_servicoquantidade"])){
+     if(trim((string) $this->e62_servicoquantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e62_servicoquantidade"])){
        $sql  .= $virgula." e62_servicoquantidade = '$this->e62_servicoquantidade' ";
        $virgula = ",";
      }
@@ -389,29 +389,29 @@ class cl_empempitem {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10848,'$this->e62_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e62_sequencial"]) || $this->e62_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,891,10848,'".AddSlashes(pg_result($resaco,$conresaco,'e62_sequencial'))."','$this->e62_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,891,10848,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e62_sequencial'))."','$this->e62_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e62_numemp"]) || $this->e62_numemp != "")
-           $resac = db_query("insert into db_acount values($acount,891,5666,'".AddSlashes(pg_result($resaco,$conresaco,'e62_numemp'))."','$this->e62_numemp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,891,5666,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e62_numemp'))."','$this->e62_numemp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e62_item"]) || $this->e62_item != "")
-           $resac = db_query("insert into db_acount values($acount,891,5667,'".AddSlashes(pg_result($resaco,$conresaco,'e62_item'))."','$this->e62_item',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,891,5667,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e62_item'))."','$this->e62_item',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e62_sequen"]) || $this->e62_sequen != "")
-           $resac = db_query("insert into db_acount values($acount,891,5668,'".AddSlashes(pg_result($resaco,$conresaco,'e62_sequen'))."','$this->e62_sequen',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,891,5668,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e62_sequen'))."','$this->e62_sequen',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e62_quant"]) || $this->e62_quant != "")
-           $resac = db_query("insert into db_acount values($acount,891,5669,'".AddSlashes(pg_result($resaco,$conresaco,'e62_quant'))."','$this->e62_quant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,891,5669,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e62_quant'))."','$this->e62_quant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e62_vltot"]) || $this->e62_vltot != "")
-           $resac = db_query("insert into db_acount values($acount,891,5670,'".AddSlashes(pg_result($resaco,$conresaco,'e62_vltot'))."','$this->e62_vltot',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,891,5670,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e62_vltot'))."','$this->e62_vltot',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e62_descr"]) || $this->e62_descr != "")
-           $resac = db_query("insert into db_acount values($acount,891,5671,'".AddSlashes(pg_result($resaco,$conresaco,'e62_descr'))."','$this->e62_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,891,5671,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e62_descr'))."','$this->e62_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e62_codele"]) || $this->e62_codele != "")
-           $resac = db_query("insert into db_acount values($acount,891,5717,'".AddSlashes(pg_result($resaco,$conresaco,'e62_codele'))."','$this->e62_codele',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,891,5717,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e62_codele'))."','$this->e62_codele',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e62_vlrun"]) || $this->e62_vlrun != "")
-           $resac = db_query("insert into db_acount values($acount,891,7427,'".AddSlashes(pg_result($resaco,$conresaco,'e62_vlrun'))."','$this->e62_vlrun',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,891,7427,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e62_vlrun'))."','$this->e62_vlrun',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e62_servicoquantidade"]) || $this->e62_servicoquantidade != "")
-           $resac = db_query("insert into db_acount values($acount,891,19699,'".AddSlashes(pg_result($resaco,$conresaco,'e62_servicoquantidade'))."','$this->e62_servicoquantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,891,19699,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e62_servicoquantidade'))."','$this->e62_servicoquantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -456,19 +456,19 @@ class cl_empempitem {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10848,'$this->e62_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,891,10848,'','".AddSlashes(pg_result($resaco,$iresaco,'e62_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,891,5666,'','".AddSlashes(pg_result($resaco,$iresaco,'e62_numemp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,891,5667,'','".AddSlashes(pg_result($resaco,$iresaco,'e62_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,891,5668,'','".AddSlashes(pg_result($resaco,$iresaco,'e62_sequen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,891,5669,'','".AddSlashes(pg_result($resaco,$iresaco,'e62_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,891,5670,'','".AddSlashes(pg_result($resaco,$iresaco,'e62_vltot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,891,5671,'','".AddSlashes(pg_result($resaco,$iresaco,'e62_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,891,5717,'','".AddSlashes(pg_result($resaco,$iresaco,'e62_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,891,7427,'','".AddSlashes(pg_result($resaco,$iresaco,'e62_vlrun'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,891,19699,'','".AddSlashes(pg_result($resaco,$iresaco,'e62_servicoquantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,891,10848,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e62_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,891,5666,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e62_numemp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,891,5667,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e62_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,891,5668,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e62_sequen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,891,5669,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e62_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,891,5670,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e62_vltot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,891,5671,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e62_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,891,5717,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e62_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,891,7427,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e62_vlrun'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,891,19699,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e62_servicoquantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from empempitem
@@ -534,7 +534,7 @@ class cl_empempitem {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:empempitem";
@@ -549,7 +549,7 @@ class cl_empempitem {
    function sql_query ( $e62_numemp=null,$e62_sequen=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -589,7 +589,7 @@ class cl_empempitem {
    $sql .= $sql2;
          if($ordem != null ){
          $sql .= " order by ";
-         $campos_sql = split("#",$ordem);
+         $campos_sql = preg_split("#\\##m",(string) $ordem);
          $virgula = "";
          for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -624,7 +624,7 @@ class cl_empempitem {
          $sql .="group by e55_codele";
          if($ordem != null ){
          $sql .= " order by ";
-         $campos_sql = split("#",$ordem);
+         $campos_sql = preg_split("#\\##m",(string) $ordem);
          $virgula = "";
          for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -636,7 +636,7 @@ class cl_empempitem {
            function sql_query_file ( $e62_numemp=null,$e62_sequen=null,$campos="*",$ordem=null,$dbwhere=""){
            $sql = "select ";
            if($campos != "*" ){
-           $campos_sql = split("#",$campos);
+           $campos_sql = preg_split("#\\##m",$campos);
            $virgula = "";
              for($i=0;$i<sizeof($campos_sql);$i++){
              $sql .= $virgula.$campos_sql[$i];
@@ -665,7 +665,7 @@ class cl_empempitem {
    $sql .= $sql2;
    if($ordem != null ){
      $sql .= " order by ";
-     $campos_sql = split("#",$ordem);
+     $campos_sql = preg_split("#\\##m",(string) $ordem);
      $virgula = "";
      for($i=0;$i<sizeof($campos_sql);$i++){
        $sql .= $virgula.$campos_sql[$i];
@@ -677,7 +677,7 @@ class cl_empempitem {
    function sql_query_imprimerel ( $e62_numemp=null,$e62_sequen=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -712,7 +712,7 @@ class cl_empempitem {
    $sql .= $sql2;
          if($ordem != null ){
          $sql .= " order by ";
-         $campos_sql = split("#",$ordem);
+         $campos_sql = preg_split("#\\##m",(string) $ordem);
          $virgula = "";
          for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -726,7 +726,7 @@ class cl_empempitem {
 
          $sql = "select ";
          if($campos != "*" ){
-         $campos_sql = split("#",$campos);
+         $campos_sql = preg_split("#\\##m",$campos);
          $virgula = "";
          for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -759,7 +759,7 @@ class cl_empempitem {
    $sql .= $sql2;
    if($ordem != null ){
    $sql .= " order by ";
-   $campos_sql = split("#",$ordem);
+   $campos_sql = preg_split("#\\##m",(string) $ordem);
    $virgula = "";
    for($i=0;$i<sizeof($campos_sql);$i++){
    $sql .= $virgula.$campos_sql[$i];
@@ -773,7 +773,7 @@ class cl_empempitem {
 
    $sql = "select ";
    if($campos != "*" ){
-   $campos_sql = split("#",$campos);
+   $campos_sql = preg_split("#\\##m",$campos);
    $virgula = "";
    for($i=0;$i<sizeof($campos_sql);$i++){
    $sql .= $virgula.$campos_sql[$i];
@@ -806,7 +806,7 @@ class cl_empempitem {
    $sql .= $sql2;
    if($ordem != null ){
    $sql .= " order by ";
-   $campos_sql = split("#",$ordem);
+   $campos_sql = preg_split("#\\##m",(string) $ordem);
    $virgula = "";
    for($i=0;$i<sizeof($campos_sql);$i++){
    $sql .= $virgula.$campos_sql[$i];

@@ -218,7 +218,7 @@ class Dependente
         }
         $state = pg_fetch_assoc($rsDependente, 0);
 
-        return self::fromState(empty($state) ? array() : $state);
+        return self::fromState(empty($state) ? [] : $state);
     }
 
     public static function findByServidorMatriculaDependenteCPF($matriculaServidor, $cpfDependente)
@@ -232,7 +232,7 @@ class Dependente
         $rsDependente = $DaoDependente->sql_record($sSqlDependente);
         $state = pg_fetch_assoc($rsDependente, 0);
 
-        return self::fromState(empty($state) ? array() : $state);
+        return self::fromState(empty($state) ? [] : $state);
     }
 
     /**
@@ -421,7 +421,7 @@ class Dependente
      */
     public function toArray()
     {
-        return array(
+        return [
             'codigo' => $this->getCodigo(),
             'matricula' => $this->getMatricula(),
             'nome' => $this->getNome(),
@@ -434,7 +434,7 @@ class Dependente
             'finsPrevidenciarios' => $this->isFinsPrevidenciarios(),
             'sexo' => $this->getSexo(),
             'instituicao' => $this->getInstituicao()
-        );
+        ];
     }
 
     /**
@@ -583,24 +583,24 @@ class Dependente
         if (empty($this->getCodigo())) {
             $rhdepend->incluir(null);
             if ($rhdepend->erro_status != "1") {
-                throw new \Exception($rhdepend->erro_msg);
+                throw new Exception($rhdepend->erro_msg);
             }
             $this->setCodigo($rhdepend->rh31_codigo);
             $rhdependeplug->dp01_rhdepend = $this->getCodigo();
             $rhdependeplug->incluir();
             if ($rhdependeplug->erro_status != "1") {
-                throw new \Exception($rhdependeplug->erro_msg);
+                throw new Exception($rhdependeplug->erro_msg);
             }
         } else {
             $rhdepend->rh31_codigo = $this->getCodigo();
             $rhdepend->alterar($this->getCodigo());
             if ($rhdepend->erro_status != "1") {
-                throw new \Exception($rhdepend->erro_msg);
+                throw new Exception($rhdepend->erro_msg);
             }
             $rhdependeplug->dp01_rhdepend = $this->getCodigo();
             $rhdependeplug->alterar();
             if ($rhdepend->erro_status != "1") {
-                throw new \Exception($rhdependeplug->erro_msg);
+                throw new Exception($rhdependeplug->erro_msg);
             }
         }
 
@@ -616,7 +616,7 @@ class Dependente
         $rhdepend = new cl_rhdepend();
         $rhdepend->excluir($this->getCodigo());
         if ($rhdepend->erro_status == 0) {
-            throw new \Exception($rhdepend->erro_msg);
+            throw new Exception($rhdepend->erro_msg);
         }
     }
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: recursoshumanos
 //CLASSE DA ENTIDADE assentamentofimcontrato
 class cl_assentamentofimcontrato { 
@@ -26,7 +26,7 @@ class cl_assentamentofimcontrato {
                  h15_assentamento = int4 = Assentamento 
                  ";
    //funcao construtor da classe 
-   function cl_assentamentofimcontrato() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("assentamentofimcontrato"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -38,7 +38,7 @@ class InformacaoComplementarLancamentoRepositorio extends Repositorio
      * @return bool|InformacaoComplementarLancamento
      * @throws Exception
      */
-    public static function find($key, $columns = array('*'))
+    public static function find($key, $columns = ['*'])
     {
         $dao = new cl_orcparamseqinfocomplementarlancamento();
         $sql = $dao->sql_query($key, implode(', ', $columns));
@@ -107,7 +107,7 @@ class InformacaoComplementarLancamentoRepositorio extends Repositorio
      * @return InformacaoComplementarLancamento[]
      * @throws Exception
      */
-    public function get($columns = array('*'))
+    public function get($columns = ['*'])
     {
         $dao = new cl_orcparamseqinfocomplementarlancamento();
 
@@ -127,7 +127,7 @@ class InformacaoComplementarLancamentoRepositorio extends Repositorio
             throw new Exception("Não foi possível buscar a configuração das linhas.\nContate o suporte.");
         }
 
-        $configuracoes = array();
+        $configuracoes = [];
 
         if (pg_num_rows($resultado) === 0) {
             return $configuracoes;

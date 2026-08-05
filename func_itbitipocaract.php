@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itbitipocaract_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clitbitipocaract = new cl_itbitipocaract;
 $clitbitipocaract->rotulo->label("it31_sequencial");
 $clitbitipocaract->rotulo->label("it31_descricao");
@@ -54,7 +55,7 @@ $clitbitipocaract->rotulo->label("it31_descricao");
               <?=$Lit31_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("it31_sequencial",10,$Iit31_sequencial,true,"text",4,"","chave_it31_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clitbitipocaract->rotulo->label("it31_descricao");
               <?=$Lit31_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("it31_descricao",40,$Iit31_descricao,true,"text",4,"","chave_it31_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clitbitipocaract->rotulo->label("it31_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbitipocaract.php")==true){
@@ -122,12 +123,12 @@ $clitbitipocaract->rotulo->label("it31_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

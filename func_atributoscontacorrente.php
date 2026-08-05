@@ -30,7 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 ?>
 <html>
@@ -91,12 +92,12 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
     ?>
     <script>
     </script>
-    <?
+    <?php 
 }
 ?>
 <script type="text/javascript">

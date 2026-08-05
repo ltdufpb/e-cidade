@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,8 @@ include(modification("classes/db_far_listamodelo_classe.php"));
 include(modification("classes/db_far_modelolivro_classe.php"));
 include(modification("classes/db_far_listacontrolado_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clfar_listamodelo = new cl_far_listamodelo;
 $clfar_modelolivro = new cl_far_modelolivro;
 $clfar_listacontrolado = new cl_far_listacontrolado;
@@ -58,7 +59,7 @@ $clfar_modelolivro->rotulo->label("fa16_c_nome");
               <?=$Lfa17_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("fa17_i_codigo",10,$Ifa17_i_codigo,true,"text",4,"","chave_fa17_i_codigo");
 		       ?>
             </td>
@@ -68,7 +69,7 @@ $clfar_modelolivro->rotulo->label("fa16_c_nome");
               <?=$Lfa16_c_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("fa16_c_nome",20,$Ifa16_c_nome,true,"text",4,"","chave_fa16_c_nome");
 		       ?>
             </td>
@@ -86,7 +87,7 @@ $clfar_modelolivro->rotulo->label("fa16_c_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_far_listamodelo.php")==true){
@@ -126,12 +127,12 @@ $clfar_modelolivro->rotulo->label("fa16_c_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_censoetapaturmacenso_classe.php"));
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcensoetapaturmacenso = new cl_censoetapaturmacenso;
 $clcensoetapaturmacenso->rotulo->label("ed134_codigo");
 $clcensoetapaturmacenso->rotulo->label("ed134_codigo");
@@ -50,11 +51,11 @@ $clcensoetapaturmacenso->rotulo->label("ed134_codigo");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Led134_codigo?></label></td>
-          <td><? db_input("ed134_codigo",10,$Ied134_codigo,true,"text",4,"","chave_ed134_codigo"); ?></td>
+          <td><?php  db_input("ed134_codigo",10,$Ied134_codigo,true,"text",4,"","chave_ed134_codigo"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Led134_codigo?></label></td>
-          <td><? db_input("ed134_codigo",10,$Ied134_codigo,true,"text",4,"","chave_ed134_codigo");?></td>
+          <td><?php  db_input("ed134_codigo",10,$Ied134_codigo,true,"text",4,"","chave_ed134_codigo");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,7 +63,7 @@ $clcensoetapaturmacenso->rotulo->label("ed134_codigo");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_censoetapaturmacenso.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_censoetapaturmacenso.php")==true){
@@ -104,12 +105,12 @@ $clcensoetapaturmacenso->rotulo->label("ed134_codigo");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

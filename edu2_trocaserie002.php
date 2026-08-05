@@ -92,7 +92,7 @@ if($cltrocaserie->numrows==0){?>
    </td>
   </tr>
  </table>
- <?
+ <?php 
  exit;
 }
 $pdf = new PDF();

@@ -2,12 +2,10 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
-use ECidade\RecursosHumanos\ESocial\Entity\Servidor;
-use ECidade\RecursosHumanos\ESocial\Service\ServidorService;
-use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
+use Override;
+use BusinessException;
+use DBException;
 use stdClass;
-use CgmJuridico;
-use DBPessoal;
 
 /**
 <<<<<<< HEAD
@@ -23,9 +21,10 @@ class TributoTrabalhistaFormatter extends Formatter
     /**
      * @param  array $dados
      * @return mixed|stdClass[]
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
+    #[Override]
     public function formatar($dados)
     {
         $dadosProcessoTrabalhista = null;

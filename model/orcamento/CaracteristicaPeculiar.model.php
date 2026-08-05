@@ -101,7 +101,7 @@ class CaracteristicaPeculiar extends DBEstruturaValor  {
         unset($oDadosCarPeculiar);
       }
     }
-    $this->tipo = __CLASS__;
+    $this->tipo = self::class;
   }
 
 
@@ -111,6 +111,7 @@ class CaracteristicaPeculiar extends DBEstruturaValor  {
    *
    * @return CaracteristicaPeculiar
    */
+  #[Override]
   function salvar() {
     
     if (!db_utils::inTransaction()) {
@@ -151,6 +152,7 @@ class CaracteristicaPeculiar extends DBEstruturaValor  {
    * 
    * @return boolean
    */
+  #[Override]
   function remover() {
     
     $lRetornoExcluir = false;

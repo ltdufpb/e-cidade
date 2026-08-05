@@ -15,7 +15,7 @@ class BuscaDadosAlunos2016
     /**
      * @var array
      */
-    protected $aDados = array();
+    protected $aDados = [];
 
     /**
      * Busca os dados dos alunos de acordo com o ano do CENSO, Escola e alunos anteriores ou posteriores a data do CENSO
@@ -28,9 +28,9 @@ class BuscaDadosAlunos2016
      */
     public function buscarAlunos(Censo $oCenso, Escola $oEscola, $aCondicoes, $mergeDados = false)
     {
-        $aSituacoesMatriculaNaoPermitidas = array('MATRICULA INDEVIDA', 'MATRICULA INDEFERIDA');
+        $aSituacoesMatriculaNaoPermitidas = ['MATRICULA INDEVIDA', 'MATRICULA INDEFERIDA'];
 
-        $aWhere = array();
+        $aWhere = [];
         $aWhere[] = " ed60_c_situacao not in ('" . implode("', '", $aSituacoesMatriculaNaoPermitidas) . "') ";
         $aWhere[] = " escola.ed18_i_codigo  = {$oEscola->getCodigo()}";
         $aWhere[] = " calendario.ed52_i_ano = {$oCenso->getAno()} ";
@@ -39,7 +39,7 @@ class BuscaDadosAlunos2016
         $aWhere = array_merge($aWhere, $aCondicoes);
 
         $oDaoMatricula = new \cl_matricula();
-        $sSqlMatricula = $oDaoMatricula->sql_query_excportacao_alunos_censo($aWhere, array('codigo_turma_escola'));
+        $sSqlMatricula = $oDaoMatricula->sql_query_excportacao_alunos_censo($aWhere, ['codigo_turma_escola']);
         $rsMatricula = db_query($sSqlMatricula);
 
         if (!$rsMatricula) {
@@ -62,7 +62,7 @@ class BuscaDadosAlunos2016
      */
     public function identificaAlunosComTrocaDeTurma(Censo $censo, Escola $escola)
     {
-        $where = array();
+        $where = [];
         $where[] = "ed221_c_origem = 'S'";
         $where[] = "calendario.ed52_i_ano = {$censo->getAno()}";
         $where[] = "turma.ed57_i_escola  = {$escola->getCodigo()}";
@@ -79,7 +79,7 @@ class BuscaDadosAlunos2016
         }
 
         if (pg_num_rows($rs) == 0) {
-            return array();
+            return [];
         }
 
         return pg_fetch_all_columns($rs, 0);
@@ -117,7 +117,7 @@ class BuscaDadosAlunos2016
         }
 
         if (pg_num_rows($rs) == 0) {
-            return array();
+            return [];
         }
 
         return pg_fetch_all_columns($rs, 0);
@@ -129,7 +129,7 @@ class BuscaDadosAlunos2016
      * @param array $condicoes
      * @throws Exception
      */
-    public function buscarAlunosTrocaTurma(Censo $censo, Escola $escola, $condicoes = array())
+    public function buscarAlunosTrocaTurma(Censo $censo, Escola $escola, $condicoes = [])
     {
         if (empty($condicoes)) {
             return;
@@ -141,11 +141,11 @@ class BuscaDadosAlunos2016
         }
 
         $date = $censo->getDataCenso()->getDate();
-        $where = array(
+        $where = [
             "matricula.ed60_i_codigo in (" . implode(', ', $matriculas) . ")",
             "matricula.ed60_d_datamatricula <= '{$date}'",
             "(matricula.ed60_d_datasaida > '{$date}' or ed60_c_situacao = 'MATRICULADO')"
-        );
+        ];
 
         $this->buscarAlunos($censo, $escola, $where, true);
     }

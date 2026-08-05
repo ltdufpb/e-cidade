@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_solicitem_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsolicitem = new cl_solicitem;
 $clsolicitem->rotulo->label("pc11_codigo");
 $clsolicitem->rotulo->label("pc11_numero");
@@ -54,7 +55,7 @@ $clsolicitem->rotulo->label("pc11_numero");
               <?=$Lpc11_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc11_codigo",10,$Ipc11_codigo,true,"text",4,"","chave_pc11_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clsolicitem->rotulo->label("pc11_numero");
               <?=$Lpc11_numero?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc11_numero",10,$Ipc11_numero,true,"text",4,"","chave_pc11_numero");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clsolicitem->rotulo->label("pc11_numero");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_solicitem.php")==true){
@@ -118,12 +119,12 @@ $clsolicitem->rotulo->label("pc11_numero");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

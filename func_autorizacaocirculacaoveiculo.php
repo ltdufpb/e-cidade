@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_autorizacaocirculacaoveiculo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clautorizacaocirculacaoveiculo = new cl_autorizacaocirculacaoveiculo;
 $clautorizacaocirculacaoveiculo->rotulo->label("ve13_sequencial");
 $clautorizacaocirculacaoveiculo->rotulo->label("ve13_sequencial");
@@ -50,11 +51,11 @@ $clautorizacaocirculacaoveiculo->rotulo->label("ve13_sequencial");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lve13_sequencial?></label></td>
-          <td><? db_input("ve13_sequencial",10,$Ive13_sequencial,true,"text",4,"","chave_ve13_sequencial"); ?></td>
+          <td><?php  db_input("ve13_sequencial",10,$Ive13_sequencial,true,"text",4,"","chave_ve13_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lve13_sequencial?></label></td>
-          <td><? db_input("ve13_sequencial",10,$Ive13_sequencial,true,"text",4,"","chave_ve13_sequencial");?></td>
+          <td><?php  db_input("ve13_sequencial",10,$Ive13_sequencial,true,"text",4,"","chave_ve13_sequencial");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,7 +63,7 @@ $clautorizacaocirculacaoveiculo->rotulo->label("ve13_sequencial");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_autorizacaocirculacaoveiculo.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_autorizacaocirculacaoveiculo.php")==true){
@@ -104,12 +105,12 @@ $clautorizacaocirculacaoveiculo->rotulo->label("ve13_sequencial");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -73,7 +73,7 @@ if(isset($alterar)){
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <br>
    <center>
-    <?include(modification("forms/db_frmcgmdoc.php"));?>
+    <?php include(modification("forms/db_frmcgmdoc.php"));?>
    </center>
   </td>
  </tr>
@@ -83,7 +83,7 @@ if(isset($alterar)){
 <script>
 js_tabulacaoforms("form1","z02_i_pis",true,1,"z02_i_pis",true);
 </script>
-<?
+<?php 
 if(isset($incluir) || isset($alterar)){
  if($clcgmdoc->erro_status=="0"){
   $clcgmdoc->erro(true,false);

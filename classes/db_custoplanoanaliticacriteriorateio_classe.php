@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE custoplanoanaliticacriteriorateio
 class cl_custoplanoanaliticacriteriorateio {
   // cria variaveis de erro
-  var $rotulo     = null;
-  var $query_sql  = null;
-  var $numrows    = 0;
-  var $numrows_incluir = 0;
-  var $numrows_alterar = 0;
-  var $numrows_excluir = 0;
-  var $erro_status= null;
-  var $erro_sql   = null;
-  var $erro_banco = null;
-  var $erro_msg   = null;
-  var $erro_campo = null;
-  var $pagina_retorno = null;
+  public $rotulo     = null;
+  public $query_sql  = null;
+  public $numrows    = 0;
+  public $numrows_incluir = 0;
+  public $numrows_alterar = 0;
+  public $numrows_excluir = 0;
+  public $erro_status= null;
+  public $erro_sql   = null;
+  public $erro_banco = null;
+  public $erro_msg   = null;
+  public $erro_campo = null;
+  public $pagina_retorno = null;
   // cria variaveis do arquivo
-  var $cc07_sequencial = 0;
-  var $cc07_custocriteriorateio = 0;
-  var $cc07_custoplanoanalitica = 0;
-  var $cc07_quantidade = 0;
-  var $cc07_percentual = 0;
-  var $cc07_automatico = 'f';
+  public $cc07_sequencial = 0;
+  public $cc07_custocriteriorateio = 0;
+  public $cc07_custoplanoanalitica = 0;
+  public $cc07_quantidade = 0;
+  public $cc07_percentual = 0;
+  public $cc07_automatico = 'f';
   // cria propriedade com as variaveis do arquivo
-  var $campos = "
+  public $campos = "
                  cc07_sequencial = int4 = Sequencial 
                  cc07_custocriteriorateio = int4 = Custo critério rateio 
                  cc07_custoplanoanalitica = int4 = Custo plano analítico 
@@ -58,10 +58,10 @@ class cl_custoplanoanaliticacriteriorateio {
                  cc07_automatico = bool = Tipo do Rateio 
                  ";
   //funcao construtor da classe
-  function cl_custoplanoanaliticacriteriorateio() {
+  function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("custoplanoanaliticacriteriorateio");
-    $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+    $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
   }
   //funcao erro
   function erro($mostra,$retorna) {
@@ -143,10 +143,10 @@ class cl_custoplanoanaliticacriteriorateio {
         $this->erro_status = "0";
         return false;
       }
-      $this->cc07_sequencial = pg_result($result,0,0);
+      $this->cc07_sequencial = pg_fetch_result($result,0,0);
     }else{
       $result = db_query("select last_value from custocriterio_cc07_sequencial_seq");
-      if(($result != false) && (pg_result($result,0,0) < $cc07_sequencial)){
+      if(($result != false) && (pg_fetch_result($result,0,0) < $cc07_sequencial)){
         $this->erro_sql = " Campo cc07_sequencial maior que último número da sequencia.";
         $this->erro_banco = "Sequencia menor que este número.";
         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -184,7 +184,7 @@ class cl_custoplanoanaliticacriteriorateio {
     $result = db_query($sql);
     if($result==false){
       $this->erro_banco = str_replace("\n","",@pg_last_error());
-      if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+      if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
         $this->erro_sql   = "Custo dos critérios de planos ($this->cc07_sequencial) nao Incluído. Inclusao Abortada.";
         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
         $this->erro_banco = "Custo dos critérios de planos já Cadastrado";
@@ -208,15 +208,15 @@ class cl_custoplanoanaliticacriteriorateio {
     $resaco = $this->sql_record($this->sql_query_file($this->cc07_sequencial));
     if(($resaco!=false)||($this->numrows!=0)){
       $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-      $acount = pg_result($resac,0,0);
+      $acount = pg_fetch_result($resac,0,0);
       $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
       $resac = db_query("insert into db_acountkey values($acount,12578,'$this->cc07_sequencial','I')");
-      $resac = db_query("insert into db_acount values($acount,2196,12578,'','".AddSlashes(pg_result($resaco,0,'cc07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-      $resac = db_query("insert into db_acount values($acount,2196,12579,'','".AddSlashes(pg_result($resaco,0,'cc07_custocriteriorateio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-      $resac = db_query("insert into db_acount values($acount,2196,12580,'','".AddSlashes(pg_result($resaco,0,'cc07_custoplanoanalitica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-      $resac = db_query("insert into db_acount values($acount,2196,12581,'','".AddSlashes(pg_result($resaco,0,'cc07_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-      $resac = db_query("insert into db_acount values($acount,2196,12582,'','".AddSlashes(pg_result($resaco,0,'cc07_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-      $resac = db_query("insert into db_acount values($acount,2196,13420,'','".AddSlashes(pg_result($resaco,0,'cc07_automatico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+      $resac = db_query("insert into db_acount values($acount,2196,12578,'','".AddSlashes(pg_fetch_result($resaco,0,'cc07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+      $resac = db_query("insert into db_acount values($acount,2196,12579,'','".AddSlashes(pg_fetch_result($resaco,0,'cc07_custocriteriorateio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+      $resac = db_query("insert into db_acount values($acount,2196,12580,'','".AddSlashes(pg_fetch_result($resaco,0,'cc07_custoplanoanalitica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+      $resac = db_query("insert into db_acount values($acount,2196,12581,'','".AddSlashes(pg_fetch_result($resaco,0,'cc07_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+      $resac = db_query("insert into db_acount values($acount,2196,12582,'','".AddSlashes(pg_fetch_result($resaco,0,'cc07_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+      $resac = db_query("insert into db_acount values($acount,2196,13420,'','".AddSlashes(pg_fetch_result($resaco,0,'cc07_automatico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
     }
     return true;
   }
@@ -225,10 +225,10 @@ class cl_custoplanoanaliticacriteriorateio {
     $this->atualizacampos();
     $sql = " update custoplanoanaliticacriteriorateio set ";
     $virgula = "";
-    if(trim($this->cc07_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc07_sequencial"])){
+    if(trim((string) $this->cc07_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc07_sequencial"])){
       $sql  .= $virgula." cc07_sequencial = $this->cc07_sequencial ";
       $virgula = ",";
-      if(trim($this->cc07_sequencial) == null ){
+      if(trim((string) $this->cc07_sequencial) == null ){
         $this->erro_sql = " Campo Sequencial nao Informado.";
         $this->erro_campo = "cc07_sequencial";
         $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_custoplanoanaliticacriteriorateio {
         return false;
       }
     }
-    if(trim($this->cc07_custocriteriorateio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc07_custocriteriorateio"])){
+    if(trim((string) $this->cc07_custocriteriorateio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc07_custocriteriorateio"])){
       $sql  .= $virgula." cc07_custocriteriorateio = $this->cc07_custocriteriorateio ";
       $virgula = ",";
-      if(trim($this->cc07_custocriteriorateio) == null ){
+      if(trim((string) $this->cc07_custocriteriorateio) == null ){
         $this->erro_sql = " Campo Custo critério rateio nao Informado.";
         $this->erro_campo = "cc07_custocriteriorateio";
         $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_custoplanoanaliticacriteriorateio {
         return false;
       }
     }
-    if(trim($this->cc07_custoplanoanalitica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc07_custoplanoanalitica"])){
+    if(trim((string) $this->cc07_custoplanoanalitica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc07_custoplanoanalitica"])){
       $sql  .= $virgula." cc07_custoplanoanalitica = $this->cc07_custoplanoanalitica ";
       $virgula = ",";
-      if(trim($this->cc07_custoplanoanalitica) == null ){
+      if(trim((string) $this->cc07_custoplanoanalitica) == null ){
         $this->erro_sql = " Campo Custo plano analítico nao Informado.";
         $this->erro_campo = "cc07_custoplanoanalitica";
         $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_custoplanoanaliticacriteriorateio {
         return false;
       }
     }
-    if(trim($this->cc07_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc07_quantidade"])){
+    if(trim((string) $this->cc07_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc07_quantidade"])){
       $sql  .= $virgula." cc07_quantidade = $this->cc07_quantidade ";
       $virgula = ",";
-      if(trim($this->cc07_quantidade) == null ){
+      if(trim((string) $this->cc07_quantidade) == null ){
         $this->erro_sql = " Campo Quantidade nao Informado.";
         $this->erro_campo = "cc07_quantidade";
         $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_custoplanoanaliticacriteriorateio {
         return false;
       }
     }
-    if(trim($this->cc07_percentual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc07_percentual"])){
+    if(trim((string) $this->cc07_percentual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc07_percentual"])){
       $sql  .= $virgula." cc07_percentual = $this->cc07_percentual ";
       $virgula = ",";
-      if(trim($this->cc07_percentual) == null ){
+      if(trim((string) $this->cc07_percentual) == null ){
         $this->erro_sql = " Campo Percentual nao Informado.";
         $this->erro_campo = "cc07_percentual";
         $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_custoplanoanaliticacriteriorateio {
         return false;
       }
     }
-    if(trim($this->cc07_automatico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc07_automatico"])){
+    if(trim((string) $this->cc07_automatico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc07_automatico"])){
       $sql  .= $virgula." cc07_automatico = '$this->cc07_automatico' ";
       $virgula = ",";
-      if(trim($this->cc07_automatico) == null ){
+      if(trim((string) $this->cc07_automatico) == null ){
         $this->erro_sql = " Campo Tipo do Rateio nao Informado.";
         $this->erro_campo = "cc07_automatico";
         $this->erro_banco = "";
@@ -311,21 +311,21 @@ class cl_custoplanoanaliticacriteriorateio {
     if($this->numrows>0){
       for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-        $acount = pg_result($resac,0,0);
+        $acount = pg_fetch_result($resac,0,0);
         $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
         $resac = db_query("insert into db_acountkey values($acount,12578,'$this->cc07_sequencial','A')");
         if(isset($GLOBALS["HTTP_POST_VARS"]["cc07_sequencial"]))
-          $resac = db_query("insert into db_acount values($acount,2196,12578,'".AddSlashes(pg_result($resaco,$conresaco,'cc07_sequencial'))."','$this->cc07_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,2196,12578,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc07_sequencial'))."','$this->cc07_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
         if(isset($GLOBALS["HTTP_POST_VARS"]["cc07_custocriteriorateio"]))
-          $resac = db_query("insert into db_acount values($acount,2196,12579,'".AddSlashes(pg_result($resaco,$conresaco,'cc07_custocriteriorateio'))."','$this->cc07_custocriteriorateio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,2196,12579,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc07_custocriteriorateio'))."','$this->cc07_custocriteriorateio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
         if(isset($GLOBALS["HTTP_POST_VARS"]["cc07_custoplanoanalitica"]))
-          $resac = db_query("insert into db_acount values($acount,2196,12580,'".AddSlashes(pg_result($resaco,$conresaco,'cc07_custoplanoanalitica'))."','$this->cc07_custoplanoanalitica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,2196,12580,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc07_custoplanoanalitica'))."','$this->cc07_custoplanoanalitica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
         if(isset($GLOBALS["HTTP_POST_VARS"]["cc07_quantidade"]))
-          $resac = db_query("insert into db_acount values($acount,2196,12581,'".AddSlashes(pg_result($resaco,$conresaco,'cc07_quantidade'))."','$this->cc07_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,2196,12581,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc07_quantidade'))."','$this->cc07_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
         if(isset($GLOBALS["HTTP_POST_VARS"]["cc07_percentual"]))
-          $resac = db_query("insert into db_acount values($acount,2196,12582,'".AddSlashes(pg_result($resaco,$conresaco,'cc07_percentual'))."','$this->cc07_percentual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,2196,12582,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc07_percentual'))."','$this->cc07_percentual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
         if(isset($GLOBALS["HTTP_POST_VARS"]["cc07_automatico"]))
-          $resac = db_query("insert into db_acount values($acount,2196,13420,'".AddSlashes(pg_result($resaco,$conresaco,'cc07_automatico'))."','$this->cc07_automatico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,2196,13420,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc07_automatico'))."','$this->cc07_automatico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
       }
     }
     $result = db_query($sql);
@@ -370,15 +370,15 @@ class cl_custoplanoanaliticacriteriorateio {
     if(($resaco!=false)||($this->numrows!=0)){
       for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-        $acount = pg_result($resac,0,0);
+        $acount = pg_fetch_result($resac,0,0);
         $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
         $resac = db_query("insert into db_acountkey values($acount,12578,'$cc07_sequencial','E')");
-        $resac = db_query("insert into db_acount values($acount,2196,12578,'','".AddSlashes(pg_result($resaco,$iresaco,'cc07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,2196,12579,'','".AddSlashes(pg_result($resaco,$iresaco,'cc07_custocriteriorateio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,2196,12580,'','".AddSlashes(pg_result($resaco,$iresaco,'cc07_custoplanoanalitica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,2196,12581,'','".AddSlashes(pg_result($resaco,$iresaco,'cc07_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,2196,12582,'','".AddSlashes(pg_result($resaco,$iresaco,'cc07_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,2196,13420,'','".AddSlashes(pg_result($resaco,$iresaco,'cc07_automatico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,2196,12578,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,2196,12579,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc07_custocriteriorateio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,2196,12580,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc07_custoplanoanalitica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,2196,12581,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc07_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,2196,12582,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc07_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,2196,13420,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc07_automatico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
       }
     }
     $sql = " delete from custoplanoanaliticacriteriorateio
@@ -438,7 +438,7 @@ class cl_custoplanoanaliticacriteriorateio {
       $this->erro_status = "0";
       return false;
     }
-    $this->numrows = pg_numrows($result);
+    $this->numrows = pg_num_rows($result);
     if($this->numrows==0){
       $this->erro_banco = "";
       $this->erro_sql   = "Record Vazio na Tabela:custoplanoanaliticacriteriorateio";
@@ -453,7 +453,7 @@ class cl_custoplanoanaliticacriteriorateio {
   function sql_query ( $cc07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -480,7 +480,7 @@ class cl_custoplanoanaliticacriteriorateio {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -493,7 +493,7 @@ class cl_custoplanoanaliticacriteriorateio {
   function sql_query_file ( $cc07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -514,7 +514,7 @@ class cl_custoplanoanaliticacriteriorateio {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

@@ -141,8 +141,6 @@ class GrupoTaxaDiversos {
       throw new DBException('Erro ao buscar as naturezas vinculadas ao grupo.');
     }
 
-    return \db_utils::makeCollectionFromRecord($rsTaxaDiversos, function($oTaxaDiversos) {
-      return NaturezaTaxaDiversosRepository::getInstanciaPorCodigo($oTaxaDiversos->y119_sequencial);
-    });
+    return db_utils::makeCollectionFromRecord($rsTaxaDiversos, fn($oTaxaDiversos) => NaturezaTaxaDiversosRepository::getInstanciaPorCodigo($oTaxaDiversos->y119_sequencial));
   }
 }

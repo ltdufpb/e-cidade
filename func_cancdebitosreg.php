@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cancdebitosreg_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcancdebitosreg = new cl_cancdebitosreg;     /*
 $clcancdebitosreg->rotulo->label("k21_sequencia");
 $clcancdebitosreg->rotulo->label("k21_codigo");
@@ -54,7 +55,7 @@ $clcancdebitosreg->rotulo->label("k21_codigo");
               <?=$Lk21_sequencia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k21_sequencia",10,$Ik21_sequencia,true,"text",4,"","chave_k21_sequencia");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcancdebitosreg->rotulo->label("k21_codigo");
               <?=$Lk21_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k21_codigo",10,$Ik21_codigo,true,"text",4,"","chave_k21_codigo");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clcancdebitosreg->rotulo->label("k21_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)&&!isset($pesquisa_chave2)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cancdebitosreg.php")==true){

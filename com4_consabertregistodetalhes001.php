@@ -53,7 +53,7 @@ $clAbertRegPreco = new aberturaRegistroPreco($oGet->pc10_numero);
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?
+<?php 
 //db_app::load("scripts.js, strings.js, prototype.js,datagrid.widget.js, widgets/dbautocomplete.widget.js");
 //db_app::load("widgets/windowAux.widget.js");
 db_app::load("scripts.js, strings.js, prototype.js, datagrid.widget.js, widgets/windowAux.widget.js,

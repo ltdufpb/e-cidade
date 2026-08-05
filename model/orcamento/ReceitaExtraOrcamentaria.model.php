@@ -34,12 +34,6 @@
 class ReceitaExtraOrcamentaria {
 
   /**
-   * Codigo da receita (tabrec)
-   * @var integer
-   */
-  protected $iCodigoReceita;
-
-  /**
    * Ano da receita (tabplan.k02_anousu)
    * @var integer
    * @access protected
@@ -57,16 +51,18 @@ class ReceitaExtraOrcamentaria {
    * @param integer $iCodigoReceita
    * @throws BusinessException
    */
-  public function __construct($iCodigoReceita = null, $iAnoReceita = null) {
+  public function __construct(/**
+   * Codigo da receita (tabrec)
+   */
+  protected $iCodigoReceita = null, $iAnoReceita = null) {
 
-    $this->iCodigoReceita = $iCodigoReceita;
-    if (!empty($iCodigoReceita)) {
+    if (!empty($this->iCodigoReceita)) {
 
       if (empty($iAnoReceita)) {
         $iAnoReceita = db_getsession("DB_anousu");
       }
       $oDaoTabRec     = new cl_tabrec;
-      $sWhereReceita  = "     tabplan.k02_codigo = {$iCodigoReceita}";
+      $sWhereReceita  = "     tabplan.k02_codigo = {$this->iCodigoReceita}";
       $sWhereReceita .= " and tabplan.k02_anousu = {$iAnoReceita}";
 
       $sSqlBuscaReceita = $oDaoTabRec->sql_query_receita_extra_orcamentaria(null, "tabplan.*", null, $sWhereReceita);
@@ -74,7 +70,7 @@ class ReceitaExtraOrcamentaria {
 
       if ($oDaoTabRec->erro_status == "0") {
 
-        $sMensagem  = "Não foi possível localizar a receita extra-orçamentária {$iCodigoReceita} ";
+        $sMensagem  = "Não foi possível localizar a receita extra-orçamentária {$this->iCodigoReceita} ";
         $sMensagem .= "para o ano de {$iAnoReceita}";
         throw new BusinessException($sMensagem);
       }

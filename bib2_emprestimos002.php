@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,7 +34,8 @@ require_once(modification("classes/db_biblioteca_classe.php"));
 require_once(modification("classes/db_carteira_classe.php"));
 require_once(modification("classes/db_acervo_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clemprestimo       = new cl_emprestimo;
 $clemprestimoacervo = new cl_emprestimoacervo;

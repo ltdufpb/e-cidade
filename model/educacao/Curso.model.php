@@ -56,7 +56,7 @@ class Curso {
    * Adicionado array de etapas
    * @var array
    */
-  private $aEtapas = array();
+  private $aEtapas = [];
 
   /**
    * Parametro de avaliacao parcial no curso habilitado ou nao
@@ -76,7 +76,7 @@ class Curso {
    * Cursos que são equivalentes a este
    * @return Curso[]
    */
-  private $aCursosEquivalentes = array();
+  private $aCursosEquivalentes = [];
 
     private $odem;
 
@@ -95,7 +95,7 @@ class Curso {
 
         $oDadosCurso             = db_utils::fieldsMemory($rsCurso, 0);
         $this->iCodigo           = $oDadosCurso->ed29_i_codigo;
-        $this->sNome             = trim($oDadosCurso->ed29_c_descr);
+        $this->sNome             = trim((string) $oDadosCurso->ed29_c_descr);
         $this->oEnsino           = EnsinoRepository::getEnsinoByCodigo($oDadosCurso->ed29_i_ensino);
         $this->lAvaliacaoParcial = $oDadosCurso->ed29_i_avalparcial == 2 ? true : false;
         $this->lGeraHistorico    = $oDadosCurso->ed29_c_historico == 'S' ? true : false;

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ppadotacao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clppadotacao = new cl_ppadotacao;
 $clppadotacao->rotulo->label("o08_sequencial");
 $clppadotacao->rotulo->label("o08_elemento");
@@ -54,7 +55,7 @@ $clppadotacao->rotulo->label("o08_elemento");
               <?=$Lo08_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o08_sequencial",10,$Io08_sequencial,true,"text",4,"","chave_o08_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clppadotacao->rotulo->label("o08_elemento");
               <?=$Lo08_elemento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o08_elemento",10,$Io08_elemento,true,"text",4,"","chave_o08_elemento");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clppadotacao->rotulo->label("o08_elemento");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sWhere = " o08_instit=".db_getsession("DB_instit")." and o119_finalizada is false";
       if (isset($lEstimativas)) {
         $sWhere .= " and o05_base is false";
@@ -133,12 +134,12 @@ $clppadotacao->rotulo->label("o08_elemento");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

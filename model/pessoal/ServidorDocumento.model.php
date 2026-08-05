@@ -592,40 +592,40 @@ class ServidorDocumento
     private function validate()
     {
         if (strlen($this->getPis()) > 11) {
-            throw new \Exception("O número do pis não pode ser maior que 11 caracteres");
+            throw new Exception("O número do pis não pode ser maior que 11 caracteres");
         }
 
         if (strlen($this->getTituloDeEleitor()) > 12) {
-            throw new \Exception("O número do título não pode ser maior que 12 caracteres");
+            throw new Exception("O número do título não pode ser maior que 12 caracteres");
         }
 
         if (strlen($this->getCnhNumero()) > 12) {
-            throw new \Exception("O número da CNH não pode ser maior que 12 caracteres");
+            throw new Exception("O número da CNH não pode ser maior que 12 caracteres");
         }
 
         if (strlen($this->getOrgaoClasseEmissor()) > 15) {
-            throw new \Exception("A descrição do Órgão emissor não pode ser maior que 15 caracteres");
+            throw new Exception("A descrição do Órgão emissor não pode ser maior que 15 caracteres");
         }
 
-        if (strlen($this->getSecaoTituloDeEleitor()) > 4) {
-            throw new \Exception("A seção do titulo de eleitor não pode ser maior que 4 caracteres");
+        if (strlen((string) $this->getSecaoTituloDeEleitor()) > 4) {
+            throw new Exception("A seção do titulo de eleitor não pode ser maior que 4 caracteres");
         }
 
-        if (strlen($this->getZonaTituloDeEleitor()) > 4) {
-            throw new \Exception("A zona do titulo de eleitor não pode ser maior que 4 caracteres");
+        if (strlen((string) $this->getZonaTituloDeEleitor()) > 4) {
+            throw new Exception("A zona do titulo de eleitor não pode ser maior que 4 caracteres");
         }
 
         if (strlen($this->getCnhCategoria()) > 4) {
-            throw new \Exception("A categoria da CNH não pode ser maior que 4 caracteres");
+            throw new Exception("A categoria da CNH não pode ser maior que 4 caracteres");
         }
 
         if (strlen($this->getReservistaNumero()) > 15) {
-            throw new \Exception("A Número de reservista não pode ser maior que 15 caracteres");
+            throw new Exception("A Número de reservista não pode ser maior que 15 caracteres");
 
         }
 
         if (strlen($this->getOrgaoClasse()) > 15) {
-            throw new \Exception("O orgão classe não pode ser maior que 15 caracteres");
+            throw new Exception("O orgão classe não pode ser maior que 15 caracteres");
         }
     }
 
@@ -663,7 +663,7 @@ class ServidorDocumento
         $rhpesdoc->rh16_registro_rne = $this->getRneRegistro();
 
         if (empty($this->getMatricula())) {
-            throw new \Exception("Para incluir documentos é necessário informar a matrícula.");
+            throw new Exception("Para incluir documentos é necessário informar a matrícula.");
         }
 
         $sql = $rhpesdoc->sql_query_file($this->getMatricula(), "rh16_regist");
@@ -716,7 +716,7 @@ class ServidorDocumento
         $documentoModel->setOrgaoClasse($documento->rh16_orgao_classe);
         $documentoModel->setOrgaoClasseData($documento->rh16_data_orgao_classe);
         $documentoModel->setOrgaoClasseEmissor($documento->rh16_orgao_emissor_classe);
-        $documentoModel->getOrgaoClasseValidade($documento->rh16_data_validade_orgao_classe);
+        $documentoModel->getOrgaoClasseValidade();
         $documentoModel->setRneOrgaoEmissor($documento->rh16_orgao_emissor_rne);
         $documentoModel->setRneEmissao($documento->rh16_data_emissao_rne);
         $documentoModel->setRneEntrada($documento->rh16_data_entrada_rne);

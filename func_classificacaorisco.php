@@ -1,4 +1,4 @@
-<?
+<?php 
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -6,7 +6,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_classificacaorisco_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clclassificacaorisco = new cl_classificacaorisco;
 $clclassificacaorisco->rotulo->label("sd78_codigo");
 $clclassificacaorisco->rotulo->label("sd78_descricao");
@@ -24,11 +25,11 @@ $clclassificacaorisco->rotulo->label("sd78_descricao");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lsd78_codigo?></label></td>
-          <td><? db_input("sd78_codigo",10,$Isd78_codigo,true,"text",4,"","chave_sd78_codigo"); ?></td>
+          <td><?php  db_input("sd78_codigo",10,$Isd78_codigo,true,"text",4,"","chave_sd78_codigo"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lsd78_descricao?></label></td>
-          <td><? db_input("sd78_descricao",10,$Isd78_descricao,true,"text",4,"","chave_sd78_descricao");?></td>
+          <td><?php  db_input("sd78_descricao",10,$Isd78_descricao,true,"text",4,"","chave_sd78_descricao");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +37,7 @@ $clclassificacaorisco->rotulo->label("sd78_descricao");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_classificacaorisco.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_classificacaorisco.php")==true){
@@ -78,12 +79,12 @@ $clclassificacaorisco->rotulo->label("sd78_descricao");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

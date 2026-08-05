@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -57,7 +57,7 @@ class ConsultaAguaBase {
 	var $_AguaCorteMatMovDAO;
 	var $_AguaCondominioMatDAO;
 
-	function ConsultaAguaBase($Matric) {
+	function __construct($Matric) {
 		$this->SetMatric($Matric);
 	}
 

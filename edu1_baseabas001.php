@@ -54,14 +54,14 @@ $db_opcao   = 1;
     <table valign="top" marginwidth="0" width="790" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-          <?
+          <?php 
           MsgAviso(db_getsession("DB_coddepto"),"escola");
           MsgAviso(db_getsession("DB_coddepto"),"cursoescola",""," ed71_i_escola = ".db_getsession("DB_coddepto")."");
 
-          $clcriaabas->identifica  = array( "a1" => "Geral", "a2" => "Disciplinas", "a3" => "Base Continuação", "a4" => "Legislação" );
-          $clcriaabas->sizecampo   = array( "a1" => "20", "a2" => "25", "a3" => "25", "a4" => "25" );
-          $clcriaabas->src         = array( "a1" => "edu1_base001.php", "a2" => "", "a3" => "", "a4" => "" );
-          $clcriaabas->disabled    = array( "a2" => "true", "a3" => "true", "a4" => "true" );
+          $clcriaabas->identifica  = [ "a1" => "Geral", "a2" => "Disciplinas", "a3" => "Base Continuação", "a4" => "Legislação" ];
+          $clcriaabas->sizecampo   = [ "a1" => "20", "a2" => "25", "a3" => "25", "a4" => "25" ];
+          $clcriaabas->src         = [ "a1" => "edu1_base001.php", "a2" => "", "a3" => "", "a4" => "" ];
+          $clcriaabas->disabled    = [ "a2" => "true", "a3" => "true", "a4" => "true" ];
           $clcriaabas->cordisabled = "#9b9b9b";
           $clcriaabas->cria_abas();
           ?>
@@ -69,6 +69,6 @@ $db_opcao   = 1;
       </tr>
     </table>
   </form>
-  <?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+  <?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

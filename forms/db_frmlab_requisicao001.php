@@ -58,7 +58,7 @@ $clrotulo->label("la24_i_laboratorio");
                                         <table style='width: 100%;' border="0">
                                             <tr>
                                                <td>
-                                                   <?=@$Lla22_i_codigo?>&nbsp;<?db_input('la22_i_codigo',10,$Ila22_i_codigo,true,'text',3,"")?>                                                 
+                                                   <?=@$Lla22_i_codigo?>&nbsp;<?php db_input('la22_i_codigo',10,$Ila22_i_codigo,true,'text',3,"")?>                                                 
                                                </td>                                               
                                             </tr>
                                         </table>
@@ -69,15 +69,15 @@ $clrotulo->label("la24_i_laboratorio");
                                        <fieldset><b><legend>Paciente<legend></b>
                                             <table>
                                                 <tr>
-                                                    <td nowrap><?db_ancora(@$Lla22_i_cgs,"js_pesquisala22_i_cgs(true);",3);?></td>
+                                                    <td nowrap><?php db_ancora(@$Lla22_i_cgs,"js_pesquisala22_i_cgs(true);",3);?></td>
                                                     <td nowrap>
-                                                        <?db_input('la22_i_cgs',10,$Ila22_i_cgs,true,'text',3," onchange='js_pesquisala22_i_cgs(false);'")?>
-                                                        <?db_input('z01_v_nome',50,$Iz01_v_nome,true,'text',3,'')?>
+                                                        <?php db_input('la22_i_cgs',10,$Ila22_i_cgs,true,'text',3," onchange='js_pesquisala22_i_cgs(false);'")?>
+                                                        <?php db_input('z01_v_nome',50,$Iz01_v_nome,true,'text',3,'')?>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td><?=@$Lla22_d_dum?></td>
-                                                    <td><?db_inputdata('la22_d_dum',@$la22_d_dum_dia,@$la22_d_dum_mes,@$la22_d_dum_ano,true,'text',3,"")?></td>
+                                                    <td><?php db_inputdata('la22_d_dum',@$la22_d_dum_dia,@$la22_d_dum_mes,@$la22_d_dum_ano,true,'text',3,"")?></td>
                                                 </tr>
                                             </table> 
                                        </fieldset>
@@ -88,15 +88,15 @@ $clrotulo->label("la24_i_laboratorio");
                                        <fieldset><b><legend>Médico<legend></b>
                                              <table>
                                                   <tr>
-                                                      <td><?db_ancora(@$Lla38_i_medico,"js_pesquisala38_i_medico(true);",3);?></td>
+                                                      <td><?php db_ancora(@$Lla38_i_medico,"js_pesquisala38_i_medico(true);",3);?></td>
                                                       <td>
-                                                          <?db_input('la38_i_medico',10,@$Ila38_i_medico,true,'text',3," onchange='js_pesquisala38_i_medico(false);'")?>
-                                                          <?db_input('la22_c_medico',50,@$Ila22_c_medico,true,'text',3,'');?>
+                                                          <?php db_input('la38_i_medico',10,@$Ila38_i_medico,true,'text',3," onchange='js_pesquisala38_i_medico(false);'")?>
+                                                          <?php db_input('la22_c_medico',50,@$Ila22_c_medico,true,'text',3,'');?>
                                                       </td>
                                                   </tr>
                                                   <tr>
                                                       <td><b>CRM:<b></td>
-                                                      <td><?db_input('sd03_i_crm',10,@$sd03_i_crm,true,'text',3,'');?></td>
+                                                      <td><?php db_input('sd03_i_crm',10,@$sd03_i_crm,true,'text',3,'');?></td>
                                                   </tr>
                                              </table>
                                        </fieldset>
@@ -108,11 +108,11 @@ $clrotulo->label("la24_i_laboratorio");
                                              <table>
                                                  <tr>
                                                       <td><b>Responsavel: </b></td>
-                                                      <td><?db_input('la22_c_responsavel',56,$Ila22_c_responsavel,true,'text',3,'')?></td>
+                                                      <td><?php db_input('la22_c_responsavel',56,$Ila22_c_responsavel,true,'text',3,'')?></td>
                                                  </tr>
                                                  <tr>
                                                       <td><b>Contato:</b></td>
-                                                      <td><?db_input('la22_c_contato',56,@$Ila22_c_contato,true,'text',3,'')?></td>
+                                                      <td><?php db_input('la22_c_contato',56,@$Ila22_c_contato,true,'text',3,'')?></td>
                                                  </tr>
                                              </table>
                                        </fieldset>
@@ -128,7 +128,7 @@ $clrotulo->label("la24_i_laboratorio");
                        <table style='width: 95%;' border="0">
                             <tr>
                                 <td>
-                                    <?
+                                    <?php 
                                        $rResult=$cllab_laboratorio->sql_record($cllab_laboratorio->sql_query(""," la02_i_codigo as chave, la02_c_descr as descricao","",""));
                                        $aLaboratorios = array();
                                        for($x=0;$x<$cllab_laboratorio->numrows;$x++){
@@ -139,7 +139,7 @@ $clrotulo->label("la24_i_laboratorio");
                                     ?>
                                 </td>
                                 <td>
-                                    <?
+                                    <?php 
                                        if($cllab_laboratorio->numrows>0){
                                           db_fieldsmemory($rResult,0);
                                           if(isset($la02_i_codigo)){
@@ -157,15 +157,15 @@ $clrotulo->label("la24_i_laboratorio");
                                     ?>
                                 </td>
                                 <td>                                    
-                                    <?db_inputdata('la21_d_data',@$la21_d_data_dia,@$la21_d_data_mes,@$la21_d_data_ano,true,'hidden',$db_opcao," disabled ")?>
-                                    <?db_input('la21_c_dia',20,@$Icontato,true,'hidden',$db_opcao,'')?>
-                                    <?db_input('la21_c_hora',20,@$Icontato,true,'hidden',$db_opcao,'')?>
-                                    <?db_input('la08_i_dias',20,@$Icontato,true,'hidden',$db_opcao,'')?>
-                                    <?db_input('requisitos',20,@$Icontato,true,'hidden',$db_opcao,'')?>
-                                    <?db_input('la22_t_medicamento',20,"",true,'hidden',$db_opcao,'')?>
-                                    <?db_input('la08_t_observacao',20,"",true,'hidden',$db_opcao,'')?>
-                                    <?db_input('sStr',20,"",true,'hidden',$db_opcao,'')?>
-                                    <?db_input('sUrgente',20,"",true,'hidden',$db_opcao,'')?>                                   
+                                    <?php db_inputdata('la21_d_data',@$la21_d_data_dia,@$la21_d_data_mes,@$la21_d_data_ano,true,'hidden',$db_opcao," disabled ")?>
+                                    <?php db_input('la21_c_dia',20,@$Icontato,true,'hidden',$db_opcao,'')?>
+                                    <?php db_input('la21_c_hora',20,@$Icontato,true,'hidden',$db_opcao,'')?>
+                                    <?php db_input('la08_i_dias',20,@$Icontato,true,'hidden',$db_opcao,'')?>
+                                    <?php db_input('requisitos',20,@$Icontato,true,'hidden',$db_opcao,'')?>
+                                    <?php db_input('la22_t_medicamento',20,"",true,'hidden',$db_opcao,'')?>
+                                    <?php db_input('la08_t_observacao',20,"",true,'hidden',$db_opcao,'')?>
+                                    <?php db_input('sStr',20,"",true,'hidden',$db_opcao,'')?>
+                                    <?php db_input('sUrgente',20,"",true,'hidden',$db_opcao,'')?>                                   
                                 </td>
                             </tr>
                             <tr>
@@ -192,7 +192,7 @@ objGridExames                    = new DBGrid(' GridExames ');
 F                                = document.form1;
 F.dtjs_la21_d_data.style.display ='none';
 js_init();
-<?if($cllab_setorexame->numrows>0){
+<?php if($cllab_setorexame->numrows>0){
     echo" js_LoadSetorExame(F.la09_i_codigo.value); ";
 }?>                                         
 
@@ -435,7 +435,7 @@ js_init();
       }
   }
 
-<?
+<?php 
     if(isset($alinhasgrid)){
         if(count($alinhasgrid)>0){
             for($x=0;$x<count($alinhasgrid);$x++){

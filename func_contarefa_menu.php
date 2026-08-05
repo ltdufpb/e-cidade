@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_clientesmodulos_classe.php"));
 include(modification("classes/db_db_versao_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 db_postmemory($HTTP_POST_VARS);
 
@@ -63,7 +64,7 @@ function js_preenche(item){
 <form name='form1' method='post'>
 <tr>
 <td>
-<?
+<?php 
 if( !isset($id_item) || $id_item == 0 ){
 
   echo "<input name='id_item' type='hidden' value=''>";  
@@ -81,19 +82,19 @@ if( !isset($id_item) || $id_item == 0 ){
 ?>
   <strong>Modulo:
   <input name='cod_usuario' type='hidden' value='<?=$cod_usuario?>'>  
-  <?
+  <?php 
   $res = $clclientesmodulos->sql_record($clclientesmodulos->sql_query(null,"at74_id_item as id_item,trim(nome_modulo)||' Liberado: '||case when at74_data is null then '  ' else to_char(at74_data,'dd-mm-YYYY') end as nome_modulo",'nome_modulo'," clientesmodulos.at74_codcli = $cliente"));
   db_selectrecord('id_item',$res,true,2,'','','','0-Todos',' js_pesquisa();');
   ?>
   </strong>
-  <?
+  <?php 
 }
 ?>
   </td>
 </tr>
 <tr>
 </td>
-<?
+<?php 
 
 function monta_menu_func_contarefa($item_modulo,$id_modulo,$espacos,$nivel=1,$procedimento=0,$cliente=0){
 

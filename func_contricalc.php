@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_contricalc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcontricalc = new cl_contricalc;
 $clcontricalc->rotulo->label("d09_sequencial");
 $clcontricalc->rotulo->label("d09_matric");
@@ -54,7 +55,7 @@ $clcontricalc->rotulo->label("d09_matric");
               <?=$Ld09_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("d09_sequencial",10,$Id09_sequencial,true,"text",4,"","chave_d09_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcontricalc->rotulo->label("d09_matric");
               <?=$Ld09_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("d09_matric",10,$Id09_matric,true,"text",4,"","chave_d09_matric");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clcontricalc->rotulo->label("d09_matric");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_contricalc.php")==true){
@@ -122,12 +123,12 @@ $clcontricalc->rotulo->label("d09_matric");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

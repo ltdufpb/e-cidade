@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -302,19 +302,19 @@ abstract class AcordoMovimentacao {
 
     $oDaoAcordoMovimentacao = new cl_acordomovimentacao();
 
-    $aCampos = array(
+    $aCampos = [
         "ac10_acordomovimentacaotipo",
         "ac10_sequencial",
         "ac25_acordomovimentacao",
         "ac25_acordomovimentacaocancela",
         "ac10_acordo"
-      );
+      ];
 
-    $aWhere = array(
+    $aWhere = [
         "ac10_acordo = {$iAcordo}",
         "ac10_acordomovimentacaotipo = {$iTipo}",
         "ac10_acordomovimentacaotipo not in (16,17,18,19)"
-      );
+      ];
 
     $sSqlMovimentacao = $oDaoAcordoMovimentacao->sql_query_verificacancelado(null, implode(',', $aCampos), null, implode(" and ", $aWhere));
     $rsMovimentacao   = $oDaoAcordoMovimentacao->sql_record($sSqlMovimentacao);

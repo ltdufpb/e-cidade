@@ -506,7 +506,7 @@ class Construcao {
 	  
 	  	$aCarconstr = db_utils::getCollectionByRecord($rsCarconstr);
 	  
-	  	$aCaracteristicas = array();
+	  	$aCaracteristicas = [];
 	  
 	  	foreach ($aCarconstr as $oCarconstr) {
 	    

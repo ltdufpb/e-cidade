@@ -1,6 +1,8 @@
 <?php
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+
 /**
  * Formatter responsável por formatar os dados de horários.
  *
@@ -14,6 +16,7 @@ class HorarioFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[Override]
     public function formatar($dados)
     {
         $dadosFormatado = parent::formatar($dados);

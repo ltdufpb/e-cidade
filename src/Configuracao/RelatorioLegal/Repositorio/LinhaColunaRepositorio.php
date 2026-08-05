@@ -2,6 +2,7 @@
 
 namespace ECidade\Configuracao\RelatorioLegal\Repositorio;
 
+use cl_orcparamseqorcparamseqcolunavalor;
 use cl_orcparamseqorcparamseqcoluna;
 use ECidade\Configuracao\RelatorioLegal\Modelo\Coluna;
 use ECidade\Configuracao\RelatorioLegal\Modelo\Linha;
@@ -98,13 +99,13 @@ class LinhaColunaRepositorio extends Repositorio
         $linhaColunaRepositorio = new LinhaColunaRepositorio();
         $linhaColunas = $linhaColunaRepositorio->scopeRelatorio($relatorio)
             ->scopeFormula("%L[{$ordemAnterior}]%", 'ILIKE')
-            ->get(array(
+            ->get([
                 'o116_codseq',
                 'o116_codparamrel',
                 'o116_orcparamseqcoluna',
                 'o116_ordem',
                 'o116_formula'
-            ));
+            ]);
 
         if (count($linhaColunas) === 0) {
             return false;
@@ -116,11 +117,11 @@ class LinhaColunaRepositorio extends Repositorio
         foreach ($linhaColunas as $linhaColuna) {
             $formula = str_replace($linhaAnterior, $auxNova, $linhaColuna->getFormula());
 
-            $where = array(
+            $where = [
                 "o116_codseq = {$linhaColuna->getLinha()->getLinha()}",
                 "o116_codparamrel = {$relatorio->getSequencial()}",
                 "o116_orcparamseqcoluna = {$linhaColuna->getColuna()->getSequencial()}"
-            );
+            ];
 
             $dao = static::setDadosDao($linhaColuna);
             $dao->o116_formula = $formula;
@@ -268,7 +269,7 @@ class LinhaColunaRepositorio extends Repositorio
      * @return LinhaColuna[]
      * @throws Exception
      */
-    public function get($columns = array('*'))
+    public function get($columns = ['*'])
     {
         $dao = new cl_orcparamseqorcparamseqcoluna();
         $sql = $dao->sql_query(null, implode(', ', $columns), 'o116_ordem', implode(' AND ', $this->scopes));
@@ -278,7 +279,7 @@ class LinhaColunaRepositorio extends Repositorio
             throw new Exception("N?o foi poss?vel buscar a configura??o das linhas.\nContate o suporte.");
         }
 
-        $registros = array();
+        $registros = [];
 
         if (pg_num_rows($resultado) === 0) {
             return $registros;
@@ -295,11 +296,11 @@ class LinhaColunaRepositorio extends Repositorio
      * @param LinhaColuna|null $linhaColuna
      * @throws Exception
      */
-    public function delete(LinhaColuna $linhaColuna = null)
+    public function delete(?LinhaColuna $linhaColuna = null)
     {
         $id = $linhaColuna instanceof LinhaColuna ? $linhaColuna->getSequencial() : null;
 
-        $daoValor = new \cl_orcparamseqorcparamseqcolunavalor();
+        $daoValor = new cl_orcparamseqorcparamseqcolunavalor();
         $daoValor->excluir(null, "o117_orcparamseqorcparamseqcoluna = {$id}");
         if ($daoValor->erro_status === "0") {
             throw new Exception("N?o foi poss?vel excluir os valores manuais lan?ados para a linha.");
@@ -341,7 +342,7 @@ class LinhaColunaRepositorio extends Repositorio
      * @return null|LinhaColuna
      * @throws Exception
      */
-    public static function find($sequence, array $columns = array('*'))
+    public static function find($sequence, array $columns = ['*'])
     {
         $dao = new cl_orcparamseqorcparamseqcoluna();
         $sql = $dao->sql_query($sequence, implode(', ', $columns));

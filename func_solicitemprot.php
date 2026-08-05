@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_solicitemprot_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsolicitemprot = new cl_solicitemprot;
 $clsolicitemprot->rotulo->label("pc49_solicitem");
 $clsolicitemprot->rotulo->label("pc49_solicitem");
@@ -54,7 +55,7 @@ $clsolicitemprot->rotulo->label("pc49_solicitem");
               <?=$Lpc49_solicitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc49_solicitem",10,$Ipc49_solicitem,true,"text",4,"","chave_pc49_solicitem");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clsolicitemprot->rotulo->label("pc49_solicitem");
               <?=$Lpc49_solicitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc49_solicitem",10,$Ipc49_solicitem,true,"text",4,"","chave_pc49_solicitem");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clsolicitemprot->rotulo->label("pc49_solicitem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_solicitemprot.php")==true){
@@ -118,12 +119,12 @@ $clsolicitemprot->rotulo->label("pc49_solicitem");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

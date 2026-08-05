@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE orcfontes
 class cl_orcfontes {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $o57_codfon = 0;
-   var $o57_anousu = 0;
-   var $o57_fonte = null;
-   var $o57_descr = null;
-   var $o57_finali = null;
+   public $o57_codfon = 0;
+   public $o57_anousu = 0;
+   public $o57_fonte = null;
+   public $o57_descr = null;
+   public $o57_finali = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  o57_codfon = int4 = Código Fonte
                  o57_anousu = int4 = Exercício
                  o57_fonte = varchar(15) = Fonte da Receita
@@ -56,10 +56,10 @@ class cl_orcfontes {
                  o57_finali = text = Finalidade
                  ";
    //funcao construtor da classe
-   function cl_orcfontes() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcfontes");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -139,7 +139,7 @@ class cl_orcfontes {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Fontes da Receita ($this->o57_codfon."-".$this->o57_anousu) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Fontes da Receita já Cadastrado";
@@ -169,10 +169,10 @@ class cl_orcfontes {
       $this->atualizacampos();
      $sql = " update orcfontes set ";
      $virgula = "";
-     if(trim($this->o57_codfon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o57_codfon"])){
+     if(trim((string) $this->o57_codfon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o57_codfon"])){
        $sql  .= $virgula." o57_codfon = $this->o57_codfon ";
        $virgula = ",";
-       if(trim($this->o57_codfon) == null ){
+       if(trim((string) $this->o57_codfon) == null ){
          $this->erro_sql = " Campo Código Fonte nao Informado.";
          $this->erro_campo = "o57_codfon";
          $this->erro_banco = "";
@@ -182,10 +182,10 @@ class cl_orcfontes {
          return false;
        }
      }
-     if(trim($this->o57_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o57_anousu"])){
+     if(trim((string) $this->o57_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o57_anousu"])){
        $sql  .= $virgula." o57_anousu = $this->o57_anousu ";
        $virgula = ",";
-       if(trim($this->o57_anousu) == null ){
+       if(trim((string) $this->o57_anousu) == null ){
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "o57_anousu";
          $this->erro_banco = "";
@@ -195,10 +195,10 @@ class cl_orcfontes {
          return false;
        }
      }
-     if(trim($this->o57_fonte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o57_fonte"])){
+     if(trim((string) $this->o57_fonte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o57_fonte"])){
        $sql  .= $virgula." o57_fonte = '$this->o57_fonte' ";
        $virgula = ",";
-       if(trim($this->o57_fonte) == null ){
+       if(trim((string) $this->o57_fonte) == null ){
          $this->erro_sql = " Campo Fonte da Receita nao Informado.";
          $this->erro_campo = "o57_fonte";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_orcfontes {
          return false;
        }
      }
-     if(trim($this->o57_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o57_descr"])){
+     if(trim((string) $this->o57_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o57_descr"])){
        $sql  .= $virgula." o57_descr = '$this->o57_descr' ";
        $virgula = ",";
-       if(trim($this->o57_descr) == null ){
+       if(trim((string) $this->o57_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "o57_descr";
          $this->erro_banco = "";
@@ -274,15 +274,15 @@ class cl_orcfontes {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5275,'$o57_codfon','E')");
          $resac = db_query("insert into db_acountkey values($acount,8062,'$o57_anousu','E')");
-         $resac = db_query("insert into db_acount values($acount,755,5275,'','".AddSlashes(pg_result($resaco,$iresaco,'o57_codfon'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,755,8062,'','".AddSlashes(pg_result($resaco,$iresaco,'o57_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,755,5272,'','".AddSlashes(pg_result($resaco,$iresaco,'o57_fonte'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,755,5273,'','".AddSlashes(pg_result($resaco,$iresaco,'o57_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,755,5274,'','".AddSlashes(pg_result($resaco,$iresaco,'o57_finali'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,755,5275,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o57_codfon'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,755,8062,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o57_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,755,5272,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o57_fonte'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,755,5273,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o57_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,755,5274,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o57_finali'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from orcfontes
@@ -348,7 +348,7 @@ class cl_orcfontes {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:orcfontes";
@@ -397,7 +397,7 @@ class cl_orcfontes {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,7 +438,7 @@ class cl_orcfontes {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -488,7 +488,7 @@ class cl_orcfontes {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -507,35 +507,35 @@ class cl_orcfontes {
       return true;
     }
     if($nivel==8){
-      $codigo = substr($elemento,0,11);
+      $codigo = substr((string) $elemento,0,11);
       $where="substr(o57_fonte,1,11)='$codigo' and substr(o57_fonte,12,2)<>'00' ";
     }
     if($nivel==7){
-      $codigo = substr($elemento,0,7);
+      $codigo = substr((string) $elemento,0,7);
       $where="substr(o57_fonte,1,9)='$codigo' and substr(o57_fonte,10,4)<>'0000' ";
     }
     if($nivel==6){
-      $codigo = substr($elemento,0,7);
+      $codigo = substr((string) $elemento,0,7);
       $where="substr(o57_fonte,1,7)='$codigo' and substr(o57_fonte,8,6)<>'000000' ";
     }
     if($nivel==5){
-      $codigo = substr($elemento,0,5);
+      $codigo = substr((string) $elemento,0,5);
       $where="substr(o57_fonte,1,5)='$codigo' and substr(o57_fonte,6,8)<>'00000000' ";
     }
     if($nivel==4){
-      $codigo = substr($elemento,0,4);
+      $codigo = substr((string) $elemento,0,4);
       $where="substr(o57_fonte,1,4)='$codigo' and substr(o57_fonte,5,9)<>'000000000' ";
     }
     if($nivel==3){
-      $codigo = substr($elemento,0,3);
+      $codigo = substr((string) $elemento,0,3);
       $where="substr(o57_fonte,1,3)='$codigo' and substr(o57_fonte,4,10)<>'0000000000' ";
     }
     if($nivel==2){
-      $codigo = substr($elemento,0,2);
+      $codigo = substr((string) $elemento,0,2);
       $where="substr(o57_fonte,1,2)='$codigo' and substr(o57_fonte,3,11)<>'00000000000' ";
     }
     if($nivel==1){
-      $codigo = substr($elemento,0,1);
+      $codigo = substr((string) $elemento,0,1);
       $where="substr(o57_fonte,1,1)='$codigo' and substr(o57_fonte,2,11)<>'00000000000' ";
     }
     $result= $this->sql_record($this->sql_query_file("","","o57_fonte",""," o57_anousu=$anousu and ".$where));
@@ -567,35 +567,35 @@ class cl_orcfontes {
       return true;
     }
     if($nivel==9){
-      $codigo = substr($elemento,0,11)."00";
+      $codigo = substr((string) $elemento,0,11)."00";
       $where="substr(o57_fonte,1,13)='$codigo' and substr(o57_fonte,14,2)<>'00' ";
     }
     if($nivel==8){
-      $codigo = substr($elemento,0,9)."00";
+      $codigo = substr((string) $elemento,0,9)."00";
       $where="substr(o57_fonte,1,11)='$codigo' and substr(o57_fonte,12,2)<>'0000' ";
     }
     if($nivel==7){
-      $codigo = substr($elemento,0,7)."00";
+      $codigo = substr((string) $elemento,0,7)."00";
       $where="substr(o57_fonte,1,9)='$codigo' and substr(o57_fonte,10,4)<>'000000' ";
     }
     if($nivel==6){
-      $codigo = substr($elemento,0,5)."00";
+      $codigo = substr((string) $elemento,0,5)."00";
       $where="substr(o57_fonte,1,7)='$codigo' and substr(o57_fonte,8,6)<>'00000000' ";
     }
   if($nivel==5){
-      $codigo = substr($elemento,0,4)."0";
+      $codigo = substr((string) $elemento,0,4)."0";
       $where="substr(o57_fonte,1,5)='$codigo' and substr(o57_fonte,6,8)<>'0000000000' ";
     }
     if($nivel==4){
-      $codigo = substr($elemento,0,3)."0";
+      $codigo = substr((string) $elemento,0,3)."0";
       $where="substr(o57_fonte,1,4)='$codigo' and substr(o57_fonte,5,9)<>'00000000000' ";
     }
     if($nivel==3){
-      $codigo = substr($elemento,0,2)."0";
+      $codigo = substr((string) $elemento,0,2)."0";
       $where="substr(o57_fonte,1,3)='$codigo' and substr(o57_fonte,4,10)<>'000000000000' ";
     }
     if($nivel==2){
-      $codigo = substr($elemento,0,1)."0";
+      $codigo = substr((string) $elemento,0,1)."0";
       $where="substr(o57_fonte,1,2)='$codigo' and substr(o57_fonte,3,11)<>'0000000000000' ";
     }
     $result= $this->sql_record($this->sql_query_file("","","o57_fonte",""," o57_anousu = $anousu and ".$where));
@@ -656,7 +656,7 @@ class cl_orcfontes {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

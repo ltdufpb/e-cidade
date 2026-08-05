@@ -7,7 +7,8 @@ require_once (modification("dbforms/db_funcoes.php"));
 require_once (modification("classes/db_avaliacaoestruturanotapadrao_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clavaliacaoestruturanotapadrao = new cl_avaliacaoestruturanotapadrao;
 $clavaliacaoestruturanotapadrao->rotulo->label("ed139_sequencial");
 ?>
@@ -24,7 +25,7 @@ $clavaliacaoestruturanotapadrao->rotulo->label("ed139_sequencial");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label for='ed139_sequencial'><?=$Led139_sequencial?></label></td>
-          <td><? db_input("ed139_sequencial",10,$Ied139_sequencial,true,"text",4,"","chave_ed139_sequencial"); ?></td>
+          <td><?php  db_input("ed139_sequencial",10,$Ied139_sequencial,true,"text",4,"","chave_ed139_sequencial"); ?></td>
         </tr>
       </table>
     </fieldset>
@@ -75,12 +76,12 @@ $clavaliacaoestruturanotapadrao->rotulo->label("ed139_sequencial");
   ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -9,7 +9,6 @@ use ECidade\Educacao\Escola\Repository\Repository;
 use ECidade\Educacao\Secretaria\BNCC\Model\Disciplina;
 use ECidade\Educacao\Secretaria\BNCC\Model\HabilidadeEducacaoInfantil;
 use ECidade\Educacao\Secretaria\Services\ParametrosGlobaisService;
-use ECidade\Enum\Educacao\BNCC\TipoBaseCurricularEnum;
 use Exception;
 
 /**

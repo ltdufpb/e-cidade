@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_arreproc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clarreproc = new cl_arreproc;
 $clarreproc->rotulo->label("k80_numpre");
 $clarreproc->rotulo->label("k80_codproc");
@@ -55,7 +56,7 @@ $clarreproc->rotulo->label("k80_numpre");
               <?=$Lk80_numpre?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k80_numpre",8,$Ik80_numpre,true,"text",4,"","chave_k80_numpre");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clarreproc->rotulo->label("k80_numpre");
               <?=$Lk80_codproc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k80_codproc",10,$Ik80_codproc,true,"text",4,"","chave_k80_codproc");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clarreproc->rotulo->label("k80_numpre");
               <?=$Lk80_numpre?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k80_numpre",8,$Ik80_numpre,true,"text",4,"","chave_k80_numpre");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clarreproc->rotulo->label("k80_numpre");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_arreproc.php")==true){
@@ -129,12 +130,12 @@ $clarreproc->rotulo->label("k80_numpre");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

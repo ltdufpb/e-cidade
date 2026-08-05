@@ -59,7 +59,7 @@ class AlunoLeitorBibliotecaWebservice {
       throw new ParameterException('Aluno não existe no cadastro.');
     }
     $oDadosLeitorAluno              = new stdClass();
-    $oDadosLeitorAluno->emprestimos = array();
+    $oDadosLeitorAluno->emprestimos = [];
     
     $oDaoLeitor      = new cl_leitor();
     $sSqlDadosLeitor = $oDaoLeitor->sql_query(null, "bi10_codigo", null, "bi11_aluno = {$this->iCodigoAluno}");
@@ -72,7 +72,7 @@ class AlunoLeitorBibliotecaWebservice {
     
     $iCodigoLeitor =  db_Utils::fieldsMemory($rsDadosLeitor, 0)->bi10_codigo;
     
-    $aWhere   = array();
+    $aWhere   = [];
     $aWhere[] = "bi16_leitor = {$iCodigoLeitor}";
     
     if (trim($sDataInicial) != "") {
@@ -123,7 +123,7 @@ class AlunoLeitorBibliotecaWebservice {
     $rsAcervosRetirados = $oDaoEmprestivoAcervo->sql_record($sSqlAcervosRetirados);
     $iTotalEmprestimos  = $oDaoEmprestivoAcervo->numrows;
     
-    $aSituacao = array(1 => "ATRASADO", 2 => 'ABERTO', 3 => 'DEVOLVIDOS');
+    $aSituacao = [1 => "ATRASADO", 2 => 'ABERTO', 3 => 'DEVOLVIDOS'];
     
     if ($rsAcervosRetirados && $iTotalEmprestimos > 0) {
       

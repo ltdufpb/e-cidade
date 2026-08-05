@@ -43,7 +43,7 @@ class cl_retencaotiporec
     public function __construct()
     {
         $this->rotulo = new rotulo("retencaotiporec"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -156,10 +156,10 @@ class cl_retencaotiporec
          $this->erro_status = "0";
          return false; 
        }
-       $this->e21_sequencial = pg_result($result,0,0); 
+       $this->e21_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from retencaotiporec_e21_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $e21_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $e21_sequencial)){
          $this->erro_sql = " Campo e21_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -205,7 +205,7 @@ class cl_retencaotiporec
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de Retenções ($this->e21_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de Retenções já Cadastrado";
@@ -234,19 +234,19 @@ class cl_retencaotiporec
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12159,'$this->e21_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,2112,12159,'','".AddSlashes(pg_result($resaco,0,'e21_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2112,12160,'','".AddSlashes(pg_result($resaco,0,'e21_retencaotipocalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2112,12161,'','".AddSlashes(pg_result($resaco,0,'e21_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2112,12162,'','".AddSlashes(pg_result($resaco,0,'e21_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2112,12163,'','".AddSlashes(pg_result($resaco,0,'e21_aliquota'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2112,12550,'','".AddSlashes(pg_result($resaco,0,'e21_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2112,14267,'','".AddSlashes(pg_result($resaco,0,'e21_retencaotiporecgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2112,1010015,'','".AddSlashes(pg_result($resaco,0,'e21_enterecebedor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2112,1010032,'','".AddSlashes(pg_result($resaco,0,'e21_receitaenterecebedor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2112,1014457,'','".AddSlashes(pg_result($resaco,0,'e21_envioremessabancaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2112,12159,'','".AddSlashes(pg_fetch_result($resaco,0,'e21_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2112,12160,'','".AddSlashes(pg_fetch_result($resaco,0,'e21_retencaotipocalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2112,12161,'','".AddSlashes(pg_fetch_result($resaco,0,'e21_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2112,12162,'','".AddSlashes(pg_fetch_result($resaco,0,'e21_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2112,12163,'','".AddSlashes(pg_fetch_result($resaco,0,'e21_aliquota'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2112,12550,'','".AddSlashes(pg_fetch_result($resaco,0,'e21_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2112,14267,'','".AddSlashes(pg_fetch_result($resaco,0,'e21_retencaotiporecgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2112,1010015,'','".AddSlashes(pg_fetch_result($resaco,0,'e21_enterecebedor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2112,1010032,'','".AddSlashes(pg_fetch_result($resaco,0,'e21_receitaenterecebedor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2112,1014457,'','".AddSlashes(pg_fetch_result($resaco,0,'e21_envioremessabancaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -257,10 +257,10 @@ class cl_retencaotiporec
       $this->atualizacampos();
      $sql = " update retencaotiporec set ";
      $virgula = "";
-     if(trim($this->e21_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_sequencial"])){ 
+     if(trim((string) $this->e21_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_sequencial"])){ 
        $sql  .= $virgula." e21_sequencial = $this->e21_sequencial ";
        $virgula = ",";
-       if(trim($this->e21_sequencial) == null ){ 
+       if(trim((string) $this->e21_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial não informado.";
          $this->erro_campo = "e21_sequencial";
          $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_retencaotiporec
          return false;
        }
      }
-     if(trim($this->e21_retencaotipocalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_retencaotipocalc"])){ 
+     if(trim((string) $this->e21_retencaotipocalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_retencaotipocalc"])){ 
        $sql  .= $virgula." e21_retencaotipocalc = $this->e21_retencaotipocalc ";
        $virgula = ",";
-       if(trim($this->e21_retencaotipocalc) == null ){ 
+       if(trim((string) $this->e21_retencaotipocalc) == null ){ 
          $this->erro_sql = " Campo Tipo de Cálculo não informado.";
          $this->erro_campo = "e21_retencaotipocalc";
          $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_retencaotiporec
          return false;
        }
      }
-     if(trim($this->e21_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_receita"])){ 
+     if(trim((string) $this->e21_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_receita"])){ 
        $sql  .= $virgula." e21_receita = $this->e21_receita ";
        $virgula = ",";
-       if(trim($this->e21_receita) == null ){ 
+       if(trim((string) $this->e21_receita) == null ){ 
          $this->erro_sql = " Campo Receita não informado.";
          $this->erro_campo = "e21_receita";
          $this->erro_banco = "";
@@ -296,10 +296,10 @@ class cl_retencaotiporec
          return false;
        }
      }
-     if(trim($this->e21_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_descricao"])){ 
+     if(trim((string) $this->e21_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_descricao"])){ 
        $sql  .= $virgula." e21_descricao = '$this->e21_descricao' ";
        $virgula = ",";
-       if(trim($this->e21_descricao) == null ){ 
+       if(trim((string) $this->e21_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "e21_descricao";
          $this->erro_banco = "";
@@ -309,10 +309,10 @@ class cl_retencaotiporec
          return false;
        }
      }
-     if(trim($this->e21_aliquota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_aliquota"])){ 
+     if(trim((string) $this->e21_aliquota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_aliquota"])){ 
        $sql  .= $virgula." e21_aliquota = $this->e21_aliquota ";
        $virgula = ",";
-       if(trim($this->e21_aliquota) == null ){ 
+       if(trim((string) $this->e21_aliquota) == null ){ 
          $this->erro_sql = " Campo Aliquota não informado.";
          $this->erro_campo = "e21_aliquota";
          $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_retencaotiporec
          return false;
        }
      }
-     if(trim($this->e21_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_instit"])){ 
+     if(trim((string) $this->e21_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_instit"])){ 
        $sql  .= $virgula." e21_instit = $this->e21_instit ";
        $virgula = ",";
-       if(trim($this->e21_instit) == null ){ 
+       if(trim((string) $this->e21_instit) == null ){ 
          $this->erro_sql = " Campo Código da Instituição não informado.";
          $this->erro_campo = "e21_instit";
          $this->erro_banco = "";
@@ -335,10 +335,10 @@ class cl_retencaotiporec
          return false;
        }
      }
-     if(trim($this->e21_retencaotiporecgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_retencaotiporecgrupo"])){ 
+     if(trim((string) $this->e21_retencaotiporecgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_retencaotiporecgrupo"])){ 
        $sql  .= $virgula." e21_retencaotiporecgrupo = $this->e21_retencaotiporecgrupo ";
        $virgula = ",";
-       if(trim($this->e21_retencaotiporecgrupo) == null ){ 
+       if(trim((string) $this->e21_retencaotiporecgrupo) == null ){ 
          $this->erro_sql = " Campo Grupo não informado.";
          $this->erro_campo = "e21_retencaotiporecgrupo";
          $this->erro_banco = "";
@@ -348,24 +348,24 @@ class cl_retencaotiporec
          return false;
        }
      }
-     if(trim($this->e21_enterecebedor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_enterecebedor"])){ 
-        if(trim($this->e21_enterecebedor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e21_enterecebedor"])){ 
+     if(trim((string) $this->e21_enterecebedor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_enterecebedor"])){ 
+        if(trim((string) $this->e21_enterecebedor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e21_enterecebedor"])){ 
            $this->e21_enterecebedor = "null" ;
         } 
        $sql  .= $virgula." e21_enterecebedor = $this->e21_enterecebedor ";
        $virgula = ",";
      }
-     if(trim($this->e21_receitaenterecebedor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_receitaenterecebedor"])){ 
-        if(trim($this->e21_receitaenterecebedor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e21_receitaenterecebedor"])){ 
+     if(trim((string) $this->e21_receitaenterecebedor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_receitaenterecebedor"])){ 
+        if(trim((string) $this->e21_receitaenterecebedor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e21_receitaenterecebedor"])){ 
            $this->e21_receitaenterecebedor = "null" ;
         } 
        $sql  .= $virgula." e21_receitaenterecebedor = $this->e21_receitaenterecebedor ";
        $virgula = ",";
      }
-     if(trim($this->e21_envioremessabancaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_envioremessabancaria"])){ 
+     if(trim((string) $this->e21_envioremessabancaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e21_envioremessabancaria"])){ 
        $sql  .= $virgula." e21_envioremessabancaria = '$this->e21_envioremessabancaria' ";
        $virgula = ",";
-       if(trim($this->e21_envioremessabancaria) == null ){ 
+       if(trim((string) $this->e21_envioremessabancaria) == null ){ 
          $this->erro_sql = " Campo Permite pagamento por remessa bancária não informado.";
          $this->erro_campo = "e21_envioremessabancaria";
          $this->erro_banco = "";
@@ -389,29 +389,29 @@ class cl_retencaotiporec
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,12159,'$this->e21_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e21_sequencial"]) || $this->e21_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,2112,12159,'".AddSlashes(pg_result($resaco,$conresaco,'e21_sequencial'))."','$this->e21_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2112,12159,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e21_sequencial'))."','$this->e21_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e21_retencaotipocalc"]) || $this->e21_retencaotipocalc != "")
-             $resac = db_query("insert into db_acount values($acount,2112,12160,'".AddSlashes(pg_result($resaco,$conresaco,'e21_retencaotipocalc'))."','$this->e21_retencaotipocalc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2112,12160,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e21_retencaotipocalc'))."','$this->e21_retencaotipocalc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e21_receita"]) || $this->e21_receita != "")
-             $resac = db_query("insert into db_acount values($acount,2112,12161,'".AddSlashes(pg_result($resaco,$conresaco,'e21_receita'))."','$this->e21_receita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2112,12161,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e21_receita'))."','$this->e21_receita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e21_descricao"]) || $this->e21_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,2112,12162,'".AddSlashes(pg_result($resaco,$conresaco,'e21_descricao'))."','$this->e21_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2112,12162,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e21_descricao'))."','$this->e21_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e21_aliquota"]) || $this->e21_aliquota != "")
-             $resac = db_query("insert into db_acount values($acount,2112,12163,'".AddSlashes(pg_result($resaco,$conresaco,'e21_aliquota'))."','$this->e21_aliquota',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2112,12163,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e21_aliquota'))."','$this->e21_aliquota',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e21_instit"]) || $this->e21_instit != "")
-             $resac = db_query("insert into db_acount values($acount,2112,12550,'".AddSlashes(pg_result($resaco,$conresaco,'e21_instit'))."','$this->e21_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2112,12550,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e21_instit'))."','$this->e21_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e21_retencaotiporecgrupo"]) || $this->e21_retencaotiporecgrupo != "")
-             $resac = db_query("insert into db_acount values($acount,2112,14267,'".AddSlashes(pg_result($resaco,$conresaco,'e21_retencaotiporecgrupo'))."','$this->e21_retencaotiporecgrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2112,14267,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e21_retencaotiporecgrupo'))."','$this->e21_retencaotiporecgrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e21_enterecebedor"]) || $this->e21_enterecebedor != "")
-             $resac = db_query("insert into db_acount values($acount,2112,1010015,'".AddSlashes(pg_result($resaco,$conresaco,'e21_enterecebedor'))."','$this->e21_enterecebedor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2112,1010015,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e21_enterecebedor'))."','$this->e21_enterecebedor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e21_receitaenterecebedor"]) || $this->e21_receitaenterecebedor != "")
-             $resac = db_query("insert into db_acount values($acount,2112,1010032,'".AddSlashes(pg_result($resaco,$conresaco,'e21_receitaenterecebedor'))."','$this->e21_receitaenterecebedor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2112,1010032,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e21_receitaenterecebedor'))."','$this->e21_receitaenterecebedor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e21_envioremessabancaria"]) || $this->e21_envioremessabancaria != "")
-             $resac = db_query("insert into db_acount values($acount,2112,1014457,'".AddSlashes(pg_result($resaco,$conresaco,'e21_envioremessabancaria'))."','$this->e21_envioremessabancaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2112,1014457,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e21_envioremessabancaria'))."','$this->e21_envioremessabancaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -465,19 +465,19 @@ class cl_retencaotiporec
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,12159,'$e21_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,2112,12159,'','".AddSlashes(pg_result($resaco,$iresaco,'e21_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2112,12160,'','".AddSlashes(pg_result($resaco,$iresaco,'e21_retencaotipocalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2112,12161,'','".AddSlashes(pg_result($resaco,$iresaco,'e21_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2112,12162,'','".AddSlashes(pg_result($resaco,$iresaco,'e21_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2112,12163,'','".AddSlashes(pg_result($resaco,$iresaco,'e21_aliquota'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2112,12550,'','".AddSlashes(pg_result($resaco,$iresaco,'e21_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2112,14267,'','".AddSlashes(pg_result($resaco,$iresaco,'e21_retencaotiporecgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2112,1010015,'','".AddSlashes(pg_result($resaco,$iresaco,'e21_enterecebedor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2112,1010032,'','".AddSlashes(pg_result($resaco,$iresaco,'e21_receitaenterecebedor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2112,1014457,'','".AddSlashes(pg_result($resaco,$iresaco,'e21_envioremessabancaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2112,12159,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e21_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2112,12160,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e21_retencaotipocalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2112,12161,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e21_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2112,12162,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e21_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2112,12163,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e21_aliquota'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2112,12550,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e21_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2112,14267,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e21_retencaotiporecgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2112,1010015,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e21_enterecebedor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2112,1010032,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e21_receitaenterecebedor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2112,1014457,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e21_envioremessabancaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -599,7 +599,7 @@ class cl_retencaotiporec
 
   	$sql = "select ";
     if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -628,7 +628,7 @@ class cl_retencaotiporec
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

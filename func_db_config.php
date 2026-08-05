@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -31,7 +31,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_config_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_config = new cl_db_config;
 $cldb_config->rotulo->label("codigo");
 $cldb_config->rotulo->label("nomeinst");
@@ -50,11 +51,11 @@ $Icodigo = 1;
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lcodigo?></label></td>
-          <td><? db_input("codigo",2,$Icodigo,true,"text",4,"","chave_codigo"); ?></td>
+          <td><?php  db_input("codigo",2,$Icodigo,true,"text",4,"","chave_codigo"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lnomeinst?></label></td>
-          <td><? db_input("nomeinst",25,$Inomeinst,true,"text",4,"","chave_nomeinst");?></td>
+          <td><?php  db_input("nomeinst",25,$Inomeinst,true,"text",4,"","chave_nomeinst");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,7 +63,7 @@ $Icodigo = 1;
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_db_config.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_config.php")==true){
@@ -104,12 +105,12 @@ $Icodigo = 1;
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

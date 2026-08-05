@@ -72,7 +72,7 @@ class LoteProcessoCompra {
    * @access private
    * @var ItemProcessoCompra[]
    */
-  private $aItens = array();
+  private $aItens = [];
   
   /**
    * Construtor da classe
@@ -257,7 +257,7 @@ class LoteProcessoCompra {
    * @throws DBException
    * @throws BusinessException
    */
-  public function removerItens(ItemProcessoCompra $oItemProcessoCompra = null) {
+  public function removerItens(?ItemProcessoCompra $oItemProcessoCompra = null) {
  
     if (!db_utils::inTransaction()) {
       throw new DBException(_M(self::ARQUIVO_MENSAGEM . "sem_transacao_ativa"));

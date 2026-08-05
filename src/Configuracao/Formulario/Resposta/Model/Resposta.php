@@ -26,6 +26,10 @@
  */
 namespace ECidade\Configuracao\Formulario\Resposta\Model;
 
+use AvaliacaoPergunta;
+use ParameterException;
+use ECidade\Configuracao\Formulario\Model\Formulario;
+use DBDate;
 use ECidade\Configuracao\Formulario\Model\Opcao;
 use ECidade\Configuracao\Formulario\Model\Pergunta;
 use \ECidade\Configuracao\Formulario\Resposta\Repository\Resposta as RespostaReposity;
@@ -38,14 +42,14 @@ class Resposta
 {
 
   /**
-   * @var \ECidade\Configuracao\Formulario\Model\Formulario
-   */
+     * @var Formulario
+     */
     private $formulario;
 
   /**
-   * Data de Preenchimento
-   * @var \DBDate
-   */
+     * Data de Preenchimento
+     * @var DBDate
+     */
     private $data;
 
   /**
@@ -55,14 +59,14 @@ class Resposta
     private $codigo;
 
   /**
-   * Valores de Respostas da pergunta
-   * @var \ECidade\Configuracao\Formulario\Resposta\Model\Valor[]
-   */
-    private $respostas = array();
+     * Valores de Respostas da pergunta
+     * @var Valor[]
+     */
+    private $respostas = [];
 
   /**
-   * @return \ECidade\Configuracao\Formulario\Model\Formulario
-   */
+     * @return Formulario
+     */
     public function getFormulario()
     {
 
@@ -70,8 +74,8 @@ class Resposta
     }
 
   /**
-   * @param \ECidade\Configuracao\Formulario\Model\Formulario $formulario
-   */
+     * @param Formulario $formulario
+     */
     public function setFormulario($formulario)
     {
 
@@ -79,8 +83,8 @@ class Resposta
     }
 
   /**
-   * @return \DBDate
-   */
+     * @return DBDate
+     */
     public function getData()
     {
 
@@ -88,8 +92,8 @@ class Resposta
     }
 
   /**
-   * @param \DBDate $data
-   */
+     * @param DBDate $data
+     */
     public function setData($data)
     {
 
@@ -115,10 +119,10 @@ class Resposta
 
     /**
      * Adiciona uma resposta ao grupo.
-     * @param \ECidade\Configuracao\Formulario\Model\Pergunta $pergunta
+     * @param Pergunta $pergunta
      * @param                                                 $valor
      * @param bool $buscarRespostaVazia
-     * @throws \ParameterException
+     * @throws ParameterException
      */
     public function adicionarRespostaParaPergunta(Pergunta $pergunta, $valor, $buscarRespostaVazia = false)
     {
@@ -144,11 +148,11 @@ class Resposta
         }
     
         switch ($pergunta->getTipoResposta()) {
-            case \AvaliacaoPergunta::TIPO_RESPOSTA_DISSERTATIVA:
+            case AvaliacaoPergunta::TIPO_RESPOSTA_DISSERTATIVA:
                 $resposta->setOpcao($opcoesDaPergunta[0]);
                 break;
         
-            case \AvaliacaoPergunta::TIPO_RESPOSTA_OBJETIVA:
+            case AvaliacaoPergunta::TIPO_RESPOSTA_OBJETIVA:
                 foreach ($opcoesDaPergunta as $opcao) {
                     if ($opcao->getValorOpcao() == $valor || $opcao->getCodigo() == $valor) {
                         $resposta->setOpcao($opcao);
@@ -161,7 +165,7 @@ class Resposta
                     $sMensagem .= "{$pergunta->getDescricao()} com o valor '{$valor}'.\n ";
                     $sMensagem .= "Verifique a configuração da pergunta, ou a consulta da carga do formulário ";
                     $sMensagem .= $this->formulario->getNome();
-                    throw new \ParameterException($sMensagem);
+                    throw new ParameterException($sMensagem);
                 }
                 break;
         }
@@ -172,8 +176,8 @@ class Resposta
     }
 
   /**
-   * @return \ECidade\Configuracao\Formulario\Resposta\Model\Valor[]
-   */
+     * @return Valor[]
+     */
     public function getRespostas()
     {
     
@@ -185,9 +189,9 @@ class Resposta
     }
 
   /**
-   * @param \ECidade\Configuracao\Formulario\Model\Pergunta $pergunta
-   * @return \ECidade\Configuracao\Formulario\Resposta\Model\Valor|null
-   */
+     * @param Pergunta $pergunta
+     * @return Valor|null
+     */
     private function getValorDaPergunta(Pergunta $pergunta)
     {
     

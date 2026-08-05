@@ -404,12 +404,12 @@ if (isset($excluir)) {
                         if ($iLinhasMat > 0) {
                             db_fieldsmemory($rsResultMat, 0);
 
-                            if (trim($sitant) != "AVANÇADO" && trim($sitant) != "CLASSIFICADO") {
+                            if (trim((string) $sitant) != "AVANÇADO" && trim((string) $sitant) != "CLASSIFICADO") {
                                 if ($concant == "S") {
-                                    if (trim($sitant) == "MATRICULADO") {
+                                    if (trim((string) $sitant) == "MATRICULADO") {
                                         $resfinal = ResultadoFinal($matrant, $ed60_i_aluno, $turmaant, $sitant, $concant);
                                         $sitant = $resfinal == "REPROVADO" ? "REPETENTE" : "APROVADO";
-                                    } elseif (trim($sitant) == "TROCA DE MODALIDADE") {
+                                    } elseif (trim((string) $sitant) == "TROCA DE MODALIDADE") {
                                         $sUpdateMatricula = " UPDATE matricula SET  ";
                                         $sUpdateMatricula .= "                  ed60_c_ativa        = 'S', ";
                                         $sUpdateMatricula .= "                  ed60_c_concluida    = 'N',";
@@ -437,11 +437,11 @@ if (isset($excluir)) {
                                     }//fecha o elseif trim($sitant) == "TROCA DE MODALIDADE"
                                 }//fecha o if $concant == "S"
 
-                                if (trim($sitant) == "TRANSFERIDO REDE") {
+                                if (trim((string) $sitant) == "TRANSFERIDO REDE") {
                                     $escolaant = $escola;
                                 }
 
-                                if (trim($ativaant) == "N") {
+                                if (trim((string) $ativaant) == "N") {
                                     $sUpdateMat = " UPDATE matricula SET ";
                                     $sUpdateMat .= "                  ed60_c_ativa  = 'S' ";
                                     $sUpdateMat .= "            WHERE ed60_i_codigo = $matrant";
@@ -459,7 +459,7 @@ if (isset($excluir)) {
                                 $sUpdateAlunoCurso .= "             WHERE ed56_i_codigo        = $ed56_i_codigo";
                                 $rsResultAlunoCurso = db_query($sUpdateAlunoCurso);
 
-                                if (trim($sitant) == "APROVADO") {
+                                if (trim((string) $sitant) == "APROVADO") {
                                     $sWhereTurmaSerieRegimeMat = " ed220_i_turma = $turmaant";
                                     $sSqlTurmaSerieRegimeMat = $oDaoTurmaSerieRegimeMat->sql_query(
                                         "",
@@ -537,7 +537,7 @@ if (isset($excluir)) {
                                 $sUpdateAlunoPossib .= "              WHERE ed79_i_alunocurso = $ed56_i_codigo";
                                 $rsResultAlunoPossib = db_query($sUpdateAlunoPossib);
 
-                                if (trim($sitant) == "TRANSFERIDO REDE") {
+                                if (trim((string) $sitant) == "TRANSFERIDO REDE") {
                                     $sUpdateTransfRede = " UPDATE transfescolarede SET ";
                                     $sUpdateTransfRede .= "                         ed103_c_situacao = 'A' ";
                                     $sUpdateTransfRede .= "                   WHERE ed103_i_codigo = (select ed103_i_codigo from ";
@@ -584,7 +584,7 @@ if (isset($excluir)) {
                 $rsDiarioClasse = $oDaoDiarioClasseRegenciaHorario->sql_record($sSqlDiarioClasse);
                 $iTotalLinhasDiario = $oDaoDiarioClasseRegenciaHorario->numrows;
                 if ($iTotalLinhasDiario > 0) {
-                    $aDiarioClasseExcluidos = array();
+                    $aDiarioClasseExcluidos = [];
 
                     for ($iDiario = 0; $iDiario < $iTotalLinhasDiario; $iDiario++) {
                         $oDadosDiarioClasse = db_utils::fieldsMemory($rsDiarioClasse, $iDiario);
@@ -1166,7 +1166,7 @@ if (isset($excluir)) {
                                 $iLinhasEscola = $oDaoEscola->numrows;
 
                                 if ($iLinhasEscola == 0) {
-                                    $x = array('' => 'NENHUM REGISTRO');
+                                    $x = ['' => 'NENHUM REGISTRO'];
                                     db_select('escola', $x, true, 1, "style='width:300px;'");
                                 } else {
                                     echo "<select name='escola' id='escola' onchange=\"js_escola(this.value);\"
@@ -1211,7 +1211,7 @@ if (isset($excluir)) {
                                     $rsResultCalendario = $oDaoCalendario->sql_record($sSqlCalendario);
 
                                     if ($oDaoCalendario->numrows == 0) {
-                                        $x = array('' => 'NENHUM REGISTRO');
+                                        $x = ['' => 'NENHUM REGISTRO'];
                                         db_select('calendario', $x, true, 1, "style='width:500px;font-size:9px;'");
                                     } else {
                                         echo "<select name='calendario' id='calendario' style='width:500px;font-size:9px;' multiple size='20'>";
@@ -1230,7 +1230,7 @@ if (isset($excluir)) {
                                     $rsResultBase = $oDaoBase->sql_record($sSqlBase);
 
                                     if ($oDaoBase->numrows == 0) {
-                                        $x = array('' => 'NENHUM REGISTRO');
+                                        $x = ['' => 'NENHUM REGISTRO'];
                                         db_select('base', $x, true, 1, "style='width:500px;font-size:9px;'");
                                     } else {
                                         echo " <select name='base' id='base' style='width:500px;font-size:9px;' multiple size='20'>";
@@ -1250,7 +1250,7 @@ if (isset($excluir)) {
                                     $rsResultProcedimento = $oDaoProcedimento->sql_record($sSqlProcedimento);
 
                                     if ($oDaoProcedimento->numrows == 0) {
-                                        $x = array('' => 'NENHUM REGISTRO');
+                                        $x = ['' => 'NENHUM REGISTRO'];
                                         db_select('procedimento', $x, true, 1, "style='width:500px;font-size:9px;'");
                                     } else {
                                         echo "<select name='procedimento' id='procedimento'
@@ -1279,7 +1279,7 @@ if (isset($excluir)) {
                                     $rsResultTurma = $oDaoTurma->sql_record($sSqlTurma);
 
                                     if ($oDaoTurma->numrows == 0) {
-                                        $x = array('' => 'NENHUM REGISTRO');
+                                        $x = ['' => 'NENHUM REGISTRO'];
                                         db_select('turma', $x, true, 1, "style='width:500px;font-size:9px;'");
                                     } else {
                                         echo "<select name='turma' id='turma' style='width:500px;font-size:9px;' multiple size='20'>";

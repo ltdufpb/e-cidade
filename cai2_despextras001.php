@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -76,33 +76,33 @@ function js_emite(){
       </tr>
       <tr>
       <td nowrap title="<?=@$Tk13_conta?>" align='right'><b>
-        <?
+        <?php 
         db_ancora('Codigo da Conta:',"js_pesquisak13_conta(true);",1);
         ?></b>
        </td>
        <td> 
-        <?
+        <?php 
         db_input('k13_conta',5,$Ik13_conta,true,'text',1," onchange='js_pesquisak13_conta(false);'")
           ?>
-          <?
+          <?php 
            db_input('k13_descr',30,$Ik13_descr,true,'text',3,'')
           ?>
          </td>
          </tr>
       
-	 <?
+	 <?php 
 		$dtd = date("d",db_getsession("DB_datausu"));
 		$dtm = date("m",db_getsession("DB_datausu"));
 		$dta = date("Y",db_getsession("DB_datausu"));
          ?>		
          <tr>
-	 <td><b>De:</b><?db_inputdata("data","$dtd","$dtm","$dta","true","text",2)      ?>   </td>
-	 <td><b>Ate:</b>  <?db_inputdata("data1","$dtd","$dtm","$dta","true","text",2)      ?> </td>
+	 <td><b>De:</b><?php db_inputdata("data","$dtd","$dtm","$dta","true","text",2)      ?>   </td>
+	 <td><b>Ate:</b>  <?php db_inputdata("data1","$dtd","$dtm","$dta","true","text",2)      ?> </td>
 	 </tr>
       <tr>
         <td align="right"><b>Imprimir histórico:</b></td>
         <td>
-        <?
+        <?php 
            $matriz = array("S"=>"SIM","N"=>"NÃO");
            db_select("imp_hist",$matriz,true,4);
         ?>
@@ -117,7 +117,7 @@ function js_emite(){
 
   </form>
     </table>
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -145,7 +145,7 @@ function js_mostratabdesc1(chave1,chave2){
      document.form1.k07_descr.value = chave2;
      db_iframe.hide();
 }
-<?/*--------------------------------------------------*/?>
+<?php /*--------------------------------------------------*/?>
 function js_pesquisak13_conta(mostra){
   if(mostra==true){
     js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_saltes','func_saltes.php?funcao_js=parent.js_mostrasaltes1|k13_conta|k13_descr','Pesquisa',true);
@@ -169,11 +169,11 @@ function js_mostrasaltes1(chave1,chave2){
   document.form1.k13_descr.value = chave2;
   db_iframe_saltes.hide();
 }
-<?/*----------------------------------------*/?>
+<?php /*----------------------------------------*/?>
 </script>
 
 
-<?
+<?php 
 if(isset($ordem)){
   echo "<script>
        js_emite();

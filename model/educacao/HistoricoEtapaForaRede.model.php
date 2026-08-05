@@ -24,8 +24,7 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
-
+use ECidade\Educacao\Escola\Repository\AreaHistoricoForaRepository;
 use ECidade\Educacao\Escola\Model\AreaHistoricoFora;
 
 require_once(modification('model/educacao/HistoricoEtapa.model.php'));
@@ -179,7 +178,7 @@ class HistoricoEtapaForaRede extends HistoricoEtapa {
      */
     public function getAreasConhecimento()
     {
-        $areaHistoricoForaRepository = new \ECidade\Educacao\Escola\Repository\AreaHistoricoForaRepository();
+        $areaHistoricoForaRepository = new AreaHistoricoForaRepository();
         return $areaHistoricoForaRepository
             ->scopeHistoricoEtapaForaRede(new HistoricoEtapaForaRede($this->iCodigoEtapa))
             ->get();

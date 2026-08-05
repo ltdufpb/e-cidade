@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE certter
 class cl_certter { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $v14_certid = 0; 
-   var $v14_parcel = 0; 
-   var $v14_vlrhis = 0; 
-   var $v14_vlrcor = 0; 
-   var $v14_vlrjur = 0; 
-   var $v14_vlrmul = 0; 
+   public $v14_certid = 0; 
+   public $v14_parcel = 0; 
+   public $v14_vlrhis = 0; 
+   public $v14_vlrcor = 0; 
+   public $v14_vlrjur = 0; 
+   public $v14_vlrmul = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  v14_certid = int4 = certidao 
                  v14_parcel = int4 = parcelamento 
                  v14_vlrhis = float8 = valor historico 
@@ -58,10 +58,10 @@ class cl_certter {
                  v14_vlrmul = float8 = valor da multa 
                  ";
    //funcao construtor da classe 
-   function cl_certter() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("certter"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -162,7 +162,7 @@ class cl_certter {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->v14_certid."-".$this->v14_parcel) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -186,16 +186,16 @@ class cl_certter {
      $resaco = $this->sql_record($this->sql_query_file($this->v14_certid,$this->v14_parcel));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,531,'$this->v14_certid','I')");
        $resac = db_query("insert into db_acountkey values($acount,563,'$this->v14_parcel','I')");
-       $resac = db_query("insert into db_acount values($acount,106,531,'','".AddSlashes(pg_result($resaco,0,'v14_certid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,106,563,'','".AddSlashes(pg_result($resaco,0,'v14_parcel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,106,533,'','".AddSlashes(pg_result($resaco,0,'v14_vlrhis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,106,534,'','".AddSlashes(pg_result($resaco,0,'v14_vlrcor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,106,535,'','".AddSlashes(pg_result($resaco,0,'v14_vlrjur'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,106,536,'','".AddSlashes(pg_result($resaco,0,'v14_vlrmul'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,106,531,'','".AddSlashes(pg_fetch_result($resaco,0,'v14_certid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,106,563,'','".AddSlashes(pg_fetch_result($resaco,0,'v14_parcel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,106,533,'','".AddSlashes(pg_fetch_result($resaco,0,'v14_vlrhis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,106,534,'','".AddSlashes(pg_fetch_result($resaco,0,'v14_vlrcor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,106,535,'','".AddSlashes(pg_fetch_result($resaco,0,'v14_vlrjur'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,106,536,'','".AddSlashes(pg_fetch_result($resaco,0,'v14_vlrmul'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -204,10 +204,10 @@ class cl_certter {
       $this->atualizacampos();
      $sql = " update certter set ";
      $virgula = "";
-     if(trim($this->v14_certid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v14_certid"])){ 
+     if(trim((string) $this->v14_certid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v14_certid"])){ 
        $sql  .= $virgula." v14_certid = $this->v14_certid ";
        $virgula = ",";
-       if(trim($this->v14_certid) == null ){ 
+       if(trim((string) $this->v14_certid) == null ){ 
          $this->erro_sql = " Campo certidao nao Informado.";
          $this->erro_campo = "v14_certid";
          $this->erro_banco = "";
@@ -217,10 +217,10 @@ class cl_certter {
          return false;
        }
      }
-     if(trim($this->v14_parcel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v14_parcel"])){ 
+     if(trim((string) $this->v14_parcel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v14_parcel"])){ 
        $sql  .= $virgula." v14_parcel = $this->v14_parcel ";
        $virgula = ",";
-       if(trim($this->v14_parcel) == null ){ 
+       if(trim((string) $this->v14_parcel) == null ){ 
          $this->erro_sql = " Campo parcelamento nao Informado.";
          $this->erro_campo = "v14_parcel";
          $this->erro_banco = "";
@@ -230,10 +230,10 @@ class cl_certter {
          return false;
        }
      }
-     if(trim($this->v14_vlrhis)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v14_vlrhis"])){ 
+     if(trim((string) $this->v14_vlrhis)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v14_vlrhis"])){ 
        $sql  .= $virgula." v14_vlrhis = $this->v14_vlrhis ";
        $virgula = ",";
-       if(trim($this->v14_vlrhis) == null ){ 
+       if(trim((string) $this->v14_vlrhis) == null ){ 
          $this->erro_sql = " Campo valor historico nao Informado.";
          $this->erro_campo = "v14_vlrhis";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_certter {
          return false;
        }
      }
-     if(trim($this->v14_vlrcor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v14_vlrcor"])){ 
+     if(trim((string) $this->v14_vlrcor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v14_vlrcor"])){ 
        $sql  .= $virgula." v14_vlrcor = $this->v14_vlrcor ";
        $virgula = ",";
-       if(trim($this->v14_vlrcor) == null ){ 
+       if(trim((string) $this->v14_vlrcor) == null ){ 
          $this->erro_sql = " Campo valor corrigido nao Informado.";
          $this->erro_campo = "v14_vlrcor";
          $this->erro_banco = "";
@@ -256,10 +256,10 @@ class cl_certter {
          return false;
        }
      }
-     if(trim($this->v14_vlrjur)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v14_vlrjur"])){ 
+     if(trim((string) $this->v14_vlrjur)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v14_vlrjur"])){ 
        $sql  .= $virgula." v14_vlrjur = $this->v14_vlrjur ";
        $virgula = ",";
-       if(trim($this->v14_vlrjur) == null ){ 
+       if(trim((string) $this->v14_vlrjur) == null ){ 
          $this->erro_sql = " Campo valor dos juros nao Informado.";
          $this->erro_campo = "v14_vlrjur";
          $this->erro_banco = "";
@@ -269,10 +269,10 @@ class cl_certter {
          return false;
        }
      }
-     if(trim($this->v14_vlrmul)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v14_vlrmul"])){ 
+     if(trim((string) $this->v14_vlrmul)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v14_vlrmul"])){ 
        $sql  .= $virgula." v14_vlrmul = $this->v14_vlrmul ";
        $virgula = ",";
-       if(trim($this->v14_vlrmul) == null ){ 
+       if(trim((string) $this->v14_vlrmul) == null ){ 
          $this->erro_sql = " Campo valor da multa nao Informado.";
          $this->erro_campo = "v14_vlrmul";
          $this->erro_banco = "";
@@ -293,22 +293,22 @@ class cl_certter {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,531,'$this->v14_certid','A')");
          $resac = db_query("insert into db_acountkey values($acount,563,'$this->v14_parcel','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v14_certid"]))
-           $resac = db_query("insert into db_acount values($acount,106,531,'".AddSlashes(pg_result($resaco,$conresaco,'v14_certid'))."','$this->v14_certid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,106,531,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v14_certid'))."','$this->v14_certid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v14_parcel"]))
-           $resac = db_query("insert into db_acount values($acount,106,563,'".AddSlashes(pg_result($resaco,$conresaco,'v14_parcel'))."','$this->v14_parcel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,106,563,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v14_parcel'))."','$this->v14_parcel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v14_vlrhis"]))
-           $resac = db_query("insert into db_acount values($acount,106,533,'".AddSlashes(pg_result($resaco,$conresaco,'v14_vlrhis'))."','$this->v14_vlrhis',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,106,533,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v14_vlrhis'))."','$this->v14_vlrhis',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v14_vlrcor"]))
-           $resac = db_query("insert into db_acount values($acount,106,534,'".AddSlashes(pg_result($resaco,$conresaco,'v14_vlrcor'))."','$this->v14_vlrcor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,106,534,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v14_vlrcor'))."','$this->v14_vlrcor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v14_vlrjur"]))
-           $resac = db_query("insert into db_acount values($acount,106,535,'".AddSlashes(pg_result($resaco,$conresaco,'v14_vlrjur'))."','$this->v14_vlrjur',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,106,535,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v14_vlrjur'))."','$this->v14_vlrjur',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v14_vlrmul"]))
-           $resac = db_query("insert into db_acount values($acount,106,536,'".AddSlashes(pg_result($resaco,$conresaco,'v14_vlrmul'))."','$this->v14_vlrmul',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,106,536,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v14_vlrmul'))."','$this->v14_vlrmul',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -353,16 +353,16 @@ class cl_certter {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,531,'$v14_certid','E')");
          $resac = db_query("insert into db_acountkey values($acount,563,'$v14_parcel','E')");
-         $resac = db_query("insert into db_acount values($acount,106,531,'','".AddSlashes(pg_result($resaco,$iresaco,'v14_certid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,106,563,'','".AddSlashes(pg_result($resaco,$iresaco,'v14_parcel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,106,533,'','".AddSlashes(pg_result($resaco,$iresaco,'v14_vlrhis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,106,534,'','".AddSlashes(pg_result($resaco,$iresaco,'v14_vlrcor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,106,535,'','".AddSlashes(pg_result($resaco,$iresaco,'v14_vlrjur'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,106,536,'','".AddSlashes(pg_result($resaco,$iresaco,'v14_vlrmul'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,106,531,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v14_certid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,106,563,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v14_parcel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,106,533,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v14_vlrhis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,106,534,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v14_vlrcor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,106,535,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v14_vlrjur'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,106,536,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v14_vlrmul'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from certter
@@ -428,7 +428,7 @@ class cl_certter {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:certter";
@@ -442,7 +442,7 @@ class cl_certter {
    function sql_query ( $v14_certid=null,$v14_parcel=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -474,7 +474,7 @@ class cl_certter {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -487,7 +487,7 @@ class cl_certter {
   function sql_query_parcel ( $v14_certid=null,$v14_parcel=null,$campos="*",$ordem=null,$dbwhere=""){ 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -522,7 +522,7 @@ class cl_certter {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -581,7 +581,7 @@ class cl_certter {
    function sql_query_deb ( $v14_certid=null,$v14_parcel=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -613,7 +613,7 @@ class cl_certter {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -625,7 +625,7 @@ class cl_certter {
    function sql_query_file ( $v14_certid=null,$v14_parcel=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -654,7 +654,7 @@ class cl_certter {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

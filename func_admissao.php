@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_admissao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cladmissao = new cl_admissao;
 $cladmissao->rotulo->label("h07_regist");
 $cladmissao->rotulo->label("h07_tipadm");
@@ -54,7 +55,7 @@ $cladmissao->rotulo->label("h07_tipadm");
               <?=$Lh07_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("h07_regist",6,$Ih07_regist,true,"text",4,"","chave_h07_regist");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cladmissao->rotulo->label("h07_tipadm");
               <?=$Lh07_tipadm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("h07_tipadm",2,$Ih07_tipadm,true,"text",4,"","chave_h07_tipadm");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cladmissao->rotulo->label("h07_tipadm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_admissao.php")==true){
@@ -122,12 +123,12 @@ $cladmissao->rotulo->label("h07_tipadm");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

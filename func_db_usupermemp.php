@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_usupermemp_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_usupermemp = new cl_db_usupermemp;
 $cldb_usupermemp->rotulo->label("db21_codperm");
 $cldb_usupermemp->rotulo->label("db21_id_usuario");
@@ -55,7 +56,7 @@ $cldb_usupermemp->rotulo->label("db21_id_usuario");
               <?=$Ldb21_codperm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db21_codperm",6,$Idb21_codperm,true,"text",4,"","chave_db21_codperm");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $cldb_usupermemp->rotulo->label("db21_id_usuario");
               <?=$Ldb21_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db21_id_usuario",5,$Idb21_id_usuario,true,"text",4,"","chave_db21_id_usuario");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $cldb_usupermemp->rotulo->label("db21_id_usuario");
               <?=$Ldb21_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db21_id_usuario",5,$Idb21_id_usuario,true,"text",4,"","chave_db21_id_usuario");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $cldb_usupermemp->rotulo->label("db21_id_usuario");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_usupermemp.php")==true){
@@ -129,12 +130,12 @@ $cldb_usupermemp->rotulo->label("db21_id_usuario");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

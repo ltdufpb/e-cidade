@@ -1,4 +1,4 @@
-<?
+<?php 
 set_time_limit(0);
 if(!defined('DB_BIBLIOT')){
 
@@ -46,6 +46,7 @@ class PDF extends FPDF {
 //|10|//		      - número da página.
 
 //Page header
+  #[Override]
   function Header() {
 //#00#//header
 //#10#//Este método é usado gerar o cabeçalho da página. É chamado automaticamente por |addPage| e não
@@ -92,14 +93,14 @@ class PDF extends FPDF {
                                    url,
                                    logo
                             from db_config where codigo = ".db_getsession("DB_instit"));
-    $url = @pg_result($dados,0,"url");
+    $url = @pg_fetch_result($dados,0,"url");
     $this->SetXY(1,1);
-    $this->Image('imagens/files/'.pg_result($dados,0,"logo"),7,3,20);
+    $this->Image('imagens/files/'.pg_fetch_result($dados,0,"logo"),7,3,20);
 
   //$this->Cell(100,32,"",1);
-    $nome = pg_result($dados,0,"nomeinst");
+    $nome = pg_fetch_result($dados,0,"nomeinst");
     global $nomeinst;
-    $nomeinst = pg_result($dados,0,"nomeinst");
+    $nomeinst = pg_fetch_result($dados,0,"nomeinst");
 
     if(strlen($nome) > 65) {
         $TamFonteNome = 5.9;
@@ -113,14 +114,14 @@ class PDF extends FPDF {
     $this->SetFont('Arial','BI',$TamFonteNome);
     $this->Text(33,10,$nome);
     $this->SetFont('Arial','I',8);
-    $sComplento = substr(trim(pg_result($dados,0,"db21_compl") ),0,20 );
+    $sComplento = substr(trim(pg_fetch_result($dados,0,"db21_compl") ),0,20 );
     if ($sComplento != '' || $sComplento != null ) {
-    	$sComplento = ", ".substr(trim(pg_result($dados,0,"db21_compl") ),0,20 );
+    	$sComplento = ", ".substr(trim(pg_fetch_result($dados,0,"db21_compl") ),0,20 );
     }
-    $this->Text(33,14,trim(pg_result($dados,0,"rua")).", ".trim(pg_result($dados,0,"numero")).$sComplento );
-    $this->Text(33,18,trim(pg_result($dados,0,"munic"))." - ".pg_result($dados,0,"uf"));
-    $this->Text(33,22,trim(pg_result($dados,0,"telef"))."   -    CNPJ : ".db_formatar(pg_result($dados,0,"cgc"),"cnpj"));
-    $this->Text(33,26,trim(pg_result($dados,0,"email")));
+    $this->Text(33,14,trim(pg_fetch_result($dados,0,"rua")).", ".trim(pg_fetch_result($dados,0,"numero")).$sComplento );
+    $this->Text(33,18,trim(pg_fetch_result($dados,0,"munic"))." - ".pg_fetch_result($dados,0,"uf"));
+    $this->Text(33,22,trim(pg_fetch_result($dados,0,"telef"))."   -    CNPJ : ".db_formatar(pg_fetch_result($dados,0,"cgc"),"cnpj"));
+    $this->Text(33,26,trim(pg_fetch_result($dados,0,"email")));
     $comprim = ($this->w - $this->rMargin - $this->lMargin);
     $this->Text(33,30,$url);
     $Espaco = $this->w - 80 ;
@@ -146,6 +147,7 @@ class PDF extends FPDF {
   }
 
 //Page footer
+  #[Override]
   function Footer() {
 //#00#//footer
 //#10#//Este método é usado para criar o rodapé da página. Ele é automaticamente chamado por |addPage|
@@ -185,26 +187,26 @@ class PDF extends FPDF {
                       	    and modulo = ".db_getsession("DB_modulo");
 
     	$rsMenuAcess   = db_query($conn,$sSqlMenuAcess);
-    	$sMenuAcess    = substr(pg_result($rsMenuAcess, 0, "menu"), 0, 50);
+    	$sMenuAcess    = substr(pg_fetch_result($rsMenuAcess, 0, "menu"), 0, 50);
 
 	    //Position at 1.5 cm from bottom
 	    $this->SetFont('Arial','',5);
-	    $sBase = isset($GLOBALS["DB_NBASE"]) ? $GLOBALS["DB_NBASE"] : $GLOBALS["DB_DATABASE"];
+	    $sBase = $GLOBALS["DB_NBASE"] ?? $GLOBALS["DB_DATABASE"];
 	    $this->text(10,$this->h-8,'Base: '.@$sBase);
 	    $this->SetFont('Arial','I',6);
 	    $this->SetY(-10);
 	    $nome = @$GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"];
-	    $nome = substr($nome,strrpos($nome,"/")+1);
+	    $nome = substr((string) $nome,strrpos((string) $nome,"/")+1);
 	    $result_nomeusu = db_query($conn, "select nome as nomeusu from db_usuarios where id_usuario =".db_getsession("DB_id_usuario"));
-	    if (pg_numrows($result_nomeusu)>0){
-	    	$nomeusu = pg_result($result_nomeusu,0,0);
+	    if (pg_num_rows($result_nomeusu)>0){
+	    	$nomeusu = pg_fetch_result($result_nomeusu,0,0);
 	    }
 	    if (isset($nomeusu)&&$nomeusu!=""){
 	    	$emissor = $nomeusu;
 	    }else{
 	    	$emissor = @$GLOBALS["DB_login"];
 	    }
-	    $this->Cell(0,10,$sMenuAcess. "  ". $nome.'   Emissor: '.substr(ucwords(strtolower($emissor)),0,30).'  Exerc: '.db_getsession("DB_anousu").
+	    $this->Cell(0,10,$sMenuAcess. "  ". $nome.'   Emissor: '.substr(ucwords(strtolower((string) $emissor)),0,30).'  Exerc: '.db_getsession("DB_anousu").
 	                                              '   Data: '.date("d-m-Y",db_getsession("DB_datausu"))." - ".date("H:i:s"),"T",0,'L');
 
 	    $this->Cell(0,10,'Pág '.$this->PageNo().'/{nb}',0,1,'R');
@@ -212,6 +214,7 @@ class PDF extends FPDF {
   }
 
 // mudar o angulo do texto
+#[Override]
 function TextWithDirection($x,$y,$txt,$direction='R')
 {
     $txt=str_replace(')','\\)',str_replace('(','\\(',str_replace('\\','\\\\',$txt)));
@@ -230,6 +233,7 @@ function TextWithDirection($x,$y,$txt,$direction='R')
 
 // rotacionar o texto
 
+#[Override]
 function TextWithRotation($x,$y,$txt,$txt_angle,$font_angle=0)
 {
     $txt=str_replace(')','\\)',str_replace('(','\\(',str_replace('\\','\\\\',$txt)));

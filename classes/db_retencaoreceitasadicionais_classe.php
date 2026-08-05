@@ -29,14 +29,14 @@
 /**
  * Class cl_retencaoreceitasadicionais
  */
-class cl_retencaoreceitasadicionais extends \DAOBasica {
+class cl_retencaoreceitasadicionais extends DAOBasica {
 
-    public function __construct() {
-        parent::__construct("empenho.retencaoreceitasadicionais");
+    public function __construct()
+    {
     }
 
 
-    function sql_query_notascgmretencaoadicionais($where=array(), $campos="") {
+    function sql_query_notascgmretencaoadicionais($where=[], $campos="") {
 
         $sql = "SELECT ";
         if ($campos != "") {

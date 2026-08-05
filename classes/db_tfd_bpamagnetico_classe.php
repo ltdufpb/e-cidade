@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE tfd_bpamagnetico
 class cl_tfd_bpamagnetico { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $tf33_i_codigo = 0; 
-   var $tf33_i_login = 0; 
-   var $tf33_i_fechamento = 0; 
-   var $tf33_c_nomearquivo = null; 
-   var $tf33_d_datasistema_dia = null; 
-   var $tf33_d_datasistema_mes = null; 
-   var $tf33_d_datasistema_ano = null; 
-   var $tf33_d_datasistema = null; 
-   var $tf33_c_horasistema = null; 
-   var $tf33_o_arquivo = 0; 
+   public $tf33_i_codigo = 0; 
+   public $tf33_i_login = 0; 
+   public $tf33_i_fechamento = 0; 
+   public $tf33_c_nomearquivo = null; 
+   public $tf33_d_datasistema_dia = null; 
+   public $tf33_d_datasistema_mes = null; 
+   public $tf33_d_datasistema_ano = null; 
+   public $tf33_d_datasistema = null; 
+   public $tf33_c_horasistema = null; 
+   public $tf33_o_arquivo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  tf33_i_codigo = int4 = Código 
                  tf33_i_login = int4 = Login 
                  tf33_i_fechamento = int4 = Competência 
@@ -63,10 +63,10 @@ class cl_tfd_bpamagnetico {
                  tf33_o_arquivo = oid = Arquivo 
                  ";
    //funcao construtor da classe 
-   function cl_tfd_bpamagnetico() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_bpamagnetico"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -165,10 +165,10 @@ class cl_tfd_bpamagnetico {
          $this->erro_status = "0";
          return false; 
        }
-       $this->tf33_i_codigo = pg_result($result,0,0); 
+       $this->tf33_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tfd_bpamagnetico_tf33_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tf33_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tf33_i_codigo)){
          $this->erro_sql = " Campo tf33_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -208,7 +208,7 @@ class cl_tfd_bpamagnetico {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "tfd_bpamagnetico ($this->tf33_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "tfd_bpamagnetico já Cadastrado";
@@ -232,16 +232,16 @@ class cl_tfd_bpamagnetico {
      $resaco = $this->sql_record($this->sql_query_file($this->tf33_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17320,'$this->tf33_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,3066,17320,'','".AddSlashes(pg_result($resaco,0,'tf33_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3066,17321,'','".AddSlashes(pg_result($resaco,0,'tf33_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3066,17322,'','".AddSlashes(pg_result($resaco,0,'tf33_i_fechamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3066,17323,'','".AddSlashes(pg_result($resaco,0,'tf33_c_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3066,17324,'','".AddSlashes(pg_result($resaco,0,'tf33_d_datasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3066,17325,'','".AddSlashes(pg_result($resaco,0,'tf33_c_horasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3066,17326,'','".AddSlashes(pg_result($resaco,0,'tf33_o_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3066,17320,'','".AddSlashes(pg_fetch_result($resaco,0,'tf33_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3066,17321,'','".AddSlashes(pg_fetch_result($resaco,0,'tf33_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3066,17322,'','".AddSlashes(pg_fetch_result($resaco,0,'tf33_i_fechamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3066,17323,'','".AddSlashes(pg_fetch_result($resaco,0,'tf33_c_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3066,17324,'','".AddSlashes(pg_fetch_result($resaco,0,'tf33_d_datasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3066,17325,'','".AddSlashes(pg_fetch_result($resaco,0,'tf33_c_horasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3066,17326,'','".AddSlashes(pg_fetch_result($resaco,0,'tf33_o_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -250,10 +250,10 @@ class cl_tfd_bpamagnetico {
       $this->atualizacampos();
      $sql = " update tfd_bpamagnetico set ";
      $virgula = "";
-     if(trim($this->tf33_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf33_i_codigo"])){ 
+     if(trim((string) $this->tf33_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf33_i_codigo"])){ 
        $sql  .= $virgula." tf33_i_codigo = $this->tf33_i_codigo ";
        $virgula = ",";
-       if(trim($this->tf33_i_codigo) == null ){ 
+       if(trim((string) $this->tf33_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "tf33_i_codigo";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_tfd_bpamagnetico {
          return false;
        }
      }
-     if(trim($this->tf33_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf33_i_login"])){ 
+     if(trim((string) $this->tf33_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf33_i_login"])){ 
        $sql  .= $virgula." tf33_i_login = $this->tf33_i_login ";
        $virgula = ",";
-       if(trim($this->tf33_i_login) == null ){ 
+       if(trim((string) $this->tf33_i_login) == null ){ 
          $this->erro_sql = " Campo Login nao Informado.";
          $this->erro_campo = "tf33_i_login";
          $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_tfd_bpamagnetico {
          return false;
        }
      }
-     if(trim($this->tf33_i_fechamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf33_i_fechamento"])){ 
+     if(trim((string) $this->tf33_i_fechamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf33_i_fechamento"])){ 
        $sql  .= $virgula." tf33_i_fechamento = $this->tf33_i_fechamento ";
        $virgula = ",";
-       if(trim($this->tf33_i_fechamento) == null ){ 
+       if(trim((string) $this->tf33_i_fechamento) == null ){ 
          $this->erro_sql = " Campo Competência nao Informado.";
          $this->erro_campo = "tf33_i_fechamento";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_tfd_bpamagnetico {
          return false;
        }
      }
-     if(trim($this->tf33_c_nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf33_c_nomearquivo"])){ 
+     if(trim((string) $this->tf33_c_nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf33_c_nomearquivo"])){ 
        $sql  .= $virgula." tf33_c_nomearquivo = '$this->tf33_c_nomearquivo' ";
        $virgula = ",";
-       if(trim($this->tf33_c_nomearquivo) == null ){ 
+       if(trim((string) $this->tf33_c_nomearquivo) == null ){ 
          $this->erro_sql = " Campo Nome do arquivo nao Informado.";
          $this->erro_campo = "tf33_c_nomearquivo";
          $this->erro_banco = "";
@@ -302,10 +302,10 @@ class cl_tfd_bpamagnetico {
          return false;
        }
      }
-     if(trim($this->tf33_d_datasistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf33_d_datasistema_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["tf33_d_datasistema_dia"] !="") ){ 
+     if(trim((string) $this->tf33_d_datasistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf33_d_datasistema_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["tf33_d_datasistema_dia"] !="") ){ 
        $sql  .= $virgula." tf33_d_datasistema = '$this->tf33_d_datasistema' ";
        $virgula = ",";
-       if(trim($this->tf33_d_datasistema) == null ){ 
+       if(trim((string) $this->tf33_d_datasistema) == null ){ 
          $this->erro_sql = " Campo Data do sistema nao Informado.";
          $this->erro_campo = "tf33_d_datasistema_dia";
          $this->erro_banco = "";
@@ -318,7 +318,7 @@ class cl_tfd_bpamagnetico {
        if(isset($GLOBALS["HTTP_POST_VARS"]["tf33_d_datasistema_dia"])){ 
          $sql  .= $virgula." tf33_d_datasistema = null ";
          $virgula = ",";
-         if(trim($this->tf33_d_datasistema) == null ){ 
+         if(trim((string) $this->tf33_d_datasistema) == null ){ 
            $this->erro_sql = " Campo Data do sistema nao Informado.";
            $this->erro_campo = "tf33_d_datasistema_dia";
            $this->erro_banco = "";
@@ -329,10 +329,10 @@ class cl_tfd_bpamagnetico {
          }
        }
      }
-     if(trim($this->tf33_c_horasistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf33_c_horasistema"])){ 
+     if(trim((string) $this->tf33_c_horasistema)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf33_c_horasistema"])){ 
        $sql  .= $virgula." tf33_c_horasistema = '$this->tf33_c_horasistema' ";
        $virgula = ",";
-       if(trim($this->tf33_c_horasistema) == null ){ 
+       if(trim((string) $this->tf33_c_horasistema) == null ){ 
          $this->erro_sql = " Campo Hora do sistema nao Informado.";
          $this->erro_campo = "tf33_c_horasistema";
          $this->erro_banco = "";
@@ -342,10 +342,10 @@ class cl_tfd_bpamagnetico {
          return false;
        }
      }
-     if(trim($this->tf33_o_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf33_o_arquivo"])){ 
+     if(trim((string) $this->tf33_o_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf33_o_arquivo"])){ 
        $sql  .= $virgula." tf33_o_arquivo = $this->tf33_o_arquivo ";
        $virgula = ",";
-       if(trim($this->tf33_o_arquivo) == null ){ 
+       if(trim((string) $this->tf33_o_arquivo) == null ){ 
          $this->erro_sql = " Campo Arquivo nao Informado.";
          $this->erro_campo = "tf33_o_arquivo";
          $this->erro_banco = "";
@@ -363,23 +363,23 @@ class cl_tfd_bpamagnetico {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17320,'$this->tf33_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf33_i_codigo"]) || $this->tf33_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,3066,17320,'".AddSlashes(pg_result($resaco,$conresaco,'tf33_i_codigo'))."','$this->tf33_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3066,17320,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf33_i_codigo'))."','$this->tf33_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf33_i_login"]) || $this->tf33_i_login != "")
-           $resac = db_query("insert into db_acount values($acount,3066,17321,'".AddSlashes(pg_result($resaco,$conresaco,'tf33_i_login'))."','$this->tf33_i_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3066,17321,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf33_i_login'))."','$this->tf33_i_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf33_i_fechamento"]) || $this->tf33_i_fechamento != "")
-           $resac = db_query("insert into db_acount values($acount,3066,17322,'".AddSlashes(pg_result($resaco,$conresaco,'tf33_i_fechamento'))."','$this->tf33_i_fechamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3066,17322,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf33_i_fechamento'))."','$this->tf33_i_fechamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf33_c_nomearquivo"]) || $this->tf33_c_nomearquivo != "")
-           $resac = db_query("insert into db_acount values($acount,3066,17323,'".AddSlashes(pg_result($resaco,$conresaco,'tf33_c_nomearquivo'))."','$this->tf33_c_nomearquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3066,17323,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf33_c_nomearquivo'))."','$this->tf33_c_nomearquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf33_d_datasistema"]) || $this->tf33_d_datasistema != "")
-           $resac = db_query("insert into db_acount values($acount,3066,17324,'".AddSlashes(pg_result($resaco,$conresaco,'tf33_d_datasistema'))."','$this->tf33_d_datasistema',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3066,17324,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf33_d_datasistema'))."','$this->tf33_d_datasistema',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf33_c_horasistema"]) || $this->tf33_c_horasistema != "")
-           $resac = db_query("insert into db_acount values($acount,3066,17325,'".AddSlashes(pg_result($resaco,$conresaco,'tf33_c_horasistema'))."','$this->tf33_c_horasistema',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3066,17325,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf33_c_horasistema'))."','$this->tf33_c_horasistema',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf33_o_arquivo"]) || $this->tf33_o_arquivo != "")
-           $resac = db_query("insert into db_acount values($acount,3066,17326,'".AddSlashes(pg_result($resaco,$conresaco,'tf33_o_arquivo'))."','$this->tf33_o_arquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3066,17326,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf33_o_arquivo'))."','$this->tf33_o_arquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -424,16 +424,16 @@ class cl_tfd_bpamagnetico {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17320,'$tf33_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,3066,17320,'','".AddSlashes(pg_result($resaco,$iresaco,'tf33_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3066,17321,'','".AddSlashes(pg_result($resaco,$iresaco,'tf33_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3066,17322,'','".AddSlashes(pg_result($resaco,$iresaco,'tf33_i_fechamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3066,17323,'','".AddSlashes(pg_result($resaco,$iresaco,'tf33_c_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3066,17324,'','".AddSlashes(pg_result($resaco,$iresaco,'tf33_d_datasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3066,17325,'','".AddSlashes(pg_result($resaco,$iresaco,'tf33_c_horasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3066,17326,'','".AddSlashes(pg_result($resaco,$iresaco,'tf33_o_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3066,17320,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf33_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3066,17321,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf33_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3066,17322,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf33_i_fechamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3066,17323,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf33_c_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3066,17324,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf33_d_datasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3066,17325,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf33_c_horasistema'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3066,17326,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf33_o_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tfd_bpamagnetico
@@ -493,7 +493,7 @@ class cl_tfd_bpamagnetico {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tfd_bpamagnetico";
@@ -508,7 +508,7 @@ class cl_tfd_bpamagnetico {
    function sql_query ( $tf33_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -530,7 +530,7 @@ class cl_tfd_bpamagnetico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -543,7 +543,7 @@ class cl_tfd_bpamagnetico {
    function sql_query_file ( $tf33_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -564,7 +564,7 @@ class cl_tfd_bpamagnetico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -601,7 +601,7 @@ function sql_querry_prd_bpa($oDados) {
   $sCamposSub  = " select sd02_v_cnes as prd_ups, ";
   $sCamposSub .= "        lpad(sd63_c_procedimento,10,'0') as prd_pa, ";
   $sCamposSub .= "        tf01_i_codigo as cod_faa, ";	
-  $sCamposSub .= "        '$oDados->iCompano".str_pad ($oDados->iCompmes,2, "0", STR_PAD_LEFT )."' as prd_cmp, ";
+  $sCamposSub .= "        '$oDados->iCompano".str_pad ((string) $oDados->iCompmes,2, "0", STR_PAD_LEFT )."' as prd_cmp, ";
   $sCamposSub .= "        lpad(rh70_estrutural,6,'0') as prd_cbo,";
   $sCamposSub .= "        (select  s115_c_cartaosus from cgs_cartaosus ";
   $sCamposSub .= "         where s115_i_cgs=cgs.z01_i_numcgs ";

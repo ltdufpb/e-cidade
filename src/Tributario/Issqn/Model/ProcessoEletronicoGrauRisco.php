@@ -2,7 +2,6 @@
 
 namespace ECidade\Tributario\Issqn\Model;
 
-use DateTime;
 use Exception;
 
 class ProcessoEletronicoGrauRisco
@@ -75,11 +74,11 @@ class ProcessoEletronicoGrauRisco
      */
     public function toArray()
     {
-        return array(
+        return [
             'codigo' => $this->getCodigo(),
             'processo' => $this->getProcesso(),
             'grauRisco' => $this->getGrauRisco()
-        );
+        ];
     }
 
     /**

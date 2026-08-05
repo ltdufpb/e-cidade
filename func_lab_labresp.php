@@ -32,7 +32,8 @@ require_once (modification("libs/db_usuariosonline.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 require_once (modification("classes/db_lab_labresp_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cllab_labresp = new cl_lab_labresp;
 $cllab_labresp->rotulo->label("la06_i_codigo");
 $cllab_labresp->rotulo->label("z01_nome");
@@ -57,7 +58,7 @@ $oRotulo->label("z01_nome");
               <?=$Lla06_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("la06_i_codigo",10,$Ila06_i_codigo,true,"text",4,"","chave_la06_i_codigo");
 		       ?>
             </td>
@@ -67,7 +68,7 @@ $oRotulo->label("z01_nome");
              <b>Nome:</b>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");
 		       ?>
             </td>
@@ -85,7 +86,7 @@ $oRotulo->label("z01_nome");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_lab_labresp.php")==true){
@@ -132,12 +133,12 @@ $oRotulo->label("z01_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

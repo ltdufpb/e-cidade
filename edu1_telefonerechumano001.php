@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_telefonerechumano_classe.php"));
 include(modification("classes/db_rechumano_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cltelefonerechumano = new cl_telefonerechumano;
 $clrechumano = new cl_rechumano;
 $db_opcao = 1;
@@ -83,7 +83,7 @@ db_fieldsmemory($result11,0);
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Telefones do Recurso Humano</b></legend>
-    <?include(modification("forms/db_frmtelefonerechumano.php"));?>
+    <?php include(modification("forms/db_frmtelefonerechumano.php"));?>
    </fieldset>
    </center>
   </td>
@@ -94,7 +94,7 @@ db_fieldsmemory($result11,0);
 <script>
 js_tabulacaoforms("form1","ed30_i_tipotelefone",true,1,"ed30_i_tipotelefone",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
  if($cltelefonerechumano->erro_status=="0"){
   $cltelefonerechumano->erro(true,false);

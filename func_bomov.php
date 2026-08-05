@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bomov_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbomov = new cl_bomov;
 $clbomov->rotulo->label("bo04_codmov");
 $clbomov->rotulo->label("bo04_codbo");
@@ -54,7 +55,7 @@ $clbomov->rotulo->label("bo04_codbo");
               <?=$Lbo04_codmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("bo04_codmov",9,$Ibo04_codmov,true,"text",4,"","chave_bo04_codmov");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clbomov->rotulo->label("bo04_codbo");
               <?=$Lbo04_codbo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("bo04_codbo",6,$Ibo04_codbo,true,"text",4,"","chave_bo04_codbo");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clbomov->rotulo->label("bo04_codbo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bomov.php")==true){
@@ -118,12 +119,12 @@ $clbomov->rotulo->label("bo04_codbo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

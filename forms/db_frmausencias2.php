@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -64,37 +64,37 @@ if(isset($opcao) && $opcao=="alterar"){
        <?=@$Lsd06_i_codigo?>
     </td>
     <td> 
-<?
+<?php 
 db_input('sd06_i_codigo',10,$Isd06_i_codigo,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd06_i_unidade?>">
-       <?
+       <?php 
        db_ancora(@$Lsd06_i_unidade,"js_pesquisasd06_i_unidade(true);",3);
        ?>
     </td>
     <td>
-<?
+<?php 
 db_input('sd06_i_unidade',10,$Isd06_i_unidade,true,'text',3," onchange='js_pesquisasd06_i_unidade(false);'")
 ?>
-       <?
+       <?php 
 db_input('descrdepto',80,@$Idescrdepto,true,'text',3,'')
        ?>
     </td>
   </tr>
     <tr>
     <td nowrap title="<?=@$Tsd06_i_medico?>">
-       <?
+       <?php 
        db_ancora(@$Lsd06_i_medico,"js_pesquisasd06_i_medico(true);",3);
        ?>
     </td>
     <td>
-<?
+<?php 
 db_input('sd06_i_medico',10,$Isd06_i_medico,true,'text',3," onchange='js_pesquisasd06_i_medico(false);'")
 ?>
-       <?
+       <?php 
 db_input('z01_nome',80,@$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -104,7 +104,7 @@ db_input('z01_nome',80,@$Iz01_nome,true,'text',3,'')
        <?=@$Lsd06_d_data?>
     </td>
     <td>
-     <?db_inputdata('sd06_d_data',@$sd06_d_data_dia,@$sd06_d_data_mes,@$sd06_d_data_ano,true,'text',$db_opcao,"")?>
+     <?php db_inputdata('sd06_d_data',@$sd06_d_data_dia,@$sd06_d_data_mes,@$sd06_d_data_ano,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   </table>
@@ -115,7 +115,7 @@ db_input('z01_nome',80,@$Iz01_nome,true,'text',3,'')
 <table>
  <tr>
   <td valign="top"><br>
-  <?
+  <?php 
    $chavepri= array("sd06_i_codigo"=>@$sd06_i_codigo,"sd06_i_unidade"=>@$sd06_i_unidade,"descrdepto"=>@$descrdepto,"sd06_i_medico"=>@$sd06_i_medico,"z01_nome"=>@$z01_nome,"sd06_d_data"=>@$sd06_d_data);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    //echo $clausencias->sql_query("","*","","sd06_i_unidade = $sd06_i_unidade and sd06_i_medico = $sd06_i_medico");
@@ -167,7 +167,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_undmedhorario.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

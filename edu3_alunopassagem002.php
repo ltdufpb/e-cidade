@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -39,7 +39,7 @@ include(modification("classes/db_alunopassagem_classe.php"));
 include(modification("classes/db_alunopassagemqtd_classe.php"));
 include(modification("classes/db_matricula_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrechumano = new cl_rechumano;
 $clcgm = new cl_cgm;
 $claluno = new cl_aluno;
@@ -117,11 +117,11 @@ if(isset($chavepesquisa)){
           <table border="0" width="100%" bgcolor="#f3f3f3" cellspacing="0" cellpading="0">
            <tr>
             <td align="center">
-             <?
+             <?php 
              if($ed47_o_oid!=0){
               $arquivo = "tmp/".$ed47_c_foto;
               db_query("begin");
-              pg_loexport($ed47_o_oid,$arquivo);
+              pg_lo_export($ed47_o_oid,$arquivo);
               db_query("end");
              }else{
               $arquivo = "imagens/none1.jpeg";
@@ -171,7 +171,7 @@ if(isset($chavepesquisa)){
              <?=@$Led47_v_sexo?> <?=@$ed47_v_sexo=="M"?"Masculino":"Feminino"?>
              &nbsp;&nbsp;
              <?=@$Led47_i_estciv?>
-             <?
+             <?php 
              if($ed47_i_estciv==1){
               echo "Solteiro";
              }elseif($ed47_i_estciv==2){
@@ -199,7 +199,7 @@ if(isset($chavepesquisa)){
          <td valign="top" colspan="2">
           <fieldset style="background:#f3f3f3;border:2px solid #000000"><legend class="cabec"><b>Quantidade Passagens por Alunos</b></legend>
           <table border="1" width="100%" bgcolor="#f3f3f3" cellspacing="0" cellpading="4">
-         <?
+         <?php 
          $result1 = $clalunopassagemqtd->sql_record($clalunopassagemqtd->sql_query("","*","ed227_i_codigo"," ed227_i_alunopassagem = $chavepesquisa"));
          if($clalunopassagemqtd->numrows>0){
          ?>
@@ -236,7 +236,7 @@ if(isset($chavepesquisa)){
            </table>
           </td>
          </tr>
-         <?
+         <?php 
          for($f=0;$f<$clalunopassagemqtd->numrows;$f++){
          db_fieldsmemory($result1,$f);
          ?>
@@ -270,7 +270,7 @@ if(isset($chavepesquisa)){
            </table>
           </td>
          </tr>
-        <?
+        <?php 
         }
        }else{
         ?>
@@ -279,7 +279,7 @@ if(isset($chavepesquisa)){
           Nenhum registro.
          </td>
         </tr>
-        <?
+        <?php 
        }
        ?>
         </table>

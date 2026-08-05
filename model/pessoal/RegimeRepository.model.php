@@ -62,7 +62,7 @@
    * Coleção de instancias de Regime
    * @var Regime[]
    */
-  private $aColecao = array();
+  private $aColecao = [];
 
 
   /**
@@ -74,7 +74,7 @@
 
     if (empty(self::$oInstance)) {
 
-      $sClasse  = get_class();
+      $sClasse  = self::class;
       self::$oInstance = new RegimeRepository();
     }
 
@@ -102,7 +102,7 @@
 
     $oRepository = self::getInstance();
 
-    if ( !array_key_exists($iCodigoRegime, $oRepository->aColecao) ) {
+    if ( !array_key_exists((string) $iCodigoRegime, $oRepository->aColecao) ) {
       self::add($oRepository->make($iCodigoRegime));
     }
 

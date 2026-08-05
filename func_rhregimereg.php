@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhregime_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhregime = new cl_rhregime;
 $clrhregime->rotulo->label("rh30_codreg");
 $clrhregime->rotulo->label("rh30_descr");
@@ -54,7 +55,7 @@ $clrhregime->rotulo->label("rh30_descr");
               <?=$Lrh30_codreg?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh30_codreg",2,$Irh30_codreg,true,"text",4,"","chave_rh30_codreg");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clrhregime->rotulo->label("rh30_descr");
               <?=$Lrh30_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh30_descr",40,$Irh30_descr,true,"text",4,"","chave_rh30_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clrhregime->rotulo->label("rh30_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
 			$db_where = " rh30_utilizacao in (1,2) AND rh30_instit = ".db_getsession("DB_instit");
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -120,12 +121,12 @@ $clrhregime->rotulo->label("rh30_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

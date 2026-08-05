@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE tabcurritipo
 class cl_tabcurritipo {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $h02_codigo = 0;
-   var $h02_descr = null;
-   var $h02_obs = null;
-   var $h02_tipotreinamento = null;
+   public $h02_codigo = 0;
+   public $h02_descr = null;
+   public $h02_obs = null;
+   public $h02_tipotreinamento = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  h02_codigo = int4 = Tipo do Curso
                  h02_descr = varchar(60) = Descrição
                  h02_obs = text = Observação
                  h02_tipotreinamento = int4 = tipo de treinamento do esocial
                  ";
    //funcao construtor da classe
-   function cl_tabcurritipo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabcurritipo");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -113,11 +113,11 @@ class cl_tabcurritipo {
          $this->erro_status = "0";
          return false;
        }
-       $this->h02_codigo = pg_result($result,0,0);
+       $this->h02_codigo = pg_fetch_result($result,0,0);
 
      }else{
        $result = db_query("select last_value from tabcurritipo_h02_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $h02_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $h02_codigo)){
          $this->erro_sql = " Campo h02_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -152,7 +152,7 @@ class cl_tabcurritipo {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Contem a tabela tipos de cursos ($this->h02_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Contem a tabela tipos de cursos já Cadastrado";
@@ -176,12 +176,12 @@ class cl_tabcurritipo {
      $resaco = $this->sql_record($this->sql_query_file($this->h02_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,4489,'$this->h02_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,594,4489,'','".AddSlashes(pg_result($resaco,0,'h02_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,594,4491,'','".AddSlashes(pg_result($resaco,0,'h02_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,594,4490,'','".AddSlashes(pg_result($resaco,0,'h02_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,594,4489,'','".AddSlashes(pg_fetch_result($resaco,0,'h02_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,594,4491,'','".AddSlashes(pg_fetch_result($resaco,0,'h02_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,594,4490,'','".AddSlashes(pg_fetch_result($resaco,0,'h02_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -190,10 +190,10 @@ class cl_tabcurritipo {
       $this->atualizacampos();
      $sql = " update tabcurritipo set ";
      $virgula = "";
-     if(trim($this->h02_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h02_codigo"])){
+     if(trim((string) $this->h02_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h02_codigo"])){
        $sql  .= $virgula." h02_codigo = $this->h02_codigo ";
        $virgula = ",";
-       if(trim($this->h02_codigo) == null ){
+       if(trim((string) $this->h02_codigo) == null ){
          $this->erro_sql = " Campo Tipo do Curso nao Informado.";
          $this->erro_campo = "h02_codigo";
          $this->erro_banco = "";
@@ -203,10 +203,10 @@ class cl_tabcurritipo {
          return false;
        }
      }
-     if(trim($this->h02_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h02_descr"])){
+     if(trim((string) $this->h02_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h02_descr"])){
        $sql  .= $virgula." h02_descr = '$this->h02_descr' ";
        $virgula = ",";
-       if(trim($this->h02_descr) == null ){
+       if(trim((string) $this->h02_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "h02_descr";
          $this->erro_banco = "";
@@ -216,10 +216,10 @@ class cl_tabcurritipo {
          return false;
        }
      }
-     if(trim($this->h02_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h02_obs"])){
+     if(trim((string) $this->h02_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h02_obs"])){
        $sql  .= $virgula." h02_obs = '$this->h02_obs' ";
        $virgula = ",";
-       if(trim($this->h02_obs) == null ){
+       if(trim((string) $this->h02_obs) == null ){
          $this->erro_sql = " Campo Observação nao Informado.";
          $this->erro_campo = "h02_obs";
          $this->erro_banco = "";
@@ -229,8 +229,8 @@ class cl_tabcurritipo {
          return false;
        }
      }
-     if(trim($this->h02_tipotreinamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h02_tipotreinamento"])){
-        if(trim($this->h02_tipotreinamento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h02_tipotreinamento"])){
+     if(trim((string) $this->h02_tipotreinamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h02_tipotreinamento"])){
+        if(trim((string) $this->h02_tipotreinamento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h02_tipotreinamento"])){
            $this->h02_tipotreinamento = 'null';
         }
        $sql  .= $virgula." h02_tipotreinamento = $this->h02_tipotreinamento ";
@@ -244,15 +244,15 @@ class cl_tabcurritipo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4489,'$this->h02_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h02_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,594,4489,'".AddSlashes(pg_result($resaco,$conresaco,'h02_codigo'))."','$this->h02_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,594,4489,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h02_codigo'))."','$this->h02_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h02_descr"]))
-           $resac = db_query("insert into db_acount values($acount,594,4491,'".AddSlashes(pg_result($resaco,$conresaco,'h02_descr'))."','$this->h02_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,594,4491,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h02_descr'))."','$this->h02_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h02_obs"]))
-           $resac = db_query("insert into db_acount values($acount,594,4490,'".AddSlashes(pg_result($resaco,$conresaco,'h02_obs'))."','$this->h02_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,594,4490,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h02_obs'))."','$this->h02_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -297,12 +297,12 @@ class cl_tabcurritipo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4489,'$h02_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,594,4489,'','".AddSlashes(pg_result($resaco,$iresaco,'h02_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,594,4491,'','".AddSlashes(pg_result($resaco,$iresaco,'h02_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,594,4490,'','".AddSlashes(pg_result($resaco,$iresaco,'h02_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,594,4489,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h02_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,594,4491,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h02_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,594,4490,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h02_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tabcurritipo
@@ -362,7 +362,7 @@ class cl_tabcurritipo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tabcurritipo";
@@ -376,7 +376,7 @@ class cl_tabcurritipo {
    function sql_query ( $h02_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -397,7 +397,7 @@ class cl_tabcurritipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -409,7 +409,7 @@ class cl_tabcurritipo {
    function sql_query_file ( $h02_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -430,7 +430,7 @@ class cl_tabcurritipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -95,11 +95,11 @@ class AdmissaoDado
             $resultadoAdmissaoDados = \db_query($sqlAdmissaoDados);
 
             if (!$resultadoAdmissaoDados) {
-                throw new \DBException("Houve um erro ao buscar dados admissional da matrícula {$matricula}.");
+                throw new DBException("Houve um erro ao buscar dados admissional da matrícula {$matricula}.");
             }
 
             if (pg_num_rows($resultadoAdmissaoDados) > 0) {
-                $admissaoDado = \db_utils::fieldsMemory($resultadoAdmissaoDados, 0);    
+                $admissaoDado = db_utils::fieldsMemory($resultadoAdmissaoDados, 0);    
                 $this->setMesDataBase($admissaoDado->h25_dtbase);
                 $this->setHipoteseLegalTrabTemp($admissaoDado->h25_hipleg);
                 $this->setDataNomeacao($admissaoDado->h25_nomeacao);

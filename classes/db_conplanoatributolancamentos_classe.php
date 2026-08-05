@@ -172,11 +172,11 @@ class cl_conplanoatributolancamentos extends DAOBasica
         $ano,
         array $instituicoes,
         $SistemaContaCorrente = 1,
-        array $listaLancamentos = null,
-        array $tiposDocumentos = array()
+        ?array $listaLancamentos = null,
+        array $tiposDocumentos = []
     ) {
 
-        $codigoInstituicoes = array();
+        $codigoInstituicoes = [];
         foreach ($instituicoes as $instituicao) {
             $codigoInstituicoes[] = $instituicao->getCodigo();
         }
@@ -212,7 +212,7 @@ class cl_conplanoatributolancamentos extends DAOBasica
 
         $rsInfo = db_query($sqlInfo);
         if (!$rsInfo) {
-            throw new \Exception("Erro ao excluir as informações complementares dos lançamentos da competência: {$mes}/{$ano}.");
+            throw new Exception("Erro ao excluir as informações complementares dos lançamentos da competência: {$mes}/{$ano}.");
         }
 
         $sqlDesabilitaTriggers = "
@@ -223,7 +223,7 @@ class cl_conplanoatributolancamentos extends DAOBasica
         $rsDesabilitaTriggers = db_query($sqlDesabilitaTriggers);
 
         if (!$rsDesabilitaTriggers) {
-            throw new \Exception('Não foi possível desabilitar as triggers da tabela "conplanoatributolancamentos".');
+            throw new Exception('Não foi possível desabilitar as triggers da tabela "conplanoatributolancamentos".');
         }
 
         $sqlAtributos = " delete
@@ -244,7 +244,7 @@ class cl_conplanoatributolancamentos extends DAOBasica
 
         $rsAtributos = db_query($sqlAtributos);
         if (!$rsAtributos) {
-            throw new \Exception("Erro ao excluir os atributos dos lançamentos da competência: {$mes}/{$ano}.");
+            throw new Exception("Erro ao excluir os atributos dos lançamentos da competência: {$mes}/{$ano}.");
         }
 
 
@@ -260,7 +260,7 @@ class cl_conplanoatributolancamentos extends DAOBasica
 
             $rsSaldo = db_query($sqlSaldo);
             if (!$rsSaldo) {
-                throw new \Exception("Erro ao excluir os saldos das contas para a competência: {$mes}/{$ano}.");
+                throw new Exception("Erro ao excluir os saldos das contas para a competência: {$mes}/{$ano}.");
             }
             /**
              * Devemos remover todo o saldo inicial calculado para as institicuoes
@@ -279,35 +279,35 @@ class cl_conplanoatributolancamentos extends DAOBasica
             $sqlRemoverSaldoInicialAno .= ";create index w_apagar_valores_atributo_sequencial_in on w_apagar_valores_atributo(c124_sequencial); ";
             $rsTabelaAuxiliar = db_query($sqlRemoverSaldoInicialAno);
             if (!$rsTabelaAuxiliar) {
-                throw new \Exception("Erro ao gerar dados para remocao dos registros de saldo inicial do {$ano}.");
+                throw new Exception("Erro ao gerar dados para remocao dos registros de saldo inicial do {$ano}.");
             }
 
             $sqlRemoverAtributosSaldoInicial  = "delete from infocomplementarvalor ";
             $sqlRemoverAtributosSaldoInicial .= " where c123_conplanoatributolancamentos in(select c124_sequencial from w_apagar_valores_atributo)";
             $rsRemoverAtributosSaldoInicial  = db_query($sqlRemoverAtributosSaldoInicial);
             if (!$rsRemoverAtributosSaldoInicial) {
-                throw new \Exception("Erro ao remover dados de atributos gerados do saldo inicial do {$ano}.");
+                throw new Exception("Erro ao remover dados de atributos gerados do saldo inicial do {$ano}.");
             }
 
             $sqlRemoverAtributosSaldoInicial  = "delete from conplanoatributolancamentos ";
             $sqlRemoverAtributosSaldoInicial .= " where c124_sequencial in(select c124_sequencial from w_apagar_valores_atributo)";
             $rsRemoverAtributosSaldoInicial  = db_query($sqlRemoverAtributosSaldoInicial);
             if (!$rsRemoverAtributosSaldoInicial) {
-                throw new \Exception("Erro ao remover dados de lançamentos  gerados na MSC do saldo inicial do {$ano}.");
+                throw new Exception("Erro ao remover dados de lançamentos  gerados na MSC do saldo inicial do {$ano}.");
             }
         }
 
         $sqlHabilitaTriggers = "alter table conplanoatributolancamentos enable trigger all;";
         $rsHabilitaTriggers = db_query($sqlHabilitaTriggers);
         if (!$rsHabilitaTriggers) {
-            throw new \Exception('Não foi possível habilitar as triggers da tabela "conplanoatributolancamentos".');
+            throw new Exception('Não foi possível habilitar as triggers da tabela "conplanoatributolancamentos".');
         }
 
 
         $rsHabilitaTriggers = db_query($sqlHabilitaTriggers);
 
         if (!$rsHabilitaTriggers) {
-            throw new \Exception('Não foi possível habilitar as triggers da tabela "conplanoatributolancamentos".');
+            throw new Exception('Não foi possível habilitar as triggers da tabela "conplanoatributolancamentos".');
         }
         return true;
     }
@@ -337,7 +337,7 @@ class cl_conplanoatributolancamentos extends DAOBasica
         return $sSql;
     }
 
-    public function inserirSaldoContaAtributo($mes, $ano, $hashContaAtributos, $valor, $natureza, $tipo, $sistema = 1, $tipoSaldo)
+    public function inserirSaldoContaAtributo($mes, $ano, $hashContaAtributos, $valor, $natureza, $tipo, $sistema = 1, $tipoSaldo = null)
     {
 
         $sql = " insert into conplanoatributosaldo (c125_sequencial, c125_anousu, c125_mesusu, c125_hashcontaatributos, c125_valor, c125_natureza, c125_tipo, c125_conplanosistema, c125_tiposaldo) ";
@@ -345,7 +345,7 @@ class cl_conplanoatributolancamentos extends DAOBasica
 
         $rsSql = db_query($sql);
         if (!$rsSql) {
-            throw new \Exception("Erro ao inserir o saldo para a conta e atributos {$hashContaAtributos} para a competência: {$mes}/{$ano}.");
+            throw new Exception("Erro ao inserir o saldo para a conta e atributos {$hashContaAtributos} para a competência: {$mes}/{$ano}.");
         }
 
         return true;

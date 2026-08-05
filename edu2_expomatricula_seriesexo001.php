@@ -36,7 +36,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_escoladiretor_classe.php"));
 require_once(modification("libs/db_utils.php"));
 $oDaoEscolaDiretor = db_utils::getdao('escoladiretor');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoMatricula     = db_utils::getdao('matricula');
 $oDaoCalendario    = db_utils::getdao('calendario');
 $db_opcao          = 1;
@@ -58,7 +58,7 @@ $iModulo           = db_getsession('DB_modulo');
  <body class="body-default" >
 
   <div class="container">
-  <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+  <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
   <a name="topo"></a>
 
   <form name="form1" method="post" action="">
@@ -67,7 +67,7 @@ $iModulo           = db_getsession('DB_modulo');
         <legend>Expansão de Matrícula</legend>
        <table border="0">
         <tr>
-         <?
+         <?php 
            if ($iModulo == 7159) {
 
              echo '<td align="left">';
@@ -455,14 +455,14 @@ function js_retornoPesquisaAssinatura(oRetorno) {
 
 }
 </script>
-<?
+<?php 
 if ($iModulo != 7159) {
 ?>
   <script>
     js_escola(<?=$iEscola?>);
   </script>
 
-<?
+<?php 
 
 }
 ?>

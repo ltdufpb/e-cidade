@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,7 +63,7 @@ $sSqlRegencia0   = $clregencia->sql_query( "", "count(*) as qtdreg", "", $sWhere
 $result0         = $clregencia->sql_record( $sSqlRegencia0 );
 db_fieldsmemory( $result0, 0 );
 
-if ( trim( $ed57_c_medfreq ) == "PERÌODOS" ) {
+if ( trim( (string) $ed57_c_medfreq ) == "PERÌODOS" ) {
   $tipofreq = "Aulas Dadas";
 } else {
   $tipofreq = "Dias Letivos";
@@ -115,7 +115,7 @@ $jaencerrado = pg_num_rows( $result1 );
   </style>
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1">
-<?
+<?php 
 if ( isset( $alterar ) ) {
 
   $sql  = "SELECT ed72_i_numfaltas as faltasreg ";
@@ -156,7 +156,7 @@ if ( isset( $alterar ) ) {
       <script>
         parent.iframe_RF.location.href = "edu1_diariofinal001.php?regencia=<?=$regencia?>";
       </script>
-      <?
+      <?php 
       if ( $qtdreg > 1 && $ed59_c_freqglob != "FA" && $ed59_c_freqglob != "F" ) {
         ?>
         <script>
@@ -171,7 +171,7 @@ if ( isset( $alterar ) ) {
                                true
                              );
         </script>
-        <?
+        <?php 
       }
     }
   }
@@ -243,16 +243,16 @@ if ( isset( $alterar ) ) {
                 <form name="form1" method="post" action="">
                 <br>
                 <?php
-                  if ( trim( $ed57_c_medfreq ) == "PERÌODOS" ) { ?>
+                  if ( trim( (string) $ed57_c_medfreq ) == "PERÌODOS" ) { ?>
                     Informe as aulas dadas desta discilpina em cada período de avaliação:
-                <?} else {?>
+                <?php } else {?>
                     Informe os dias letivos em cada período de avaliação:
-                <?}?>
+                <?php }?>
                 <br>
                 <table border="0" cellspacing="0" cellpadding="2">
                   <tr align="center">
                   <?php
-                    $disabled            = trim( $ed59_c_freqglob ) == "A" ? "disabled" : "";
+                    $disabled            = trim( (string) $ed59_c_freqglob ) == "A" ? "disabled" : "";
                     $sWhereProcAvaliacao = "ed41_i_procedimento = {$ed220_i_procedimento} AND ed78_i_regencia = {$regencia}";
                     $sSqlProcAvaliacao   = $clprocavaliacao->sql_query_regper( "", "*", "ed09_i_sequencia", $sWhereProcAvaliacao );
                     $result1             = $clprocavaliacao->sql_record( $sSqlProcAvaliacao );
@@ -262,7 +262,7 @@ if ( isset( $alterar ) ) {
                       db_fieldsmemory( $result1, $y );
                       ?>
                       <td width="70" class='titulo'><?=$ed09_c_abrev?></td>
-                      <?
+                      <?php 
                     }
                   ?>
                   </tr>
@@ -282,9 +282,9 @@ if ( isset( $alterar ) ) {
                                    maxlength="3" 
                                    style="text-align:center;" 
                                    onclick="alert('Existem alunos com avaliações encerradas para esta disciplina!');" 
-                                   <?=trim( $ed59_c_freqglob ) == "A" ? "disabled" : "readonly"?> >
+                                   <?=trim( (string) $ed59_c_freqglob ) == "A" ? "disabled" : "readonly"?> >
                           </td>
-                        <?
+                        <?php 
                         } else {
                         ?>
                           <td>
@@ -298,7 +298,7 @@ if ( isset( $alterar ) ) {
                                    onchange="js_verifica(this,<?=$ed78_i_codigo?>,<?=$ed78_i_procavaliacao?>,<?=$clprocavaliacao->numrows?>)" 
                                    <?=$disabled?>>
                           </td>
-                        <?
+                        <?php 
                         }
                       }?>
                   </tr>
@@ -322,11 +322,11 @@ if ( isset( $alterar ) ) {
 
     document.getElementById("<?=$camposeguinte?>").select();
     document.getElementById("<?=$camposeguinte?>").focus();
-<?} else {?>
+<?php } else {?>
 
     document.getElementById("0").select();
     document.getElementById("0").focus();
-<?}?>
+<?php }?>
 
 function js_verifica( campo, codigo, avaliacao, qtdlinha ) {
   

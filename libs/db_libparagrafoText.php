@@ -28,10 +28,8 @@
 
 class libParagrafoText{
 
-  var $oParag = null;
-
-  function libParagrafoText( $oParag ){
-    $this->oParag = $oParag;
+  function __construct(public $oParag)
+  {
   }
 
   function writeText( &$oPdf ){
@@ -40,7 +38,7 @@ class libParagrafoText{
                              $this->oParag->db02_altura,
                              $this->oParag->db02_texto,
                              0,
-                             strtoupper( $this->oParag->db02_alinhamento ),
+                             strtoupper( (string) $this->oParag->db02_alinhamento ),
                              0,
                              $this->oParag->db02_inicia );
 

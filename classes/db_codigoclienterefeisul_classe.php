@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE codigoclienterefeisul
 class cl_codigoclienterefeisul { 
@@ -26,7 +26,7 @@ class cl_codigoclienterefeisul {
                  rh171_codigocliente = int4 = Código Refeisul 
                  ";
    //funcao construtor da classe 
-   function cl_codigoclienterefeisul() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("codigoclienterefeisul"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

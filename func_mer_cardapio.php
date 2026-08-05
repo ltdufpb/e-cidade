@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_cardapio_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmer_cardapio = new cl_mer_cardapio;
 $clmer_cardapio->rotulo->label("me01_c_nome");
 $escola = db_getsession("DB_coddepto");
@@ -54,7 +55,7 @@ $escola = db_getsession("DB_coddepto");
       <?=$Lme01_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("me01_c_nome",50,$Ime01_c_nome,true,"text",4,"","chave_me01_c_nome");?>
+      <?php db_input("me01_c_nome",50,$Ime01_c_nome,true,"text",4,"","chave_me01_c_nome");?>
      </td>
     </tr>
     <tr>
@@ -70,7 +71,7 @@ $escola = db_getsession("DB_coddepto");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if (!isset($pesquisa_chave)) {
    	
     if (isset($campos)==false) {

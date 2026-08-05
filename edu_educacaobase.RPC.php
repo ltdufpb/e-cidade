@@ -59,7 +59,7 @@ try {
 
         case 'pesquisaEscola':
 
-            $aFiltros = array();
+            $aFiltros = [];
 
             if (db_getsession("DB_modulo") == $iModuloEscola) {
                 $aFiltros[] = " ed18_i_codigo in ($iEscola) ";
@@ -84,8 +84,8 @@ try {
          */
         case "pesquisaCalendario":
 
-            $oRetorno->dados = array();
-            $aFiltros = array();
+            $oRetorno->dados = [];
+            $aFiltros = [];
             $sCalendarioPassivo = "ed52_c_passivo = 'N'";
             if (isset($oParam->apenas_ativos) && !$oParam->apenas_ativos) {
                 $sCalendarioPassivo = "ed52_c_passivo in('N', 'S')";
@@ -163,8 +163,8 @@ try {
          */
         case "pesquisaCalendarioAnoAtual": // 2018-06-20 Wallace (ATMA) Selecionar Calendário Apenas do Ano Vigente
 
-            $oRetorno->dados = array();
-            $aFiltros = array();
+            $oRetorno->dados = [];
+            $aFiltros = [];
             $sCalendarioPassivo = "ed52_c_passivo = 'N'";
             if (isset($oParam->apenas_ativos) && !$oParam->apenas_ativos) {
                 $sCalendarioPassivo = "ed52_c_passivo in('N', 'S')";
@@ -239,8 +239,8 @@ try {
          */
         case "pesquisaCalendarioEscola":
 
-            $oRetorno->dados = array();
-            $aFiltros = array();
+            $oRetorno->dados = [];
+            $aFiltros = [];
             $sCalendarioPassivo = "ed52_c_passivo = 'N'";
             if (isset($oParam->apenas_ativos) && !$oParam->apenas_ativos) {
                 $sCalendarioPassivo = "ed52_c_passivo in('N', 'S')";
@@ -290,7 +290,7 @@ try {
 
         case 'pesquisaEtapa':  // Etapa = Série
 
-            $aFiltros = array();
+            $aFiltros = [];
             $aFiltros[] = " ed57_i_escola in ($iEscola) ";
 
             if (isset($oParam->iCalendario) && !empty($oParam->iCalendario)) {
@@ -329,7 +329,7 @@ try {
         case 'pesquisaTurma':
 
             $sEscola = "";
-            $aFiltros = array();
+            $aFiltros = [];
             /**
              * Sempre que estiver no módulo escola, deve buscar os dados da escola logada
              */
@@ -378,7 +378,7 @@ try {
 
         case 'buscaPeriodosAvaliacaoEscola':
 
-            $aFiltros = array();
+            $aFiltros = [];
 
             if (isset($oParam->iCalendario) && !empty($oParam->iCalendario)) {
                 $aFiltros[] = " ed53_i_calendario in ({$oParam->iCalendario}) ";
@@ -406,12 +406,12 @@ try {
 
                 $oTurma = new Turma($oParam->iTurma);
                 $aAlunosMatriculados = $oTurma->getAlunosMatriculados();
-                $aAlunosTurma = array();
+                $aAlunosTurma = [];
 
                 foreach ($aAlunosMatriculados as $oAlunosMatriculados) {
 
                     if (isset($oParam->sSituacao) && $oParam->sSituacao != "") {
-                        if (trim($oAlunosMatriculados->getSituacao()) <> $oParam->sSituacao) {
+                        if (trim((string) $oAlunosMatriculados->getSituacao()) <> $oParam->sSituacao) {
                             continue;
                         }
                     }
@@ -424,11 +424,7 @@ try {
 
                 $oRetorno->dados = $aAlunosTurma;
 
-            } catch (BusinessException $oErro) {
-
-                $oRetorno->status = 2;
-                $oRetorno->message = urlencode($oErro->getMessage());
-            } catch (ParameterException $oErro) {
+            } catch (BusinessException|ParameterException $oErro) {
 
                 $oRetorno->status = 2;
                 $oRetorno->message = urlencode($oErro->getMessage());
@@ -437,7 +433,7 @@ try {
             break;
         case 'getTurmasProgressaoParcial' :
 
-            $aFiltros = array();
+            $aFiltros = [];
             $aFiltros[] = " ed57_i_calendario = {$oParam->iCalendario}";
             $aFiltros[] = " ed57_i_escola     = {$iEscola}";
 
@@ -448,7 +444,7 @@ try {
             $rsTurma = $oDaoTurma->sql_record($sSqlTurma);
             $iRegistros = $oDaoTurma->numrows;
 
-            $aTurmas = array();
+            $aTurmas = [];
 
             if ($iRegistros > 0) {
 
@@ -464,7 +460,7 @@ try {
         case 'getDisciplinaTurma':
 
             $oTurma = TurmaRepository::getTurmaByCodigo($oParam->iCodigoTurma);
-            $aDisciplinas = array();
+            $aDisciplinas = [];
 
             foreach ($oTurma->getDisciplinas() as $oRegencia) {
 
@@ -482,14 +478,14 @@ try {
         case 'getDisciplinaByEscola':
 
             $oTurma = TurmaRepository::getTurmaByEscola($oParam->iCodigoEscola);
-            $aDisciplinas = array();
+            $aDisciplinas = [];
             foreach ($oTurma as $turma) {
                 $regenciasTurma = $turma->getDisciplinas();
                 foreach ($regenciasTurma as $oRegencia) {
                     $oDisciplina = new stdClass();
                     $oDisciplina->iRegencia = $oRegencia->getCodigo();
                     $oDisciplina->iCodigoDisciplina = $oRegencia->getDisciplina()->getCodigoDisciplina();
-                    $oDisciplina->sDescricaoDisciplina = urlencode($oRegencia->getDisciplina()->getNomeDisciplina());
+                    $oDisciplina->sDescricaoDisciplina = urlencode((string) $oRegencia->getDisciplina()->getNomeDisciplina());
 
                     $aDisciplinas[$oDisciplina->iCodigoDisciplina] = $oDisciplina;
                 }
@@ -500,9 +496,9 @@ try {
         case 'getPeriodosDeAvaliacaoTurma' :
 
             $oTurma = new Turma($oParam->iTurma);
-            $aPeriodos = array();
+            $aPeriodos = [];
             $aEtapas = $oTurma->getEtapas();
-            $aPeriodosTurma = array();
+            $aPeriodosTurma = [];
             foreach ($aEtapas as $oEtapaTurma) {
 
                 $oProcedimento = $oEtapaTurma->getProcedimentoAvaliacao();
@@ -524,7 +520,7 @@ try {
              * critério de avaliação, e compara com os períodos da turma, retornando somente os que tem vínculo
              */
             $lValidaPeriodoAvaliacao = false;
-            $aPeriodosCriterio = array();
+            $aPeriodosCriterio = [];
             if (isset($oParam->lCriterioAvaliacao) && $oParam->lCriterioAvaliacao) {
 
                 $lValidaPeriodoAvaliacao = true;
@@ -546,7 +542,7 @@ try {
 
                 $oStdPeriodo = new stdClass();
                 $oStdPeriodo->iCodigo = $oPeriodo->getCodigo();
-                $oStdPeriodo->sDescricao = urlencode($oPeriodo->getDescricao());
+                $oStdPeriodo->sDescricao = urlencode((string) $oPeriodo->getDescricao());
                 $aPeriodos[] = $oStdPeriodo;
             }
 
@@ -558,7 +554,7 @@ try {
             /**
              * Busca turmas de atividade complementar e AEE
              */
-            $aFiltros = array();
+            $aFiltros = [];
             $aFiltros[] = " ed268_i_calendario = {$oParam->iCalendario}";
             if (isset($oParam->iEscola) && !empty($oParam->iEscola)) {
                 $aFiltros[] = " ed268_i_escola     = {$oParam->iEscola}";
@@ -571,7 +567,7 @@ try {
             $rsTurma = $oDaoTurma->sql_record($sSqlTurma);
             $iRegistros = $oDaoTurma->numrows;
 
-            $aTurmas = array();
+            $aTurmas = [];
 
             if ($iRegistros > 0) {
 
@@ -600,7 +596,7 @@ try {
 
         case 'buscaAnosDeTurmasDeProgressaoParcial' :
 
-            $aFiltros = array();
+            $aFiltros = [];
 
             if ($oParam->iEscola != 0) {
                 $aFiltros[] = " ed114_escola = {$oParam->iEscola}";
@@ -611,7 +607,7 @@ try {
             $sSqlTurma = $oDaoTurma->sql_query_aluno_escola(null, $sCampos, null, $sWhere);
             $rsCalendario = $oDaoTurma->sql_record($sSqlTurma);
             $iRegistros = $oDaoTurma->numrows;
-            $aAnos = array();
+            $aAnos = [];
 
             try {
 
@@ -635,7 +631,7 @@ try {
             break;
         case 'pesquisaEscolaComProgressaoParcial':
 
-            $aFiltros = array();
+            $aFiltros = [];
 
             if (isset($oParam->filtraModulo) && !empty($oParam->filtraModulo)) {
                 $aFiltros[] = " ed18_i_codigo in ($iEscola) ";
@@ -676,7 +672,7 @@ try {
         case 'pesquisaTurmaEtapa':
 
             $sEscola = "";
-            $aFiltros = array();
+            $aFiltros = [];
             $sQuery = "sql_query_relatorio";
 
             /**
@@ -729,7 +725,7 @@ try {
 
             if ($oDaoTurma->numrows > 0) {
 
-                $oRetorno->dados = array();
+                $oRetorno->dados = [];
                 for ($iContador = 0; $iContador < $iTotalLinhas; $iContador++) {
 
                     $oRetornoTurma = new stdClass();
@@ -764,13 +760,13 @@ try {
         case 'pesquisaDiretores':
 
             $oEscola = new Escola($iEscola);
-            $oRetorno->dados = array();
+            $oRetorno->dados = [];
             foreach ($oEscola->getDiretor() as $oDiretor) {
 
                 $oDadosDiretor = new stdClass();
                 $oDadosDiretor->iCodigo = $oDiretor->iCodigo;
-                $oDadosDiretor->sNome = urlencode($oDiretor->sNome);
-                $oDadosDiretor->sAtoLegal = urlencode($oDiretor->sAtoLegal);
+                $oDadosDiretor->sNome = urlencode((string) $oDiretor->sNome);
+                $oDadosDiretor->sAtoLegal = urlencode((string) $oDiretor->sAtoLegal);
                 $oDadosDiretor->iNumero = $oDiretor->iNumero;
 
                 $oRetorno->dados[] = $oDadosDiretor;
@@ -788,7 +784,7 @@ try {
                 $sEscola = "ed57_i_escola in ({$oParam->iEscola})";
             }
 
-            $aFiltros = array();
+            $aFiltros = [];
             $aFiltros[] = $sEscola;
             $aFiltros[] = " ed58_tipovinculo = {$oParam->tipoVinculo}";
 
@@ -841,7 +837,7 @@ try {
 
             $sEscola = " ed57_i_escola in ($iEscola) ";
 
-            $aFiltros = array();
+            $aFiltros = [];
             $aFiltros[] = $sEscola;
             $aFiltros[] = " ed220_i_codigo = {$oParam->iTurmaSerieRegimeMat}";
 
@@ -883,7 +879,7 @@ try {
                         $oDados = db_utils::fieldsMemory($rsAtividades, $i);
                         $oAtividade = new stdClass();
                         $oAtividade->iCodigo = $oDados->ed01_i_codigo;
-                        $oAtividade->sDescricao = urlencode($oDados->ed01_c_descr);
+                        $oAtividade->sDescricao = urlencode((string) $oDados->ed01_c_descr);
                         $oRetorno->aAtividades[] = $oAtividade;
                     }
                 }
@@ -912,8 +908,8 @@ try {
          * @return array $oRetorno->aDisciplinas
          */
         case 'pesquisaDisciplinas':
-            $oRetorno->aDisciplinas = array();
-            $aWhereDisciplina = array();
+            $oRetorno->aDisciplinas = [];
+            $aWhereDisciplina = [];
 
             if (isset($oParam->iEscola) && (!empty($oParam->iEscola) || $oParam->iEscola != 0)) {
                 $aWhereDisciplina[] = "ed71_i_escola = {$oParam->iEscola}";
@@ -959,14 +955,14 @@ try {
                     $oDadosSqlDisciplina = db_utils::fieldsMemory($rsDisciplina, $iContador);
                     $oDadosDisciplina = new stdClass();
                     $oDadosDisciplina->iCodigo = $oDadosSqlDisciplina->ed232_i_codigo;
-                    $oDadosDisciplina->sDescricao = urlencode($oDadosSqlDisciplina->ed232_c_descr);
+                    $oDadosDisciplina->sDescricao = urlencode((string) $oDadosSqlDisciplina->ed232_c_descr);
                     $oRetorno->aDisciplinas[] = $oDadosDisciplina;
                 }
             }
             break;
         case 'pesquisaEnsino':
 
-            $aWhere = array();
+            $aWhere = [];
             if (isset($oParam->iEscola) && ($oParam->iEscola != 0 || !empty($oParam->iEscola))) {
                 $aWhere[] = "ed71_i_escola = {$oParam->iEscola}";
             }
@@ -980,7 +976,7 @@ try {
             $rsEnsino = $oDaoCursoEdu->sql_record($sSqlEnsino);
             $iLinhas = $oDaoCursoEdu->numrows;
 
-            $oRetorno->aEnsino = array();
+            $oRetorno->aEnsino = [];
             if ($iLinhas > 0) {
 
                 for ($i = 0; $i < $iLinhas; $i++) {
@@ -988,7 +984,7 @@ try {
                     $oDados = db_utils::fieldsMemory($rsEnsino, $i);
                     $oEnsino = new stdClass();
                     $oEnsino->iCodigo = $oDados->ed10_i_codigo;
-                    $oEnsino->sDescricao = urlencode($oDados->ed10_c_descr);
+                    $oEnsino->sDescricao = urlencode((string) $oDados->ed10_c_descr);
                     $oRetorno->aEnsino[] = $oEnsino;
                 }
             }
@@ -997,7 +993,7 @@ try {
 
         case "pesquisaAnoLetivoEscola":
 
-            $aFiltros = array();
+            $aFiltros = [];
             $aFiltros[] = "ed52_c_passivo = 'N'";
 
             if (isset($oParam->iEscola) && (!empty($oParam->iEscola))) {
@@ -1023,7 +1019,7 @@ try {
 
         case "pesquisaAnoLetivo":
 
-            $aFiltros = array();
+            $aFiltros = [];
             $aFiltros[] = "ed52_c_passivo = 'N'";
 
             $sCampos = " distinct ed52_i_ano";
@@ -1042,7 +1038,7 @@ try {
 
         case 'pesquisaEtapaAno':
 
-            $aFiltros = array();
+            $aFiltros = [];
 
             if (isset($oParam->iEscola) && (!empty($oParam->iEscola))) {
                 $aFiltros[] = "ed57_i_escola in ({$oParam->iEscola})";
@@ -1106,7 +1102,7 @@ try {
 
                 $rsAssinatura = db_query($sSqlUnion);
 
-                $oRetorno->dados = array();
+                $oRetorno->dados = [];
 
                 if (!$rsAssinatura) {
 
@@ -1126,7 +1122,7 @@ try {
             $sSqlPeriodo = $oDaoPeriodo->sql_query_file(null, "*", " ed09_i_sequencia ");
             $rsPeriodos = db_query($sSqlPeriodo);
 
-            $aPeriodosAvaliacao = array();
+            $aPeriodosAvaliacao = [];
             if ($rsPeriodos && pg_num_rows($rsPeriodos) > 0) {
 
                 $iLinhas = pg_num_rows($rsPeriodos);
@@ -1135,8 +1131,8 @@ try {
                     $oDado = db_utils::fieldsMemory($rsPeriodos, $i);
                     $oPeriodo = new stdClass();
                     $oPeriodo->iPeriodoAvaliacao = $oDado->ed09_i_codigo;
-                    $oPeriodo->sPeriodoAvaliacao = utf8_encode($oDado->ed09_c_descr);
-                    $oPeriodo->sPeriodoAbrev = utf8_encode($oDado->ed09_c_abrev);
+                    $oPeriodo->sPeriodoAvaliacao = mb_convert_encoding($oDado->ed09_c_descr, 'UTF-8', 'ISO-8859-1');
+                    $oPeriodo->sPeriodoAbrev = mb_convert_encoding($oDado->ed09_c_abrev, 'UTF-8', 'ISO-8859-1');
                     $aPeriodosAvaliacao[] = $oPeriodo;
                 }
             }
@@ -1176,7 +1172,7 @@ try {
 
             $iLinhas = $oDaoRelacaoTrabalho->numrows;
 
-            $oRetorno->aAreaTrabalho = array();
+            $oRetorno->aAreaTrabalho = [];
             for ($i = 0; $i < $iLinhas; $i++) {
                 $oRetorno->aAreaTrabalho[] = db_utils::fieldsMemory($rsAreaTrabalho, $i, true, false, true);
             }
@@ -1190,7 +1186,7 @@ try {
 
             $oEscola = new Escola($oParam->iEscola);
             $oCalendario = CalendarioRepository::getCalendarioByCodigo($oParam->iCalendario);
-            $oRetorno->aProcedimentosAvaliacao = array();
+            $oRetorno->aProcedimentosAvaliacao = [];
 
 
             foreach ($oEscola->getProcedimentosAvaliacao($oCalendario) as $oProcedimentoAvaliacao) {
@@ -1268,7 +1264,7 @@ try {
             while ($turma = pg_fetch_array($rsTurmas)) {
                 $turmas[] = (object)[
                     "codigo" => $turma["ed268_i_codigo"],
-                    "descricao" => utf8_encode(trim($turma["ed268_c_descr"])),
+                    "descricao" => mb_convert_encoding(trim((string) $turma["ed268_c_descr"]), 'UTF-8', 'ISO-8859-1'),
                     "tipo" => $turma["tipo"]
                 ];
             }
@@ -1296,7 +1292,7 @@ try {
             while ($atividade = pg_fetch_array($rsTurma)) {
                 $oRetorno->atividades[] = (object)[
                     "codigo_atividade" => $atividade['ed133_i_codigo'],
-                    "descricao" => utf8_encode($atividade['ed133_c_descr']),
+                    "descricao" => mb_convert_encoding($atividade['ed133_c_descr'], 'UTF-8', 'ISO-8859-1'),
                 ];
             }
             break;
@@ -1355,7 +1351,7 @@ echo $oJson->encode($oRetorno);
 function buscaCursos($iEscola)
 {
 
-    $aCursos = array();
+    $aCursos = [];
     $sWhereCursoEscola = '';
     $oDaoCursoEscola = new cl_cursoescola();
     $sCamposCursoEscola = "distinct ed29_i_codigo, ed29_c_descr, ed29_i_ensino";
@@ -1376,7 +1372,7 @@ function buscaCursos($iEscola)
         $oDadosCursoEscola = db_utils::fieldsMemory($rsCursoEscola, $iContador);
         $oDadosRetorno = new stdClass();
         $oDadosRetorno->iCodigo = $oDadosCursoEscola->ed29_i_codigo;
-        $oDadosRetorno->sDescricao = urlencode($oDadosCursoEscola->ed29_c_descr);
+        $oDadosRetorno->sDescricao = urlencode((string) $oDadosCursoEscola->ed29_c_descr);
         $oDadosRetorno->iEnsino = $oDadosCursoEscola->ed29_i_ensino;
 
         $aCursos[] = $oDadosRetorno;

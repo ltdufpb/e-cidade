@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE conlancaminscrestosapagar
 class cl_conlancaminscrestosapagar {
@@ -26,7 +26,7 @@ class cl_conlancaminscrestosapagar {
                  c108_inscricaorestosapagar = int4 = Sequencial
                  ";
    //funcao construtor da classe
-   function cl_conlancaminscrestosapagar() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conlancaminscrestosapagar");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

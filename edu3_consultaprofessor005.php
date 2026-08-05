@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -42,8 +42,8 @@ include(modification("classes/db_rhinstrucao_classe.php"));
 include(modification("classes/db_rhestcivil_classe.php"));
 include(modification("classes/db_rhnacionalidade_classe.php"));
 include(modification("classes/db_rhfotos_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 $clrechumano = new cl_rechumano;
 $cltelefonerechumano = new cl_telefonerechumano;
 $clrechumanoescola = new cl_rechumanoescola;
@@ -91,7 +91,7 @@ if(isset($chavepesquisa)){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?if(isset($chavepesquisa)){?>
+<?php if(isset($chavepesquisa)){?>
 <table border='0' width="97%">
  <tr>
   <td>
@@ -99,7 +99,7 @@ if(isset($chavepesquisa)){
     <table>
      <tr>
       <td nowrap title="<?=@$Trh50_oid?>" rowspan="7" id='fotofunc'>
-       <?
+       <?php 
        $regist = "";
        if(isset($rh01_numcgm)){
                $regist = $rh01_numcgm;
@@ -110,49 +110,49 @@ if(isset($chavepesquisa)){
        <b>Matrícula:</b>
       </td>
       <td nowrap>
-       <?db_input('rh01_regist',6,@$Irh01_regist,true,'text',3,"");?>
+       <?php db_input('rh01_regist',6,@$Irh01_regist,true,'text',3,"");?>
       </td>
       <td nowrap title="<?=@$Trh01_sexo?>">
        <?=@$Lrh01_sexo?>
       </td>
       <td nowrap>
-       <?
-       $arr_sexo = array('M' => 'Masculino','F'=>'Feminino');
+       <?php 
+       $arr_sexo = ['M' => 'Masculino','F'=>'Feminino'];
        db_select("rh01_sexo",$arr_sexo,true,3,"");
        ?>
       </td>
      </tr>
      <tr>
       <td nowrap title="<?=@$Trh01_numcgm?>">
-       <?db_ancora(@$Lrh01_numcgm,"js_pesquisarh01_numcgm(true);",3);?>
+       <?php db_ancora(@$Lrh01_numcgm,"js_pesquisarh01_numcgm(true);",3);?>
       </td>
       <td nowrap>
-       <?db_input('rh01_numcgm',6,$Irh01_numcgm,true,'text',3,"onchange='js_pesquisarh01_numcgm(false);' tabIndex='1'")?>
-       <?db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')?>
+       <?php db_input('rh01_numcgm',6,$Irh01_numcgm,true,'text',3,"onchange='js_pesquisarh01_numcgm(false);' tabIndex='1'")?>
+       <?php db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')?>
       </td>
       <td nowrap title="<?=@$Trh01_raca?>">
-       <?db_ancora(@$Lrh01_raca,"js_pesquisarh01_raca(true);",3);?>
+       <?php db_ancora(@$Lrh01_raca,"js_pesquisarh01_raca(true);",3);?>
       </td>
       <td nowrap>
-       <?db_input('rh18_raca',5,@$Irh18_raca,true,'text',3,'')?>
-       <?db_input('rh18_descr',20,@$Irh18_descr,true,'text',3,'')?>
+       <?php db_input('rh18_raca',5,@$Irh18_raca,true,'text',3,'')?>
+       <?php db_input('rh18_descr',20,@$Irh18_descr,true,'text',3,'')?>
       </td>
      </tr>
      <tr>
       <td nowrap title="<?=@$Trh01_instru?>">
-       <?db_ancora(@$Lrh01_instru,"js_pesquisarh01_instru(true);",3);?>
+       <?php db_ancora(@$Lrh01_instru,"js_pesquisarh01_instru(true);",3);?>
       </td>
       <td nowrap>
-       <?
+       <?php 
        $result_instru = $clrhinstrucao->sql_record($clrhinstrucao->sql_query_file());
        db_selectrecord("rh01_instru",$result_instru,"",3);
        ?>
       </td>
       <td nowrap title="<?=@$Trh01_estciv?>">
-       <?db_ancora(@$Lrh01_estciv,"js_pesquisarh01_estciv(true);",3);?>
+       <?php db_ancora(@$Lrh01_estciv,"js_pesquisarh01_estciv(true);",3);?>
       </td>
       <td nowrap>
-       <?
+       <?php 
        $result_estciv = $clrhestcivil->sql_record($clrhestcivil->sql_query_file());
        db_selectrecord("rh01_estciv",$result_estciv,"",3);
        ?>
@@ -160,10 +160,10 @@ if(isset($chavepesquisa)){
      </tr>
      <tr>
       <td nowrap title="<?=@$Trh01_nacion?>">
-       <?db_ancora(@$Lrh01_nacion,"js_pesquisarh01_nacion(true);",3);?>
+       <?php db_ancora(@$Lrh01_nacion,"js_pesquisarh01_nacion(true);",3);?>
       </td>
       <td nowrap>
-       <?
+       <?php 
        if(!isset($rh01_nacion)){
                $rh01_nacion = 10;
        }
@@ -175,7 +175,7 @@ if(isset($chavepesquisa)){
        <?=@$Lrh01_anoche?>
       </td>
       <td nowrap>
-       <?db_input('rh01_anoche',4,$Irh01_anoche,true,'text',3,"")?>
+       <?php db_input('rh01_anoche',4,$Irh01_anoche,true,'text',3,"")?>
       </td>
      </tr>
      <tr>
@@ -183,13 +183,13 @@ if(isset($chavepesquisa)){
        <?=@$Lrh01_natura?>
       </td>
       <td nowrap>
-       <?db_input('rh01_natura',42,$Irh01_natura,true,'text',3,"")?>
+       <?php db_input('rh01_natura',42,$Irh01_natura,true,'text',3,"")?>
       </td>
       <td nowrap title="<?=@$Trh01_nasc?>">
        <?=@$Lrh01_nasc?>
       </td>
       <td nowrap>
-       <?db_inputdata('rh01_nasc',@$rh01_nasc_dia,@$rh01_nasc_mes,@$rh01_nasc_ano,true,'text',3,"")?>
+       <?php db_inputdata('rh01_nasc',@$rh01_nasc_dia,@$rh01_nasc_mes,@$rh01_nasc_ano,true,'text',3,"")?>
       </td>
      </tr>
     </table>
@@ -200,7 +200,7 @@ if(isset($chavepesquisa)){
   <td>
    <fieldset width="95%"><legend align="left"><b>TELEFONES</b></legend>
     <table border="0">
-    <?
+    <?php 
     $result = $cltelefonerechumano->sql_record($cltelefonerechumano->sql_query("","*","","ed30_i_rechumano = $chavepesquisa"));
     if($cltelefonerechumano->numrows>0){
      for($x=0;$x<$cltelefonerechumano->numrows;$x++){
@@ -209,19 +209,19 @@ if(isset($chavepesquisa)){
       ?>
       <tr>
        <td nowrap>
-        <b>Tipo:</b> <?db_input('ed13_c_descr',20,@$Ied13_c_descr,true,'text',3,"")?>
-        <b>Número:</b> <?db_input('ed30_i_numero',20,@$Ied30_i_numero,true,'text',3,"")?>
-        <b>Ramal:</b> <?db_input('ed30_i_ramal',20,@$Ied30_i_ramal,true,'text',3,"")?>
+        <b>Tipo:</b> <?php db_input('ed13_c_descr',20,@$Ied13_c_descr,true,'text',3,"")?>
+        <b>Número:</b> <?php db_input('ed30_i_numero',20,@$Ied30_i_numero,true,'text',3,"")?>
+        <b>Ramal:</b> <?php db_input('ed30_i_ramal',20,@$Ied30_i_ramal,true,'text',3,"")?>
        </td>
       </tr>
-      <?
+      <?php 
      }
     }else{
      ?>
      <tr>
       <td nowrap>Nenhum registro.</td>
      </tr>
-     <?
+     <?php 
     }
     ?>
     </table>
@@ -236,30 +236,30 @@ if(isset($chavepesquisa)){
     <table border="0">
      <tr>
       <td nowrap title="<?=@$Trh01_funcao?>">
-       <?db_ancora(@$Lrh01_funcao,"",3);?>
-       <?db_input('rh01_funcao',6,$Irh01_funcao,true,'text',3,"")?>
-       <?db_input('rh37_descr',40,$Irh37_descr,true,'text',3,'')?>
+       <?php db_ancora(@$Lrh01_funcao,"",3);?>
+       <?php db_input('rh01_funcao',6,$Irh01_funcao,true,'text',3,"")?>
+       <?php db_input('rh37_descr',40,$Irh37_descr,true,'text',3,'')?>
       </td>
       <td nowrap>
-       <?db_ancora(@$Lrh01_lotac,"",3);?>
-       <?db_input('rh01_lotac',6,$Irh01_lotac,true,'text',3,"")?>
-       <?db_input('r70_descr',40,$Ir70_descr,true,'text',3,'')?>
+       <?php db_ancora(@$Lrh01_lotac,"",3);?>
+       <?php db_input('rh01_lotac',6,$Irh01_lotac,true,'text',3,"")?>
+       <?php db_input('r70_descr',40,$Ir70_descr,true,'text',3,'')?>
       </td>
      </tr>
      <tr>
       <td nowrap title="<?=@$Trh01_admiss?>">
        <?=@$Lrh01_admiss?>
-       <?db_inputdata('rh01_admiss',@$rh01_admiss_dia,@$rh01_admiss_mes,@$rh01_admiss_ano,true,'text',3,"")?>
+       <?php db_inputdata('rh01_admiss',@$rh01_admiss_dia,@$rh01_admiss_mes,@$rh01_admiss_ano,true,'text',3,"")?>
       </td>
       <td nowrap title="<?=@$Trh01_tipadm?>">
        <?=@$Lrh01_tipadm?>
-       <?
-       $h01_tipadm = array(
+       <?php 
+       $h01_tipadm = [
                            1 => 'Admissao do 1o emprego',
                            2 => 'Admissao c/ emprego anterior',
                            3 => 'Transf de empreg s/ onus p/ a cedente',
                            4 => 'Transf de empreg c/ onus p/ a cedente'
-                          );
+                          ];
        db_select("rh01_tipadm",$h01_tipadm,true,3,"");
        ?>
       </td>
@@ -280,11 +280,11 @@ if(isset($chavepesquisa)){
        <?=@$Lrh16_titele?>
       </td>
       <td>
-       <?db_input('rh16_titele',11,$Irh16_titele,true,'text',3,"")?>
+       <?php db_input('rh16_titele',11,$Irh16_titele,true,'text',3,"")?>
        <?=@$Lrh16_zonael?>
-       <?db_input('rh16_zonael',3,$Irh16_zonael,true,'text',3,"")?>
+       <?php db_input('rh16_zonael',3,$Irh16_zonael,true,'text',3,"")?>
        <?=@$Lrh16_secaoe?>
-       <?db_input('rh16_secaoe',4,$Irh16_secaoe,true,'text',3,"")?>
+       <?php db_input('rh16_secaoe',4,$Irh16_secaoe,true,'text',3,"")?>
       </td>
      </tr>
      <tr>
@@ -292,9 +292,9 @@ if(isset($chavepesquisa)){
        <?=@$Lrh16_reserv?>
       </td>
       <td>
-       <?db_input('rh16_reserv',15,$Irh16_reserv,true,'text',3,"")?>
+       <?php db_input('rh16_reserv',15,$Irh16_reserv,true,'text',3,"")?>
        <?=@$Lrh16_catres?>
-       <?db_input('rh16_catres',4,$Irh16_catres,true,'text',3,"")?>
+       <?php db_input('rh16_catres',4,$Irh16_catres,true,'text',3,"")?>
       </td>
      </tr>
      <tr>
@@ -302,24 +302,24 @@ if(isset($chavepesquisa)){
        <?=@$Lrh16_ctps_n?>
       </td>
       <td>
-       <?db_input('rh16_ctps_n',7,$Irh16_ctps_n,true,'text',3,"")?>
+       <?php db_input('rh16_ctps_n',7,$Irh16_ctps_n,true,'text',3,"")?>
        <?=@$Lrh16_ctps_s?>
-       <?db_input('rh16_ctps_s',4,$Irh16_ctps_s,true,'text',3,"")?>
+       <?php db_input('rh16_ctps_s',4,$Irh16_ctps_s,true,'text',3,"")?>
        <?=@$Lrh16_ctps_d?>
-       <?db_input('rh16_ctps_d',1,$Irh16_ctps_d,true,'text',3,"")?>
+       <?php db_input('rh16_ctps_d',1,$Irh16_ctps_d,true,'text',3,"")?>
       </td>
      </tr>
      <tr>
       <td nowrap title="<?=@$Trh16_ctps_uf?>">
-       <?db_ancora(@$Lrh16_ctps_uf,"",3);?>
+       <?php db_ancora(@$Lrh16_ctps_uf,"",3);?>
       </td>
       <td>
-       <?
+       <?php 
        $result_uf = $cldb_uf->sql_record($cldb_uf->sql_query_file(null,"db12_codigo as rh16_ctps_uf,db12_uf"));
        db_selectrecord("rh16_ctps_uf",$result_uf,true,3,"","","","0-Nenhum...");
        ?>
        <?=@$Lrh16_pis?>
-       <?db_input('rh16_pis',11,$Irh16_pis,true,'text',3,"")?>
+       <?php db_input('rh16_pis',11,$Irh16_pis,true,'text',3,"")?>
       </td>
      </tr>
      <tr>
@@ -327,11 +327,11 @@ if(isset($chavepesquisa)){
        <?=@$Lrh16_carth_n?>
       </td>
       <td>
-       <?db_input('rh16_carth_n',11,$Irh16_carth_n,true,'text',3,"")?>
+       <?php db_input('rh16_carth_n',11,$Irh16_carth_n,true,'text',3,"")?>
        <?=@$Lr16_carth_cat?>
-       <?db_input('r16_carth_cat',3,$Ir16_carth_cat,true,'text',3,"")?>
+       <?php db_input('r16_carth_cat',3,$Ir16_carth_cat,true,'text',3,"")?>
        <?=@$Lrh16_carth_val?>
-       <?db_inputdata('rh16_carth_val',@$rh16_carth_val_dia,@$rh16_carth_val_mes,@$rh16_carth_val_ano,true,'text',3,"")?>
+       <?php db_inputdata('rh16_carth_val',@$rh16_carth_val_dia,@$rh16_carth_val_mes,@$rh16_carth_val_ano,true,'text',3,"")?>
       </td>
      </tr>
     </table>
@@ -339,7 +339,7 @@ if(isset($chavepesquisa)){
   </td>
  </tr>
 </table>
-<?}?>
+<?php }?>
 </center>
 </table>
 </body>

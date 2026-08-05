@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_empempenhofinalidadepagamentofundeb_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clempempenhofinalidadepagamentofundeb = new cl_empempenhofinalidadepagamentofundeb;
 ?>
 <html>
@@ -60,7 +61,7 @@ $clempempenhofinalidadepagamentofundeb = new cl_empempenhofinalidadepagamentofun
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empempenhofinalidadepagamentofundeb.php")==true){
@@ -91,12 +92,12 @@ $clempempenhofinalidadepagamentofundeb = new cl_empempenhofinalidadepagamentofun
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

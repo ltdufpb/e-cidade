@@ -52,7 +52,7 @@ class cl_remessacobrancaregistradarecibo {
                  k148_numpre = int4 = Numpre
                  ";
    //funcao construtor da classe
-   function cl_remessacobrancaregistradarecibo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("remessacobrancaregistradarecibo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

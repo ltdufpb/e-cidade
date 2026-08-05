@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,7 +34,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clbasemps = new cl_basemps;
 $clbasemps->rotulo->label("ed34_i_codigo");
@@ -58,7 +59,7 @@ $clbasemps->rotulo->label("ed11_c_descr");
                 <b>Serie</b>
               </td>
               <td width="96%" align="left" nowrap>
-                <?db_input( "ed34_i_serie", 10, @$Ied34_i_serie, true, "text", 4, "", "chave_ed34_i_serie" );?>
+                <?php db_input( "ed34_i_serie", 10, @$Ied34_i_serie, true, "text", 4, "", "chave_ed34_i_serie" );?>
               </td>
             </tr>
             <tr>
@@ -66,7 +67,7 @@ $clbasemps->rotulo->label("ed11_c_descr");
                 <b>Descricao</b>
               </td>
               <td width="96%" align="left" nowrap>
-                <?db_input( "ed11_c_descr", 30, @$Ied11_c_descr, true, "text", 4, "", "chave_ed11_c_descr" );?>
+                <?php db_input( "ed11_c_descr", 30, @$Ied11_c_descr, true, "text", 4, "", "chave_ed11_c_descr" );?>
               </td>
             </tr>
             <tr>
@@ -82,7 +83,7 @@ $clbasemps->rotulo->label("ed11_c_descr");
     </tr>
     <tr>
       <td align="center" valign="top">
-       <?
+       <?php 
        $sql    = "SELECT ARRAY(SELECT ed234_i_serieequiv FROM serieequiv WHERE ed234_i_serie in ({$serie})) as seriesequivalentes";
        $result = db_query( $sql );
        

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
 *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -267,7 +267,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <body bgcolor="#CCCCCC">
   <div class="container">
     <form name="form1" method="post" class="form-container">
-      <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+      <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
       <table>
         <tr>
           <td>
@@ -393,7 +393,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
                            <b>Situação:</b>
                          </td>
                          <td>
-                         <?db_input( 'situacaoorig', 40, @$situacaoorig, true, 'text', 3 );?>
+                         <?php db_input( 'situacaoorig', 40, @$situacaoorig, true, 'text', 3 );?>
                          </td>
                        </tr>
                        <tr>
@@ -401,7 +401,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
                            <b>Concluída:</b>
                          </td>
                          <td>
-                         <?db_input( 'conclusaoorig', 40, @$conclusaorig, true, 'text', 3 );?>
+                         <?php db_input( 'conclusaoorig', 40, @$conclusaorig, true, 'text', 3 );?>
                          </td>
                        </tr>
                        <tr>
@@ -453,7 +453,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
                            <b>Situação:</b>
                          </td>
                          <td>
-                         <?db_input( 'situacaodest', 40, @$situacaodest, true, 'text', 3 );?>
+                         <?php db_input( 'situacaodest', 40, @$situacaodest, true, 'text', 3 );?>
                          </td>
                        </tr>
                        <tr>
@@ -461,7 +461,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
                            <b>Concluida:</b>
                          </td>
                          <td>
-                         <?db_input( 'conclusaodest', 40, @$conclusadest, true, 'text', 3 );?>
+                         <?php db_input( 'conclusaodest', 40, @$conclusadest, true, 'text', 3 );?>
                          </td>
                        </tr>
                        <tr>
@@ -536,16 +536,16 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
             </script>
             <div class="center">
               <input type="hidden" name="codigoprogressao" value="<?=$ed101_i_codigo?>">
-              <input type="hidden" name="codigoaluno"      value="<?=isset( $codigoaluno ) ? $codigoaluno : ''?>">
+              <input type="hidden" name="codigoaluno"      value="<?=$codigoaluno ?? ''?>">
               <input type="submit" name="incluir"          value="Confirmar Cancelamento" onclick="return js_confirma();">
             </div>
-            <?}?>
+            <?php }?>
           </td>
         </tr>
       </table>
     </form>
   </div>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

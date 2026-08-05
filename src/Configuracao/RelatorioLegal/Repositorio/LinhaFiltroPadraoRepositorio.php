@@ -99,7 +99,7 @@ class LinhaFiltroPadraoRepositorio extends Repositorio
             throw new Exception("Não foi possível buscar a configuração padrão.\nContate o suporte.");
         }
 
-        $filtros = array();
+        $filtros = [];
         if (pg_num_rows($rs) === 0) {
             return $filtros;
         }
@@ -118,7 +118,7 @@ class LinhaFiltroPadraoRepositorio extends Repositorio
      */
     public function import(ConfiguracaoPadrao $filtroPadrao)
     {
-        $dao = $this->setDadosDao($filtroPadrao);
+        $dao = self::setDadosDao($filtroPadrao);
 
         self::find($filtroPadrao->getSequencial())
             ? $dao->alterar($filtroPadrao->getSequencial())
@@ -174,7 +174,7 @@ class LinhaFiltroPadraoRepositorio extends Repositorio
      * @param ConfiguracaoPadrao|null $linhaFiltroPadrao
      * @throws Exception
      */
-    public function delete(ConfiguracaoPadrao $linhaFiltroPadrao = null)
+    public function delete(?ConfiguracaoPadrao $linhaFiltroPadrao = null)
     {
         $id = $linhaFiltroPadrao instanceof ConfiguracaoPadrao ? $linhaFiltroPadrao->getSequencial() : null;
 

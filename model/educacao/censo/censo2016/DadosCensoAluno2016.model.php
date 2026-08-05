@@ -42,6 +42,7 @@ class DadosCensoAluno2016 extends DadosCensoAluno2015 {
   /**
    * Define os novos campos para layout 2016
    */
+  #[Override]
   protected function setDadosIdenficacao($rsDadosAluno) {
 
     parent::setDadosIdenficacao($rsDadosAluno);

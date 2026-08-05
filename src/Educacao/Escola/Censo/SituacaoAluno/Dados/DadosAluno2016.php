@@ -78,7 +78,7 @@ class DadosAluno2016
      * De/Para das situações existentes no e-cidade com as do CENSO
      * @var array
      */
-    protected $aSituacoesMatricula = array(
+    protected $aSituacoesMatricula = [
         'TRANSFERIDO REDE' => 1,
         'TRANSFERIDO FORA' => 1,
         'TROCA DE MODALIDADE' => 1,
@@ -94,13 +94,13 @@ class DadosAluno2016
         'APROVADO COM PROGRESSAO PARCIAL / DEPENDÊNCIA' => 5,
         'EM ANDAMENTO' => 7,
         'EM RECUPERAÇÃO' => 7,
-    );
+    ];
 
     /**
      * Erros ocorrido durante a execução
      * @var array
      */
-    protected $aErros = array();
+    protected $aErros = [];
 
     /**
      * Seta os atributos da classe de acordo com os dados recebidos.
@@ -123,7 +123,7 @@ class DadosAluno2016
         }
 
         $oEtapaOrigem = $this->oMatricula->getEtapaDeOrigem();
-        $aEtapasConcluintes = array(27, 28, 29, 32, 33, 34, 37, 38, 39, 40, 41, 67, 68, 70, 71, 73, 74);
+        $aEtapasConcluintes = [27, 28, 29, 32, 33, 34, 37, 38, 39, 40, 41, 67, 68, 70, 71, 73, 74];
 
         // Campo Situação do Aluno - Regra 5 negada
         if ($this->iSituacaoAluno == 5 && in_array($oEtapaOrigem->getEtapaCenso(), $aEtapasConcluintes)) {
@@ -131,7 +131,7 @@ class DadosAluno2016
         }
 
         // Campo Situação do Aluno - Regra 4
-        if (in_array($this->iSituacaoAluno, array(4, 5, 6)) && in_array($oEtapaOrigem->getEtapaCenso(), array(1, 2))) {
+        if (in_array($this->iSituacaoAluno, [4, 5, 6]) && in_array($oEtapaOrigem->getEtapaCenso(), [1, 2])) {
             $this->iSituacaoAluno = 7;
         }
 
@@ -233,7 +233,7 @@ class DadosAluno2016
         }
 
         //Regra 2
-        if (!in_array($this->iSituacaoAluno, array(1, 2, 3, 4, 5, 6, 7))) {
+        if (!in_array($this->iSituacaoAluno, [1, 2, 3, 4, 5, 6, 7])) {
             $this->addErro('O campo "Situação do aluno" foi preenchido com valor inválido');
         }
 

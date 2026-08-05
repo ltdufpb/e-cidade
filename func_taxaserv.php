@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_taxaserv_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltaxaserv = new cl_taxaserv;
 $cltaxaserv->rotulo->label("cm11_i_codigo");
 $cltaxaserv->rotulo->label("cm11_c_descr");
@@ -54,7 +55,7 @@ $cltaxaserv->rotulo->label("cm11_c_descr");
               <?=$Lcm11_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("cm11_i_codigo",10,$Icm11_i_codigo,true,"text",4,"","chave_cm11_i_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cltaxaserv->rotulo->label("cm11_c_descr");
               <?=$Lcm11_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("cm11_c_descr",30,$Icm11_c_descr,true,"text",4,"","chave_cm11_c_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cltaxaserv->rotulo->label("cm11_c_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_taxaserv.php")==true){
@@ -118,12 +119,12 @@ $cltaxaserv->rotulo->label("cm11_c_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

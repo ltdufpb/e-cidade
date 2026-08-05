@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_consistemaconta_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clconsistemaconta = new cl_consistemaconta;
 $clconsistemaconta->rotulo->label("c65_sequencial");
 $clconsistemaconta->rotulo->label("c65_descricao");
@@ -54,7 +55,7 @@ $clconsistemaconta->rotulo->label("c65_descricao");
               <?=$Lc65_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c65_sequencial",4,$Ic65_sequencial,true,"text",4,"","chave_c65_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clconsistemaconta->rotulo->label("c65_descricao");
               <?=$Lc65_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c65_descricao",50,$Ic65_descricao,true,"text",4,"","chave_c65_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clconsistemaconta->rotulo->label("c65_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_consistemaconta.php")==true){
@@ -122,12 +123,12 @@ $clconsistemaconta->rotulo->label("c65_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

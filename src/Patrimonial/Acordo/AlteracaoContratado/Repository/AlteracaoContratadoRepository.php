@@ -2,6 +2,7 @@
 
 namespace ECidade\Patrimonial\Acordo\AlteracaoContratado\Repository;
 
+use Exception;
 use BusinessException;
 use cl_acordoalteracaocontratado;
 use db_utils;
@@ -25,7 +26,7 @@ class AlteracaoContratadoRepository extends Repository
 
     /**
      * @return AlteracaoContratado|null
-     * @throws \Exception
+     * @throws Exception
      */
     public function first()
     {
@@ -38,7 +39,7 @@ class AlteracaoContratadoRepository extends Repository
 
     /**
      * @return AlteracaoContratado|null
-     * @throws \Exception
+     * @throws Exception
      */
     public function findLastByCodigoAcordo($codigo)
     {
@@ -47,7 +48,7 @@ class AlteracaoContratadoRepository extends Repository
 
     /**
      * @return false|mixed|null
-     * @throws \Exception
+     * @throws Exception
      */
     public function last()
     {
@@ -64,7 +65,7 @@ class AlteracaoContratadoRepository extends Repository
         $sql = $dao->sql_query_file('', '*', '', implode(' and ', $this->scopes));
         $rs = $dao->sql_record($sql);
         if (!$rs) {
-            throw new \Exception('Erro ao buscar alterações do contratado');
+            throw new Exception('Erro ao buscar alterações do contratado');
         }
         $alteracaoContratado = [];
         while ($state = pg_fetch_array($rs)) {
@@ -86,7 +87,7 @@ class AlteracaoContratadoRepository extends Repository
         $sqlAnterior = $daoAlteracaoContratado->sql_query_contratado($posicao, 'ac60_anterior');
         $rsAnterior = $daoAlteracaoContratado->sql_record($sqlAnterior);
         if ($daoAlteracaoContratado->numrows > 0) {
-            $resultAnterior = \db_utils::fieldsMemory($rsAnterior, 0);
+            $resultAnterior = db_utils::fieldsMemory($rsAnterior, 0);
             $dados['tipoDocumentoAnterior'] = LicitanteLicitaCon::getTipoDocumentoPorCGM($resultAnterior->z01_numcgm);
             if ($dados['tipoDocumentoAnterior'] === 'E') {
                 $dados['numeroDocumentoAnterior'] = $resultAnterior->z09_documento;
@@ -98,7 +99,7 @@ class AlteracaoContratadoRepository extends Repository
         $sqlNovo = $daoAlteracaoContratado->sql_query_contratado($posicao, 'ac60_novo');
         $rsNovo = $daoAlteracaoContratado->sql_record($sqlNovo);
         if ($daoAlteracaoContratado->numrows > 0) {
-            $resultNovo = \db_utils::fieldsMemory($rsNovo, 0);
+            $resultNovo = db_utils::fieldsMemory($rsNovo, 0);
             $dados['tipoDocumentoNovo'] = LicitanteLicitaCon::getTipoDocumentoPorCGM($resultNovo->z01_numcgm);
             if ($dados['tipoDocumentoNovo'] === "E") {
                 $dados['numeroDocumentoNovo'] = $resultNovo->z09_documento;

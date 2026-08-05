@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -37,7 +37,7 @@ include(modification("classes/db_parecer_classe.php"));
 include(modification("classes/db_parecerturma_classe.php"));
 include(modification("classes/db_parecerlegenda_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clparecerresult = new cl_parecerresult;
 $clparecerlegenda = new cl_parecerlegenda;
 $cldiarioresultado = new cl_diarioresultado;
@@ -141,7 +141,7 @@ if(isset($alterar2)){
     <tr>
      <td colspan="2">
       <center>
-      <?include(modification("forms/db_frmparecerresult001.php"));?>
+      <?php include(modification("forms/db_frmparecerresult001.php"));?>
       </center>
      </td>
     </tr>
@@ -151,7 +151,7 @@ if(isset($alterar2)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar2)){
  ?>
  <script>
@@ -160,7 +160,7 @@ if(isset($alterar2)){
   parent.parent.iframe_R<?=$ed43_i_codigo?>.location.href = "edu1_diarioresultado001.php?regencia=<?=$regencia?>&ed43_i_codigo=<?=$ed43_i_codigo?>";
   parent.document.form1.<?=$campo?>.value = "<?=$ed73_t_parecer?>";
  </script>
- <?
+ <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -43,8 +43,8 @@ include(modification("classes/db_convocacao_classe.php"));
 include(modification("classes/db_opcaoquestao_classe.php"));
 include(modification("classes/db_progclasse_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clprogmatricula = new cl_progmatricula;
 $clprogconfig = new cl_progconfig;
@@ -94,7 +94,7 @@ db_fieldsmemory($result,0);
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Consulta Previsão de Progressão Funcional</b></legend>
@@ -104,7 +104,7 @@ db_fieldsmemory($result,0);
        <b>Informe o ano:</b>
       </td>
       <td>
-       <?db_input('ano_chave',4,@$Iano_chave,true,'text',$db_opcao,'')?>
+       <?php db_input('ano_chave',4,@$Iano_chave,true,'text',$db_opcao,'')?>
        &nbsp;&nbsp;&nbsp;&nbsp;
        <b>Filtro:</b>
        <select name="tipo" style="width:180px;height:15px;font-size:10px;padding:0px;">
@@ -116,7 +116,7 @@ db_fieldsmemory($result,0);
      </tr>
     </table>
     <br><br>
-    <?
+    <?php 
     if(isset($ano_chave)){
      ?>
      <table width="100%" align="left" border="1" cellspacing="0" cellpadding="2">
@@ -129,7 +129,7 @@ db_fieldsmemory($result,0);
        <td>Próxima Progressão</td>
        <td></td>
       </tr>
-      <?
+      <?php 
       $result = $clprogmatricula->sql_record($clprogmatricula->sql_query("","*","z01_nome"," ed112_c_situacao = 'A'"));
       $linhas = $clprogmatricula->numrows;
       $cor1 = "#F3F3F3";
@@ -143,12 +143,12 @@ db_fieldsmemory($result,0);
        }else{
         $cor = $cor1;
        }
-       $ed112_d_database_dia = substr($ed112_d_database,8,2);
-       $ed112_d_database_mes = substr($ed112_d_database,5,2);
-       $ed112_d_database_ano = substr($ed112_d_database,0,4);
-       $ed112_d_datainicio_dia = substr($ed112_d_datainicio,8,2);
-       $ed112_d_datainicio_mes = substr($ed112_d_datainicio,5,2);
-       $ed112_d_datainicio_ano = substr($ed112_d_datainicio,0,4);
+       $ed112_d_database_dia = substr((string) $ed112_d_database,8,2);
+       $ed112_d_database_mes = substr((string) $ed112_d_database,5,2);
+       $ed112_d_database_ano = substr((string) $ed112_d_database,0,4);
+       $ed112_d_datainicio_dia = substr((string) $ed112_d_datainicio,8,2);
+       $ed112_d_datainicio_mes = substr((string) $ed112_d_datainicio,5,2);
+       $ed112_d_datainicio_ano = substr((string) $ed112_d_datainicio,0,4);
        $total_dias_prog = $ed110_i_intervalo*365;
        $ed112_d_dataprevisao = strftime("%Y-%m-%d",mktime(0,0,0,$ed112_d_datainicio_mes,$ed112_d_datainicio_dia+$total_dias_prog,$ed112_d_datainicio_ano));
        $ed112_d_dataprevisao_dia = substr($ed112_d_dataprevisao,8,2);
@@ -160,8 +160,8 @@ db_fieldsmemory($result,0);
         for($x=0;$x<$clproglicencamatr->numrows;$x++){
          $dias_licenca = 0;
          db_fieldsmemory($result3,$x);
-         $data_inicio = mktime(0,0,0,substr($ed122_d_inicio,5,2),substr($ed122_d_inicio,8,2),substr($ed122_d_inicio,0,4));
-         $data_final = mktime(0,0,0,substr($ed122_d_final,5,2),substr($ed122_d_final,8,2),substr($ed122_d_final,0,4));
+         $data_inicio = mktime(0,0,0,substr((string) $ed122_d_inicio,5,2),substr((string) $ed122_d_inicio,8,2),substr((string) $ed122_d_inicio,0,4));
+         $data_final = mktime(0,0,0,substr((string) $ed122_d_final,5,2),substr((string) $ed122_d_final,8,2),substr((string) $ed122_d_final,0,4));
          $data_entre = $data_final - $data_inicio;
          $dias = ceil($data_entre/86400);
          if($ed121_i_tempolimite>0){
@@ -281,30 +281,30 @@ db_fieldsmemory($result,0);
           <b><?=db_formatar($ed112_d_dataprevisao,'d')?></b>
          </td>
          <td>
-          <?
+          <?php 
           if(str_replace("-","",$ed112_d_dataprevisao)-date("Ymd")<0 && $soma_total>=$ed110_i_ptgeral){
            $result4 = $clprogclasse->sql_record($clprogclasse->sql_query("","max(ed107_i_sequencia) as ultimaclasse","",""));
            db_fieldsmemory($result4,0);
            if($ultimaclasse==$ed107_i_sequencia){
             ?>
             <input type="button" name="confirmar" value="Progressão" onclick="location.href='edu3_progmatricula001.php?chavepesquisa=<?=$ed112_i_codigo?>&ano_chave=<?=$ano_chave?>&tipo=<?=$tipo?>'">
-            <?
+            <?php 
            }else{
             $result4 = $clprogclasse->sql_record($clprogclasse->sql_query("","ed107_i_codigo as prxcod, ed107_c_descr as prxclasse",""," ed107_i_sequencia = ".($ed107_i_sequencia+1).""));
             db_fieldsmemory($result4,0);
             ?>
             <input type="button" name="confirmar" value="Progressão" onclick="location.href='edu3_progmatricula001.php?chavepesquisa=<?=$ed112_i_codigo?>&ano_chave=<?=$ano_chave?>&tipo=<?=$tipo?>'">
-            <?
+            <?php 
            }
           }else{
            ?>
            <input type="button" name="confirmar" value="Planilha" onclick="location.href='edu3_progmatricula001.php?chavepesquisa=<?=$ed112_i_codigo?>&ano_chave=<?=$ano_chave?>&tipo=<?=$tipo?>'">
-           <?
+           <?php 
           }
           ?>
          </td>
         </tr>
-        <?
+        <?php 
        }elseif($tipo=="P" && ($ano_chave==""||$ano_chave==$ed112_d_dataprevisao_ano)){
         if(str_replace("-","",$ed112_d_dataprevisao)-date("Ymd")<0 && $soma_total>=$ed110_i_ptgeral){
          $count++;
@@ -329,31 +329,31 @@ db_fieldsmemory($result,0);
            <b><?=db_formatar($ed112_d_dataprevisao,'d')?></b>
           </td>
           <td>
-           <?
+           <?php 
            $result4 = $clprogclasse->sql_record($clprogclasse->sql_query("","max(ed107_i_sequencia) as ultimaclasse","",""));
            db_fieldsmemory($result4,0);
            if($ultimaclasse==$ed107_i_sequencia){
             ?>
             <input type="button" name="confirmar" value="Progressão" onclick="location.href='edu3_progmatricula001.php?chavepesquisa=<?=$ed112_i_codigo?>&ano_chave=<?=$ano_chave?>&tipo=<?=$tipo?>'">
-            <?
+            <?php 
            }else{
             $result4 = $clprogclasse->sql_record($clprogclasse->sql_query("","ed107_i_codigo as prxcod, ed107_c_descr as prxclasse",""," ed107_i_sequencia = ".($ed107_i_sequencia+1).""));
             db_fieldsmemory($result4,0);
             ?>
             <input type="button" name="confirmar" value="Progressão" onclick="location.href='edu3_progmatricula001.php?chavepesquisa=<?=$ed112_i_codigo?>&ano_chave=<?=$ano_chave?>&tipo=<?=$tipo?>'">
-            <?
+            <?php 
            }
            ?>
           </td>
          </tr>
-         <?
+         <?php 
         }
        }
       }
       if($count==0){
        ?>
        <tr bgcolor="#F3F3F3"><td align="center" colspan="6">Nenhum registro com os filtros selecionados.</td></tr>
-       <?
+       <?php 
       }
      }
     ?>
@@ -365,7 +365,7 @@ db_fieldsmemory($result,0);
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

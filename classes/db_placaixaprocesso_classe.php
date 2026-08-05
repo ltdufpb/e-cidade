@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: caixa
 //CLASSE DA ENTIDADE placaixaprocesso
 class cl_placaixaprocesso { 
@@ -26,7 +26,7 @@ class cl_placaixaprocesso {
                  k144_numeroprocesso = varchar(15) = numero processo 
                  ";
    //funcao construtor da classe 
-   function cl_placaixaprocesso() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("placaixaprocesso"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

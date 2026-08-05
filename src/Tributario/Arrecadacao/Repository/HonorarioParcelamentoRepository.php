@@ -27,6 +27,10 @@
 
 namespace ECidade\Tributario\Arrecadacao\Repository;
 
+use cl_processoforo;
+use stdClass;
+use cl_processoforoinicial;
+use cl_termoini;
 use cl_honorariosparcelamento;
 use DBException;
 use ECidade\Tributario\Arrecadacao\Custas\Enum\TipoLancamento;
@@ -52,7 +56,7 @@ class HonorarioParcelamentoRepository
     /**
      * @var array
      */
-    protected $colecao = array();
+    protected $colecao = [];
 
     /**
      * Retorna uma HonorarioParcelamento filtrando por código.
@@ -85,10 +89,10 @@ class HonorarioParcelamentoRepository
 
     /**
      * Formata o HonorarioParcelamento para entidade.
-     * @param \stdClass $item
+     * @param stdClass $item
      * @return HonorarioParcelamentoModel
-     * @throws \DBException
-     * @throws \Exception
+     * @throws DBException
+     * @throws Exception
      */
     public function make($item)
     {
@@ -329,7 +333,7 @@ class HonorarioParcelamentoRepository
                                  ON ta.v09_parcel = t.v07_parcel
                               WHERE pf.v70_sequencial = {$processoForo->getCodigo()})";
 
-        $dao = new \cl_processoforo();
+        $dao = new cl_processoforo();
         $sql = $dao->sql_query(null, '*', null, $condicao);
         $rs  = db_query($sql);
 
@@ -357,16 +361,16 @@ class HonorarioParcelamentoRepository
             return $instance;
         }
 
-        $oParans = new \stdClass();
+        $oParans = new stdClass();
 
         $condicao = "v71_inicial = {$inicial->getCodigo()} AND v71_anulado = 'f'";
 
-        $dao = new \cl_processoforoinicial();
+        $dao = new cl_processoforoinicial();
         $sql = $dao->sql_query(null, "v71_processoforo, v70_codforo", null, $condicao);
         $rsProcesso  = db_query($sql);
 
         if (pg_num_rows($rsProcesso) === 0) {
-            $dao = new \cl_termoini();
+            $dao = new cl_termoini();
             $where = " inicial = {$inicial->getCodigo()} and v09_parcel is null  ";
             $sql = $dao->sql_query_anulacao($where);
 

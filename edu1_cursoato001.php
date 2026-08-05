@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -35,7 +35,7 @@ include(modification("classes/db_cursoatoserie_classe.php"));
 include(modification("classes/db_base_classe.php"));
 include(modification("classes/db_cursoescola_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcursoato = new cl_cursoato;
 $clcursoatoserie = new cl_cursoatoserie;
 $clcursoescola = new cl_cursoescola;
@@ -48,7 +48,7 @@ $result_ver = $clcursoescola->sql_record($clcursoescola->sql_query("","ed71_i_co
 if(isset($incluir)){
  db_inicio_transacao();
  if (!isset($ed216_i_serie)) {
-   $ed216_i_serie = array();
+   $ed216_i_serie = [];
  }
  $clcursoato->ed215_i_cursoescola = $codcursoescola;
  $clcursoato->incluir(null);
@@ -79,7 +79,7 @@ if(isset($alterar)){
  $db_opcao = 2;
  db_inicio_transacao();
  if (!isset($ed216_i_serie)) {
-   $ed216_i_serie = array();
+   $ed216_i_serie = [];
  }
  $clcursoatoserie->excluir(""," ed216_i_cursoato = $ed215_i_codigo");
 
@@ -153,7 +153,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Atos Legais que regulamentam este curso na escola <?=$ed18_c_nome?></b></legend>
-    <?
+    <?php 
     if($clcursoescola->numrows==0){
      echo "<br><center>Para ter acesso a esta rotina, primeiro vincule este curso nesta escola. (Aba Vincular Curso)</center>";
      exit;
@@ -172,7 +172,7 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","ed215_i_atolegal",true,1,"ed215_i_atolegal",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
  if($clcursoato->erro_status=="0"){
   $clcursoato->erro(true,false);

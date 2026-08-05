@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bensguardaitemdev_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbensguardaitemdev = new cl_bensguardaitemdev;
 $clbensguardaitemdev->rotulo->label("t23_guardaitem");
 $clbensguardaitemdev->rotulo->label("t23_guardaitem");
@@ -54,7 +55,7 @@ $clbensguardaitemdev->rotulo->label("t23_guardaitem");
               <?=$Lt23_guardaitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t23_guardaitem",10,$It23_guardaitem,true,"text",4,"","chave_t23_guardaitem");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clbensguardaitemdev->rotulo->label("t23_guardaitem");
               <?=$Lt23_guardaitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t23_guardaitem",10,$It23_guardaitem,true,"text",4,"","chave_t23_guardaitem");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clbensguardaitemdev->rotulo->label("t23_guardaitem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bensguardaitemdev.php")==true){
@@ -122,12 +123,12 @@ $clbensguardaitemdev->rotulo->label("t23_guardaitem");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_debcontaparam_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldebcontaparam = new cl_debcontaparam;
 $cldebcontaparam->rotulo->label("d62_instituicao");
 $cldebcontaparam->rotulo->label("d62_banco");
@@ -55,7 +56,7 @@ $cldebcontaparam->rotulo->label("d62_convenio");
               <?=$Ld62_banco?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("d62_banco",3,$Id62_banco,true,"text",4,"","chave_d62_banco");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $cldebcontaparam->rotulo->label("d62_convenio");
               <?=$Ld62_convenio?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("d62_convenio",20,$Id62_convenio,true,"text",4,"","chave_d62_convenio");
 		       ?>
             </td>
@@ -83,7 +84,7 @@ $cldebcontaparam->rotulo->label("d62_convenio");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_debcontaparam.php")==true){
@@ -122,12 +123,12 @@ $cldebcontaparam->rotulo->label("d62_convenio");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

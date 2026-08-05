@@ -150,12 +150,12 @@ class Empresa
     /**
      * @var Atividade[] $aAtividades
      */
-    protected $aAtividades = array();
+    protected $aAtividades = [];
 
     /**
      * @var QSA[]
      */
-    protected $aQsa = array();
+    protected $aQsa = [];
 
     /**
      * z01_ender
@@ -183,7 +183,7 @@ class Empresa
             /**
              * Não encontrou inscricao
              */
-            if (pg_numrows($rsDadosIss) == 0) {
+            if (pg_num_rows($rsDadosIss) == 0) {
                 return null;
             }
 
@@ -234,7 +234,7 @@ class Empresa
             $rsAtividades = db_query($sSqlAtividades);
 
             if (!$rsAtividades) {
-                throw new \DBException("Erro ao pesquisar atiividades da inscrição {$this->getInscricao()}");
+                throw new DBException("Erro ao pesquisar atiividades da inscrição {$this->getInscricao()}");
             }
 
             $this->aAtividades = db_utils::makeCollectionFromRecord($rsAtividades, function ($oDados) {
@@ -243,12 +243,12 @@ class Empresa
                 $oAtividade->setSequencial($oDados->q07_seq);
                 $oAtividade->setHoraInicio($oDados->q07_horaini);
                 $oAtividade->setHoraFim($oDados->q07_horafim);
-                $oAtividade->setDataInicio(new \DateTime($oDados->q07_datain));
+                $oAtividade->setDataInicio(new DateTime($oDados->q07_datain));
                 if (!empty($oDados->datafi)) {
-                    $oAtividade->setDataFim(new \DateTime($oDados->q07_datafi));
+                    $oAtividade->setDataFim(new DateTime($oDados->q07_datafi));
                 }
                 if (!empty($oDados->databx)) {
-                    $oAtividade->setDataBaixa(new \DateTime($oDados->q07_databx));
+                    $oAtividade->setDataBaixa(new DateTime($oDados->q07_databx));
                 }
                 $oAtividade->setCodigo($oDados->q07_ativ);
                 $oAtividade->setPermanente($oDados->q07_perman == 't');
@@ -414,7 +414,7 @@ class Empresa
     }
 
     /**
-     * @param \DateTime $oDataCadastramento
+     * @param DateTime $oDataCadastramento
      */
     public function setDataCadastramento($oDataCadastramento)
     {
@@ -422,7 +422,7 @@ class Empresa
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDataJunta()
     {
@@ -430,7 +430,7 @@ class Empresa
     }
 
     /**
-     * @param \DateTime $oDataJunta
+     * @param DateTime $oDataJunta
      */
     public function setDataJunta($oDataJunta)
     {
@@ -558,7 +558,7 @@ class Empresa
      */
     public function setValorCapital($iValorCapital)
     {
-        $iValorCapital = trim($iValorCapital);
+        $iValorCapital = trim((string) $iValorCapital);
         if (is_numeric($iValorCapital)) {
             $this->iValorCapital = "{$iValorCapital}";
         }
@@ -609,7 +609,7 @@ class Empresa
          */
         if (!$rsParalisacoes) {
 
-            $oErroMensagem = (object)array('sErroBanco' => pg_last_error());
+            $oErroMensagem = (object)['sErroBanco' => pg_last_error()];
             throw new Exception(_M(self::MENSAGENS . 'erro_buscar_paralisacoes', $oErroMensagem));
         }
 

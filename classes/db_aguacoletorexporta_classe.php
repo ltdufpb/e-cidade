@@ -61,7 +61,7 @@ class cl_aguacoletorexporta {
                  x49_db_layouttxt = int4 = Layout
                  ";
    //funcao construtor da classe
-   function cl_aguacoletorexporta() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacoletorexporta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

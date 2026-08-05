@@ -53,20 +53,7 @@ class ImportacaoSituacaoAlunoCenso2013 {
   const REGISTRO_90_NUMERO_COLUNAS = 13;
   const REGISTRO_91_NUMERO_COLUNAS = 16;
 
-  /**
-   * Caminho do arquivo
-   * @var string
-   */
-  private $sCaminhoArquivo = '';
-
   private $oLog = null;
-
-  /**
-   * Ano do arquivo.
-   * Foi alterado de constante para uma propriedade pois o arquivo de 2013 e 2014 permaneceram os mesmos.
-   * @var integer
-   */
-  private $iAnoArquivo = 2013;
 
   /**
    * Controla se todos os dados são válidos
@@ -77,7 +64,7 @@ class ImportacaoSituacaoAlunoCenso2013 {
    * Controla os alunos percorridos no arquivo, para evitar duplicação
    * @var array
    */
-  private $aAlunosPercorridos = array();
+  private $aAlunosPercorridos = [];
 
   /**
    * Armazena uma instância da data do censo
@@ -95,7 +82,7 @@ class ImportacaoSituacaoAlunoCenso2013 {
    * Turmas que apresentarem erro no registro
    * @var array
    */
-  private $aTurmasErro = array();
+  private $aTurmasErro = [];
 
   private $lErroEncontrado = false;
 
@@ -103,14 +90,19 @@ class ImportacaoSituacaoAlunoCenso2013 {
    * Construtor da classe
    * @param string    $sCaminhoArquivo
    * @param DBLogJSON $oDBLog
-   * @param integer   $iAno             ano do censo
+   * @param integer $iAnoArquivo ano do censo
    */
-  public function __construct( $sCaminhoArquivo, DBLogJSON $oDBLog, $iAno = 2013 ) {
+  public function __construct( /**
+   * Caminho do arquivo
+   */
+  private $sCaminhoArquivo, DBLogJSON $oDBLog, /**
+   * Ano do arquivo.
+   * Foi alterado de constante para uma propriedade pois o arquivo de 2013 e 2014 permaneceram os mesmos.
+   */
+  private $iAnoArquivo = 2013 ) {
 
-    $this->sCaminhoArquivo = $sCaminhoArquivo;
     $this->oLog            = $oDBLog;
     $this->oEscola         = EscolaRepository::getEscolaByCodigo(db_getsession( "DB_coddepto" ));
-    $this->iAnoArquivo     = $iAno;
     $this->calculaDataCenso();
   }
 
@@ -199,7 +191,7 @@ class ImportacaoSituacaoAlunoCenso2013 {
      * Array contendo os registros existentes para o arquivo de importação.
      * Valida se a linha contem um registro inexistente, parando a importação
      */
-    $aRegistros = array( 89, 90, 91 );
+    $aRegistros = [ 89, 90, 91 ];
     if ( !in_array( $oLinha->tipo_registro, $aRegistros ) ) {
 
       $oMensagem            = new stdClass();
@@ -247,7 +239,7 @@ class ImportacaoSituacaoAlunoCenso2013 {
 
         $oDate  = new DBDate($sDataNascimento);
         $oAluno = $this->validaAluno($sNomeAluno, $sNomeMae, $oDate);
-      } catch (Exception $e) {
+      } catch (Exception) {
 
         $this->lDadosValidos = false;
         $this->log( true, "Aluno {$sNomeAluno} com Nome da Mãe {$sNomeMae}, possui Data de Nascimento inválida." );
@@ -320,44 +312,44 @@ class ImportacaoSituacaoAlunoCenso2013 {
      * Campos padrão a serem validados independente da validação a ser feita (Obrigatório / Tamanho), quanto o tipo
      * de registro
      */
-    $aCamposPadrao = array(
+    $aCamposPadrao = [
                             "codigo_escola_inep",
                             "codigo_turma_inep",
                             "codigo_aluno_inep",
                             "codigo_matricula_inep"
-                          );
+                          ];
 
     /**
      * Array com os campos obrigatórios
      */
-    $aValidacaoObrigatorio = array(
-                                    89 => array(
+    $aValidacaoObrigatorio = [
+                                    89 => [
                                                 "codigo_escola_inep"
-                                               ),
-                                    90 => array(
+                                               ],
+                                    90 => [
                                   	             $aCamposPadrao
-                                               ),
-                                    91 => array( "codigo_aluno_inep" )
-                                  );
+                                               ],
+                                    91 => [ "codigo_aluno_inep" ]
+                                  ];
 
     /**
      * Array com os campos para validação do tamanho permitido
      */
-    $aValidacaoTamanho = array(
-                                89 => array(
+    $aValidacaoTamanho = [
+                                89 => [
                                             "codigo_escola_inep"
-                                           ),
-                                90 => array(
+                                           ],
+                                90 => [
                              	               $aCamposPadrao,
                                              "codigo_turma_escola",
                                              "codigo_aluno_escola"
-                                           ),
-                                91 => array(
+                                           ],
+                                91 => [
                                              $aCamposPadrao,
                                              "codigo_turma_escola",
                                              "codigo_aluno_escola"
-                                           )
-                              );
+                                           ]
+                              ];
 
     /**
      * Variáveis para armazenamento de informações para posteriores validações
@@ -651,7 +643,7 @@ class ImportacaoSituacaoAlunoCenso2013 {
     $oData1 = new DBDate("15/05/{$this->iAnoArquivo}");
     $oData2 = new DBDate("31/05/{$this->iAnoArquivo}");
 
-    foreach ( DBDate::getDatasNoIntervalo($oData1, $oData2, array(3)) as $oDtQuarta) {
+    foreach ( DBDate::getDatasNoIntervalo($oData1, $oData2, [3]) as $oDtQuarta) {
       $this->oDataCenso = $oDtQuarta;
     }
   }

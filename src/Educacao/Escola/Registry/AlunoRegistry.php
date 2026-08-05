@@ -12,7 +12,7 @@ class AlunoRegistry
     /**
      * @var Aluno[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param Aluno $aluno
@@ -29,7 +29,7 @@ class AlunoRegistry
      */
     public static function get($key)
     {
-        if (!array_key_exists($key, self::$storage)) {
+        if (!array_key_exists((string) $key, self::$storage)) {
             $aluno = AlunoRepository::find($key);
             if (is_null($aluno)) {
                 return null;

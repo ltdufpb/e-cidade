@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2012  DBselller Servicos de Informatica
@@ -69,7 +69,7 @@ class cl_procdiver {
                  dv09_cobranca = boolean = Débito de Cobrança
                  ";
    //funcao construtor da classe
-   function cl_procdiver() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procdiver");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

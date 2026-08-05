@@ -1,37 +1,37 @@
-<?
+<?php
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE db_pluginmodulos
 class cl_db_pluginmodulos { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db152_sequencial = 0; 
-   var $db152_db_plugin = 0; 
-   var $db152_db_modulo = 0; 
-   var $db152_uid = null; 
+   public $db152_sequencial = 0; 
+   public $db152_db_plugin = 0; 
+   public $db152_db_modulo = 0; 
+   public $db152_uid = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db152_sequencial = int4 = Código 
                  db152_db_plugin = int4 = Código do Plugin 
                  db152_db_modulo = int4 = Código do Módulo 
                  db152_uid = varchar(255) = Código Único 
                  ";
    //funcao construtor da classe 
-   function cl_db_pluginmodulos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_pluginmodulos"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -84,10 +84,10 @@ class cl_db_pluginmodulos {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db152_sequencial = pg_result($result,0,0); 
+       $this->db152_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_pluginmodulos_db152_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db152_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db152_sequencial)){
          $this->erro_sql = " Campo db152_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -121,7 +121,7 @@ class cl_db_pluginmodulos {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Plugin Módulos ($this->db152_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Plugin Módulos já Cadastrado";
@@ -150,13 +150,13 @@ class cl_db_pluginmodulos {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21686,'$this->db152_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3898,21686,'','".AddSlashes(pg_result($resaco,0,'db152_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3898,21687,'','".AddSlashes(pg_result($resaco,0,'db152_db_plugin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3898,21688,'','".AddSlashes(pg_result($resaco,0,'db152_db_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3898,21697,'','".AddSlashes(pg_result($resaco,0,'db152_uid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3898,21686,'','".AddSlashes(pg_fetch_result($resaco,0,'db152_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3898,21687,'','".AddSlashes(pg_fetch_result($resaco,0,'db152_db_plugin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3898,21688,'','".AddSlashes(pg_fetch_result($resaco,0,'db152_db_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3898,21697,'','".AddSlashes(pg_fetch_result($resaco,0,'db152_uid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -166,10 +166,10 @@ class cl_db_pluginmodulos {
       $this->atualizacampos();
      $sql = " update db_pluginmodulos set ";
      $virgula = "";
-     if(trim($this->db152_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db152_sequencial"])){ 
+     if(trim((string) $this->db152_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db152_sequencial"])){ 
        $sql  .= $virgula." db152_sequencial = $this->db152_sequencial ";
        $virgula = ",";
-       if(trim($this->db152_sequencial) == null ){ 
+       if(trim((string) $this->db152_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "db152_sequencial";
          $this->erro_banco = "";
@@ -179,10 +179,10 @@ class cl_db_pluginmodulos {
          return false;
        }
      }
-     if(trim($this->db152_db_plugin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db152_db_plugin"])){ 
+     if(trim((string) $this->db152_db_plugin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db152_db_plugin"])){ 
        $sql  .= $virgula." db152_db_plugin = $this->db152_db_plugin ";
        $virgula = ",";
-       if(trim($this->db152_db_plugin) == null ){ 
+       if(trim((string) $this->db152_db_plugin) == null ){ 
          $this->erro_sql = " Campo Código do Plugin não informado.";
          $this->erro_campo = "db152_db_plugin";
          $this->erro_banco = "";
@@ -192,10 +192,10 @@ class cl_db_pluginmodulos {
          return false;
        }
      }
-     if(trim($this->db152_db_modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db152_db_modulo"])){ 
+     if(trim((string) $this->db152_db_modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db152_db_modulo"])){ 
        $sql  .= $virgula." db152_db_modulo = $this->db152_db_modulo ";
        $virgula = ",";
-       if(trim($this->db152_db_modulo) == null ){ 
+       if(trim((string) $this->db152_db_modulo) == null ){ 
          $this->erro_sql = " Campo Código do Módulo não informado.";
          $this->erro_campo = "db152_db_modulo";
          $this->erro_banco = "";
@@ -205,7 +205,7 @@ class cl_db_pluginmodulos {
          return false;
        }
      }
-     if(trim($this->db152_uid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db152_uid"])){ 
+     if(trim((string) $this->db152_uid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db152_uid"])){ 
        $sql  .= $virgula." db152_uid = '$this->db152_uid' ";
        $virgula = ",";
      }
@@ -223,17 +223,17 @@ class cl_db_pluginmodulos {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21686,'$this->db152_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db152_sequencial"]) || $this->db152_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3898,21686,'".AddSlashes(pg_result($resaco,$conresaco,'db152_sequencial'))."','$this->db152_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3898,21686,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db152_sequencial'))."','$this->db152_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db152_db_plugin"]) || $this->db152_db_plugin != "")
-             $resac = db_query("insert into db_acount values($acount,3898,21687,'".AddSlashes(pg_result($resaco,$conresaco,'db152_db_plugin'))."','$this->db152_db_plugin',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3898,21687,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db152_db_plugin'))."','$this->db152_db_plugin',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db152_db_modulo"]) || $this->db152_db_modulo != "")
-             $resac = db_query("insert into db_acount values($acount,3898,21688,'".AddSlashes(pg_result($resaco,$conresaco,'db152_db_modulo'))."','$this->db152_db_modulo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3898,21688,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db152_db_modulo'))."','$this->db152_db_modulo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["db152_uid"]) || $this->db152_uid != "")
-             $resac = db_query("insert into db_acount values($acount,3898,21697,'".AddSlashes(pg_result($resaco,$conresaco,'db152_uid'))."','$this->db152_uid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3898,21697,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db152_uid'))."','$this->db152_uid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -287,13 +287,13 @@ class cl_db_pluginmodulos {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21686,'$db152_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3898,21686,'','".AddSlashes(pg_result($resaco,$iresaco,'db152_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3898,21687,'','".AddSlashes(pg_result($resaco,$iresaco,'db152_db_plugin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3898,21688,'','".AddSlashes(pg_result($resaco,$iresaco,'db152_db_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3898,21697,'','".AddSlashes(pg_result($resaco,$iresaco,'db152_uid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3898,21686,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db152_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3898,21687,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db152_db_plugin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3898,21688,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db152_db_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3898,21697,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db152_uid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

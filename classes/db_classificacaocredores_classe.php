@@ -1,31 +1,31 @@
-<?
+<?php
 //MODULO: empenho
 //CLASSE DA ENTIDADE classificacaocredores
 class cl_classificacaocredores { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $cc30_codigo = 0; 
-   var $cc30_descricao = null; 
-   var $cc30_contagemdias = 0; 
-   var $cc30_diasvencimento = 0; 
-   var $cc30_valorinicial = 0; 
-   var $cc30_valorfinal = 0; 
-   var $cc30_dispensa = 'f'; 
-   var $cc30_ordem = 0; 
+   public $cc30_codigo = 0; 
+   public $cc30_descricao = null; 
+   public $cc30_contagemdias = 0; 
+   public $cc30_diasvencimento = 0; 
+   public $cc30_valorinicial = 0; 
+   public $cc30_valorfinal = 0; 
+   public $cc30_dispensa = 'f'; 
+   public $cc30_ordem = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  cc30_codigo = int4 = Código 
                  cc30_descricao = varchar(100) = Descrição 
                  cc30_contagemdias = int4 = Vencimento em Dias 
@@ -36,10 +36,10 @@ class cl_classificacaocredores {
                  cc30_ordem = int4 = Ordem 
                  ";
    //funcao construtor da classe 
-   function cl_classificacaocredores() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("classificacaocredores"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,10 +105,10 @@ class cl_classificacaocredores {
          $this->erro_status = "0";
          return false; 
        }
-       $this->cc30_codigo = pg_result($result,0,0); 
+       $this->cc30_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from classificacaocredores_cc30_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $cc30_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $cc30_codigo)){
          $this->erro_sql = " Campo cc30_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -150,7 +150,7 @@ class cl_classificacaocredores {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Classificação de Credores ($this->cc30_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Classificação de Credores já Cadastrado";
@@ -179,17 +179,17 @@ class cl_classificacaocredores {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21597,'$this->cc30_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,3878,21597,'','".AddSlashes(pg_result($resaco,0,'cc30_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3878,21598,'','".AddSlashes(pg_result($resaco,0,'cc30_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3878,21895,'','".AddSlashes(pg_result($resaco,0,'cc30_contagemdias'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3878,21896,'','".AddSlashes(pg_result($resaco,0,'cc30_diasvencimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3878,21897,'','".AddSlashes(pg_result($resaco,0,'cc30_valorinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3878,21898,'','".AddSlashes(pg_result($resaco,0,'cc30_valorfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3878,21899,'','".AddSlashes(pg_result($resaco,0,'cc30_dispensa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3878,21900,'','".AddSlashes(pg_result($resaco,0,'cc30_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3878,21597,'','".AddSlashes(pg_fetch_result($resaco,0,'cc30_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3878,21598,'','".AddSlashes(pg_fetch_result($resaco,0,'cc30_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3878,21895,'','".AddSlashes(pg_fetch_result($resaco,0,'cc30_contagemdias'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3878,21896,'','".AddSlashes(pg_fetch_result($resaco,0,'cc30_diasvencimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3878,21897,'','".AddSlashes(pg_fetch_result($resaco,0,'cc30_valorinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3878,21898,'','".AddSlashes(pg_fetch_result($resaco,0,'cc30_valorfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3878,21899,'','".AddSlashes(pg_fetch_result($resaco,0,'cc30_dispensa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3878,21900,'','".AddSlashes(pg_fetch_result($resaco,0,'cc30_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -199,10 +199,10 @@ class cl_classificacaocredores {
       // $this->atualizacampos();
      $sql = " update classificacaocredores set ";
      $virgula = "";
-     if(trim($this->cc30_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc30_codigo"])){ 
+     if(trim((string) $this->cc30_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc30_codigo"])){ 
        $sql  .= $virgula." cc30_codigo = $this->cc30_codigo ";
        $virgula = ",";
-       if(trim($this->cc30_codigo) == null ){ 
+       if(trim((string) $this->cc30_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "cc30_codigo";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_classificacaocredores {
          return false;
        }
      }
-     if(trim($this->cc30_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc30_descricao"])){ 
+     if(trim((string) $this->cc30_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc30_descricao"])){ 
        $sql  .= $virgula." cc30_descricao = '$this->cc30_descricao' ";
        $virgula = ",";
-       if(trim($this->cc30_descricao) == null ){ 
+       if(trim((string) $this->cc30_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "cc30_descricao";
          $this->erro_banco = "";
@@ -225,38 +225,38 @@ class cl_classificacaocredores {
          return false;
        }
      }
-     if(trim($this->cc30_contagemdias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc30_contagemdias"])){ 
-        if(trim($this->cc30_contagemdias)=="" && isset($GLOBALS["HTTP_POST_VARS"]["cc30_contagemdias"])){ 
+     if(trim((string) $this->cc30_contagemdias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc30_contagemdias"])){ 
+        if(trim((string) $this->cc30_contagemdias)=="" && isset($GLOBALS["HTTP_POST_VARS"]["cc30_contagemdias"])){ 
            $this->cc30_contagemdias = "0" ; 
         } 
        $sql  .= $virgula." cc30_contagemdias = $this->cc30_contagemdias ";
        $virgula = ",";
      }
-     if(trim($this->cc30_diasvencimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc30_diasvencimento"])){ 
-        if(trim($this->cc30_diasvencimento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["cc30_diasvencimento"])){ 
+     if(trim((string) $this->cc30_diasvencimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc30_diasvencimento"])){ 
+        if(trim((string) $this->cc30_diasvencimento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["cc30_diasvencimento"])){ 
            $this->cc30_diasvencimento = "0" ; 
         } 
        $sql  .= $virgula." cc30_diasvencimento = $this->cc30_diasvencimento ";
        $virgula = ",";
      }
-     if(trim($this->cc30_valorinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc30_valorinicial"])){ 
-        if(trim($this->cc30_valorinicial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["cc30_valorinicial"])){ 
+     if(trim((string) $this->cc30_valorinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc30_valorinicial"])){ 
+        if(trim((string) $this->cc30_valorinicial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["cc30_valorinicial"])){ 
            $this->cc30_valorinicial = "0" ; 
         } 
        $sql  .= $virgula." cc30_valorinicial = $this->cc30_valorinicial ";
        $virgula = ",";
      }
-     if(trim($this->cc30_valorfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc30_valorfinal"])){ 
-        if(trim($this->cc30_valorfinal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["cc30_valorfinal"])){ 
+     if(trim((string) $this->cc30_valorfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc30_valorfinal"])){ 
+        if(trim((string) $this->cc30_valorfinal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["cc30_valorfinal"])){ 
            $this->cc30_valorfinal = "0" ; 
         } 
        $sql  .= $virgula." cc30_valorfinal = $this->cc30_valorfinal ";
        $virgula = ",";
      }
-     if(trim($this->cc30_dispensa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc30_dispensa"])){ 
+     if(trim((string) $this->cc30_dispensa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc30_dispensa"])){ 
        $sql  .= $virgula." cc30_dispensa = '$this->cc30_dispensa' ";
        $virgula = ",";
-       if(trim($this->cc30_dispensa) == null ){ 
+       if(trim((string) $this->cc30_dispensa) == null ){ 
          $this->erro_sql = " Campo Lista do Tipo Dispensa não informado.";
          $this->erro_campo = "cc30_dispensa";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_classificacaocredores {
          return false;
        }
      }
-     if(trim($this->cc30_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc30_ordem"])){ 
+     if(trim((string) $this->cc30_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc30_ordem"])){ 
        $sql  .= $virgula." cc30_ordem = $this->cc30_ordem ";
        $virgula = ",";
-       if(trim($this->cc30_ordem) == null ){ 
+       if(trim((string) $this->cc30_ordem) == null ){ 
          $this->erro_sql = " Campo Ordem não informado.";
          $this->erro_campo = "cc30_ordem";
          $this->erro_banco = "";
@@ -293,25 +293,25 @@ class cl_classificacaocredores {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21597,'$this->cc30_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cc30_codigo"]) || $this->cc30_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,3878,21597,'".AddSlashes(pg_result($resaco,$conresaco,'cc30_codigo'))."','$this->cc30_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3878,21597,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc30_codigo'))."','$this->cc30_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cc30_descricao"]) || $this->cc30_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3878,21598,'".AddSlashes(pg_result($resaco,$conresaco,'cc30_descricao'))."','$this->cc30_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3878,21598,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc30_descricao'))."','$this->cc30_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cc30_contagemdias"]) || $this->cc30_contagemdias != "")
-             $resac = db_query("insert into db_acount values($acount,3878,21895,'".AddSlashes(pg_result($resaco,$conresaco,'cc30_contagemdias'))."','$this->cc30_contagemdias',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3878,21895,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc30_contagemdias'))."','$this->cc30_contagemdias',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cc30_diasvencimento"]) || $this->cc30_diasvencimento != "")
-             $resac = db_query("insert into db_acount values($acount,3878,21896,'".AddSlashes(pg_result($resaco,$conresaco,'cc30_diasvencimento'))."','$this->cc30_diasvencimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3878,21896,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc30_diasvencimento'))."','$this->cc30_diasvencimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cc30_valorinicial"]) || $this->cc30_valorinicial != "")
-             $resac = db_query("insert into db_acount values($acount,3878,21897,'".AddSlashes(pg_result($resaco,$conresaco,'cc30_valorinicial'))."','$this->cc30_valorinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3878,21897,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc30_valorinicial'))."','$this->cc30_valorinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cc30_valorfinal"]) || $this->cc30_valorfinal != "")
-             $resac = db_query("insert into db_acount values($acount,3878,21898,'".AddSlashes(pg_result($resaco,$conresaco,'cc30_valorfinal'))."','$this->cc30_valorfinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3878,21898,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc30_valorfinal'))."','$this->cc30_valorfinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cc30_dispensa"]) || $this->cc30_dispensa != "")
-             $resac = db_query("insert into db_acount values($acount,3878,21899,'".AddSlashes(pg_result($resaco,$conresaco,'cc30_dispensa'))."','$this->cc30_dispensa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3878,21899,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc30_dispensa'))."','$this->cc30_dispensa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cc30_ordem"]) || $this->cc30_ordem != "")
-             $resac = db_query("insert into db_acount values($acount,3878,21900,'".AddSlashes(pg_result($resaco,$conresaco,'cc30_ordem'))."','$this->cc30_ordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3878,21900,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc30_ordem'))."','$this->cc30_ordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -365,17 +365,17 @@ class cl_classificacaocredores {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21597,'$cc30_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,3878,21597,'','".AddSlashes(pg_result($resaco,$iresaco,'cc30_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3878,21598,'','".AddSlashes(pg_result($resaco,$iresaco,'cc30_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3878,21895,'','".AddSlashes(pg_result($resaco,$iresaco,'cc30_contagemdias'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3878,21896,'','".AddSlashes(pg_result($resaco,$iresaco,'cc30_diasvencimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3878,21897,'','".AddSlashes(pg_result($resaco,$iresaco,'cc30_valorinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3878,21898,'','".AddSlashes(pg_result($resaco,$iresaco,'cc30_valorfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3878,21899,'','".AddSlashes(pg_result($resaco,$iresaco,'cc30_dispensa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3878,21900,'','".AddSlashes(pg_result($resaco,$iresaco,'cc30_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3878,21597,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc30_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3878,21598,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc30_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3878,21895,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc30_contagemdias'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3878,21896,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc30_diasvencimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3878,21897,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc30_valorinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3878,21898,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc30_valorfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3878,21899,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc30_dispensa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3878,21900,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc30_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

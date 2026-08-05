@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -63,19 +63,19 @@ if(isset($db_opcaoal)){
       <?=@$Lat81_seq?>
     </td>
     <td> 
-      <?
+      <?php 
       db_input('at81_seq',6,$Iat81_seq,true,'text',3,"")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat81_codatendcli?>">
-      <?
+      <?php 
       db_ancora(@$Lat81_codatendcli,"js_pesquisaat81_codatendcli(true);",3);
       ?>
     </td>
     <td> 
-      <?
+      <?php 
       db_input('at81_codatendcli',6,$Iat81_codatendcli,true,'text',3," onchange='js_pesquisaat81_codatendcli(false);'")
       ?>
     </td>
@@ -85,22 +85,22 @@ if(isset($db_opcaoal)){
       <?=@$Lat81_descr?>
     </td>
     <td> 
-      <?
+      <?php 
       db_textarea('at81_descr',4,49,$Iat81_descr,true,'text',$db_opcao,"")
       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tat81_codtipo?>">
-      <?
+      <?php 
       db_ancora(@$Lat81_codtipo,"js_pesquisaat81_codtipo(true);",$db_opcao);
       ?>
     </td>
     <td> 
-      <?
+      <?php 
       db_input('at81_codtipo',6,$Iat81_codtipo,true,'text',$db_opcao," onchange='js_pesquisaat81_codtipo(false);'")
       ?>
-      <?
+      <?php 
       db_input('at04_descr',40,$Iat04_descr,true,'text',3,'')
       ?>
     </td>
@@ -110,7 +110,7 @@ if(isset($db_opcaoal)){
        <?=@$Lat81_prioridade?>
     </td>
     <td>
-<?
+<?php 
   $x = array("1"=>"Baixa",
              "2"=>"Média",
              "3"=>"Alta"
@@ -124,7 +124,7 @@ if(isset($db_opcaoal)){
       <?=@$Lat81_data?>
     </td>
     <td> 
-      <?
+      <?php 
       if(!isset($at81_data_dia) || (isset($at81_data_dia) && trim($at81_data_dia) == "")){
         $at81_data_dia = date("d",db_getsession("DB_datausu"));
         $at81_data_mes = date("m",db_getsession("DB_datausu"));
@@ -132,7 +132,7 @@ if(isset($db_opcaoal)){
       }
       db_inputdata('at81_data',@$at81_data_dia,@$at81_data_mes,@$at81_data_ano,true,'text',3,"")
       ?>
-      <?
+      <?php 
       if(!isset($at81_hora) || (isset($at81_hora) && trim($at81_hora) == "")){
         $at81_hora = db_hora();
       }
@@ -143,20 +143,20 @@ if(isset($db_opcaoal)){
   </tr>
     <td colspan="2" align="center">
       <input name="<?=($db_opcao==1?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"excluir"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?>  >
-      <?if($db_opcao != 1 && !isset($db_opcaoal)){?>
+      <?php if($db_opcao != 1 && !isset($db_opcaoal)){?>
       <input name="novo" type="button" id="cancelar" value="Novo" onclick="js_cancelar();">
-        <?if($db_opcao == 2){?>
+        <?php if($db_opcao == 2){?>
         <input name="menus" type="button" id="envol" value="Lançar envolvidos" onclick="js_janelaenvolvidos();">
         <input name="menus" type="button" id="menus" value="Lançar menus" onclick="js_janelamenus();">
-        <?}?>
-      <?}?>
+        <?php }?>
+      <?php }?>
     </td>
   </tr>
 </table>
 <table>
   <tr>
     <td valign="top"  align="center">  
-      <?
+      <?php 
       $dbwhere = "at81_codatendcli = ".$at81_codatendcli;
       if(isset($at81_seq) && trim($at81_seq) != ""){
         $dbwhere.= " and at81_seq <> ".$at81_seq;
@@ -195,7 +195,7 @@ function js_janelamenus(){
 }
 function js_setatab(){
   campo = "at81_descr";
-  <?
+  <?php 
   if($db_opcao == 3 || $db_opcao == 33){
     echo "campo = 'excluir';";
   }

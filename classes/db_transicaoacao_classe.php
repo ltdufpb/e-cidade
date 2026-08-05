@@ -27,9 +27,9 @@
 
 require_once modification('libs/db_utils.php');
 
-class cl_transicaoacao extends \DAOBasica
+class cl_transicaoacao extends DAOBasica
 {
-    public function __construct() {
-        parent::__construct("configuracoes.transicaoacao");
+    public function __construct()
+    {
     }
 }

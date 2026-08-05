@@ -37,7 +37,7 @@ class PaisRegistry
     /**
      * @var Pais[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     public static function set(Pais $pais)
     {
@@ -46,7 +46,7 @@ class PaisRegistry
 
     public static function get($key)
     {
-        if (!array_key_exists($key, self::$storage)) {
+        if (!array_key_exists((string) $key, self::$storage)) {
             $pais = PaisRepository::find($key);
             if (is_null($pais)) {
                 return null;

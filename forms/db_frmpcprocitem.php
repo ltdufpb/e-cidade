@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -45,7 +45,7 @@ if(isset($pc10_numero) && trim($pc10_numero)!=""){
       <strong>Solicitação: </strong>
     </td>
     <td align="left" nowrap>
-    <?
+    <?php 
       $arr_numero = array();
       $arr_index  = array();
       $sql_solicita = $clsolicita->sql_record($clsolicita->sql_query_solicita(null,"distinct pc10_numero,pc10_data,pc10_resumo,descrdepto","pc10_numero"));
@@ -83,7 +83,7 @@ if(isset($pc10_numero) && trim($pc10_numero)!=""){
       <strong>&nbsp;&nbsp;&nbsp;Data: </strong>      
     </td>
     <td align="left" nowrap>
-    <?
+    <?php 
       db_inputdata('pc10_data',@$pc10_data_dia,@$pc10_data_mes,@$pc10_data_ano,true,'text',3);
     ?>
     </td>
@@ -91,7 +91,7 @@ if(isset($pc10_numero) && trim($pc10_numero)!=""){
       <strong>&nbsp;&nbsp;&nbsp;Departamento: </strong>      
     </td>
     <td align="left" nowrap>
-    <?
+    <?php 
       db_input('descrdepto',40,$Idescrdepto,true,'text',3);
     ?>
     </td>
@@ -101,7 +101,7 @@ if(isset($pc10_numero) && trim($pc10_numero)!=""){
       <strong>&nbsp;&nbsp;&nbsp;Resumo: </strong>      
     </td>
     <td colspan="5" nowrap>
-    <?
+    <?php 
       db_textarea('pc10_resumo',2,80,$Ipc10_resumo,true,'text',3,"")
     ?>
     </td>

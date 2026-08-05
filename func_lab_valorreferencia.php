@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $cllab_valorreferencia = new cl_lab_valorreferencia;
 $cllab_valorreferencia->rotulo->label("la27_i_codigo");
@@ -57,7 +58,7 @@ $rotulo->label('la25_c_descr');
                 <?= $Lla27_i_codigo ?>
             </td>
             <td width="96%" align="left" nowrap>
-                <?
+                <?php 
                 db_input("la27_i_codigo", 10, $Ila27_i_codigo, true, "text", 4, "", "chave_la27_i_codigo");
                 ?>
             </td>
@@ -67,7 +68,7 @@ $rotulo->label('la25_c_descr');
                 <?= $Lla25_c_descr ?>
             </td>
             <td width="96%" align="left" nowrap>
-                <?
+                <?php 
                 db_input("la25_c_descr", 50, $Ila25_c_descr, true, "text", 4, "", "chave_la25_c_descr");
                 ?>
             </td>

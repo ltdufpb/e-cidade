@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,13 +34,13 @@
 <table border="0">
   <tr>
         <td nowrap title="<?=@$Tk13_conta?>"> <?=@$Lk13_conta?> </td>
-        <td><? db_input('k13_conta',8,$Ik13_conta,true,'text',3);    ?>
+        <td><?php  db_input('k13_conta',8,$Ik13_conta,true,'text',3);    ?>
     </td>
   </tr>
 
   <tr>
         <td nowrap title="<?=@$Tk13_descr?>">
-	  <? 
+	  <?php  
 	      if (isset($c01_reduz) && ($c01_reduz =="")){
  	           db_ancora(@$Lk13_descr,"js_contas();",1 );
 	      } else {
@@ -49,7 +49,7 @@
 	       
 	        ?></td>
         <td>
-	 <?  
+	 <?php   
    	    if (isset($c01_reduz) && ($c01_reduz =="")){
 	        db_input('c01_reduz',8,"",true,'text',1);	 
                 echo "Conta não liberada no exercício ! ";
@@ -65,22 +65,22 @@
   
   <tr>
         <td nowrap title="<?=@$Tk13_saldo?>"><?=@$Lk13_saldo?> </td>
-        <td><? db_input('k13_saldo',15,$Ik13_saldo,true,'text',3,"") ?>
+        <td><?php  db_input('k13_saldo',15,$Ik13_saldo,true,'text',3,"") ?>
     </td>
   </tr>
   <tr>
         <td nowrap title="<?=@$Tk13_ident?>"><?=@$Lk13_ident?> </td>
-        <td><? db_input('k13_ident',15,$Ik13_ident,true,'text',3,"")?>
+        <td><?php  db_input('k13_ident',15,$Ik13_ident,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
         <td nowrap title="<?=@$Tk13_vlratu?>"><?=@$Lk13_vlratu?></td>
-        <td><? db_input('k13_vlratu',15,$Ik13_vlratu,true,'text',3,"") ?>
+        <td><?php  db_input('k13_vlratu',15,$Ik13_vlratu,true,'text',3,"") ?>
     </td>
   </tr>
   <tr>
         <td nowrap title="<?=@$Tk13_datvlr?>"> <?=@$Lk13_datvlr?> </td>
-        <td><? 
+        <td><?php  
 	
   	       @list($k13_datvlr_dia,$k13_datvlr_mes,$k13_datvlr_ano)= split("/",$k13_datvlr);
 	      db_inputdata('k13_datvlr',@$k13_datvlr_dia,@$k13_datvlr_mes,@$k13_datvlr_ano,true,'text',3,""); 
@@ -100,7 +100,7 @@ function js_pesquisa(){
 }
 function js_preenche(chave){
    db_iframe_saltes.hide();
-   <?
+   <?php 
 //   if($db_opcao!=1){
      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 //   }

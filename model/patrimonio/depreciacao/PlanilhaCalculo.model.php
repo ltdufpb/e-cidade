@@ -45,7 +45,7 @@ class PlanilhaCalculo {
    * Coleção de cálculos realizados na planilha
    * @var array
    */
-  protected $aCalculos = array();
+  protected $aCalculos = [];
 
   /**
    * Mês do cálculo
@@ -454,7 +454,7 @@ class PlanilhaCalculo {
       }
     }
 
-    $aListaBens          = array();
+    $aListaBens          = [];
     $oDaoBensDepreciacao = db_utils::getDao("bensdepreciacao");
     $sSqlBens            = $oDaoBensDepreciacao->sql_query_bem(null, "distinct bens.*, bensdepreciacao.*", "1", $sWhere);
     $rsBens              = $oDaoBensDepreciacao->sql_record($sSqlBens);
@@ -552,7 +552,7 @@ class PlanilhaCalculo {
           }
 
           $dtAquisicaoBem        = db_utils::fieldsMemory($rsMes, 0)->data;
-          $aDataAquisicao        = explode("-",$dtAquisicaoBem);
+          $aDataAquisicao        = explode("-",(string) $dtAquisicaoBem);
           $iMesParaProcessamento = $aDataAquisicao[1];
 
           if($iAnoSessao < $aDataAquisicao[0]) {
@@ -773,7 +773,7 @@ class PlanilhaCalculo {
   protected function __clone() {
 
     $this->iPlanilha = null;
-    $this->aCalculos = array();
+    $this->aCalculos = [];
   }
 
   /**

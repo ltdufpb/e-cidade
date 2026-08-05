@@ -34,9 +34,9 @@ class MatrizSaldoContabil
     public static function getAtributos($exercicio = 2021)
     {
         if ($exercicio <= 2021) {
-            return array(1, 2, 3, 4, 5, 6, 7, 50, 51, 53);
+            return [1, 2, 3, 4, 5, 6, 7, 50, 51, 53];
         } else {
-            return array(1, 2, 3, 4, 5, 6, 7, 50, 51, 60);
+            return [1, 2, 3, 4, 5, 6, 7, 50, 51, 60];
         }
     }
 }

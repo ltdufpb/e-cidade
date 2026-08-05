@@ -2,6 +2,9 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use BusinessException;
+use DBException;
 use stdClass;
 
 /**
@@ -18,6 +21,7 @@ class ExclusaoEventosProcessosTrabalhistasFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[Override]
     public function formatar($dados)
     {
         $dadosExclusao = [];
@@ -31,8 +35,8 @@ class ExclusaoEventosProcessosTrabalhistasFormatter extends Formatter
         /**
      * @param  $dadosFormatado
      * @return mixed
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function processamento($exclusao)
     {

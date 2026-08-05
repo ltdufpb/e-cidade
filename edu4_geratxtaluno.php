@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -69,7 +69,7 @@ if ($iLinhas == 0) {
         </td>
       </tr>
     </table>
-  <?
+  <?php 
   exit;
 }
 
@@ -83,16 +83,16 @@ $sArquivo       = "tmp/arquivoaluno.txt";
 $oObjetoLayout  = new db_layouttxt(182, $sArquivo,"");
 
 for ($iContador = 0; $iContador < $iLinhas; $iContador++) {
-  
+
   /*Seta o objeto do layout com os nomes dos campos criados, 
    *recebendo com a formatação do str_pad os valores dos campos vindos do banco de dados.
    */
   $oDados = db_utils::fieldsmemory($rsBuscaInfo, $iContador);
-  
+
   $oLayout->idalunoinep         = $oDados->idalunoinep;//str_pad($oDados->idalunoinep,"10"," ", STR_PAD_RIGHT);
-  $oLayout->nomealuno           = str_pad($oDados->nomealuno, "15", " ", STR_PAD_LEFT);
-  $oLayout->nomepaialuno        = str_pad($oDados->nomepaialuno, "15", " ", STR_PAD_LEFT);
-  $oLayout->nomemaealuno        = str_pad($oDados->nomemaealuno, "14", " ", STR_PAD_LEFT);
+  $oLayout->nomealuno           = str_pad((string) $oDados->nomealuno, "15", " ", STR_PAD_LEFT);
+  $oLayout->nomepaialuno        = str_pad((string) $oDados->nomepaialuno, "15", " ", STR_PAD_LEFT);
+  $oLayout->nomemaealuno        = str_pad((string) $oDados->nomemaealuno, "14", " ", STR_PAD_LEFT);
   $oLayout->codigoalunoinep     = str_pad (" ", 15, " ", STR_PAD_LEFT);
   $oLayout->municipionascimento = $oDados->municipionascimento;//str_pad($oDados->municipionascimento, "15", " ", STR_PAD_LEFT);
   $oLayout->ufnascimento        = $oDados->ufnascimento;//str_pad($oDados->ufnascimento, "15", " ", STR_PAD_LEFT);

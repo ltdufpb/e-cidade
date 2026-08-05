@@ -32,7 +32,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_proced_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oRotulos    = new rotulocampo;
 $oRotulos->label("v03_codigo");
@@ -106,7 +107,7 @@ $sSqlBaseProcedencias .= "   arretipo on arretipo.k00_tipo = procedarretipo.v06_
               <?=$Lv03_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("codigo",4,$Iv03_codigo,true,"text",4,"","chave_codigo");
 		       ?>
             </td>
@@ -116,7 +117,7 @@ $sSqlBaseProcedencias .= "   arretipo on arretipo.k00_tipo = procedarretipo.v06_
               <?=$Lv03_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("descricao_abreviada",20,$Iv03_descr,true,"text",4,"","chave_descricao_abreviada");
 		       ?>
             </td>
@@ -126,7 +127,7 @@ $sSqlBaseProcedencias .= "   arretipo on arretipo.k00_tipo = procedarretipo.v06_
               <?=$Lv03_dcomp?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
            db_input("descricao",20,$Iv03_dcomp,true,"text",4,"","chave_descricao");
            ?>
             </td>
@@ -136,7 +137,7 @@ $sSqlBaseProcedencias .= "   arretipo on arretipo.k00_tipo = procedarretipo.v06_
               <strong>Procedência:</strong>
             </td>
             <td width="96%" align="left" nowrap>
-              <? db_select("tipo_procedencia", $aTiposProcedencia, true, 4, ""); ?>
+              <?php  db_select("tipo_procedencia", $aTiposProcedencia, true, 4, ""); ?>
             </td>
           </tr>
           <tr>

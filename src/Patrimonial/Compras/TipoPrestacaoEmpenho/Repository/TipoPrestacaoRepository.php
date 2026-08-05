@@ -27,6 +27,8 @@
 
 namespace ECidade\Patrimonial\Compras\TipoPrestacaoEmpenho\Repository;
 
+use Exception;
+use cl_empautpresta;
 use ECidade\Patrimonial\Compras\TipoPrestacaoEmpenho\Model\TipoPrestacao;
 use ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Model\Autorizacao;
 
@@ -39,35 +41,30 @@ class TipoPrestacaoRepository
     /**
      * @var array
      */
-    private $scopes = array();
-
-    /**
-     * @var Object
-     */
-    private $dao;
+    private $scopes = [];
 
     /**
      * TipoPrestacaoRepository constructor.
      * @param $dao \cl_empprestatip
+     * @param object $dao
      */
-    public function __construct($dao)
+    public function __construct(private $dao)
     {
-        $this->dao = $dao;
     }
 
     /**
      * @param $id
      * @param array $columns
      * @return bool|TipoPrestacao
-     * @throws \Exception
+     * @throws Exception
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $columns = ['*'])
     {
         $sql = $this->dao->sql_query_file($id, implode(', ', $columns));
         $rs = db_query($sql);
 
         if (!$rs) {
-            throw new \Exception("");
+            throw new Exception("");
         }
 
         if (pg_num_rows($rs) === 0) {
@@ -80,10 +77,10 @@ class TipoPrestacaoRepository
     }
 
     /**
-     * @param \cl_empautpresta $daoTipoPrestacaoAutorizacao
+     * @param cl_empautpresta $daoTipoPrestacaoAutorizacao
      * @param Autorizacao $autorizacao
      * @return TipoPrestacao
-     * @throws \Exception
+     * @throws Exception
      */
     public function getTipoPrestacaoPorAutorizacao($daoTipoPrestacaoAutorizacao, Autorizacao $autorizacao)
     {

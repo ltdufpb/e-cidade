@@ -27,6 +27,7 @@
 
 namespace ECidade\Patrimonial\Compras\HistoricoEmpenho\Repository;
 
+use cl_empauthist;
 use ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Model\Autorizacao;
 use ECidade\Patrimonial\Compras\HistoricoEmpenho\Model\Historico;
 use mysql_xdevapi\Exception;
@@ -40,12 +41,7 @@ class HistoricoRepository
     /**
      * @var array
      */
-    private $scopes = array();
-
-    /**
-     * @var Object
-     */
-    private $dao;
+    private $scopes = [];
 
     /**
      * @param  $numpre
@@ -61,10 +57,10 @@ class HistoricoRepository
     /**
      * AutorizacaoRepository constructor.
      * @param $dao \cl_emphist
+     * @param object $dao
      */
-    public function __construct($dao)
+    public function __construct(private $dao)
     {
-        $this->dao = $dao;
     }
 
     /**
@@ -73,7 +69,7 @@ class HistoricoRepository
      * @return bool|Historico
      * @throws \Exception
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $columns = ['*'])
     {
         $sql = $this->dao->sql_query_file($id, implode(', ', $columns));
         $rs = db_query($sql);
@@ -92,7 +88,7 @@ class HistoricoRepository
     }
 
     /**
-     * @param \cl_empauthist $daoHistoricoAutorizacao
+     * @param cl_empauthist $daoHistoricoAutorizacao
      * @param Autorizacao $autorizacao
      * @return Historico
      * @throws \Exception

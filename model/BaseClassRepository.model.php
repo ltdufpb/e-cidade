@@ -38,7 +38,7 @@ class BaseClassRepository
      * @var Class[]
      * @access protected
      */
-    protected $aColecao = array();
+    protected $aColecao = [];
 
     /**
      * Representa a instancia a classe,
@@ -51,7 +51,7 @@ class BaseClassRepository
      */
     protected static $oInstance;
 
-    protected static $instances = array();
+    protected static $instances = [];
 
     /**
      * Previne a criação do objeto externamente
@@ -80,7 +80,7 @@ class BaseClassRepository
      */
     public static function getInstance()
     {
-        $cls = get_called_class();
+        $cls = static::class;
 
         if (!isset(static::$instances[$cls])) {
             static::$instances[$cls] = new static;

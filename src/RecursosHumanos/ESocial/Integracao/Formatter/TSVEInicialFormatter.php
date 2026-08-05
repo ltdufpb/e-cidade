@@ -2,8 +2,11 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use AdmissaoDado;
+use BusinessException;
+use DBException;
 use AssentamentoRepository;
-use CgmFisico;
 use ECidade\RecursosHumanos\ESocial\Entity\Servidor;
 use ECidade\RecursosHumanos\ESocial\Service\ServidorService;
 use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
@@ -12,8 +15,6 @@ use CgmJuridico;
 use DBDate;
 use ServidorRepository;
 use DBPessoal;
-use TipoAssentamento;
-use TipoAssentamentoRepository;
 use Exception;
 use LotacaoRepository;
 
@@ -42,6 +43,7 @@ class TSVEInicialFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[Override]
     public function formatar($dados)
     {
         $dadosServidor = [];
@@ -61,8 +63,8 @@ class TSVEInicialFormatter extends Formatter
     /**
      * @param  $dadosFormatado
      * @return mixed
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function processamento($servidor)
     {
@@ -76,9 +78,9 @@ class TSVEInicialFormatter extends Formatter
 
     /**
      * @param  $dadoServidor
-     * @throws \BusinessException
-     * @throws \DBException
-     * @throws \Exception
+     * @throws BusinessException
+     * @throws DBException
+     * @throws Exception
      */
     private function atualizarDadosServidor(&$dadoServidor)
     {
@@ -285,14 +287,14 @@ class TSVEInicialFormatter extends Formatter
     private function regraContato(&$dadoServidor)
     {
         $dadoContato =  $dadoServidor->trabalhador['contato'];
-        $dadoContato['fonePrinc'] = preg_replace('/[\D]/', '', $dadoContato['fonePrinc']);
-        if (strlen(trim($dadoContato['fonePrinc']))<10 || strlen(trim($dadoContato['fonePrinc']))>12) {
+        $dadoContato['fonePrinc'] = preg_replace('/[\D]/', '', (string) $dadoContato['fonePrinc']);
+        if (strlen(trim((string) $dadoContato['fonePrinc']))<10 || strlen(trim((string) $dadoContato['fonePrinc']))>12) {
             unset($dadoContato['fonePrinc']);
         }
         if (isset($dadoContato) && empty($dadoContato['fonePrinc'])) {
             unset($dadoContato['fonePrinc']);
         } else {
-            $dadoContato['fonePrinc'] = trim($dadoContato['fonePrinc']);
+            $dadoContato['fonePrinc'] = trim((string) $dadoContato['fonePrinc']);
         }
 
         if (isset($dadoContato) && empty($dadoContato['emailPrinc'])) {
@@ -413,7 +415,7 @@ class TSVEInicialFormatter extends Formatter
         $dadoServidor->infoTSVInicio['infoComplementares']['infoMandElet']['matricOrig'] =
             $this->servidorAtual->getMatricula();
 
-        $admissaoDados = new \AdmissaoDado($this->servidorAtual->getMatricula());
+        $admissaoDados = new AdmissaoDado($this->servidorAtual->getMatricula());
         if (!empty($admissaoDados->getDataNomeacao())) {
             $dadoServidor->infoTSVInicio['infoComplementares']['infoMandElet']['dtExercOrig'] =
                 $admissaoDados->getDataNomeacao();
@@ -613,8 +615,8 @@ class TSVEInicialFormatter extends Formatter
         }
         if (!empty($dadoServidor->infoTSVInicio['infoComplementares']['FGTS']['dtOpcFGTS'])) {
             $dataObrigatoriedade = DBPessoal::getDataFaseEsocial(2)->getDate();
-            if (strtotime($dadoServidor->infoTSVInicio['infoComplementares']['FGTS']['dtOpcFGTS']) <
-                strtotime($dataObrigatoriedade)) {
+            if (strtotime((string) $dadoServidor->infoTSVInicio['infoComplementares']['FGTS']['dtOpcFGTS']) <
+                strtotime((string) $dataObrigatoriedade)) {
                 unset($dadoServidor->infoTSVInicio['infoComplementares']['FGTS']);
             }
         }
@@ -786,7 +788,7 @@ class TSVEInicialFormatter extends Formatter
 
     private function atualizaDadosTrabalhador($evento)
     {
-        $servidor = \ServidorRepository::getInstanciaByCodigo($evento->referencia);
+        $servidor = ServidorRepository::getInstanciaByCodigo($evento->referencia);
         $evento->trabalhador['nmTrab'] = $servidor->getCgm()->getNomeCompleto();
     }
 }

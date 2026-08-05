@@ -27,7 +27,13 @@
 
 namespace ECidade\Financeiro\Contabilidade\PlanoDeContas\PCASP\Importacao;
 
-use ECidade\Financeiro\Contabilidade\PlanoDeContas\PCASP\Importacao\Importacao;
+use cl_modeloplanoconta;
+use DBException;
+use db_utils;
+use ParameterException;
+use cl_importacaoplanoconta;
+use cl_planocontadetalhe;
+use BusinessException;
 use ECidade\Financeiro\Contabilidade\PlanoDeContas\PCASP\Importacao\Conta;
 
 /**
@@ -58,29 +64,29 @@ class Modelo {
 	private $aContas;
 
 	/**
-	 * Modelo constructor.
-	 *
-	 * @param int $iCodigo
-	 *
-	 * @throws \DBException
-	 */
-	public function __construct($iCodigo = null) {
+     * Modelo constructor.
+     *
+     * @param int $iCodigo
+     *
+     * @throws DBException
+     */
+    public function __construct($iCodigo = null) {
 
 		if (!empty($iCodigo)) {
 
-			$oDao = new \cl_modeloplanoconta();
+			$oDao = new cl_modeloplanoconta();
 			$sSql = $oDao->sql_query_file($iCodigo);
 			$rsResult = db_query($sSql);
 
 			if (!$rsResult) {
-				throw new \DBException("Houve uma falha ao buscar o modelo do PCASP com código {$iCodigo}.");
+				throw new DBException("Houve uma falha ao buscar o modelo do PCASP com código {$iCodigo}.");
 			}
 
 			if (pg_num_rows($rsResult) != 1) {
-				throw new \DBException("Modelo do PCASP com código {$iCodigo} não encontrado.");
+				throw new DBException("Modelo do PCASP com código {$iCodigo} não encontrado.");
 			}
 
-			$oStd = \db_utils::fieldsMemory($rsResult, 0);
+			$oStd = db_utils::fieldsMemory($rsResult, 0);
 
 			$this->setId($oStd->c94_sequencial);
 			$this->setNome($oStd->c94_nome);
@@ -131,65 +137,65 @@ class Modelo {
 	}
 
 	/**
-	 * Verifica se o modelo já foi importado.
-	 *
-	 * @return bool
-	 * @throws \DBException
-	 * @throws \ParameterException
-	 */
-	public function isImportado() {
+     * Verifica se o modelo já foi importado.
+     *
+     * @return bool
+     * @throws DBException
+     * @throws ParameterException
+     */
+    public function isImportado() {
 
 		$iModelo = $this->getId();
 		if (empty($iModelo)) {
-			throw new \ParameterException("Código do modelo não informado.");
+			throw new ParameterException("Código do modelo não informado.");
 		}
 
-		$oDaoImportacao = new \cl_importacaoplanoconta();
+		$oDaoImportacao = new cl_importacaoplanoconta();
 		$sSql = $oDaoImportacao->sql_query_file(null, 1, null, "c96_modeloplanoconta = {$iModelo}");
 		$rsResult = db_query($sSql);
 
 		if (!$rsResult) {
-			throw new \DBException("Houve um erro ao verificar a importação do modelo.");
+			throw new DBException("Houve um erro ao verificar a importação do modelo.");
 		}
 
 		return pg_num_rows($rsResult) >= 1;
 	}
 
 	/**
-	 * Busca e retorna as contas para importação.
-	 *
-	 * @return Conta[]
-	 * @throws \BusinessException
-	 * @throws \DBException
-	 * @throws \ParameterException
-	 */
-	public function getContas() {
+     * Busca e retorna as contas para importação.
+     *
+     * @return Conta[]
+     * @throws BusinessException
+     * @throws DBException
+     * @throws ParameterException
+     */
+    public function getContas() {
 
 		if (empty($this->aContas)) {
 
 			$iModelo = $this->getId();
 			if (empty($iModelo)) {
-				throw new \ParameterException("Código do Modelo não foi informado.");
+				throw new ParameterException("Código do Modelo não foi informado.");
 			}
 
-			$this->aContas = array();
+			$this->aContas = [];
 
-			$oDao = new \cl_planocontadetalhe();
+			$oDao = new cl_planocontadetalhe();
 			$sSql = $oDao->sql_query_file(null, "*", null, "c95_modeloplanoconta = {$iModelo}.");
 			$rsResult = db_query($sSql);
 
 			if (!$rsResult) {
-				throw new \DBException("Houve um erro ao buscar as contas do modelo {$iModelo}.");
+				throw new DBException("Houve um erro ao buscar as contas do modelo {$iModelo}.");
 			}
 
 			$iContas = pg_num_rows($rsResult);
 			if ($iContas == 0) {
-				throw new \BusinessException("Não foram encontradas contas para o Modelo {$iModelo}.");
+				throw new BusinessException("Não foram encontradas contas para o Modelo {$iModelo}.");
 			}
 
 			for ($i = 0; $i < $iContas; $i++) {
 
-				$oStdConta = \db_utils::fieldsMemory($rsResult, $i);
+				$oStdConta = db_utils::fieldsMemory($rsResult, $i);
 
 				$oConta = new Conta();
 				$oConta->setExclusao($oStdConta->c95_excluir == 't');
@@ -211,25 +217,25 @@ class Modelo {
 
 	public static function getModelosByExercicio($iExercicio) {
 
-		$aModelos = array();
+		$aModelos = [];
 
 		if (!$iExercicio) {
-			throw new \DBException("Exercício não informado.");
+			throw new DBException("Exercício não informado.");
 		}
 	
-		$oDao = new \cl_modeloplanoconta();
+		$oDao = new cl_modeloplanoconta();
 
 		$sSqlModelo = $oDao->sql_query(null, "distinct c94_sequencial as id, c94_nome as nome", "c94_nome", "c94_exercicio = {$iExercicio}");
 		$rsModelo   = db_query($sSqlModelo);
 		
 		if (!$rsModelo) {
-			throw new \DBException("Houve uma falha ao buscar os modelos para o exercício {$iExercicio}.");
+			throw new DBException("Houve uma falha ao buscar os modelos para o exercício {$iExercicio}.");
 		}
 
 		$iModelos = pg_num_rows($rsModelo);
 		for ($i = 0; $i < $iModelos; $i++) {
 
-			$oStd = \db_utils::fieldsMemory($rsModelo, $i);
+			$oStd = db_utils::fieldsMemory($rsModelo, $i);
 
 			$oModelo = new Modelo();
 			$oModelo->setId($oStd->id);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itbimatric_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clitbimatric = new cl_itbimatric;
 $clitbimatric->rotulo->label("it06_guia");
 $clitbimatric->rotulo->label("it06_matric");
@@ -55,7 +56,7 @@ $clitbimatric->rotulo->label("it06_matric");
               <?=$Lit06_guia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("it06_guia",10,$Iit06_guia,true,"text",4,"","chave_it06_guia");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clitbimatric->rotulo->label("it06_matric");
               <?=$Lit06_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("it06_matric",8,$Iit06_matric,true,"text",4,"","chave_it06_matric");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clitbimatric->rotulo->label("it06_matric");
               <?=$Lit06_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("it06_matric",8,$Iit06_matric,true,"text",4,"","chave_it06_matric");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clitbimatric->rotulo->label("it06_matric");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_itbimatric.php")==true){
@@ -129,12 +130,12 @@ $clitbimatric->rotulo->label("it06_matric");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

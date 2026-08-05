@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhvisavalecgm_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhvisavalecgm = new cl_rhvisavalecgm;
 $clrhvisavalecgm->rotulo->label("rh48_codigo");
 $clrhvisavalecgm->rotulo->label("rh48_numcgm");
@@ -54,7 +55,7 @@ $clrhvisavalecgm->rotulo->label("rh48_numcgm");
               <?=$Lrh48_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh48_codigo",10,$Irh48_codigo,true,"text",4,"","chave_rh48_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clrhvisavalecgm->rotulo->label("rh48_numcgm");
               <?=$Lrh48_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh48_numcgm",10,$Irh48_numcgm,true,"text",4,"","chave_rh48_numcgm");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clrhvisavalecgm->rotulo->label("rh48_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhvisavalecgm.php")==true){
@@ -118,12 +119,12 @@ $clrhvisavalecgm->rotulo->label("rh48_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procjurjudicialadvog_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clprocjurjudicialadvog = new cl_procjurjudicialadvog;
 $clprocjurjudicialadvog->rotulo->label("v65_sequencial");
 $clprocjurjudicialadvog->rotulo->label("v65_advog");
@@ -54,7 +55,7 @@ $clprocjurjudicialadvog->rotulo->label("v65_advog");
               <?=$Lv65_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v65_sequencial",10,$Iv65_sequencial,true,"text",4,"","chave_v65_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clprocjurjudicialadvog->rotulo->label("v65_advog");
               <?=$Lv65_advog?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v65_advog",10,$Iv65_advog,true,"text",4,"","chave_v65_advog");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clprocjurjudicialadvog->rotulo->label("v65_advog");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_procjurjudicialadvog.php")==true){
@@ -122,12 +123,12 @@ $clprocjurjudicialadvog->rotulo->label("v65_advog");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

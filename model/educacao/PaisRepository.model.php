@@ -36,7 +36,7 @@
      * Collection de Pais
      * @var array
      */
-    private $aPais = array();
+    private $aPais = [];
     
     /**
      * Instancia da classe

@@ -2,7 +2,9 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
-use AssentamentoRepository;
+use Override;
+use BusinessException;
+use DBException;
 use ECidade\RecursosHumanos\ESocial\Entity\Servidor;
 use ECidade\RecursosHumanos\ESocial\Service\ServidorService;
 use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
@@ -24,6 +26,7 @@ class TSVEAlteracaoFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[Override]
     public function formatar($dados)
     {
         $dadosServidor = [];
@@ -60,8 +63,8 @@ class TSVEAlteracaoFormatter extends Formatter
     /**
      * @param  $dadosFormatado
      * @return mixed
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function processamento($servidor)
     {
@@ -83,9 +86,9 @@ class TSVEAlteracaoFormatter extends Formatter
 
     /**
      * @param  $dadoServidor
-     * @throws \BusinessException
-     * @throws \DBException
-     * @throws \Exception
+     * @throws BusinessException
+     * @throws DBException
+     * @throws Exception
      */
     private function atualizarDadosServidor(&$dadoServidor)
     {

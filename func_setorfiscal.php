@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_setorfiscal_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsetorfiscal = new cl_setorfiscal;
 $clsetorfiscal->rotulo->label("j90_codigo");
 $clsetorfiscal->rotulo->label("j90_descr");
@@ -54,7 +55,7 @@ $clsetorfiscal->rotulo->label("j90_descr");
               <?=$Lj90_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j90_codigo",10,$Ij90_codigo,true,"text",4,"","chave_j90_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clsetorfiscal->rotulo->label("j90_descr");
               <?=$Lj90_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j90_descr",40,$Ij90_descr,true,"text",4,"","chave_j90_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clsetorfiscal->rotulo->label("j90_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_setorfiscal.php")==true){
@@ -118,12 +119,12 @@ $clsetorfiscal->rotulo->label("j90_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

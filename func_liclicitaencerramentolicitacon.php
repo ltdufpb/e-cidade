@@ -6,7 +6,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_liclicitaencerramentolicitacon_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clliclicitaencerramentolicitacon = new cl_liclicitaencerramentolicitacon;
 $clliclicitaencerramentolicitacon->rotulo->label("l18_sequencial");
 $clliclicitaencerramentolicitacon->rotulo->label("l18_sequencial");
@@ -20,7 +21,7 @@ $clliclicitaencerramentolicitacon->rotulo->label("l18_sequencial");
 <body>
 <form name="form2" method="post" action="" class="container">
 </form>
-<?
+<?php 
 $whereliclicitaencerramentolicitacon = '';
 
 if(!empty($manutencaolicitacoesenviadas)) {
@@ -67,12 +68,12 @@ if(!isset($pesquisa_chave)){
 ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

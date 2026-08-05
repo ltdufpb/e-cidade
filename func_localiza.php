@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_localiza_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cllocaliza = new cl_localiza;
 $cllocaliza->rotulo->label("v54_codlocal");
 $cllocaliza->rotulo->label("v54_descr");
@@ -54,7 +55,7 @@ $cllocaliza->rotulo->label("v54_descr");
               <?=$Lv54_codlocal?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v54_codlocal",6,$Iv54_codlocal,true,"text",4,"","chave_v54_codlocal");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cllocaliza->rotulo->label("v54_descr");
               <?=$Lv54_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v54_descr",30,$Iv54_descr,true,"text",4,"","chave_v54_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cllocaliza->rotulo->label("v54_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "localiza.*";
@@ -114,14 +115,14 @@ $cllocaliza->rotulo->label("v54_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_v54_codlocal.focus();
 document.form2.chave_v54_codlocal.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

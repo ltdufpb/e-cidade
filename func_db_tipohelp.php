@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_tipohelp_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_tipohelp = new cl_db_tipohelp;
 $cldb_tipohelp->rotulo->label("id_codtipo");
 $cldb_tipohelp->rotulo->label("descrtipohelp");
@@ -54,7 +55,7 @@ $cldb_tipohelp->rotulo->label("descrtipohelp");
               <?=$Lid_codtipo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("id_codtipo",5,$Iid_codtipo,true,"text",4,"","chave_id_codtipo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_tipohelp->rotulo->label("descrtipohelp");
               <?=$Ldescrtipohelp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("descrtipohelp",40,$Idescrtipohelp,true,"text",4,"","chave_descrtipohelp");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_tipohelp->rotulo->label("descrtipohelp");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_tipohelp.php")==true){
@@ -118,12 +119,12 @@ $cldb_tipohelp->rotulo->label("descrtipohelp");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

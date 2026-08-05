@@ -88,10 +88,10 @@ require_once modification("dbforms/db_funcoes.php");
         <table>
           <tr>
             <td nowrap="nowrap" title="Licitação para processar" style="padding:5px;">
-              <b><? db_ancora('Licitação: ', "", 1, null, "linklicitacao"); ?></b>
+              <b><?php  db_ancora('Licitação: ', "", 1, null, "linklicitacao"); ?></b>
             </td>
             <td align="left" nowrap="nowrap">
-              <?
+              <?php 
               db_input("l20_codigo", 10, $Il20_codigo, true, "text", 3, "onchange='js_pesquisa_liclicita(false);'");
               ?>
             </td>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -74,7 +74,7 @@ db_app::load("prototype.js");
        <?=@$Le45_acerta?>
     </td>
     <td>
-<?
+<?php 
 if(  empty($e45_acerta_dia)  ){
 //$e45_acerta_ano =  date("Y",db_getsession("DB_datausu"));
 //$e45_acerta_mes =  date("m",db_getsession("DB_datausu"));

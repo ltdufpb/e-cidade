@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcimpactomovimp_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcimpactomovimp = new cl_orcimpactomovimp;
 $clorcimpactomovimp->rotulo->label("o68_codimpmov");
 $clorcimpactomovimp->rotulo->label("o68_codimp");
@@ -55,7 +56,7 @@ $clorcimpactomovimp->rotulo->label("o68_codimpmov");
               <?=$Lo68_codimpmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o68_codimpmov",5,$Io68_codimpmov,true,"text",4,"","chave_o68_codimpmov");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clorcimpactomovimp->rotulo->label("o68_codimpmov");
               <?=$Lo68_codimp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o68_codimp",5,$Io68_codimp,true,"text",4,"","chave_o68_codimp");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clorcimpactomovimp->rotulo->label("o68_codimpmov");
               <?=$Lo68_codimpmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o68_codimpmov",5,$Io68_codimpmov,true,"text",4,"","chave_o68_codimpmov");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clorcimpactomovimp->rotulo->label("o68_codimpmov");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcimpactomovimp.php")==true){
@@ -129,12 +130,12 @@ $clorcimpactomovimp->rotulo->label("o68_codimpmov");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_testada_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltestada = new cl_testada;
 $cltestada->rotulo->label("j36_idbql");
 $cltestada->rotulo->label("j36_face");
@@ -55,7 +56,7 @@ $cltestada->rotulo->label("j36_codigo");
               <?=$Lj36_idbql?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j36_idbql",4,$Ij36_idbql,true,"text",4,"","chave_j36_idbql");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $cltestada->rotulo->label("j36_codigo");
               <?=$Lj36_face?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j36_face",4,$Ij36_face,true,"text",4,"","chave_j36_face");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $cltestada->rotulo->label("j36_codigo");
               <?=$Lj36_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j36_codigo",4,$Ij36_codigo,true,"text",4,"","chave_j36_codigo");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $cltestada->rotulo->label("j36_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "testada.*";
@@ -121,14 +122,14 @@ $cltestada->rotulo->label("j36_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_j36_idbql.focus();
 document.form2.chave_j36_idbql.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

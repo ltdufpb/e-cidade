@@ -63,7 +63,7 @@ $claguasitleitura->rotulo->label();
            <strong>Regra:</strong>
         </td>
         <td>
-        <?
+        <?php 
         $aOpcoes = array(
           '0' => 'Normal',
           '1' => 'Sem Leitura - Sem Saldo',

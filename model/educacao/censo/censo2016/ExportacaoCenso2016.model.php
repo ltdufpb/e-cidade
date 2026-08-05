@@ -57,6 +57,7 @@ class ExportacaoCenso2016 extends ExportacaoCenso2015 implements IExportacaoCens
     $this->iCodigoLayout = 255;
   }
 
+  #[Override]
   public function escreverArquivo() {
 
     $sNomeArquivo = "censo_esc_{$this->iCodigoEscola}_{$this->iAnoCenso}.txt";
@@ -130,6 +131,7 @@ class ExportacaoCenso2016 extends ExportacaoCenso2015 implements IExportacaoCens
   /**
    * Método que busca os docentes da escola
    */
+  #[Override]
   protected function getDadosCensoDocente() {
 
     $oDaoDocentes     = new cl_rechumano();
@@ -170,12 +172,13 @@ class ExportacaoCenso2016 extends ExportacaoCenso2015 implements IExportacaoCens
   /**
    * Busca os alunos matrículados no ano de 2016 separando as informações dos registros 60, 70 e 80
    */
+  #[Override]
   protected function getDadosAluno() {
 
     $rsMatricula  = $this->buscaAlunos();
     $iTotalAlunos = pg_num_rows($rsMatricula);
 
-    $aAlunosComMatriculas = array();
+    $aAlunosComMatriculas = [];
     for ($i = 0; $i < $iTotalAlunos; $i++) {
 
       $oAluno      = db_utils::fieldsMemory($rsMatricula, $i);
@@ -203,10 +206,10 @@ class ExportacaoCenso2016 extends ExportacaoCenso2015 implements IExportacaoCens
    * Busca todos alunos matrículados em turmas AEE que não tenham matrículas na escola
    * @param array $aAlunosComMatriculas lista dos alunos com matrículas
    */
-  protected function getDadosAlunosTurmasAEE($aAlunosComMatriculas = array()) {
+  protected function getDadosAlunosTurmasAEE($aAlunosComMatriculas = []) {
 
     $sCampos  = " DISTINCT ed47_i_codigo, ed47_v_nome ";
-    $aWhere   = array();
+    $aWhere   = [];
     $aWhere[] = " ed268_i_tipoatend = 5 ";
     $aWhere[] = " ed269_d_data  <= '{$this->dtBaseCenso}'";
     $aWhere[] = " ed52_i_ano     = {$this->iAnoCenso} ";

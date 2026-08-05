@@ -43,17 +43,17 @@ $dados = $guiaTransferenciaService->buscaDadosImpressao();
 $dados = $guiaTransferenciaService->montaDadosImpressao($dados);
 
 
-$modelo = isset($modelo) ? $modelo : null;
+$modelo ??= null;
 
 $escola = db_getsession("DB_coddepto");
 
 $notificar = isset($notificar) && $notificar == "sim" ? true : false;
 
-$formato = isset($formato) ? $formato : "P";
+$formato ??= "P";
 
 $relatorio = new GuiaTransferencia($formato, $tipo, $modelo, $notificar, $escola);
 $relatorio->setDados($dados);
-$relatorio->setAssinatura(utf8_decode($diretor));
+$relatorio->setAssinatura(mb_convert_encoding($diretor, 'ISO-8859-1'));
 $emissao = $relatorio->emitir();
 
 if (!empty($emissao->status_notificacao)) {

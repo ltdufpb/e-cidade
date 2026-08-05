@@ -33,7 +33,7 @@ class UsuarioSistemaRepository {
   /**
    * @var array
    */
-  private $aItens = array();
+  private $aItens = [];
 
   /**
    * @var UsuarioSistemaRepository
@@ -46,7 +46,7 @@ class UsuarioSistemaRepository {
    */
   public static function getPorCodigo($iCodigo) {
 
-    if ( !array_key_exists($iCodigo, UsuarioSistemaRepository::getInstancia()->aItens)) {
+    if ( !array_key_exists((string) $iCodigo, UsuarioSistemaRepository::getInstancia()->aItens)) {
       UsuarioSistemaRepository::getInstancia()->aItens[$iCodigo] = new UsuarioSistema($iCodigo);
     }
     return UsuarioSistemaRepository::getInstancia()->aItens[$iCodigo];
@@ -70,7 +70,7 @@ class UsuarioSistemaRepository {
    * @param  Instituicao|null $oInstituicao    
    * @return Array Toddas as Lotações ainda disponíveis para o usuário.
    */
-  public static function getLotacoesPermitidas(UsuarioSistema $oUsuarioSistema, Instituicao $oInstituicao = null) {
+  public static function getLotacoesPermitidas(UsuarioSistema $oUsuarioSistema, ?Instituicao $oInstituicao = null) {
 
     if (is_null($oInstituicao)) {
       $oInstituicao = InstituicaoRepository::getInstituicaoSessao();

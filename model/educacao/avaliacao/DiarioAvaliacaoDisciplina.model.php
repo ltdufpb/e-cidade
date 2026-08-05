@@ -65,7 +65,7 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
    * Colecao de AvaliacaoAproveitamento
    * @var AvaliacaoAproveitamento[]
    */
-  private $aAvaliacaoAproveitamento = array();
+  private $aAvaliacaoAproveitamento = [];
 
   /**
    * Caso disciplina tenha uma avaliação alternativa
@@ -80,7 +80,7 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
    */
   private $aOrdemPeriodoProporcionalidade = null;
 
-  public function __construct(DiarioAvaliacaoDisciplinaVO $oDadosDiario = null) {
+  public function __construct(?DiarioAvaliacaoDisciplinaVO $oDadosDiario = null) {
 
     if (!empty($oDadosDiario)) {
 
@@ -214,8 +214,8 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
         $oAvaliavaoAproveitamento->setElementoAvaliacao($oElementoAvaliacao);
         $oAvaliavaoAproveitamento->setNumeroFaltas($oDadosDiario->numero_faltas);
         $oAvaliavaoAproveitamento->setParecerPadronizado($oDadosDiario->parecerpadronizado);
-        $oAvaliavaoAproveitamento->setAmparado(trim($oDadosDiario->amparo) == "S" ? true : false);
-        $oAvaliavaoAproveitamento->setConvertido(trim($oDadosDiario->convertido) == "S" ? true : false);
+        $oAvaliavaoAproveitamento->setAmparado(trim((string) $oDadosDiario->amparo) == "S" ? true : false);
+        $oAvaliavaoAproveitamento->setConvertido(trim((string) $oDadosDiario->convertido) == "S" ? true : false);
         $oAvaliavaoAproveitamento->setObservacao($oDadosDiario->observacao);
 
         if ( !empty($oDadosDiario->codigo_faltas_abonadas) ) {
@@ -284,14 +284,7 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
 
         if ($oPeriodo->isResultado()) {
 
-          $lPossuiResultado = false;
-          foreach ($this->aAvaliacaoAproveitamento as $oAvaliacao) {
-            if ($oPeriodo->getOrdemSequencia() == $oAvaliacao->getElementoAvaliacao()->getOrdemSequencia()) {
-
-              $lPossuiResultado = true;
-              break;
-            }
-          }
+          $lPossuiResultado = array_any($this->aAvaliacaoAproveitamento, fn($oAvaliacao) => $oPeriodo->getOrdemSequencia() == $oAvaliacao->getElementoAvaliacao()->getOrdemSequencia());
           if (!$lPossuiResultado) {
 
             $iTotalSemResultado ++;
@@ -491,7 +484,7 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
     if (trim($this->getRegencia()->getFrequenciaGlobal()) == 'F') {
 
       $lTemDireitoRecuperacao = false;
-      $oAvaliacaoAproveitamento->emRecuperacao(false);
+      $oAvaliacaoAproveitamento->emRecuperacao();
       unset($oRecuperacao);
     }
 
@@ -901,7 +894,7 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
    */
   public function getFaltasPorPeriodoDeAvaliacao(PeriodoAvaliacao $oPeriodoAvaliacao) {
 
-    $aFaltasNoPeriodo = array();
+    $aFaltasNoPeriodo = [];
     $oCalendario      = $this->oDiario->getTurma()->getCalendario();
 
     /**
@@ -1059,7 +1052,7 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
     }
 
     $nNotaParcial       = '';
-    $aElementosCalcular = array();
+    $aElementosCalcular = [];
     foreach ($this->getAvaliacoes() as $oAvaliacaoAproveitamento) {
 
       if ($oAvaliacaoAproveitamento->getElementoAvaliacao()->getFormaDeAvaliacao()->getTipo() != "NOTA") {
@@ -1152,12 +1145,12 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
    */
   public function getNotaProjetada ( IElementoAvaliacao $oElementoAvaliacao ) {
 
-    $aObtencoesCalculaveis  = array("SO", "ME", "MP");
+    $aObtencoesCalculaveis  = ["SO", "ME", "MP"];
     $oTurma                 = $this->oDiario->getTurma();
     $oProcedimentoAvaliacao = $oTurma->getProcedimentoDeAvaliacaoDaEtapa( $this->getRegencia()->getEtapa() );
 
     $aElementosAvaliacoesAnteriores = $oProcedimentoAvaliacao->getElementosAvaliacoesAnteriores( $oElementoAvaliacao );
-    $aElementosCalcular             = array();
+    $aElementosCalcular             = [];
 
 
     $oElementoResultadoFinal = $this->getElementoResultadoFinal();
@@ -1225,7 +1218,7 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
    */
   public function getPeriodosAvaliacao() {
 
-    $aPeriodosAvaliacao = array();
+    $aPeriodosAvaliacao = [];
 
     foreach ( $this->oRegencia->getProcedimentoAvaliacao()->getElementos() as $oPeriodoAvaliacao) {
       $aPeriodosAvaliacao[] = $oPeriodoAvaliacao;
@@ -1266,7 +1259,7 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
     $sSqlDiarioRegra    = $oDaoDiarioRegra->sql_query_file( null, "ed125_ordemperiodo", null, $sWhereDiarioRegra );
     $rsDiarioRegra      = db_query($sSqlDiarioRegra);
 
-    $this->aOrdemPeriodoProporcionalidade = array();
+    $this->aOrdemPeriodoProporcionalidade = [];
     if ( $rsDiarioRegra && pg_num_rows($rsDiarioRegra) > 0 ) {
 
       $iLinhas = pg_num_rows($rsDiarioRegra);
@@ -1291,7 +1284,7 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
    */
   public function getPeriodosAvaliacaoProporcionalidade() {
 
-    $this->aPeriodosCalcularProporcionalidade = array();
+    $this->aPeriodosCalcularProporcionalidade = [];
 
     foreach ( $this->getAvaliacoes() as $oAvaliacaoAproveitamento ) {
 

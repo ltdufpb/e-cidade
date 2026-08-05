@@ -52,7 +52,7 @@ class cl_materialtipogrupovinculo {
                  m04_materialestoquegrupo = int4 = Grupo 
                  ";
    //funcao construtor da classe 
-   function cl_materialtipogrupovinculo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("materialtipogrupovinculo"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -2,8 +2,16 @@
 
 namespace ECidade\Educacao\Escola\Censo\SituacaoAluno;
 
+use Escola;
+use ECidade\Educacao\Escola\Censo\SituacaoAluno\Layout\Layout2016;
+use BusinessException;
+use Exception;
+use DBLayoutLinha;
+use Aluno;
+use AlunoMatriculaCenso;
+use TurmaRepository;
+use DBLog;
 use ECidade\Educacao\Escola\Censo\Censo as CensoEscolar;
-use ECidade\Educacao\Escola\Censo\SituacaoAluno\Layout;
 
 /**
  * Classe responsável importação dos códigos INEPs dos alunos
@@ -18,47 +26,26 @@ class Importacao
    */
   private $oLayout = null;
 
-  /**
-   * @var Escola
-   */
-  private $oEscola = null;
-
-  /**
-   * @var CensoEscolar
-   */
-  private $oCenso = null;
-
-  private $aLinhas = array();
+  private $aLinhas = [];
 
   private $lPossuiInconsistencia = false;
 
-  public function __construct(CensoEscolar $oCenso, \Escola $oEscola)
+  public function __construct(private readonly CensoEscolar $oCenso, private readonly Escola $oEscola)
   {
-
-    $this->oCenso = $oCenso;
-    $this->oEscola = $oEscola;
   }
 
   /**
    * Lê os dados do arquivo retornando um array com o conteúdo
    * @param  string $sFilePath
-   * @return \DBLayoutLinha[]
+   * @return DBLayoutLinha[]
    */
   private function lerArquivo($sFilePath)
   {
 
-    switch ($this->oCenso->getAno()) {
-      case 2016:
-      case 2017:
-
-        $this->aLinhas = Layout\Layout2016::lerArquivo($sFilePath);
-        break;
-
-      default:
-
-        throw new \BusinessException("Não há layout cadastrado para o ano de {$this->oCenso->getAno()}.");
-        break;
-    }
+    $this->aLinhas = match ($this->oCenso->getAno()) {
+        2016, 2017 => Layout2016::lerArquivo($sFilePath),
+        default => throw new BusinessException("Não há layout cadastrado para o ano de {$this->oCenso->getAno()}."),
+    };
 
     $this->validarConteudoArquivo();
     unset($this->aLinhas[0]); // não precisa do registro 89
@@ -74,21 +61,21 @@ class Importacao
   {
 
     if (count($this->aLinhas) == 0) {
-      throw new \Exception("Não foram encontrados registros para importação.");
+      throw new Exception("Não foram encontrados registros para importação.");
     }
 
     foreach ($this->aLinhas as $iIndex => $oLinha) {
 
-      if (!($oLinha instanceof \DBLayoutLinha)) {
-        throw new \BusinessException('Arquivo inválido.');
+      if (!($oLinha instanceof DBLayoutLinha)) {
+        throw new BusinessException('Arquivo inválido.');
       }
 
       $iLinha = $iIndex + 1;
-      if (!in_array($oLinha->tipo_registro, array(89, 90, 91))) {
+      if (!in_array($oLinha->tipo_registro, [89, 90, 91])) {
 
         $sMsg = "Importação abortada. Registro inválido encontrado no arquivo.\n";
         $sMsg .= "  - Registro: {$oLinha->tipo_registro}\n  - Linha: {$iLinha}";
-        throw new \Exception($sMsg);
+        throw new Exception($sMsg);
       }
 
       if ($oLinha->codigo_escola_inep != $this->oEscola->getCodigoInep()) {
@@ -96,7 +83,7 @@ class Importacao
         $sMsg = "Importação abortada. Código INEP da escola diferente da escola atual.\n";
         $sMsg .= "  - Registro: {$oLinha->tipo_registro}\n  - Linha: {$iLinha}\n";
         $sMsg .= "  - INEP no arquivo: {$oLinha->codigo_escola_inep}\n  - INEP da escola: " . $this->oEscola->getCodigoInep();
-        throw new \Exception($sMsg);
+        throw new Exception($sMsg);
       }
     }
     return true;
@@ -120,7 +107,7 @@ class Importacao
 
   /**
    * Valida se os dados de importação estão corretos
-   * @param  \DBLayoutLinha $oLinha
+   * @param DBLayoutLinha $oLinha
    * @param  integer $iLinha
    * @return boolean
    */
@@ -129,19 +116,19 @@ class Importacao
 
     $lValido = true;
     $sComplemento = "não possui valor ou o valor informado está inválido.";
-    if (empty($oLinha->codigo_turma_inep) || strlen($oLinha->codigo_turma_inep) > 10) {
+    if (empty($oLinha->codigo_turma_inep) || strlen((string) $oLinha->codigo_turma_inep) > 10) {
 
       $sMsg = "Linha [{$iLinha}] campo \"Código da turma - INEP\" {$sComplemento}";
       LogErro::logSituacao($sMsg);
       $lValido = false;
     }
-    if (empty($oLinha->codigo_aluno_inep) || strlen($oLinha->codigo_aluno_inep) != 12) {
+    if (empty($oLinha->codigo_aluno_inep) || strlen((string) $oLinha->codigo_aluno_inep) != 12) {
       $sMsg = "Linha [{$iLinha}] campo \"Código de identificação única do aluno - INEP\" {$sComplemento}";
       LogErro::logSituacao($sMsg);
       $lValido = false;
     }
 
-    if (empty($oLinha->codigo_matricula_inep) || strlen($oLinha->codigo_matricula_inep) > 12) {
+    if (empty($oLinha->codigo_matricula_inep) || strlen((string) $oLinha->codigo_matricula_inep) > 12) {
       $sMsg = "Linha [{$iLinha}] campo \"Código da Matrícula\" {$sComplemento}";
       LogErro::logSituacao($sMsg);
       $lValido = false;
@@ -159,7 +146,7 @@ class Importacao
 
   /**
    * Atualiza os alunos
-   * @param  \DBLayoutLinha $oLinha
+   * @param DBLayoutLinha $oLinha
    * @param  integer $iLinha
    */
   private function atualizarAlunos($oLinha, $iLinha)
@@ -171,22 +158,22 @@ class Importacao
       return;
     }
 
-    $oAluno = new \Aluno($oLinha->codigo_aluno_escola);
+    $oAluno = new Aluno($oLinha->codigo_aluno_escola);
     $oAluno->setCodigoInep($oLinha->codigo_aluno_inep);
     $oAluno->salvar();
 
-    $oAlunoMatriculaCenso = new \AlunoMatriculaCenso($oAluno, $this->oCenso->getAno());
+    $oAlunoMatriculaCenso = new AlunoMatriculaCenso($oAluno, $this->oCenso->getAno());
     $oAlunoMatriculaCenso->setTurmaCenso($oLinha->codigo_turma_inep);
     $oAlunoMatriculaCenso->setMatriculaCenso($oLinha->codigo_matricula_inep);
     $oAlunoMatriculaCenso->salvar();
 
 
-    $oTurma = \TurmaRepository::getTurmaByCodigo($oLinha->codigo_turma_escola);
+    $oTurma = TurmaRepository::getTurmaByCodigo($oLinha->codigo_turma_escola);
     $oTurma->setCodigoInep($oLinha->codigo_turma_inep);
     $oTurma->salvar();
 
     $sMensagem = "Linha [{$iLinha}]. Aluno {$oAluno->getCodigoAluno()} - {$oAluno->getNome()} importado com sucesso.";
-    LogErro::logSituacao($sMensagem, \DBLog::LOG_INFO);
+    LogErro::logSituacao($sMensagem, DBLog::LOG_INFO);
   }
 
   /**

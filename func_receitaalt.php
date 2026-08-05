@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_receita_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clreceita = new cl_receita;
 $clreceita->rotulo->label("o08_anousu");
 $clreceita->rotulo->label("o08_codest");
@@ -55,7 +56,7 @@ $clreceita->rotulo->label("o08_anousu");
               <?=$Lo08_codest?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 	       db_input("o08_codest",12,$Io08_codest,true,"text",4,"","chave_o08_codest");
 		       ?>
             </td>
@@ -73,7 +74,7 @@ $clreceita->rotulo->label("o08_anousu");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_receita.php")==true){
@@ -108,14 +109,14 @@ $clreceita->rotulo->label("o08_anousu");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_o08_anousu.focus();
 document.form2.chave_o08_anousu.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

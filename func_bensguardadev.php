@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bensguarda_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbensguarda = new cl_bensguarda;
 $clbensguarda->rotulo->label("t21_codigo");
 $clbensguarda->rotulo->label("t21_codigo");
@@ -54,7 +55,7 @@ $clbensguarda->rotulo->label("t21_codigo");
               <?=$Lt21_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t21_codigo",8,$It21_codigo,true,"text",4,"","chave_t21_codigo");
 		       ?>
             </td>
@@ -72,7 +73,7 @@ $clbensguarda->rotulo->label("t21_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $where        = " t23_guardaitem is null ";
       $where_instit = " and t21_instit = ".db_getsession("DB_instit");
 
@@ -107,12 +108,12 @@ $clbensguarda->rotulo->label("t21_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

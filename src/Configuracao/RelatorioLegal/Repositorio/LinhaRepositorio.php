@@ -21,7 +21,7 @@ class LinhaRepositorio extends Repositorio
     /**
      * @var array
      */
-    protected $order = array();
+    protected $order = [];
     /**
      * @var bool
      */
@@ -34,7 +34,7 @@ class LinhaRepositorio extends Repositorio
      * @return bool|Linha
      * @throws Exception
      */
-    public static function find(Relatorio $relatorio, $id, $columns = array('*'))
+    public static function find(Relatorio $relatorio, $id, $columns = ['*'])
     {
         $dao = new cl_orcparamseq();
         $sql = $dao->sql_query($relatorio->getSequencial(), $id, implode(', ', $columns));
@@ -209,7 +209,7 @@ class LinhaRepositorio extends Repositorio
                 ->addLeftJoin('orcparamseqfiltropadrao', 'o132_orcparamseq', '=', 'o69_codseq');
         }
 
-        $sql = $dao->sql(array('*'), $this->scopes, $this->order);
+        $sql = $dao->sql(['*'], $this->scopes, $this->order);
 
         $rs = db_query($sql);
 
@@ -217,14 +217,14 @@ class LinhaRepositorio extends Repositorio
             throw new Exception("Não foi possível buscar as linhas.\nContate o suporte.");
         }
 
-        $linhas = array();
-        $linhaColunas = array();
+        $linhas = [];
+        $linhaColunas = [];
         if (pg_num_rows($rs) === 0) {
             return $linhas;
         }
 
         while ($retorno = pg_fetch_array($rs)) {
-            if (array_key_exists($retorno['o69_ordem'], $linhas)) {
+            if (array_key_exists((string) $retorno['o69_ordem'], $linhas)) {
                 $linha = $linhas[$retorno['o69_ordem']];
             } else {
                 $linha = Linha::fromState($retorno);
@@ -282,7 +282,7 @@ class LinhaRepositorio extends Repositorio
      * @param Linha|null $linha
      * @throws Exception
      */
-    public function delete(Linha $linha = null)
+    public function delete(?Linha $linha = null)
     {
         $codigoRelatorio = null;
         $codigoLinha = null;

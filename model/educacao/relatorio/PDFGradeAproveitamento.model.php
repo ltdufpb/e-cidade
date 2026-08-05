@@ -63,7 +63,7 @@ abstract class PDFGradeAproveitamento {
   protected $lCalculouTamanhoColunas = false;
   protected $lApresentarNotaParcial  = false;
 
-  protected $aElementosApresentados = array();
+  protected $aElementosApresentados = [];
 
   // Controle de frequencia da turma
   protected $sControleFrequencia = 'AD';
@@ -276,7 +276,7 @@ abstract class PDFGradeAproveitamento {
       $sFrequencia = "DL - Dias Letivos";
     }
 
-    $aLegendas    = array();
+    $aLegendas    = [];
     $aLegendas[1] = "TF - Total Faltas | {$sFrequencia} | FA - Faltas Abonadas";
     $aLegendas[2] = "FT - Faltas | TF - Total Faltas | {$sFrequencia} | FA - Faltas Abonadas | Freq. - Percentual de Frequência | Aprov. - Aproveitamento";
 

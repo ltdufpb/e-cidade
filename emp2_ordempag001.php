@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -155,7 +155,7 @@ function js_testa(campo,valor,nomecampo1,nomecampo2){
 
             <tr>
                <td nowrap width="50%">
-                    <?
+                    <?php 
                       // $aux = new cl_arquivo_auxiliar;
                       $aux->cabecalho = "<strong>Credores</strong>";
                       $aux->codigo = "e60_numcgm"; //chave de retorno da func

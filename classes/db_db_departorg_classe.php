@@ -30,25 +30,25 @@
 class cl_db_departorg
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $db01_coddepto = 0;
-    var $db01_anousu = 0;
-    var $db01_orgao = 0;
-    var $db01_unidade = 0;
+    public $db01_coddepto = 0;
+    public $db01_anousu = 0;
+    public $db01_orgao = 0;
+    public $db01_unidade = 0;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  db01_coddepto = int4 = Código do departamento 
                  db01_anousu = int4 = Ano 
                  db01_orgao = int4 = Órgão 
@@ -56,11 +56,11 @@ class cl_db_departorg
                  ";
 
     //funcao construtor da classe
-    function cl_db_departorg()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("db_departorg");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -151,7 +151,7 @@ class cl_db_departorg
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Orgaos e unidades por departamento ($this->db01_coddepto." - ".$this->db01_anousu) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Orgaos e unidades por departamento já Cadastrado";
@@ -179,17 +179,17 @@ class cl_db_departorg
         $resaco = $this->sql_record($this->sql_query_file($this->db01_coddepto, $this->db01_anousu));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,3451,'$this->db01_coddepto','I')");
             $resac = db_query("insert into db_acountkey values($acount,3454,'$this->db01_anousu','I')");
-            $resac = db_query("insert into db_acount values($acount,507,3451,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,507,3451,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'db01_coddepto')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,507,3454,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,507,3454,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'db01_anousu')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,507,3452,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,507,3452,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'db01_orgao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,507,3453,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,507,3453,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'db01_unidade')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
 
@@ -202,10 +202,10 @@ class cl_db_departorg
         $this->atualizacampos();
         $sql = " update db_departorg set ";
         $virgula = "";
-        if (trim($this->db01_coddepto) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db01_coddepto"])) {
+        if (trim((string) $this->db01_coddepto) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db01_coddepto"])) {
             $sql .= $virgula . " db01_coddepto = $this->db01_coddepto ";
             $virgula = ",";
-            if (trim($this->db01_coddepto) == null) {
+            if (trim((string) $this->db01_coddepto) == null) {
                 $this->erro_sql = " Campo Código do departamento nao Informado.";
                 $this->erro_campo = "db01_coddepto";
                 $this->erro_banco = "";
@@ -217,10 +217,10 @@ class cl_db_departorg
                 return false;
             }
         }
-        if (trim($this->db01_anousu) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db01_anousu"])) {
+        if (trim((string) $this->db01_anousu) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db01_anousu"])) {
             $sql .= $virgula . " db01_anousu = $this->db01_anousu ";
             $virgula = ",";
-            if (trim($this->db01_anousu) == null) {
+            if (trim((string) $this->db01_anousu) == null) {
                 $this->erro_sql = " Campo Ano nao Informado.";
                 $this->erro_campo = "db01_anousu";
                 $this->erro_banco = "";
@@ -232,10 +232,10 @@ class cl_db_departorg
                 return false;
             }
         }
-        if (trim($this->db01_orgao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db01_orgao"])) {
+        if (trim((string) $this->db01_orgao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db01_orgao"])) {
             $sql .= $virgula . " db01_orgao = $this->db01_orgao ";
             $virgula = ",";
-            if (trim($this->db01_orgao) == null) {
+            if (trim((string) $this->db01_orgao) == null) {
                 $this->erro_sql = " Campo Órgão nao Informado.";
                 $this->erro_campo = "db01_orgao";
                 $this->erro_banco = "";
@@ -247,10 +247,10 @@ class cl_db_departorg
                 return false;
             }
         }
-        if (trim($this->db01_unidade) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db01_unidade"])) {
+        if (trim((string) $this->db01_unidade) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db01_unidade"])) {
             $sql .= $virgula . " db01_unidade = $this->db01_unidade ";
             $virgula = ",";
-            if (trim($this->db01_unidade) == null) {
+            if (trim((string) $this->db01_unidade) == null) {
                 $this->erro_sql = " Campo Unidade nao Informado.";
                 $this->erro_campo = "db01_unidade";
                 $this->erro_banco = "";
@@ -273,27 +273,27 @@ class cl_db_departorg
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,3451,'$this->db01_coddepto','A')");
                 $resac = db_query("insert into db_acountkey values($acount,3454,'$this->db01_anousu','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["db01_coddepto"])) {
-                    $resac = db_query("insert into db_acount values($acount,507,3451,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,507,3451,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'db01_coddepto')) . "','$this->db01_coddepto'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["db01_anousu"])) {
-                    $resac = db_query("insert into db_acount values($acount,507,3454,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,507,3454,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'db01_anousu')) . "','$this->db01_anousu'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["db01_orgao"])) {
-                    $resac = db_query("insert into db_acount values($acount,507,3452,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,507,3452,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'db01_orgao')) . "','$this->db01_orgao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["db01_unidade"])) {
-                    $resac = db_query("insert into db_acount values($acount,507,3453,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,507,3453,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'db01_unidade')) . "','$this->db01_unidade'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -349,20 +349,20 @@ class cl_db_departorg
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,3451,'$db01_coddepto','E')");
                 $resac = db_query("insert into db_acountkey values($acount,3454,'$db01_anousu','E')");
-                $resac = db_query("insert into db_acount values($acount,507,3451,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,507,3451,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'db01_coddepto')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,507,3454,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,507,3454,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'db01_anousu')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,507,3452,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,507,3452,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'db01_orgao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,507,3453,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,507,3453,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'db01_unidade')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -440,7 +440,7 @@ class cl_db_departorg
 
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:db_departorg";
@@ -498,7 +498,7 @@ class cl_db_departorg
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -544,7 +544,7 @@ class cl_db_departorg
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -596,7 +596,7 @@ class cl_db_departorg
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

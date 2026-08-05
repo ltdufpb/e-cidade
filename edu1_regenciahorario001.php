@@ -117,9 +117,9 @@ if (isset($incluir)) {
     for ($x = 0; $x < $contp; $x++) {
       for ($y = 0; $y < $contd; $y++) {
         $valores  = "valorQ".$x.$y;
-        $valores  = $$valores;
+        $valores  = ${$valores};
         $marcados = "marcadoQ".$x.$y;
-        $marcados = $$marcados;
+        $marcados = ${$marcados};
 
         if (trim($valores) != "" && trim($marcados) == "") {
           $dados        = explode("|",$valores);
@@ -262,7 +262,7 @@ if (empty($iTipoVinculo) || $iTipoVinculo == 2 || $lControleIndividualPeriodo) {
        </option>
      </select>
    </legend>
-   <?
+   <?php 
      if (!isset($excluir)) {
 
        /**
@@ -276,7 +276,7 @@ if (empty($iTipoVinculo) || $iTipoVinculo == 2 || $lControleIndividualPeriodo) {
            $('escolha').style.display         = "gradeHorario";
            $('frmGradeHorario').style.display = "inline";
          </script>
-         <?
+         <?php 
        } else {
 
          include(modification("edu1_vinculaprofessordisciplina001.php"));
@@ -286,7 +286,7 @@ if (empty($iTipoVinculo) || $iTipoVinculo == 2 || $lControleIndividualPeriodo) {
            $('frmVinculaProfessorDisciplina').style.display = "inline";
            $('divVinculos').style.display                   = "";
          </script>
-         <?
+         <?php 
        }
      }
    ?>

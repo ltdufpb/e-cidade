@@ -3,7 +3,6 @@
 
 namespace ECidade\Educacao\Escola\Model;
 
-use App\Domain\Educacao\Escola\Models\TurmaTurnoReferente;
 use DateTime;
 use ECidade\Educacao\Escola\Registry\ConteudoDesenvolvidoRegistry;
 use Exception;

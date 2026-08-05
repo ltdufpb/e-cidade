@@ -26,6 +26,9 @@
  */
 
 namespace ECidade\RecursosHumanos\ESocial\Configuracao;
+use Exception;
+use stdClass;
+use DBDate;
 use ECidade\RecursosHumanos\ESocial\Configuracao\JSON;
 /**
  * Class S2230
@@ -40,7 +43,7 @@ class S2230 extends JSON
     const TIPO = 'S2230';
 
     /**
-     * @var \DBDate
+     * @var DBDate
      */
     protected $dataEnvio;
 
@@ -54,24 +57,24 @@ class S2230 extends JSON
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      * @return true
      */
     public function salvar()
     {
         if (empty($this->dataEnvio)) {
-            throw new \Exception("Data de envio não informada.");
+            throw new Exception("Data de envio não informada.");
         }
 
-        $data = new \stdClass();
-        $data->data_envio = $this->dataEnvio->getDate(\DBDate::DATA_EN);
+        $data = new stdClass();
+        $data->data_envio = $this->dataEnvio->getDate(DBDate::DATA_EN);
         $this->escrever($data);
 
         return true;
     }
 
     /**
-     * @return \stdClass|bool
+     * @return stdClass|bool
      */
     public function get()
     {
@@ -79,9 +82,9 @@ class S2230 extends JSON
     }
 
     /**
-     * @param \DBDate $dataEnvio
+     * @param DBDate $dataEnvio
      */
-    public function setDataEnvio(\DBDate $dataEnvio)
+    public function setDataEnvio(DBDate $dataEnvio)
     {
         $this->dataEnvio = $dataEnvio;
     }

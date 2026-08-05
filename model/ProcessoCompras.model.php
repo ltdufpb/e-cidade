@@ -92,13 +92,13 @@ class ProcessoCompras
      * Array de itens de um processo de compras
      * @var array
      */
-    protected $aItens = array();
+    protected $aItens = [];
 
     /**
      * Lotes Pertencentes ao processo de Compras
      * @var LoteProcessoCompra[]
      */
-    protected $aLotes = array();
+    protected $aLotes = [];
 
     /**
      * Tipo de processo de compra
@@ -340,7 +340,7 @@ class ProcessoCompras
         }
 
         if (empty($sProcessos)) {
-            return array();
+            return [];
         }
 
         $sCampos = "pc81_codprocitem as codigo, pc01_codmater as codigomaterial,";
@@ -534,7 +534,7 @@ class ProcessoCompras
         $sSqlProcCompras = $oDaoPcProc->sql_query_gerautproc(null, $sCampos, $sOrder, $sWhere);
         $rsProcessoCompra = $oDaoPcProc->sql_record($sSqlProcCompras);
         $iRowProcessoCompra = $oDaoPcProc->numrows;
-        $aItens = array();
+        $aItens = [];
         if ($iRowProcessoCompra > 0) {
 
             for ($i = 0; $i < $iRowProcessoCompra; $i++) {
@@ -617,9 +617,9 @@ class ProcessoCompras
                 if ($oDados->servico && $oDados->servicoquantidade != "t") {
                     $oDados->saldoquantidade = 1;
                 }
-                $oDados->autorizacaogeradas = array();
+                $oDados->autorizacaogeradas = [];
                 if (!empty($oDados->codigoitemprocesso)) {
-                    $oDados->autorizacaogeradas = licitacao::getAutorizacoes($oDados->codigoitemprocesso, $oDados->codigodotacao);
+                    $oDados->autorizacaogeradas = new licitacao()->getAutorizacoes($oDados->codigoitemprocesso, $oDados->codigodotacao);
                 }
                 /**
                  * busca o parametro de casas decimais para formatar o valor jogado na grid
@@ -750,7 +750,7 @@ class ProcessoCompras
      */
     public function gerarAutorizacoes($aDadosAutorizacao)
     {
-        $aAutorizacoes = array();
+        $aAutorizacoes = [];
         $oDaoOrcReservaSol = db_utils::getDao("orcreservasol");
         $oDaoOrcReserva = db_utils::getDao("orcreserva");
         $oDaoPcdotac = db_utils::getDao("pcdotac");
@@ -772,11 +772,11 @@ class ProcessoCompras
                  * caso exista, devemos calcular a diferença entre o que deve ser gerado para a autorizacao e a solictacao
                  */
 
-                $aReservas = itemSolicitacao::getReservasSaldoDotacao($oItem->pcdotac);
+                $aReservas = new itemSolicitacao()->getReservasSaldoDotacao($oItem->pcdotac);
 
 
                 $iUnidade = db_getsession("DB_coddepto");
-                $numrows = pg_numrows(db_query("select coddepto from db_depart where descrdepto like '%SEDUC%' and coddepto = {$iUnidade};"));
+                $numrows = pg_num_rows(db_query("select coddepto from db_depart where descrdepto like '%SEDUC%' and coddepto = {$iUnidade};"));
                 $iInstit = db_getsession("DB_instit");
                 $clpcparam  = new cl_pcparam();
                 $rspcparam  = $clpcparam->sql_record($clpcparam->sql_query_file($iInstit, "pc30_bloqueiaautemp"));
@@ -878,7 +878,7 @@ class ProcessoCompras
             $oAutorizacao->setContraPartida($oDados->contrapartida);
             $oAutorizacao->setCaracteristicaPeculiar($oDados->concarpeculiar);
 
-            $aItemSolcitem = array();
+            $aItemSolcitem = [];
             foreach ($oDados->itens as $oItem) {
 
                 $oAutorizacao->addItem($oItem);
@@ -886,7 +886,7 @@ class ProcessoCompras
             }
             $oAutorizacao->setDestino($oDados->destino);
             $oAutorizacao->setContato($oDados->sContato);
-            $oAutorizacao->setResumo(addslashes($sResumo));
+            $oAutorizacao->setResumo(addslashes((string) $sResumo));
             $oAutorizacao->setTelefone($oDados->sTelefone);
             $oAutorizacao->setTipoCompra($oDados->tipocompra);
             $oAutorizacao->setPrazoEntrega($oDados->prazoentrega);
@@ -953,7 +953,7 @@ class ProcessoCompras
         $sSqlBuscaDotacao = $oDaoPcProcItem->sql_query_dotac(null, $sCamposDotacao, null, $sWhereDotacao);
         $rsBuscaDotacao = $oDaoPcProcItem->sql_record($sSqlBuscaDotacao);
         $iRowDotacao = $oDaoPcProcItem->numrows;
-        $aSolicitacao = array();
+        $aSolicitacao = [];
 
         if ($iRowDotacao > 0) {
 
@@ -1080,7 +1080,7 @@ class ProcessoCompras
     public function getOrcamentos()
     {
 
-        $aOrcamentos = array();
+        $aOrcamentos = [];
         $oDaoPcOrcamItem = new cl_pcorcamitemproc();
         $sWhere = "pc81_codproc = {$this->getCodigo()}";
         $sSqlOrcamento = $oDaoPcOrcamItem->sql_query(null, null, "distinct pc20_codorc", null, $sWhere);
@@ -1155,21 +1155,21 @@ class ProcessoCompras
         $sql = $oDaoSolicitacao->sql_query_consulta(null, "pc12_tipo, pc10_numero", '', $where);
         $rs = $oDaoSolicitacao->sql_record($sql);
 
-        $solicita = \db_utils::fieldsMemory($rs, 0)->pc10_numero;
-        $iTipoCompra = \db_utils::fieldsMemory($rs, 0)->pc12_tipo;
+        $solicita = db_utils::fieldsMemory($rs, 0)->pc10_numero;
+        $iTipoCompra = db_utils::fieldsMemory($rs, 0)->pc12_tipo;
 
         $oDaoSolicitaVinculo = new cl_solicitavinculo();
         $where = "pc53_solicitafilho = {$solicita}";
         $sql = $oDaoSolicitaVinculo->sql_query_file('', 'pc53_solicitapai', "", $where);
 
         $rs = $oDaoSolicitaVinculo->sql_record($sql);
-        $solicitaVinculo = \db_utils::fieldsMemory($rs, 0)->pc53_solicitapai;
+        $solicitaVinculo = db_utils::fieldsMemory($rs, 0)->pc53_solicitapai;
 
         $clliclicitem = new cl_liclicitem();
         $where = "pc11_numero={$solicitaVinculo} and l03_codcom = {$iTipoCompra}";
         $sql = $clliclicitem->sql_query(null, "distinct l20_codigo", "l20_codigo", $where);
         $rs = $clliclicitem->sql_record($sql);
-        $l20_codigo = \db_utils::fieldsMemory($rs, 0)->l20_codigo;
+        $l20_codigo = db_utils::fieldsMemory($rs, 0)->l20_codigo;
 
         return new licitacao($l20_codigo);
     }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -55,7 +55,7 @@ if ($clliclicita->numrows==0){
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <style>
-<?$cor="#999999"?>
+<?php $cor="#999999"?>
 .bordas02{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -84,7 +84,7 @@ if ($clliclicita->numrows==0){
             <?=@$Ll20_codigo?>
           </td>
           <td> 
-            <?
+            <?php 
               db_input('l20_codigo',10,$Il20_codigo,true,'text',3)
             ?>
           </td>
@@ -92,11 +92,11 @@ if ($clliclicita->numrows==0){
             <?=$Ll20_edital?>
           </td>
           <td>
-            <?
+            <?php 
               db_input("l20_edital",10,$Il20_numero,true,"text",3);
             ?>
             <?=$Ll20_anousu?>
-            <?
+            <?php 
               db_input("l20_anousu",10,$Il20_anousu,true,"text",3);
             ?>
           </td>
@@ -106,7 +106,7 @@ if ($clliclicita->numrows==0){
             <b>Modalidade:</b>
           </td>            
           <td> 
-            <?
+            <?php 
               db_input('l20_codtipocom',6,$Il20_codtipocom,true,'text',3);
               db_input('l03_descr',35,$Il03_descr,true,'text',3);
             ?>
@@ -115,7 +115,7 @@ if ($clliclicita->numrows==0){
             <?=$Ll20_numero?>
           </td>
           <td>
-            <?
+            <?php 
               db_input("l20_numero",10,$Il20_numero,true,"text",3);
             ?>
           </td>
@@ -125,7 +125,7 @@ if ($clliclicita->numrows==0){
             <b><?=@$Ll20_datacria?></b>
           </td>
 	        <td> 
-			      <?		
+			      <?php 		
 		          $ano=substr(@$l20_datacria,0,4);
 		  	      $mes=substr(@$l20_datacria,5,2);
 			        $dia=substr(@$l20_datacria,8,2);
@@ -136,7 +136,7 @@ if ($clliclicita->numrows==0){
 	          <b><?=@$Ll20_horacria?></b>
 	        </td>
 	        <td> 
-		        <?		
+		        <?php 		
 	            db_input('l20_horacria',5,$Il20_horacria,true,'text',3);	     
 		        ?>
 	        </td>      
@@ -146,7 +146,7 @@ if ($clliclicita->numrows==0){
 	         <b><?=@$Ll20_dataaber?></b>
 	       </td>
 	        <td> 
-				    <?		
+				    <?php 		
 			         $ano1=substr(@$l20_dataaber,0,4);
 					     $mes1=substr(@$l20_dataaber,5,2);
 					     $dia1=substr(@$l20_dataaber,8,2);
@@ -157,7 +157,7 @@ if ($clliclicita->numrows==0){
 	          <b><?=@$Ll20_horaaber?></b>
 	        </td>
 	        <td> 
-	    	    <?		
+	    	    <?php 		
 	            db_input('l20_horaaber',5,$Il20_horaaber,true,'text',3);	     
 		        ?>
 	        </td>      
@@ -167,7 +167,7 @@ if ($clliclicita->numrows==0){
 	          <b><?=@$Ll20_dtpublic?></b>
 	        </td>
 	        <td> 
-				    <?
+				    <?php 
 			         $ano2=substr($l20_dtpublic,0,4);
 					     $mes2=substr($l20_dtpublic,5,2);
 					     $dia2=substr($l20_dtpublic,8,2);
@@ -178,7 +178,7 @@ if ($clliclicita->numrows==0){
 	          <?=@$Ll20_id_usucria?>
 	        </td>          
 	        <td> 
-	          <?
+	          <?php 
 	            db_input('l20_id_usucria',6,$Il20_id_usucria,true,'text',3);
 	            db_input('nome',45,$Inome,true,'text',3);
 	          ?>
@@ -189,7 +189,7 @@ if ($clliclicita->numrows==0){
 					  <b>Situação:</b>
 					</td>
 					<td>
-		       <?		
+		       <?php 		
 	           db_input('l08_descr',15,'',true,'text',3);	     
 		       ?>
 		       </td>
@@ -197,7 +197,7 @@ if ($clliclicita->numrows==0){
 		          <b>Data Situação:</b>
 		       </td>
 		       <td>
-		       <?
+		       <?php 
 		       $l11_data = ""; 
 		       
 		       	$oDaoLicLicitacaoSituacao = db_utils::getDao("liclicitasituacao");
@@ -225,7 +225,7 @@ if ($clliclicita->numrows==0){
 	      	  <b><?=@$Ll20_local?></b>
 		      </td>
 	        <td colspan='3' align='left'>
-					  <? 
+					  <?php  
 				   	  db_textarea("l20_local","","85",$Il20_local,true,'text',3);
 					  ?>
 		      </td>
@@ -235,7 +235,7 @@ if ($clliclicita->numrows==0){
 		        <b><?=@$Ll20_objeto?></b>
 		      </td>
 	        <td colspan='3' align='left'>
-					  <? 
+					  <?php  
 					    db_textarea("l20_objeto","","85",$Il20_objeto,true,'text',3);
 					  ?>
 		      </td>        
@@ -250,7 +250,7 @@ if ($clliclicita->numrows==0){
   </tr>
   <tr>
     <td align='center' valign='top' colspan='1' align='center'>
-      <? if ( isset($l20_codigo) ) { ?>  
+      <?php  if ( isset($l20_codigo) ) { ?>  
       <table>
         <tr>
           <td>
@@ -259,7 +259,7 @@ if ($clliclicita->numrows==0){
           </td>
         </tr>     
       </table>
-      <?}?>  
+      <?php }?>  
     </td>
   </tr>
   <tr>

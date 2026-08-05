@@ -27,7 +27,6 @@
 
 namespace ECidade\RecursosHumanos\Pessoal\Model;
 
-use BusinessException;
 use Instituicao;
 use InstituicaoRepository;
 use Servidor;
@@ -211,13 +210,13 @@ class ControleRubricasMatriculas
      */
     public function toArray()
     {
-        return array(
+        return [
             'sequencial' => $this->getSequencial(),
             'instituicao' => !is_null($this->getInstituicao()) ? $this->getInstituicao()->toArray() : null,
             'servidor' => !is_null($this->getServidor()) ? $this->getServidor()->toArray() : null,
             'ano' => $this->getAno(),
             'mes' => $this->getMes(),
             'horasLiberadas' => $this->getHorasLiberadas()
-        );
+        ];
     }
 }

@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bensmotbaixa_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbensmotbaixa = new cl_bensmotbaixa;
 $clbensmotbaixa->rotulo->label("t51_motivo");
 $clbensmotbaixa->rotulo->label("t51_descr");
@@ -55,7 +56,7 @@ $clbensmotbaixa->rotulo->label("t51_descr");
                 <?= $Lt51_motivo ?>
             </td>
             <td width="96%" align="left" nowrap>
-                <?
+                <?php 
                 db_input("t51_motivo", 10, $It51_motivo, true, "text", 4, "", "chave_t51_motivo");
                 ?>
             </td>
@@ -65,7 +66,7 @@ $clbensmotbaixa->rotulo->label("t51_descr");
                 <?= $Lt51_descr ?>
             </td>
             <td width="96%" align="left" nowrap>
-                <?
+                <?php 
                 db_input("t51_descr", 40, $It51_descr, true, "text", 4, "", "chave_t51_descr");
                 ?>
             </td>

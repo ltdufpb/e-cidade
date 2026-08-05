@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -35,7 +35,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_periodoescola_classe.php"));
 include(modification("classes/db_turno_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clperiodoescola = new cl_periodoescola;
 $clturno = new cl_turno;
 $clperiodoescola->rotulo->label("ed17_i_codigo");
@@ -59,7 +60,7 @@ $clturno->rotulo->label("ed15_c_nome");
               <?=$Led17_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
               db_input("ed17_i_codigo",4,$Ied17_i_codigo,true,"text",4,"","chave_ed17_i_codigo");
               ?>
             </td>
@@ -69,7 +70,7 @@ $clturno->rotulo->label("ed15_c_nome");
               <?=$Led17_i_turno?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
               db_input("ed15_c_nome",20,$Ied15_c_nome,true,"text",4,"","chave_ed15_c_nome");
               ?>
             </td>
@@ -87,7 +88,7 @@ $clturno->rotulo->label("ed15_c_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $codescola = db_getsession("DB_coddepto");
       $where = " ed17_i_escola = $codescola ";
       if(!isset($pesquisa_chave)){
@@ -125,12 +126,12 @@ $clturno->rotulo->label("ed15_c_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -131,7 +131,7 @@ function js_testa(opcao) {
       <b>Usuário:</b>
     </td>
     <td>
-     <?
+     <?php 
        $sql = "select nome from db_usuarios where id_usuario = ".$sDbIdUsuario;
        echo pg_result(db_query($sql),0,"nome");
      ?>
@@ -163,7 +163,7 @@ function js_testa(opcao) {
        <?=@$Lp58_codproc; ?>
     </td>
     <td>
-		<?
+		<?php 
 		  db_input('p58_codproc',10,$Ip58_codproc,true,'text',3,"");
 		?>
   </td>
@@ -173,7 +173,7 @@ function js_testa(opcao) {
     <?=@$Lp58_dtproc;?>
     </td>
     <td>
-  <?
+  <?php 
       db_inputdata('p58_dtproc',@$p58_dtproc_dia,@$p58_dtproc_mes,@$p58_dtproc_ano,false,'text',3,"","p58_dtproc");
   ?>
    </td>
@@ -183,7 +183,7 @@ function js_testa(opcao) {
     <?=@$Lp58_hora;?>
     </td>
     <td>
-  <?
+  <?php 
   if($db_opcao == 1){
     $p58_hora = db_hora();
     db_input('p58_hora',10,@$Ip58_hora,true,'text','3','');
@@ -209,7 +209,7 @@ function js_testa(opcao) {
       </tr>
   <?php
     } ?>
-<?
+<?php 
   $op_tip = 1;
   $pesq_p58_codigo1 = "js_pesquisap58_codigo(true)";
   $pesq_p58_codigo2 = "js_pesquisap58_codigo(false)";
@@ -267,10 +267,10 @@ function js_testa(opcao) {
       ?>
     </td>
     <td>
-      <?
+      <?php 
         db_input('p58_codigo', 10, $Ip58_codigo, true, 'text', $op_tip_tipoprocesso, " onchange='$pesq_p58_codigo2'");
       ?>
-      <?
+      <?php 
         db_input('p51_descr', 40, $Ip51_descr, true, 'text', 3, '');
         if($db_opcao == 1){
           $p58_hora = db_hora();
@@ -281,12 +281,12 @@ function js_testa(opcao) {
   </tr>
   <tr>
     <td nowrap title="<?=@$Tp58_numcgm?>">
-       <?
+       <?php 
        db_ancora(@$Lp58_numcgm,"js_pesquisap58_numcgm(true);",$db_opcao);
        ?>
     </td>
     <td nowrap>
-<?
+<?php 
 $msg_debito="";
 if (isset($p58_numcgm)&&$p58_numcgm != ""){
 $result_param = $clprotparam->sql_record($clprotparam->sql_query_file());
@@ -330,7 +330,7 @@ if ($clprotparam->numrows>0){
        <?=@$Lp58_requer?>
     </td>
     <td>
-<?
+<?php 
   db_input('p58_requer',54,$Ip58_requer,true,'text',$db_opcao,"");
 ?>
     </td>
@@ -355,7 +355,7 @@ if ($clprotparam->numrows>0){
      </tr>
      <tr>
       <td>
-<?
+<?php 
 if ($db_opcao != 22 ){
 $funcaojava    = null;
 $clprocvar     = new cl_procvar;
@@ -432,7 +432,7 @@ if ($clprocvar->numrows > 0) {
   </tr>
   <tr>
     <td colspan="3" valign='top'>
-       <?
+       <?php 
 //    include(modification("classes/db_procdoctipo_classe.php"));
     $cldoc = new cl_procdoctipo;
     $res = $cldoc->sql_record($cldoc->sql_query(@$p58_codigo,"","p56_coddoc,p56_descr"));
@@ -505,7 +505,7 @@ if ($clprocvar->numrows > 0) {
   </tr>
  </table>
 
-<?
+<?php 
 if ($db_opcao == 1) {
 	$sName  = "incluir";
 	$sValue = "Incluir";
@@ -639,7 +639,7 @@ function verificaCamposObrigatorios() {
 function js_pesquisap58_numcgm(mostra){
   var permissao_cancelar = <?=db_permissaomenu(db_getsession("DB_anousu"),604,8451)?>;
   if (permissao_cancelar == false) {
-  	<? if($p90_alteracgmprot=='t') {
+  	<?php  if($p90_alteracgmprot=='t') {
 	       echo "alert('AVISO:\\nUsuário sem permissão para alterar CGM !\\nCadastro de processo não será efetuado!');";
 			   echo "document.form1.alterarcgm.disabled = true;";
 			   echo "return false;";
@@ -773,7 +773,7 @@ function js_validaObservacao() {
 ?>
 
 </script>
-<?
+<?php 
 $func_iframe = new janela('db_iframe','');
 $func_iframe->posX    = 0;
 $func_iframe->posY    = 2;

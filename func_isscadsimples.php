@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_isscadsimples_classe.php"));
 $mostra  = "T";
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clisscadsimples = new cl_isscadsimples;
 $clisscadsimples->rotulo->label("q38_sequencial");
 $clisscadsimples->rotulo->label("q38_inscr");
@@ -59,7 +60,7 @@ $clrotulo->label("DBtxt31");
               <?=$Lq38_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q38_sequencial",10,$Iq38_sequencial,true,"text",4,"","chave_q38_sequencial");
 		       ?>
             </td>
@@ -69,7 +70,7 @@ $clrotulo->label("DBtxt31");
               <?=$Lq38_inscr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("z01_nome",10,'',true,"text",4,"","chave_q38_inscr");
 		       ?>
             </td>
@@ -80,7 +81,7 @@ $clrotulo->label("DBtxt31");
             <label for="cpf"><?=$DBtxt30?>:</label>
 						</td>
 						<td>
-							<?
+							<?php 
 								db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',1,"onkeyup='js_ValidaCampos(this,1,\"CPF\",\"\",\"\",event);'",'cpf');
 							?>
 						</td>
@@ -90,13 +91,13 @@ $clrotulo->label("DBtxt31");
             <label for="cnpj"><?=$DBtxt31?>:</label>
 						</td>
 						<td>
-							<?
+							<?php 
 								db_input('z01_cgccpf',20,$Iz01_cgccpf,true,'text',1,"onkeyup='js_ValidaCampos(this,1,\"CNPJ\",\"\",\"\",event);'",'cnpj');
 							?>
 						</td>
 					</tr>
 
-					<?
+					<?php 
 
 			    if (!isset($_GET["sbaixa"])){
           ?>
@@ -105,14 +106,14 @@ $clrotulo->label("DBtxt31");
               <strong>Mostrar:</strong>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 							  $itens = array("T" => "Todos", "B" => "Baixados","A" => "Ativos");
 								db_select("mostra",$itens,true,1);
 
 		          ?>
             </td>
           </tr>
-					<?
+					<?php 
             }//fim do if baixa.
 					?>
           <tr> 
@@ -128,7 +129,7 @@ $clrotulo->label("DBtxt31");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
 			$where = '';
 			if ($mostra == "T"){
 
@@ -190,12 +191,12 @@ $clrotulo->label("DBtxt31");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

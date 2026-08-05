@@ -57,10 +57,10 @@ for ($iCont = 0; $iCont < $oDaoEfetividadeRh->numrows; $iCont++) {
 
   $oDadosEfetvRh = db_utils::fieldsmemory($rs, $iCont);
   $head1         = "RELATÓRIO DE EFETIVIDADE";
-  $head2         = "Tipo de Efetividade: ".(trim($oDadosEfetvRh->ed98_c_tipo) == "P" ? "PROFESSORES":"FUNCIONÁRIOS");
-  $head3         = "Tipo de Competência: ".(trim($oDadosEfetvRh->ed98_c_tipocomp) == "M" ? "MENSAL":"PERIÓDICA");
+  $head2         = "Tipo de Efetividade: ".(trim((string) $oDadosEfetvRh->ed98_c_tipo) == "P" ? "PROFESSORES":"FUNCIONÁRIOS");
+  $head3         = "Tipo de Competência: ".(trim((string) $oDadosEfetvRh->ed98_c_tipocomp) == "M" ? "MENSAL":"PERIÓDICA");
 
-  if (trim($oDadosEfetvRh->ed98_c_tipocomp) == "M") {
+  if (trim((string) $oDadosEfetvRh->ed98_c_tipocomp) == "M") {
     $head4 = "Mês/Ano: ".db_mes($oDadosEfetvRh->ed98_i_mes, 1)." / ".$oDadosEfetvRh->ed98_i_ano;
   } else {
     $head4 = db_formatar($oDadosEfetvRh->ed98_d_dataini, 'd')." à ".db_formatar($oDadosEfetvRh->ed98_d_datafim, 'd');
@@ -122,7 +122,7 @@ for ($iCont = 0; $iCont < $oDaoEfetividadeRh->numrows; $iCont++) {
 
     if ( $iTotalLicencas > 0 ) {
 
-      $aLicenca = array();
+      $aLicenca = [];
       for ( $iContador = 0; $iContador < $iTotalLicencas; $iContador++ ) {
 
         $oDadosLicenca           = db_utils::fieldsMemory( $rsLicenca, $iContador );
@@ -145,13 +145,13 @@ for ($iCont = 0; $iCont < $oDaoEfetividadeRh->numrows; $iCont++) {
         else {
 
           $aPeriodoEfetividadeAux  = DBDate::getDatasNoIntervalo( $oDataInicioEfetividade, $oDataTerminoEfetividade );
-          $aPeriodoEfetividade = array();
+          $aPeriodoEfetividade = [];
           foreach ( $aPeriodoEfetividadeAux as $oDataEfetividade ) {
             $aPeriodoEfetividade[] = $oDataEfetividade->convertTo(DBDate::DATA_PTBR);
           }
 
           $aPeriodoLicencaAux      = DBDate::getDatasNoIntervalo( $oDataInicioLicenca, $oDataTerminoLicenca );
-          $aPeriodoLicenca = array();
+          $aPeriodoLicenca = [];
           foreach ( $aPeriodoLicencaAux as $oDataLicenca ) {
             $aPeriodoLicenca[] = $oDataLicenca->convertTo(DBDate::DATA_PTBR);
           }
@@ -172,12 +172,12 @@ for ($iCont = 0; $iCont < $oDaoEfetividadeRh->numrows; $iCont++) {
       $sLicenca = implode("\n",  $aLicenca);
     }
 
-    if (trim($oDadosEfetvRh->ed98_c_tipo) == "P") {
+    if (trim((string) $oDadosEfetvRh->ed98_c_tipo) == "P") {
 
       $iLineHorario = $oPdf->NbLines(40,$oDadosEfetividade->ed97_t_horario);
       $iLineLicenca = $oPdf->NbLines(50,$sLicenca);
       $iLineObs     = $oPdf->NbLines(55,$oDadosEfetividade->ed97_t_obs);
-      $aLine        = array($iLineLicenca, $iLineObs, $iLineHorario);
+      $aLine        = [$iLineLicenca, $iLineObs, $iLineHorario];
       rsort( $aLine );
 
       $iTotalLinhas = $oPdf->gety() + ($aLine[0] * 4);
@@ -264,7 +264,7 @@ for ($iCont = 0; $iCont < $oDaoEfetividadeRh->numrows; $iCont++) {
     }
   }
   $iPosY = $oPdf->getY();
-  if (trim($oDadosEfetvRh->ed98_c_tipo) == "P") {
+  if (trim((string) $oDadosEfetvRh->ed98_c_tipo) == "P") {
 
     $oPdf->line(25, 48, 25, $iPosY);
     $oPdf->line(85, 48, 85, $iPosY);
@@ -290,9 +290,9 @@ for ($iCont = 0; $iCont < $oDaoEfetividadeRh->numrows; $iCont++) {
   $oPdf->cell(280, 4, "Assumo inteira responsaboilidade, para todos os fins legais, com as alterações registradas na ".
               "presente efetividade.", "T", 1, "C", 0);
   $oPdf->cell(280, 8, "", 0, 1, "C", 0);
-  $oPdf->cell(80, 4, substr($oDadosEfetvRh->ed98_d_datafim, 8, 2)." de ".
-              db_mes(substr($oDadosEfetvRh->ed98_d_datafim, 5, 2), 1).
-              " de ".substr($oDadosEfetvRh->ed98_d_datafim, 0, 4), 0, 0, "L", 0
+  $oPdf->cell(80, 4, substr((string) $oDadosEfetvRh->ed98_d_datafim, 8, 2)." de ".
+              db_mes(substr((string) $oDadosEfetvRh->ed98_d_datafim, 5, 2), 1).
+              " de ".substr((string) $oDadosEfetvRh->ed98_d_datafim, 0, 4), 0, 0, "L", 0
              );
   $oPdf->cell(120, 4, "__________________________________________", 0, 0, "C", 0);
   $oPdf->cell(80, 4, date("d")." de ".db_mes(date("m"), 1)." de ".date("Y"), 0, 1, "R", 0);
@@ -309,7 +309,7 @@ function montaCabecalho( $oPdf, $iContEf, $oDadosEfetvRh ) {
 
     $oPdf->line(10, $iPosY, 290, $iPosY);
 
-     if (trim($oDadosEfetvRh->ed98_c_tipo) == "P") {
+     if (trim((string) $oDadosEfetvRh->ed98_c_tipo) == "P") {
 
        $oPdf->line(25, 48, 25, $iPosY);
        $oPdf->line(85, 48, 85, $iPosY);
@@ -339,7 +339,7 @@ function montaCabecalho( $oPdf, $iContEf, $oDadosEfetvRh ) {
   $oPdf->setfont('arial', 'B', 8);
   $iPosY = $oPdf->getY();
 
-  if (trim($oDadosEfetvRh->ed98_c_tipo) == "P") {
+  if (trim((string) $oDadosEfetvRh->ed98_c_tipo) == "P") {
 
     $oPdf->cell(15, 8, "Matr./CGM", 1, 0, "C", 1);
     $oPdf->cell(60, 8, "Nome", 1, 0, "C", 1);

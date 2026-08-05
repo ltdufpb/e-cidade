@@ -1,4 +1,4 @@
-<?
+<?php 
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -6,7 +6,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_liclicitatipoevento_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clliclicitatipoevento = new cl_liclicitatipoevento;
 $clliclicitatipoevento->rotulo->label("l45_sequencial");
 $clliclicitatipoevento->rotulo->label("l45_descricao");
@@ -24,11 +25,11 @@ $clliclicitatipoevento->rotulo->label("l45_descricao");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Ll45_sequencial?></label></td>
-          <td><? db_input("l45_sequencial",10,$Il45_sequencial,true,"text",4,"","chave_l45_sequencial"); ?></td>
+          <td><?php  db_input("l45_sequencial",10,$Il45_sequencial,true,"text",4,"","chave_l45_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Ll45_descricao?></label></td>
-          <td><? db_input("l45_descricao",10,$Il45_descricao,true,"text",4,"","chave_l45_descricao");?></td>
+          <td><?php  db_input("l45_descricao",10,$Il45_descricao,true,"text",4,"","chave_l45_descricao");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +37,7 @@ $clliclicitatipoevento->rotulo->label("l45_descricao");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_liclicitatipoevento.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_liclicitatipoevento.php")==true){
@@ -78,12 +79,12 @@ $clliclicitatipoevento->rotulo->label("l45_descricao");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

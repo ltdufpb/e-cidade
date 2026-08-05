@@ -34,14 +34,15 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
   private   $sDadosDocente          = '';
   private   $oExportacaoCenso       = '';
-  protected $aEtapasCensoTurma      = array(1, 2, 3, 65);
-  protected static $aCursosFormacao = array();
+  protected $aEtapasCensoTurma      = [1, 2, 3, 65];
+  protected static $aCursosFormacao = [];
 
   /**
    * Valida os dados do arquivo
    * @param IExportacaoCenso $oExportacaoCenso  Importacao do censo
    * @return boolean
    */
+  #[Override]
   public static function validarDados( IExportacaoCenso $oExportacaoCenso ) {
 
     $lDadosValidos    = true;
@@ -88,7 +89,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
   static function validacoesRegistro30( $sDadosDocente, $oExportacaoCenso, $oRegistro30, $oRegistro40 ) {
 
     $lDadosValidos    = true;
-    $aStatusValidacao = array();
+    $aStatusValidacao = [];
 
     if( $oRegistro30->codigo_docente_entidade_escola == '' ) {
 
@@ -98,7 +99,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
       $lDadosValidos = false;
     }
 
-    $sNome = trim( $oRegistro30->nome_completo );
+    $sNome = trim( (string) $oRegistro30->nome_completo );
     if( !DBString::isNomeValido( $sNome, DBString::NOME_REGRA_2 ) ) {
 
       $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
@@ -179,7 +180,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
     $aStatusValidacao[] = static::validarRegistro30Coluna17( $sDadosDocente, $oExportacaoCenso, $oRegistro30 );
 
     if ( $lDadosValidos ) {
-      $lDadosValidos = array_reduce( $aStatusValidacao, 'validaVerdadeiro');
+      $lDadosValidos = array_reduce( $aStatusValidacao, validaVerdadeiro(...));
     }
 
     return $lDadosValidos;
@@ -199,7 +200,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
     $lDadosValidos = true;
 
-    $sEmail = trim( $oRegistro30->email );
+    $sEmail = trim( (string) $oRegistro30->email );
 
     if( !empty( $sEmail ) ) {
 
@@ -283,7 +284,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
     if( !empty( $oRegistro30->filiacao_1 ) ) {
 
-      $sFiliacao1 = trim( $oRegistro30->filiacao_1 );
+      $sFiliacao1 = trim( (string) $oRegistro30->filiacao_1 );
       if( empty($oRegistro40->numero_cpf) && !DBString::isNomeValido( $sFiliacao1, DBString::NOME_REGRA_3 ) ) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
@@ -457,7 +458,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
   static function validacoesRegistro50( $sDadosDocente, $oExportacaoCenso, $oRegistro50, $oRegistro30 ) {
 
     $lDadosValidos    = true;
-    $aStatusValidacao = array();
+    $aStatusValidacao = [];
 
       // docente precisa ter a data de nascimento informada para realizar as validações do curso
     if( !empty( $oRegistro30->data_nascimento ) ) {
@@ -467,7 +468,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
     $aStatusValidacao[] = static::validarOutrosCursos( $sDadosDocente, $oExportacaoCenso, $oRegistro50);
 
     if ( $lDadosValidos ) {
-      $lDadosValidos = array_reduce( $aStatusValidacao, 'validaVerdadeiro');
+      $lDadosValidos = array_reduce( $aStatusValidacao, validaVerdadeiro(...));
     }
 
     return $lDadosValidos;
@@ -706,11 +707,11 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
     $lDadosValidos = true;
 
-    $aSituacoesCursoSuperior = array(
+    $aSituacoesCursoSuperior = [
       $oRegistro50->situacao_curso_superior_1,
       $oRegistro50->situacao_curso_superior_2,
       $oRegistro50->situacao_curso_superior_3
-    );
+    ];
     if ( $oRegistro50->escolaridade == 6 && in_array(1, $aSituacoesCursoSuperior) ) {
 
       if (    $oRegistro50->pos_graduacao_especializacao === 0
@@ -725,12 +726,12 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
       }
     }
 
-    $aPosGraduacoes = array(
+    $aPosGraduacoes = [
       'pos_graduacao_especializacao',
       'pos_graduacao_mestrado',
       'pos_graduacao_doutorado',
       'pos_graduacao'
-    );
+    ];
 
     for ( $iPosGraduacao = 0; $iPosGraduacao < count($aPosGraduacoes); $iPosGraduacao++ ) {
 
@@ -777,7 +778,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
     $lDadosValidos = true;
 
-    $aOutrosCursos = array(
+    $aOutrosCursos = [
       $oRegistro50->especifico_creche_0_3_anos,
       $oRegistro50->especifico_pre_escola_4_5_anos,
       $oRegistro50->especifico_anos_iniciais_ensino_fundamental,
@@ -793,7 +794,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
       $oRegistro50->direitos_crianca_adolescente,
       $oRegistro50->educ_relacoes_etnicorraciais_his_cult_afro_brasil,
       $oRegistro50->outros
-    );
+    ];
 
     if ( !in_array(1, $aOutrosCursos) && $oRegistro50->nenhum == 0 ) {
 
@@ -877,7 +878,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
          */
 
         // coluna 7 regra 2
-        if ( !in_array($oRegistro51->funcao_exerce_escola_turma, array(1, 2, 3, 4, 5, 6)) ) {
+        if ( !in_array($oRegistro51->funcao_exerce_escola_turma, [1, 2, 3, 4, 5, 6]) ) {
 
           $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
             $sMsgErro .= "O campo \"Função que exerce na escola/Turma\" foi preenchido com valor inválido.";
@@ -886,7 +887,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         }
 
         // coluna 7 regra 3
-        if(    in_array($oRegistro51->funcao_exerce_escola_turma, array( 1, 2, 3, 4 ))
+        if(    in_array($oRegistro51->funcao_exerce_escola_turma, [ 1, 2, 3, 4 ])
             && $oDadosTurma->mediacao_didatico_pedagogica == 3 ) {
 
           $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
@@ -899,7 +900,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         }
 
         // coluna 7 regra 4
-        if ( $oRegistro51->funcao_exerce_escola_turma == 2 && in_array($oDadosTurma->tipo_atendimento, array(4, 5)) ) {
+        if ( $oRegistro51->funcao_exerce_escola_turma == 2 && in_array($oDadosTurma->tipo_atendimento, [4, 5]) ) {
 
           $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= "Turma [ {$oDadosTurma->codigo_turma_entidade_escola} - {$oDadosTurma->nome_turma} ]: \n";
@@ -921,7 +922,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         }
 
         // coluna 7 regra 6
-        if(    in_array( $oRegistro51->funcao_exerce_escola_turma, array(5, 6) )
+        if(    in_array( $oRegistro51->funcao_exerce_escola_turma, [5, 6] )
             && $oDadosTurma->mediacao_didatico_pedagogica != 3 ) {
 
           $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
@@ -937,7 +938,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
           // surdez, deficiência auditiva ou surdocegueira
         if ($oRegistro51->funcao_exerce_escola_turma == 4) {
 
-          $aTemDeficiente = array();
+          $aTemDeficiente = [];
           $aDadosDocente  = $oExportacaoCenso->getDadosProcessadosDocente();
 
           foreach( $aDadosDocente as $oOutroDocente ) {
@@ -946,11 +947,11 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
               continue;
             }
 
-            $aDeficienciaDocente = array (
+            $aDeficienciaDocente =  [
               $oOutroDocente->registro30->tipos_deficiencia_surdez,
               $oOutroDocente->registro30->tipos_deficiencia_auditiva,
               $oOutroDocente->registro30->tipos_deficiencia_surdocegueira,
-            );
+            ];
             foreach ($oOutroDocente->registro51 as $oOutro51) {
 
               if ( $oOutro51->codigo_turma_entidade_escola != $oRegistro51->codigo_turma_entidade_escola) {
@@ -967,11 +968,11 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
           // valida entre os alunos, se algum aluno da turma tem deficiencia
           foreach ($oExportacaoCenso->getDadosProcessadosAluno() as $oDadosAluno ) {
 
-            $aDeficienciaAluno = array(
+            $aDeficienciaAluno = [
               $oDadosAluno->registro60->tipos_defic_transtorno_surdez,
               $oDadosAluno->registro60->tipos_defic_transtorno_auditiva,
               $oDadosAluno->registro60->tipos_defic_transtorno_surdocegueira,
-            );
+            ];
 
             foreach ($oDadosAluno->registro80 as $oVinculuTurma) {
 
@@ -1000,7 +1001,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
         // coluna 8 regra 1
         if( empty( $oRegistro51->situacao_funcional_contratacao_vinculo ) &&
-            in_array( $oRegistro51->funcao_exerce_escola_turma, array(1, 5, 6) ) ) {
+            in_array( $oRegistro51->funcao_exerce_escola_turma, [1, 5, 6] ) ) {
 
           $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
             $sMsgErro .= "Obrigatório informar o Regime de Contratação/Tipo de Vínculo para profissionais com função";
@@ -1011,7 +1012,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
         // coluna 8 regra 2
         if( !empty( $oRegistro51->situacao_funcional_contratacao_vinculo ) &&
-            !in_array( $oRegistro51->funcao_exerce_escola_turma, array(1, 5, 6) ) ) {
+            !in_array( $oRegistro51->funcao_exerce_escola_turma, [1, 5, 6] ) ) {
 
           $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
             $sMsgErro .= "O campo \"Situação Funcional/ Regime de contratação/Tipo de Vínculo\" não pode ser preenchido ";
@@ -1023,7 +1024,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
         // coluna 8 regra 3
         if ( !empty($oRegistro51->situacao_funcional_contratacao_vinculo) &&
-             !in_array($oDadosEscola->registro00->dependencia_administrativa, array(1,2,3)) ) {
+             !in_array($oDadosEscola->registro00->dependencia_administrativa, [1,2,3]) ) {
 
           $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
             $sMsgErro .= "O campo \"Situação Funcional/ Regime de contratação/Tipo de Vínculo\" não pode ser preenchido ";
@@ -1033,7 +1034,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         }
 
         // colunas 9 a 21
-        $aDisciplinasDocente = array(
+        $aDisciplinasDocente = [
           $oRegistro51->codigo_disciplina_1,
           $oRegistro51->codigo_disciplina_2,
           $oRegistro51->codigo_disciplina_3,
@@ -1047,13 +1048,13 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
           $oRegistro51->codigo_disciplina_11,
           $oRegistro51->codigo_disciplina_12,
           $oRegistro51->codigo_disciplina_13
-        );
+        ];
 
 
-        $aFuncoesDocente = array( 1, 5, 6 );
+        $aFuncoesDocente = [ 1, 5, 6 ];
         $aControleDisciplinasDocente = array_count_values( $aDisciplinasDocente );
 
-        if (    !in_array( $oRegistro51->funcao_exerce_escola_turma, array( 1, 5 ) )
+        if (    !in_array( $oRegistro51->funcao_exerce_escola_turma, [ 1, 5 ] )
              && !empty($oRegistro51->situacao_funcional_contratacao_vinculo)
              && count( $aControleDisciplinasDocente ) > 1
            ) {
@@ -1071,7 +1072,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
            * 4 - Atividade complementar
            * 5 - Atendimento Educacional Especializado( AEE )
            */
-          $aTipoAtendimentoACAEE = array( 4, 5 );
+          $aTipoAtendimentoACAEE = [ 4, 5 ];
           if (    $oRegistro51->funcao_exerce_escola_turma == 2
               && in_array( $oDadosTurma->tipo_atendimento, $aTipoAtendimentoACAEE ) ) {
 
@@ -1088,7 +1089,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
            */
           if( !in_array( $oDadosTurma->tipo_atendimento, $aTipoAtendimentoACAEE ) ) {
 
-            $aEtapaEnsino = array( 1, 2, 3, 56, 65 );
+            $aEtapaEnsino = [ 1, 2, 3, 56, 65 ];
             if (    !in_array($oDadosTurma->etapa_ensino_turma, $aEtapaEnsino)
                  && isset( $aControleDisciplinasDocente[''] )
                  && count( $aControleDisciplinasDocente ) == 1
@@ -1104,7 +1105,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
             $oTurma    = static::buscarTurma($oDadosTurma);
             $aRegencia = $oTurma->getDisciplinas();
 
-            $aDisciplinaRegencia = array();
+            $aDisciplinaRegencia = [];
             foreach( $aRegencia as $oRegencia ) {
 
               $oDisciplinaRegencia   = $oRegencia->getDisciplina();
@@ -1144,11 +1145,11 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
      * Array para validar se ao selecionar Cegueira, outros tipos de deficiencia não permitidas foram marcadas
      * Coluna 19
      */
-    $aDeficienciaCegueira = array(
+    $aDeficienciaCegueira = [
                                    $oRegistro30->tipos_deficiencia_baixa_visao,
                                    $oRegistro30->tipos_deficiencia_surdez,
                                    $oRegistro30->tipos_deficiencia_surdocegueira
-                                 );
+                                 ];
 
     if( $oRegistro30->tipos_deficiencia_cegueira == 1 && in_array(1, $aDeficienciaCegueira) ) {
 
@@ -1176,10 +1177,10 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
      * Array para validar se ao selecionar Surdez, outros tipos de deficiencia não permitidas foram marcadas
      * Coluna 21
      */
-    $aDeficienciaSurdez = array(
+    $aDeficienciaSurdez = [
                                  $oRegistro30->tipos_deficiencia_auditiva,
                                  $oRegistro30->tipos_deficiencia_surdocegueira
-                               );
+                               ];
 
 
 
@@ -1226,7 +1227,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         $lDadosValidos = false;
       }
 
-      if (strlen($oRegistro40->cep) < 8) {
+      if (strlen((string) $oRegistro40->cep) < 8) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= "CEP [{$oRegistro40->cep}] da escola deve conter 8 dígitos.";
@@ -1234,7 +1235,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         $lDadosValidos = false;
       }
 
-      if (preg_match ('/1{8}|2{8}|3{8}|4{8}|5{8}|6{8}|7{8}|8{8}|9{8}/', $oRegistro40->cep)) {
+      if (preg_match ('/1{8}|2{8}|3{8}|4{8}|5{8}|6{8}|7{8}|8{8}|9{8}/', (string) $oRegistro40->cep)) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
           $sMsgErro .= "O Campo CEP [{$oRegistro40->cep}] foi preenchido com um valor inválido.";
@@ -1319,7 +1320,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
     }
 
-    $aDadosEnderecoResidencial = array();
+    $aDadosEnderecoResidencial = [];
 
     $oDadosLogradouro             = new stdClass();
     $oDadosLogradouro->sCampo     = 'endereco';
@@ -1355,7 +1356,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         continue;
       }
 
-        if (preg_match('/[^a-z0-9ªº\s\-.,\/]+/i', $oDadosEndereco->sValor)) {
+        if (preg_match('/[^a-z0-9ªº\s\-.,\/]+/i', (string) $oDadosEndereco->sValor)) {
 
         $sMsgErro  = "Docente CGM {$sDadosDocente}: \n";
             $sMsgErro .= "{$oDadosEndereco->sDescricao} [{$oDadosEndereco->sValor}] possui caracteres inválidos. ";
@@ -1475,7 +1476,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
     protected static function validarRegistro30Coluna13Regra4($dadosDocente, IExportacaoCenso $exportacao, $registro30, $registro40)
     {
-        if (empty($registro40->numero_cpf) && !DBString::isNomeValido(trim($registro30->filiacao_2), DBString::NOME_REGRA_3)) {
+        if (empty($registro40->numero_cpf) && !DBString::isNomeValido(trim((string) $registro30->filiacao_2), DBString::NOME_REGRA_3)) {
             $mensagem = "Docente CGM {$dadosDocente}: \n";
             $mensagem .= "O nome da mãe deve ser composto de nome e sobrenome.";
 
@@ -1489,7 +1490,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
     protected static function validarRegistro30Coluna13Regra5($dadosDocente, IExportacaoCenso $exportacao, $registro30, $registro40)
     {
-        if (empty($registro40->numero_cpf) && !DBString::isNomeValido(trim($registro30->filiacao_2), DBString::NOME_REGRA_4)) {
+        if (empty($registro40->numero_cpf) && !DBString::isNomeValido(trim((string) $registro30->filiacao_2), DBString::NOME_REGRA_4)) {
             $mensagem = "Docente CGM {$dadosDocente}: \n";
             $mensagem .= "O nome da mãe não deve conter 4 letras repetidas em sequência.";
 
@@ -1503,7 +1504,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
 
     protected static function validarRegistro30Coluna13Regra3($dadosDocente, IExportacaoCenso $exportacao, $registro30)
     {
-        if (!DBString::isNomeValido(trim($registro30->filiacao_2), DBString::NOME_REGRA_5)) {
+        if (!DBString::isNomeValido(trim((string) $registro30->filiacao_2), DBString::NOME_REGRA_5)) {
             $sMsgErro = "Docente CGM {$dadosDocente}: \n";
             $sMsgErro .= 'O campo "Filiação 2" foi preenchido com valor inválido.';
 

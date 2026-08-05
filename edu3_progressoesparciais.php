@@ -38,7 +38,7 @@ $oDao    = new cl_situacaoeducacao();
 $sSql    = $oDao->sql_query_file(null, $sCampos, "1", $sWhere);
 $rs      = db_query($sSql);
 
-$aSituacoes = array( 'TODOS');
+$aSituacoes = [ 'TODOS'];
 if ( $rs && pg_num_rows($rs) > 0) {
 
   $iLinhas = pg_num_rows($rs);

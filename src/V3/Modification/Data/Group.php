@@ -11,7 +11,7 @@ class Group extends AbstractMetadata
     /**
      * @var array
      */
-    private $groups = array();
+    private $groups = [];
 
     public function __construct()
     {
@@ -77,7 +77,7 @@ class Group extends AbstractMetadata
         }
 
         if (!isset($this->groups[$groupID])) {
-            return array();
+            return [];
         }
 
         return $this->groups[$groupID];
@@ -95,6 +95,6 @@ class Group extends AbstractMetadata
             }
         }
 
-        return array();
+        return [];
     }
 }

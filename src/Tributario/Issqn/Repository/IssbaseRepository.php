@@ -2,6 +2,7 @@
 
 namespace ECidade\Tributario\Issqn\Repository;
 
+use db_utils;
 use ECidade\Tributario\Library\Repository;
 use ECidade\Tributario\Issqn\Model\Issbase;
 
@@ -62,7 +63,7 @@ class IssbaseRepository extends Repository
 
         $result = $this->dataBase->execute($sql);
 
-        $aInscricoes = \db_utils::makeCollectionFromRecord(
+        $aInscricoes = db_utils::makeCollectionFromRecord(
             $result,
             function ($oDados) {
                 if (!empty($oDados)) {

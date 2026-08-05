@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_visitatipo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clvisitatipo = new cl_visitatipo;
 $clvisitatipo->rotulo->label("as13_sequencial");
 $clvisitatipo->rotulo->label("as13_descricao");
@@ -54,7 +55,7 @@ $clvisitatipo->rotulo->label("as13_descricao");
               <?=$Las13_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("as13_sequencial",10,$Ias13_sequencial,true,"text",4,"","chave_as13_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clvisitatipo->rotulo->label("as13_descricao");
               <?=$Las13_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("as13_descricao",80,$Ias13_descricao,true,"text",4,"","chave_as13_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clvisitatipo->rotulo->label("as13_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_visitatipo.php")==true){
@@ -122,12 +123,12 @@ $clvisitatipo->rotulo->label("as13_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

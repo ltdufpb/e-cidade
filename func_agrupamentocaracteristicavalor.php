@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_agrupamentocaracteristicavalor_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clagrupamentocaracteristicavalor = new cl_agrupamentocaracteristicavalor;
 $clagrupamentocaracteristicavalor->rotulo->label("j140_sequencial");
 $clagrupamentocaracteristicavalor->rotulo->label("j140_valor");
@@ -50,11 +51,11 @@ $clagrupamentocaracteristicavalor->rotulo->label("j140_valor");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lj140_sequencial?></label></td>
-          <td><? db_input("j140_sequencial",10,$Ij140_sequencial,true,"text",4,"","chave_j140_sequencial"); ?></td>
+          <td><?php  db_input("j140_sequencial",10,$Ij140_sequencial,true,"text",4,"","chave_j140_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lj140_valor?></label></td>
-          <td><? db_input("j140_valor",10,$Ij140_valor,true,"text",4,"","chave_j140_valor");?></td>
+          <td><?php  db_input("j140_valor",10,$Ij140_valor,true,"text",4,"","chave_j140_valor");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,7 +63,7 @@ $clagrupamentocaracteristicavalor->rotulo->label("j140_valor");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_agrupamentocaracteristicavalor.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_agrupamentocaracteristicavalor.php")==true){
@@ -104,12 +105,12 @@ $clagrupamentocaracteristicavalor->rotulo->label("j140_valor");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

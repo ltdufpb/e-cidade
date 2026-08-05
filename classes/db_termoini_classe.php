@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -30,33 +30,33 @@
 class cl_termoini
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $inicial = 0;
-    var $parcel = 0;
-    var $numpreant = 0;
-    var $valor = 0;
-    var $juros = 0;
-    var $multa = 0;
-    var $desconto = 0;
-    var $total = 0;
-    var $vlrcor = 0;
-    var $v61_perc = 0;
-    var $vlrdescjur = 0;
-    var $vlrdescmul = 0;
+    public $inicial = 0;
+    public $parcel = 0;
+    public $numpreant = 0;
+    public $valor = 0;
+    public $juros = 0;
+    public $multa = 0;
+    public $desconto = 0;
+    public $total = 0;
+    public $vlrcor = 0;
+    public $v61_perc = 0;
+    public $vlrdescjur = 0;
+    public $vlrdescmul = 0;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  inicial = int4 = Inicial
                  parcel = int4 = Parcelamento
                  numpreant = int4 = numpreant
@@ -72,11 +72,11 @@ class cl_termoini
                  ";
 
     //funcao construtor da classe
-    function cl_termoini()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("termoini");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -267,7 +267,7 @@ class cl_termoini
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = " ($this->parcel." - ".$this->inicial) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = " já Cadastrado";
@@ -294,33 +294,33 @@ class cl_termoini
         $resaco = $this->sql_record($this->sql_query_file($this->parcel, $this->inicial));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,554,'$this->parcel','I')");
             $resac = db_query("insert into db_acountkey values($acount,7411,'$this->inicial','I')");
-            $resac = db_query("insert into db_acount values($acount,110,7411,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,110,7411,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'inicial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,110,554,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,110,554,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'parcel')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,110,562,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,110,562,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'numpreant')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,110,556,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,110,556,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,110,557,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,110,557,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'juros')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,110,558,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,110,558,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'multa')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,110,559,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,110,559,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'desconto')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,110,561,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,110,561,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'total')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,110,5754,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,110,5754,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'vlrcor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,110,7413,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,110,7413,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'v61_perc')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,110,9143,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,110,9143,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'vlrdescjur')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,110,9144,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,110,9144,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'vlrdescmul')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
         return true;
@@ -332,10 +332,10 @@ class cl_termoini
         $this->atualizacampos();
         $sql = " UPDATE termoini SET ";
         $virgula = "";
-        if (trim($this->inicial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["inicial"])) {
+        if (trim((string) $this->inicial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["inicial"])) {
             $sql .= $virgula . " inicial = $this->inicial ";
             $virgula = ",";
-            if (trim($this->inicial) == null) {
+            if (trim((string) $this->inicial) == null) {
                 $this->erro_sql = " Campo Inicial nao Informado.";
                 $this->erro_campo = "inicial";
                 $this->erro_banco = "";
@@ -346,10 +346,10 @@ class cl_termoini
                 return false;
             }
         }
-        if (trim($this->parcel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["parcel"])) {
+        if (trim((string) $this->parcel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["parcel"])) {
             $sql .= $virgula . " parcel = $this->parcel ";
             $virgula = ",";
-            if (trim($this->parcel) == null) {
+            if (trim((string) $this->parcel) == null) {
                 $this->erro_sql = " Campo Parcelamento nao Informado.";
                 $this->erro_campo = "parcel";
                 $this->erro_banco = "";
@@ -360,10 +360,10 @@ class cl_termoini
                 return false;
             }
         }
-        if (trim($this->numpreant) != "" || isset($GLOBALS["HTTP_POST_VARS"]["numpreant"])) {
+        if (trim((string) $this->numpreant) != "" || isset($GLOBALS["HTTP_POST_VARS"]["numpreant"])) {
             $sql .= $virgula . " numpreant = $this->numpreant ";
             $virgula = ",";
-            if (trim($this->numpreant) == null) {
+            if (trim((string) $this->numpreant) == null) {
                 $this->erro_sql = " Campo numpreant nao Informado.";
                 $this->erro_campo = "numpreant";
                 $this->erro_banco = "";
@@ -374,10 +374,10 @@ class cl_termoini
                 return false;
             }
         }
-        if (trim($this->valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["valor"])) {
+        if (trim((string) $this->valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["valor"])) {
             $sql .= $virgula . " valor = $this->valor ";
             $virgula = ",";
-            if (trim($this->valor) == null) {
+            if (trim((string) $this->valor) == null) {
                 $this->erro_sql = " Campo valor nao Informado.";
                 $this->erro_campo = "valor";
                 $this->erro_banco = "";
@@ -388,10 +388,10 @@ class cl_termoini
                 return false;
             }
         }
-        if (trim($this->juros) != "" || isset($GLOBALS["HTTP_POST_VARS"]["juros"])) {
+        if (trim((string) $this->juros) != "" || isset($GLOBALS["HTTP_POST_VARS"]["juros"])) {
             $sql .= $virgula . " juros = $this->juros ";
             $virgula = ",";
-            if (trim($this->juros) == null) {
+            if (trim((string) $this->juros) == null) {
                 $this->erro_sql = " Campo juros nao Informado.";
                 $this->erro_campo = "juros";
                 $this->erro_banco = "";
@@ -402,10 +402,10 @@ class cl_termoini
                 return false;
             }
         }
-        if (trim($this->multa) != "" || isset($GLOBALS["HTTP_POST_VARS"]["multa"])) {
+        if (trim((string) $this->multa) != "" || isset($GLOBALS["HTTP_POST_VARS"]["multa"])) {
             $sql .= $virgula . " multa = $this->multa ";
             $virgula = ",";
-            if (trim($this->multa) == null) {
+            if (trim((string) $this->multa) == null) {
                 $this->erro_sql = " Campo multa nao Informado.";
                 $this->erro_campo = "multa";
                 $this->erro_banco = "";
@@ -416,10 +416,10 @@ class cl_termoini
                 return false;
             }
         }
-        if (trim($this->desconto) != "" || isset($GLOBALS["HTTP_POST_VARS"]["desconto"])) {
+        if (trim((string) $this->desconto) != "" || isset($GLOBALS["HTTP_POST_VARS"]["desconto"])) {
             $sql .= $virgula . " desconto = $this->desconto ";
             $virgula = ",";
-            if (trim($this->desconto) == null) {
+            if (trim((string) $this->desconto) == null) {
                 $this->erro_sql = " Campo desconto nao Informado.";
                 $this->erro_campo = "desconto";
                 $this->erro_banco = "";
@@ -430,10 +430,10 @@ class cl_termoini
                 return false;
             }
         }
-        if (trim($this->total) != "" || isset($GLOBALS["HTTP_POST_VARS"]["total"])) {
+        if (trim((string) $this->total) != "" || isset($GLOBALS["HTTP_POST_VARS"]["total"])) {
             $sql .= $virgula . " total = $this->total ";
             $virgula = ",";
-            if (trim($this->total) == null) {
+            if (trim((string) $this->total) == null) {
                 $this->erro_sql = " Campo total nao Informado.";
                 $this->erro_campo = "total";
                 $this->erro_banco = "";
@@ -444,10 +444,10 @@ class cl_termoini
                 return false;
             }
         }
-        if (trim($this->vlrcor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["vlrcor"])) {
+        if (trim((string) $this->vlrcor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["vlrcor"])) {
             $sql .= $virgula . " vlrcor = $this->vlrcor ";
             $virgula = ",";
-            if (trim($this->vlrcor) == null) {
+            if (trim((string) $this->vlrcor) == null) {
                 $this->erro_sql = " Campo Valor corrigido nao Informado.";
                 $this->erro_campo = "vlrcor";
                 $this->erro_banco = "";
@@ -458,10 +458,10 @@ class cl_termoini
                 return false;
             }
         }
-        if (trim($this->v61_perc) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v61_perc"])) {
+        if (trim((string) $this->v61_perc) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v61_perc"])) {
             $sql .= $virgula . " v61_perc = $this->v61_perc ";
             $virgula = ",";
-            if (trim($this->v61_perc) == null) {
+            if (trim((string) $this->v61_perc) == null) {
                 $this->erro_sql = " Campo Percentual nao Informado.";
                 $this->erro_campo = "v61_perc";
                 $this->erro_banco = "";
@@ -472,10 +472,10 @@ class cl_termoini
                 return false;
             }
         }
-        if (trim($this->vlrdescjur) != "" || isset($GLOBALS["HTTP_POST_VARS"]["vlrdescjur"])) {
+        if (trim((string) $this->vlrdescjur) != "" || isset($GLOBALS["HTTP_POST_VARS"]["vlrdescjur"])) {
             $sql .= $virgula . " vlrdescjur = $this->vlrdescjur ";
             $virgula = ",";
-            if (trim($this->vlrdescjur) == null) {
+            if (trim((string) $this->vlrdescjur) == null) {
                 $this->erro_sql = " Campo Desconto Juros nao Informado.";
                 $this->erro_campo = "vlrdescjur";
                 $this->erro_banco = "";
@@ -486,10 +486,10 @@ class cl_termoini
                 return false;
             }
         }
-        if (trim($this->vlrdescmul) != "" || isset($GLOBALS["HTTP_POST_VARS"]["vlrdescmul"])) {
+        if (trim((string) $this->vlrdescmul) != "" || isset($GLOBALS["HTTP_POST_VARS"]["vlrdescmul"])) {
             $sql .= $virgula . " vlrdescmul = $this->vlrdescmul ";
             $virgula = ",";
-            if (trim($this->vlrdescmul) == null) {
+            if (trim((string) $this->vlrdescmul) == null) {
                 $this->erro_sql = " Campo Desconto Multa nao Informado.";
                 $this->erro_campo = "vlrdescmul";
                 $this->erro_banco = "";
@@ -511,67 +511,67 @@ class cl_termoini
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,554,'$this->parcel','A')");
                 $resac = db_query("insert into db_acountkey values($acount,7411,'$this->inicial','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["inicial"])) {
-                    $resac = db_query("insert into db_acount values($acount,110,7411,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,110,7411,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'inicial')) . "','$this->inicial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["parcel"])) {
-                    $resac = db_query("insert into db_acount values($acount,110,554,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,110,554,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'parcel')) . "','$this->parcel'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["numpreant"])) {
-                    $resac = db_query("insert into db_acount values($acount,110,562,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,110,562,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'numpreant')) . "','$this->numpreant'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["valor"])) {
-                    $resac = db_query("insert into db_acount values($acount,110,556,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,110,556,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'valor')) . "','$this->valor'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["juros"])) {
-                    $resac = db_query("insert into db_acount values($acount,110,557,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,110,557,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'juros')) . "','$this->juros'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["multa"])) {
-                    $resac = db_query("insert into db_acount values($acount,110,558,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,110,558,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'multa')) . "','$this->multa'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["desconto"])) {
-                    $resac = db_query("insert into db_acount values($acount,110,559,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,110,559,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'desconto')) . "','$this->desconto'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["total"])) {
-                    $resac = db_query("insert into db_acount values($acount,110,561,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,110,561,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'total')) . "','$this->total'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["vlrcor"])) {
-                    $resac = db_query("insert into db_acount values($acount,110,5754,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,110,5754,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'vlrcor')) . "','$this->vlrcor'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["v61_perc"])) {
-                    $resac = db_query("insert into db_acount values($acount,110,7413,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,110,7413,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'v61_perc')) . "','$this->v61_perc'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["vlrdescjur"])) {
-                    $resac = db_query("insert into db_acount values($acount,110,9143,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,110,9143,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'vlrdescjur')) . "','$this->vlrdescjur'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["vlrdescmul"])) {
-                    $resac = db_query("insert into db_acount values($acount,110,9144,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,110,9144,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'vlrdescmul')) . "','$this->vlrdescmul'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -624,44 +624,44 @@ class cl_termoini
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,554,'$parcel','E')");
                 $resac = db_query("insert into db_acountkey values($acount,7411,'$inicial','E')");
-                $resac = db_query("insert into db_acount values($acount,110,7411,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,110,7411,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'inicial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,110,554,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,110,554,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'parcel')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,110,562,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,110,562,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'numpreant')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,110,556,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,110,556,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,110,557,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,110,557,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'juros')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,110,558,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,110,558,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'multa')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,110,559,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,110,559,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'desconto')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,110,561,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,110,561,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'total')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,110,5754,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,110,5754,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'vlrcor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,110,7413,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,110,7413,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'v61_perc')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,110,9143,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,110,9143,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'vlrdescjur')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,110,9144,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,110,9144,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'vlrdescmul')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -735,7 +735,7 @@ class cl_termoini
             $this->erro_status = "0";
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:termoini";
@@ -785,7 +785,7 @@ class cl_termoini
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -830,7 +830,7 @@ class cl_termoini
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

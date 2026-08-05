@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matmater_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmatmater = new cl_matmater;
 $escola = db_getsession("DB_coddepto");
 $clmatmater->rotulo->label("m60_codmater");
@@ -55,7 +56,7 @@ $clmatmater->rotulo->label("m60_descr");
       <?=$Lm60_codmater?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("m60_codmater",10,$Im60_codmater,true,"text",4,"","chave_m60_codmater");?>
+      <?php db_input("m60_codmater",10,$Im60_codmater,true,"text",4,"","chave_m60_codmater");?>
      </td>
     </tr>
     <tr>
@@ -63,7 +64,7 @@ $clmatmater->rotulo->label("m60_descr");
       <?=$Lm60_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("m60_descr",40,$Im60_descr,true,"text",4,"","chave_m60_descr");?>
+      <?php db_input("m60_descr",40,$Im60_descr,true,"text",4,"","chave_m60_descr");?>
      </td>
     </tr>
     <tr>
@@ -79,7 +80,7 @@ $clmatmater->rotulo->label("m60_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $sql_expand = " ";
    if (isset($validar)) {
    	

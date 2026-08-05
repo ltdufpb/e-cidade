@@ -2,6 +2,10 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use BusinessException;
+use DBException;
+use Exception;
 use ECidade\RecursosHumanos\ESocial\Entity\Servidor;
 use ECidade\RecursosHumanos\ESocial\Service\ServidorService;
 use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
@@ -29,9 +33,10 @@ class ServidorFormatter extends Formatter
     /**
      * @param  array $dados
      * @return mixed|stdClass[]
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
+    #[Override]
     public function formatar($dados, $alteracao = false)
     {
         $this->alteracao = $alteracao;
@@ -83,12 +88,12 @@ class ServidorFormatter extends Formatter
 
                         $std = new stdClass();
                         $std->nome = "horario_codHorContrat_{$i}";
-                        $std->perguntas = array();
+                        $std->perguntas = [];
                         $std->nome = "horario_codHorContrat_{$i}";
-                        $std->perguntas = array(
+                        $std->perguntas = [
                             "horario_codHorContrat_{$i}" => $codigo,
                             "dia_{$i}"                   => $dia
-                        );
+                        ];
 
                         $dado->respostas["horario_codHorContrat_{$i}"] = $std;
                     }
@@ -100,8 +105,8 @@ class ServidorFormatter extends Formatter
     /**
      * @param  $dadosFormatado
      * @return mixed
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function processamento($servidor)
     {
@@ -155,7 +160,7 @@ class ServidorFormatter extends Formatter
         if (isset($dadoServidor->trabalhador->documentos->CTPS)) {
             //Quando informado UF, tem que ser em letrass maiúscula
             if (!empty($dadoServidor->trabalhador->documentos->CTPS->ufCtps)) {
-                $uf = strtoupper($dadoServidor->trabalhador->documentos->CTPS->ufCtps);
+                $uf = strtoupper((string) $dadoServidor->trabalhador->documentos->CTPS->ufCtps);
                 $dadoServidor->trabalhador->documentos->CTPS->ufCtps = $uf;
             }
 
@@ -278,7 +283,7 @@ class ServidorFormatter extends Formatter
 
             //Quando informado UF, tem que ser em letras maiúscula
             if (!empty($dadoServidor->trabalhador->documentos->CNH->ufCnh)) {
-                $uf = strtoupper($dadoServidor->trabalhador->documentos->CNH->ufCnh);
+                $uf = strtoupper((string) $dadoServidor->trabalhador->documentos->CNH->ufCnh);
                 $dadoServidor->trabalhador->documentos->CNH->ufCnh = $uf;
             }
             /**
@@ -435,9 +440,9 @@ class ServidorFormatter extends Formatter
 
     /**
      * @param  $dadoServidor
-     * @throws \BusinessException
-     * @throws \DBException
-     * @throws \Exception
+     * @throws BusinessException
+     * @throws DBException
+     * @throws Exception
      */
     private function atualizarDadosServidor(&$dadoServidor)
     {
@@ -819,14 +824,14 @@ class ServidorFormatter extends Formatter
     private function regraContato(&$dadoServidor)
     {
         $dadoContato =  $dadoServidor->trabalhador['contato'];
-        $dadoContato['fonePrinc'] = preg_replace('/[\D]/', '', $dadoContato['fonePrinc']);
-        if (strlen(trim($dadoContato['fonePrinc']))<10 || strlen(trim($dadoContato['fonePrinc']))>12) {
+        $dadoContato['fonePrinc'] = preg_replace('/[\D]/', '', (string) $dadoContato['fonePrinc']);
+        if (strlen(trim((string) $dadoContato['fonePrinc']))<10 || strlen(trim((string) $dadoContato['fonePrinc']))>12) {
             unset($dadoContato['fonePrinc']);
         }
         if (isset($dadoContato) && empty($dadoContato['fonePrinc'])) {
             unset($dadoContato['fonePrinc']);
         } else {
-            $dadoContato['fonePrinc'] = trim($dadoContato['fonePrinc']);
+            $dadoContato['fonePrinc'] = trim((string) $dadoContato['fonePrinc']);
         }
 
         if (isset($dadoContato) && empty($dadoContato['emailPrinc'])) {
@@ -961,6 +966,7 @@ class ServidorFormatter extends Formatter
      *
      * @return  CgmJuridico
      */
+    #[Override]
     public function getEmpregador()
     {
         return $this->empregador;
@@ -973,6 +979,7 @@ class ServidorFormatter extends Formatter
      *
      * @return  self
      */
+    #[Override]
     public function setEmpregador(CgmJuridico $empregador)
     {
         $this->empregador = $empregador;

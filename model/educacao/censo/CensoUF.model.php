@@ -34,34 +34,29 @@
 class CensoUF {
   
   /**
-   * Sigla do estado
-   * @var string
-   */
-  protected $sUF;
-  
-  /**
-   * Código IBGE do Estado
-   * @integer
-   */
-  protected $iCodigo;
-  
-  /**
-   * Nome do estado
-   * @var string 
-   */
-  protected $sNomeEstado;
-  
-  /**
    * Método Construtor
    * @param $iCodigo Codigo do estado
    * @param $sUf Uf do estado
    * @param $sNome nome do estado
+   * @param string $sUf
+   * @param string $sNome
    */
-  public function __construct($iCodigo, $sUf, $sNome) {
-    
-    $this->iCodigo      = $iCodigo;
-    $this->sUF          = $sUf;
-    $this->sNomeEstado  = $sNome;
+  public function __construct(
+      /**
+       * Código IBGE do Estado
+       * @integer
+       */
+      protected $iCodigo,
+      /**
+       * Sigla do estado
+       */
+      protected $sUF,
+      /**
+       * Nome do estado
+       */
+      protected $sNomeEstado
+  )
+  {
   }
   
   /**

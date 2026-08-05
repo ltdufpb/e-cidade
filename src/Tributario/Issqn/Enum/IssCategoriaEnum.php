@@ -17,12 +17,12 @@ class IssCategoriaEnum extends Enum
      */
     public static function descricoes()
     {
-        return array(
+        return [
             static::MICRO_EMPRESA => 'Micro Empresa',
             static::PEQUENO_PORTE => 'Empresa de pequeno porte',
             static::MEI => 'MEI',
             static::EIRELI => 'EIRELI',
             static::SOCIO => 'Soc. Profissionais'
-        );
+        ];
     }
 }

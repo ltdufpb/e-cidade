@@ -35,12 +35,6 @@
 class GrupoContaOrcamento {
 
   /**
-   * Codigo do Grupo
-   * @var integer
-   */
-  protected $iCodigo;
-
-  /**
    * Descricao do Grupo
    * @var string
    */
@@ -58,25 +52,27 @@ class GrupoContaOrcamento {
    * Armazena as contas do grupo
    * @var array
    */
-  protected $aContas = array();
+  protected $aContas = [];
 
   const MATERIAL_PERMANENTE = 9;
 
   /**
    * Constroi um objeto com os dados do grupo
-   * @param integer $iCodigoGrupo
+   * @param integer $iCodigo
    * @return GrupoContaOrcamento
    */
-  public function __construct($iCodigoGrupo = null) {
+  public function __construct(/**
+   * Codigo do Grupo
+   */
+  protected $iCodigo = null) {
 
-    $this->iCodigo = $iCodigoGrupo;
-    if (!empty($iCodigoGrupo)) {
+    if (!empty($this->iCodigo)) {
 
       $oDaoConGrupoOrcamento = db_utils::getDao('congrupo');
       $sSqlConGrupoOrcamento = $oDaoConGrupoOrcamento->sql_query_file(null,
                                                                       "*",
                                                                       null,
-                                                                      "c20_sequencial = {$iCodigoGrupo}"
+                                                                      "c20_sequencial = {$this->iCodigo}"
                                                                      );
       $rsConGrupoOrcamento   = $oDaoConGrupoOrcamento->sql_record($sSqlConGrupoOrcamento);
       if ($oDaoConGrupoOrcamento->numrows > 0) {

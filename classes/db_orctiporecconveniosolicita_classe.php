@@ -52,7 +52,7 @@ class cl_orctiporecconveniosolicita {
                  o78_pactoplano = int4 = Código Plano 
                  ";
    //funcao construtor da classe 
-   function cl_orctiporecconveniosolicita() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orctiporecconveniosolicita"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -54,7 +54,7 @@ class cl_setor {
                  j30_aliter = float8 = Aliquota Territorial 
                  ";
    //funcao construtor da classe 
-   function cl_setor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("setor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

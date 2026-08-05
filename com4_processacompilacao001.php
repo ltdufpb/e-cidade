@@ -50,7 +50,7 @@ $iBloqueia = 3;
 <html>
 <head>
 <title>DBSeller Inform&aacute;tica Ltda - P&aacute;gina Inicial</title>
-<?
+<?php 
 db_app::load("scripts.js, strings.js, prototype.js,datagrid.widget.js, widgets/dbautocomplete.widget.js");
 db_app::load("widgets/windowAux.widget.js");
 ?>
@@ -85,7 +85,7 @@ db_app::load("widgets/windowAux.widget.js");
                  <b>Código:</b>
               </td>
               <td  colspan="2">
-                <?
+                <?php 
                 db_input('pc10_numero',10,$Ipc10_numero,true,'text',3)
                 ?>
               </td>
@@ -95,7 +95,7 @@ db_app::load("widgets/windowAux.widget.js");
                 <b>Data Vigência:</b>
               </td>
               <td colspan="2">
-                <?
+                <?php 
                 $recebedata = db_getsession("DB_datausu");
                 $recebedata = date("Y-m-d",$recebedata);
                 if(isset($pc10_data) && trim($pc10_data) != ""){
@@ -115,7 +115,7 @@ db_app::load("widgets/windowAux.widget.js");
                 <b>Resumo:</b>
               </td>
               <td colspan='3'>
-              <?
+              <?php 
                @$pc10_resumo = htmlspecialchars_decode(stripslashes($pc10_resumo));
                db_textarea("pc10_resumo",10,120,"",true,"text",$db_opcao,"","","",735);
               ?>
@@ -123,12 +123,12 @@ db_app::load("widgets/windowAux.widget.js");
             </tr>
             <tr>
               <td>
-                 <?
+                 <?php 
                  db_ancora("<b>Abertura de Preço:</b>", "js_pesquisaaberturaprecos(true);", $iBloqueia);
                  ?>
               </td>
               <td>
-                <?
+                <?php 
                  db_input('pc54_solicita', 8, $Ipc54_solicita, true, 'text', 3, "");
                 ?>
               </td>
@@ -150,7 +150,7 @@ db_app::load("widgets/windowAux.widget.js");
   </center>
 </body>
 </html>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>

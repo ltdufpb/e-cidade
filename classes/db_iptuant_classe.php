@@ -33,7 +33,7 @@ class cl_iptuant
     public function __construct()
     {
         $this->rotulo = new rotulo('iptuant');
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -80,7 +80,7 @@ class cl_iptuant
      $result = db_query($sql);
      if ($result == false) { 
        $this->erro_banco = str_replace("\n", "", @pg_last_error());
-       if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+       if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
          $this->erro_sql = " () não Incluído. Inclusão Abortada.";
          $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já cadastrado";
@@ -107,12 +107,12 @@ class cl_iptuant
        $resaco = $this->sql_record($this->sql_query_file($this->j40_matric  ));
        if ($resaco != false || $this->numrows != 0) {
          $resac = db_query("SELECT nextval('db_acount_id_acount_seq') AS acount");
-         $acount = pg_result($resac, 0, 0);
+         $acount = pg_fetch_result($resac, 0, 0);
          $resac = db_query("INSERT INTO db_acountacesso VALUES ($acount, " . db_getsession("DB_acessado") . ")");
          $resac = db_query("INSERT INTO db_acountkey VALUES ($acount,148,'$this->j40_matric','I')");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,29,148,'','" . AddSlashes(pg_result($resaco,0,'j40_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,29,149,'','" . AddSlashes(pg_result($resaco,0,'j40_refant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,29,1010817,'','" . AddSlashes(pg_result($resaco,0,'j40_registrocartografico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,29,148,'','" . AddSlashes(pg_fetch_result($resaco,0,'j40_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,29,149,'','" . AddSlashes(pg_fetch_result($resaco,0,'j40_refant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,29,1010817,'','" . AddSlashes(pg_fetch_result($resaco,0,'j40_registrocartografico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -154,15 +154,15 @@ class cl_iptuant
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,148,'$this->j40_matric','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j40_matric"]) || $this->j40_matric != "")
-             $resac = db_query("insert into db_acount values($acount,29,148,'".AddSlashes(pg_result($resaco,$conresaco,'j40_matric'))."','$this->j40_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,29,148,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j40_matric'))."','$this->j40_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j40_refant"]) || $this->j40_refant != "")
-             $resac = db_query("insert into db_acount values($acount,29,149,'".AddSlashes(pg_result($resaco,$conresaco,'j40_refant'))."','$this->j40_refant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,29,149,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j40_refant'))."','$this->j40_refant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j40_registrocartografico"]) || $this->j40_registrocartografico != "")
-             $resac = db_query("insert into db_acount values($acount,29,1010817,'".AddSlashes(pg_result($resaco,$conresaco,'j40_registrocartografico'))."','$this->j40_registrocartografico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,29,1010817,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j40_registrocartografico'))."','$this->j40_registrocartografico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -216,12 +216,12 @@ class cl_iptuant
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,148,'$j40_matric','E')");
-           $resac  = db_query("insert into db_acount values($acount,29,148,'','".AddSlashes(pg_result($resaco,$iresaco,'j40_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,29,149,'','".AddSlashes(pg_result($resaco,$iresaco,'j40_refant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,29,1010817,'','".AddSlashes(pg_result($resaco,$iresaco,'j40_registrocartografico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,29,148,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j40_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,29,149,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j40_refant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,29,1010817,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j40_registrocartografico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

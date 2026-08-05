@@ -2,6 +2,8 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+
 /**
  * Formata os dados da Exclusão de Eventos
  *
@@ -16,6 +18,7 @@ class ExclusaoEventosFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[Override]
     public function formatar($dados)
     {
         $dadosFormatado = parent::formatar($dados);

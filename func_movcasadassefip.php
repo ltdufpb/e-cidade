@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_movcasadassefip_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmovcasadassefip = new cl_movcasadassefip;
 $clmovcasadassefip->rotulo->label("r67_anousu");
 $clmovcasadassefip->rotulo->label("r67_mesusu");
@@ -57,7 +58,7 @@ $clmovcasadassefip->rotulo->label("r67_reto");
               <?=$Lr67_mesusu?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r67_mesusu",2,$Ir67_mesusu,true,"text",4,"","chave_r67_mesusu");
 		       ?>
             </td>
@@ -67,7 +68,7 @@ $clmovcasadassefip->rotulo->label("r67_reto");
               <?=$Lr67_afast?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r67_afast",2,$Ir67_afast,true,"text",4,"","chave_r67_afast");
 		       ?>
             </td>
@@ -77,7 +78,7 @@ $clmovcasadassefip->rotulo->label("r67_reto");
               <?=$Lr67_reto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r67_reto",2,$Ir67_reto,true,"text",4,"","chave_r67_reto");
 		       ?>
             </td>
@@ -87,7 +88,7 @@ $clmovcasadassefip->rotulo->label("r67_reto");
               <?=$Lr67_reto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r67_reto",2,$Ir67_reto,true,"text",4,"","chave_r67_reto");
 		       ?>
             </td>
@@ -105,7 +106,7 @@ $clmovcasadassefip->rotulo->label("r67_reto");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_movcasadassefip.php")==true){
@@ -141,12 +142,12 @@ $clmovcasadassefip->rotulo->label("r67_reto");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

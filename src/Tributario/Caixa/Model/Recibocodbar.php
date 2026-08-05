@@ -2,7 +2,6 @@
 
 namespace ECidade\Tributario\Caixa\Model;
 
-use \DateTime;
 use ECidade\Tributario\Library\Model;
 
 final class Recibocodbar extends Model

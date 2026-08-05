@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -63,9 +63,9 @@ $oGet         = db_utils::postMemory($_GET);
 
 function Abreviar($nome,$max) {
 
-  if (strlen(trim($nome)) > $max) {
+  if (strlen(trim((string) $nome)) > $max) {
 
-    $strinv   = strrev(trim($nome));
+    $strinv   = strrev(trim((string) $nome));
     $ultnome  = substr($strinv,0,strpos($strinv," "));
     $ultnome  = strrev($ultnome);
     $nome     = strrev($strinv);
@@ -96,7 +96,7 @@ function Abreviar($nome,$max) {
     $nome .= $iniciais;
     $nome .= " ".$ultnome;
  }
- return trim($nome);
+ return trim((string) $nome);
 }
 
 $pdf = new PDF();
@@ -215,7 +215,7 @@ for ($x = 0; $x < $iLinhasRegencia; $x++) {
 
     for ($r = 0; $r < count($array_meses); $r++) {
 
-      $qtd_diasmes = explode(",",$array_meses[$r]);
+      $qtd_diasmes = explode(",",(string) $array_meses[$r]);
       $iquebra     = 0;
       if ($r == (count($array_meses)-1) && ($avaliacao != "true" && $falta != "true")) {
         $iquebra = 1;
@@ -269,7 +269,7 @@ for ($x = 0; $x < $iLinhasRegencia; $x++) {
       	$iQuebra = 1;
       }
 
-      $umdia = explode("-",$n_dias[$r]);
+      $umdia = explode("-",(string) $n_dias[$r]);
       $pdf->cell($larguraindiv,4,$umdia[0],1,$iQuebra,"C",0);
     }
   } else {
@@ -433,11 +433,11 @@ for ($x = 0; $x < $iLinhasRegencia; $x++) {
     $pdf->setfont('arial','',6);
     $pdf->cell(5,4,$ed60_i_numaluno,1,0,"C",0);
     
-    if (strlen(trim($ed47_v_nome)) > 43) {
+    if (strlen(trim((string) $ed47_v_nome)) > 43) {
       $pdf->setfont('arial','',5);
     }
 
-    $pdf->cell(55, 4, substr($ed47_v_nome, 0, 47),1,0,"L",0);
+    $pdf->cell(55, 4, substr((string) $ed47_v_nome, 0, 47),1,0,"L",0);
 
     if ($amparo == "S") {
 
@@ -457,12 +457,12 @@ for ($x = 0; $x < $iLinhasRegencia; $x++) {
 
     } else {
 
-      if (trim($ed60_c_situacao) != "MATRICULADO") {
+      if (trim((string) $ed60_c_situacao) != "MATRICULADO") {
 
         $pdf->setfont('arial','b',11);
-        $sSituacao = trim(Situacao($ed60_c_situacao,$ed60_i_codigo));
+        $sSituacao = trim((string) Situacao($ed60_c_situacao,$ed60_i_codigo));
 
-        if ( trim($ed60_c_situacao) == "TRANSFERIDO FORA" || trim($ed60_c_situacao) == "TRANSFERIDO REDE") {
+        if ( trim((string) $ed60_c_situacao) == "TRANSFERIDO FORA" || trim((string) $ed60_c_situacao) == "TRANSFERIDO REDE") {
           $sSituacao = "TRANSFERIDO";
         }
 
@@ -491,7 +491,7 @@ for ($x = 0; $x < $iLinhasRegencia; $x++) {
       }
     }
 
-    if (trim($ed60_c_situacao) == "MATRICULADO") {
+    if (trim((string) $ed60_c_situacao) == "MATRICULADO") {
 
       if (empty($oRecuperacao)) {
         
@@ -524,11 +524,11 @@ for ($x = 0; $x < $iLinhasRegencia; $x++) {
       }
     } else {
 
-      $sSituacao = trim(Situacao($ed60_c_situacao,$ed60_i_codigo));
+      $sSituacao = trim((string) Situacao($ed60_c_situacao,$ed60_i_codigo));
     	$sBorda         = 1;
     	$iTamanhoCelula = 45;
     	
-      if ( trim($ed60_c_situacao) == "TRANSFERIDO FORA" || trim($ed60_c_situacao) == "TRANSFERIDO REDE") {
+      if ( trim((string) $ed60_c_situacao) == "TRANSFERIDO FORA" || trim((string) $ed60_c_situacao) == "TRANSFERIDO REDE") {
         $sSituacao = "TRANSFERIDO";
       }
     	if ($oGet->iModeloRelatorio == 4) {
@@ -579,7 +579,7 @@ for ($x = 0; $x < $iLinhasRegencia; $x++) {
 
         for ($r = 0; $r < count($array_meses); $r++) {
 
-          $qtd_diasmes = explode(",",$array_meses[$r]);
+          $qtd_diasmes = explode(",",(string) $array_meses[$r]);
           $iquebra     = 0;
           if ($r == (count($array_meses)-1) && ($avaliacao != "true" && $falta != "true")) {
             $iquebra = 1;
@@ -625,7 +625,7 @@ for ($x = 0; $x < $iLinhasRegencia; $x++) {
           if ($r == (count($n_dias)-1) && ($avaliacao != "true" && $falta != "true")) {
       	    $iQuebra = 1;
           }
-          $umdia = explode("-",$n_dias[$r]);
+          $umdia = explode("-",(string) $n_dias[$r]);
           $pdf->cell($larguraindiv,4,$umdia[0],$iQuebra,0,"C",0);
         }
       } else {

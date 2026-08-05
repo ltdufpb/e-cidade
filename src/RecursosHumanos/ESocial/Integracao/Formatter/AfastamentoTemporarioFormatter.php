@@ -1,12 +1,9 @@
 <?php
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
-use ECidade\Integracao\Sped\Common\Configuracao\ConfiguracaoFactory;
-use ECidade\RecursosHumanos\ESocial\Factory\Mapeador;
-use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
-use ECidade\RecursosHumanos\ESocial\Repository\FormularioRepository;
-use ECidade\RecursosHumanos\ESocial\Repository\TrabalhadorSemVinculoInicio;
-
+use Override;
+use ServidorRepository;
+use DBDate;
 /**
  * Class AfastamentoTemporarioFormatter
  * @package ECidade\RecursosHumanos\ESocial\Integracao\Formatter
@@ -23,6 +20,7 @@ class AfastamentoTemporarioFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[Override]
     public function formatar($dados)
     {
         $dadosFormatado = parent::formatar($dados);
@@ -51,7 +49,7 @@ class AfastamentoTemporarioFormatter extends Formatter
             }
 
             $dadoFormatado->infoAfastamento->iniAfastamento->codMotAfast = str_pad(
-                $dadoFormatado->infoAfastamento->iniAfastamento->codMotAfast,
+                (string) $dadoFormatado->infoAfastamento->iniAfastamento->codMotAfast,
                 2,
                 0,
                 STR_PAD_LEFT
@@ -62,7 +60,7 @@ class AfastamentoTemporarioFormatter extends Formatter
                     (int)$dadoFormatado->infoAfastamento->iniAfastamento->tpAcidTransito;
             }
             if (!empty($dadoFormatado->ideVinculo->matricula)) {
-                $this->servidor = \ServidorRepository::getInstanciaByCodigo($dadoFormatado->ideVinculo->matricula);
+                $this->servidor = ServidorRepository::getInstanciaByCodigo($dadoFormatado->ideVinculo->matricula);
                 // Validamos o servidor e se ele nao possui vinculo Empregaticio
                 if ($this->servidor->isEstagiario()) {
                     $estagiario = true;
@@ -71,7 +69,7 @@ class AfastamentoTemporarioFormatter extends Formatter
                 //Codigo afastamento igual a 15
                 //Código Categoria validar Array 1XX, 301, 302, 303, 304, 306, 307, 309, 310, 312, 410
                 $codigoCategoria = $this->servidor->getVinculo()->getCodigoCategoria();
-                $substrOne = substr($codigoCategoria, 0, 1);
+                $substrOne = substr((string) $codigoCategoria, 0, 1);
                 if (($dadoFormatado->infoAfastamento->iniAfastamento->codMotAfast == '15'
                      && $this->servidor->validaCategoriaRescisao() || $substrOne == '1' &&
                     $this->servidor->getTipoRegime() == '1' || $codigoCategoria == '401')) {
@@ -87,15 +85,15 @@ class AfastamentoTemporarioFormatter extends Formatter
                 if (isset($dadoFormatado->infoAfastamento->iniAfastamento->perAquis->dtInicio)
                     && !empty($dadoFormatado->infoAfastamento->iniAfastamento->perAquis->dtInicio)
                 ) {
-                    $dadoFormatado->infoAfastamento->iniAfastamento->perAquis->dtInicio = \DBDate::format(
+                    $dadoFormatado->infoAfastamento->iniAfastamento->perAquis->dtInicio = DBDate::format(
                         $dadoFormatado->infoAfastamento->iniAfastamento->perAquis->dtInicio,
-                        \DBDate::DATA_EN
+                        DBDate::DATA_EN
                     );
                     if (isset($dadoFormatado->infoAfastamento->iniAfastamento->perAquis->dtFim)
                         && !empty($dadoFormatado->infoAfastamento->iniAfastamento->perAquis->dtFim)) {
-                        $dadoFormatado->infoAfastamento->iniAfastamento->perAquis->dtFim = \DBDate::format(
+                        $dadoFormatado->infoAfastamento->iniAfastamento->perAquis->dtFim = DBDate::format(
                             $dadoFormatado->infoAfastamento->iniAfastamento->perAquis->dtFim,
-                            \DBDate::DATA_EN
+                            DBDate::DATA_EN
                         );
                     }
                 } else {
@@ -116,7 +114,7 @@ class AfastamentoTemporarioFormatter extends Formatter
 
             // Removido os dados do atestado caso o motivo do afastamento for diferente de:
             // 1 - Acidente/Doença do trabalho e 3 - Acidente/Doença não relacionada ao trabalho
-            if (!in_array($dadoFormatado->infoAfastamento->iniAfastamento->codMotAfast, array('01', '03'))) {
+            if (!in_array($dadoFormatado->infoAfastamento->iniAfastamento->codMotAfast, ['01', '03'])) {
                 unset($dadoFormatado->infoAfastamento->iniAfastamento->infoAtestado);
             }
             // Removido dados do Mandato Sindical quando motivo do afastamento for diferente de:
@@ -148,7 +146,7 @@ class AfastamentoTemporarioFormatter extends Formatter
                 } else {
                     //VALIDAÇÃO EXCLUSIVA PARA O CODIGO CATEGORIA 301
                     if (!empty($dadoFormatado->ideVinculo->matricula)) {
-                        $servidor = \ServidorRepository::getInstanciaByCodigo($matricula);
+                        $servidor = ServidorRepository::getInstanciaByCodigo($matricula);
                         $codCategoria = $servidor->getVinculo()->getCodigoCategoria();
                         if ($codCategoria !== 301) {
                             unset($dadoFormatado->infoAfastamento->infoMandElet->indRemunCargo);
@@ -174,7 +172,7 @@ class AfastamentoTemporarioFormatter extends Formatter
             if (!isset($dadoFormatado->ideVinculo->matricula)
                 || (isset($dadoFormatado->ideVinculo->matricula) && empty($dadoFormatado->ideVinculo->matricula))
             ) {
-                $servidor = \ServidorRepository::getInstanciaByCodigo($matricula);
+                $servidor = ServidorRepository::getInstanciaByCodigo($matricula);
                 $dadoFormatado->ideVinculo->codCateg = (int) $servidor->getVinculo()->getCodigoCategoria();
             }
 
@@ -184,7 +182,7 @@ class AfastamentoTemporarioFormatter extends Formatter
                 $cnpjSind = preg_replace(
                     '\'[^0-9]\'',
                     '',
-                    $cnpjSind
+                    (string) $cnpjSind
                 );
                 $dadoFormatado->infoAfastamento->iniAfastamento->infoMandSind->cnpjSind = $cnpjSind;
             }

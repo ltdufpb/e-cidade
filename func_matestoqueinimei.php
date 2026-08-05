@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matestoqueinimei_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmatestoqueinimei = new cl_matestoqueinimei;
 $clmatestoqueinimei->rotulo->label("m82_codigo");
 $clmatestoqueinimei->rotulo->label("m82_codigo");
@@ -54,7 +55,7 @@ $clmatestoqueinimei->rotulo->label("m82_codigo");
               <?=$Lm82_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m82_codigo",10,$Im82_codigo,true,"text",4,"","chave_m82_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clmatestoqueinimei->rotulo->label("m82_codigo");
               <?=$Lm82_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m82_codigo",10,$Im82_codigo,true,"text",4,"","chave_m82_codigo");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clmatestoqueinimei->rotulo->label("m82_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $where_parametro = "";
       if(isset($chave_m80_codtipo)){
         $where_parametro .= " and m80_codtipo=$chave_m80_codtipo ";
@@ -128,12 +129,12 @@ $clmatestoqueinimei->rotulo->label("m82_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

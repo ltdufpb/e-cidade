@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE previsaodespesa
 class cl_previsaodespesa
@@ -58,7 +58,7 @@ class cl_previsaodespesa
                  ";
 
     //funcao construtor da classe
-    function cl_previsaodespesa()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("previsaodespesa");

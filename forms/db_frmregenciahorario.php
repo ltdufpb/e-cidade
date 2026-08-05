@@ -117,7 +117,7 @@ $db_botao1 = false;
           $sOrderPeriodoEscola = "ed15_i_sequencia,ed08_i_sequencia";
           $sWherePeriodoEscola = " ed17_i_escola = {$escola} AND ed17_i_turno in ({$cod_turnos})";
           $sql                 = $clperiodoescola->sql_query( "", "*", $sOrderPeriodoEscola, $sWherePeriodoEscola );
-          $result1             = $clperiodoescola->sql_record($sql) or die (pg_errormessage());
+          $result1             = $clperiodoescola->sql_record($sql) or die (pg_last_error());
           $contp   = 0;
           $contd   = 0;
           $contqd  = 0;
@@ -140,7 +140,7 @@ $db_botao1 = false;
             </tr>
             <tr bgcolor="#444444">
               <td align="center" width="30" style="font-weight: bold; color: #DEB887;">
-                <?=pg_result( $result1, $z, "ed15_c_nome" );?>
+                <?=pg_fetch_result( $result1, $z, "ed15_c_nome" );?>
               </td>
             <?php
             if( $cldiasemana->numrows == 0 ) {
@@ -295,7 +295,7 @@ $db_botao1 = false;
           }
           ?>
           <tr>
-          <?}?>
+          <?php }?>
           </tr>
         </table>
       </td>
@@ -411,7 +411,7 @@ $db_botao1 = false;
     ?>
   </select>
   <?php
-  $reg_conselheiro = isset( $reg_conselheiro) ? $reg_conselheiro : "";
+  $reg_conselheiro ??= "";
   ?>
   <input name="cons_selected" value="<?=@$reg_conselheiro?>" size="20" type="hidden">
   <br><br>

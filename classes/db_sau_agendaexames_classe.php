@@ -79,7 +79,7 @@ class cl_sau_agendaexames {
                  s113_c_encaminhamento = varchar(10) = Encaminhamento
                  ";
    //funcao construtor da classe
-   function cl_sau_agendaexames() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_agendaexames");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

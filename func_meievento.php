@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_meievento_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmeievento = new cl_meievento;
 $clmeievento->rotulo->label("q101_sequencial");
 $clmeievento->rotulo->label("q101_sequencial");
@@ -54,7 +55,7 @@ $clmeievento->rotulo->label("q101_sequencial");
               <?=$Lq101_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q101_sequencial",10,$Iq101_sequencial,true,"text",4,"","chave_q101_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clmeievento->rotulo->label("q101_sequencial");
               <?=$Lq101_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q101_sequencial",10,$Iq101_sequencial,true,"text",4,"","chave_q101_sequencial");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clmeievento->rotulo->label("q101_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_meievento.php")==true){
@@ -122,12 +123,12 @@ $clmeievento->rotulo->label("q101_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

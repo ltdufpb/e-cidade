@@ -24,7 +24,6 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
 /**
  * Factory para o gerenciar os Assentamentos do sistema, será
  * responsavém por tratar os assentamentos e retornar uma instância
@@ -33,7 +32,9 @@
  * @author Renan Melo <renan@dbseller.com.br>
  * @package Pessoal
  */
-
+use ECidade\RecursosHumanos\RH\Assentamento\AssentamentoJustificativa;
+use ECidade\RecursosHumanos\RH\Assentamento\AssentamentoHoraExtraManual;
+use ECidade\RecursosHumanos\RH\Assentamento\AssentamentoAbonoFalta;
 use ECidade\RecursosHumanos\RH\Assentamento\AssentamentoControleMedico;
 
 class AssentamentoFactory
@@ -47,7 +48,7 @@ class AssentamentoFactory
     /**
      * @var Assentamento
      */
-    private static $listaAssentamentos = array();
+    private static $listaAssentamentos = [];
 
     private function __construct()
     {
@@ -96,38 +97,15 @@ class AssentamentoFactory
         $oStdTipoAssentamento = db_utils::fieldsMemory($rsTipoAsse, 0);
 
         $oAssentamentoRetorno = null;
-        switch ($oStdTipoAssentamento->h12_natureza) {
-
-            case Assentamento::NATUREZA_SUBSTITUICAO:
-
-                $oAssentamentoRetorno = new AssentamentoSubstituicao($iCodigoAssentamento);
-                break;
-
-            case Assentamento::NATUREZA_RRA:
-
-                $oAssentamentoRetorno =  new AssentamentoRRA($iCodigoAssentamento);
-                break;
-
-            case Assentamento::NATUREZA_JUSTIFICATIVA:
-
-                $oAssentamentoRetorno = new \ECidade\RecursosHumanos\RH\Assentamento\AssentamentoJustificativa($iCodigoAssentamento);
-                break;
-
-            case Assentamento::NATUREZA_HE_MANUAL:
-                $oAssentamentoRetorno = new \ECidade\RecursosHumanos\RH\Assentamento\AssentamentoHoraExtraManual($iCodigoAssentamento);
-                break;
-
-            case Assentamento::NATUREZA_ABONO_FALTA:
-                $oAssentamentoRetorno = new \ECidade\RecursosHumanos\RH\Assentamento\AssentamentoAbonoFalta($iCodigoAssentamento);
-                break;
-            case Assentamento::NATUREZA_CONTROLE_MEDICO:
-                $oAssentamentoRetorno = new AssentamentoControleMedico($iCodigoAssentamento);
-                break;
-
-            default:
-                $oAssentamentoRetorno = new Assentamento($iCodigoAssentamento);
-                break;
-        }
+        $oAssentamentoRetorno = match ($oStdTipoAssentamento->h12_natureza) {
+            Assentamento::NATUREZA_SUBSTITUICAO => new AssentamentoSubstituicao($iCodigoAssentamento),
+            Assentamento::NATUREZA_RRA => new AssentamentoRRA($iCodigoAssentamento),
+            Assentamento::NATUREZA_JUSTIFICATIVA => new AssentamentoJustificativa($iCodigoAssentamento),
+            Assentamento::NATUREZA_HE_MANUAL => new AssentamentoHoraExtraManual($iCodigoAssentamento),
+            Assentamento::NATUREZA_ABONO_FALTA => new AssentamentoAbonoFalta($iCodigoAssentamento),
+            Assentamento::NATUREZA_CONTROLE_MEDICO => new AssentamentoControleMedico($iCodigoAssentamento),
+            default => new Assentamento($iCodigoAssentamento),
+        };
         self::$listaAssentamentos[$iCodigoAssentamento] = $oAssentamentoRetorno;
         return $oAssentamentoRetorno;
     }
@@ -146,34 +124,13 @@ class AssentamentoFactory
         }
         $oStdTipoAssentamento = db_utils::fieldsMemory($rsTipoAsse, 0);
 
-        switch ($oStdTipoAssentamento->h12_natureza) {
-
-            case Assentamento::NATUREZA_SUBSTITUICAO:
-
-                return new AssentamentoSubstituicao();
-                break;
-
-            case Assentamento::NATUREZA_RRA:
-
-                return new AssentamentoRRA();
-                break;
-
-            case Assentamento::NATUREZA_JUSTIFICATIVA:
-
-                return new \ECidade\RecursosHumanos\RH\Assentamento\AssentamentoJustificativa();
-                break;
-
-            case Assentamento::NATUREZA_HE_MANUAL:
-                return new \ECidade\RecursosHumanos\RH\Assentamento\AssentamentoHoraExtraManual();
-                break;
-
-            case Assentamento::NATUREZA_ABONO_FALTA:
-                return new \ECidade\RecursosHumanos\RH\Assentamento\AssentamentoAbonoFalta();
-                break;
-
-            default:
-                return new Assentamento();
-                break;
-        }
+        return match ($oStdTipoAssentamento->h12_natureza) {
+            Assentamento::NATUREZA_SUBSTITUICAO => new AssentamentoSubstituicao(),
+            Assentamento::NATUREZA_RRA => new AssentamentoRRA(),
+            Assentamento::NATUREZA_JUSTIFICATIVA => new AssentamentoJustificativa(),
+            Assentamento::NATUREZA_HE_MANUAL => new AssentamentoHoraExtraManual(),
+            Assentamento::NATUREZA_ABONO_FALTA => new AssentamentoAbonoFalta(),
+            default => new Assentamento(),
+        };
     }
 }

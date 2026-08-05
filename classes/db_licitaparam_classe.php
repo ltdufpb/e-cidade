@@ -67,7 +67,7 @@ class cl_licitaparam
   public function __construct()
   {
     $this->rotulo = new rotulo("licitaparam");
-    $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+    $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
   }
 
   public function erro($mostra, $retorna)
@@ -177,7 +177,7 @@ class cl_licitaparam
     $result = db_query($sql);
     if ($result == false) {
       $this->erro_banco = str_replace("\n", "", @pg_last_error());
-      if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+      if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
         $this->erro_sql   = "parametros do modulo da licitacao ($this->l12_instit) não Incluído. Inclusão Abortada.";
         $this->erro_msg   = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
         $this->erro_banco = "parametros do modulo da licitacao já Cadastrado";
@@ -206,17 +206,17 @@ class cl_licitaparam
       if (($resaco != false) || ($this->numrows != 0)) {
 
         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-        $acount = pg_result($resac, 0, 0);
+        $acount = pg_fetch_result($resac, 0, 0);
         $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
         $resac = db_query("insert into db_acountkey values($acount,11887,'$this->l12_instit','I')");
-        $resac = db_query("insert into db_acount values($acount,2055,11887,'','" . AddSlashes(pg_result($resaco, 0, 'l12_instit')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2055,11888,'','" . AddSlashes(pg_result($resaco, 0, 'l12_escolherprocesso')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2055,15697,'','" . AddSlashes(pg_result($resaco, 0, 'l12_escolheprotocolo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2055,17211,'','" . AddSlashes(pg_result($resaco, 0, 'l12_qtdediasliberacaoweb')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2055,17210,'','" . AddSlashes(pg_result($resaco, 0, 'l12_tipoliberacaoweb')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2055,1012020,'','" . AddSlashes(pg_result($resaco, 0, 'l12_limitetamanhoarquivo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2055,1013450,'','" . AddSlashes(pg_result($resaco, 0, 'l12_urlapi')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-        $resac = db_query("insert into db_acount values($acount,2055,1013451,'','" . AddSlashes(pg_result($resaco, 0, 'l12_token')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,2055,11887,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l12_instit')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,2055,11888,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l12_escolherprocesso')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,2055,15697,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l12_escolheprotocolo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,2055,17211,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l12_qtdediasliberacaoweb')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,2055,17210,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l12_tipoliberacaoweb')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,2055,1012020,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l12_limitetamanhoarquivo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,2055,1013450,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l12_urlapi')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+        $resac = db_query("insert into db_acount values($acount,2055,1013451,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'l12_token')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
       }
     }
     return true;
@@ -227,10 +227,10 @@ class cl_licitaparam
     $this->atualizacampos();
     $sql = " update licitaparam set ";
     $virgula = "";
-    if (trim($this->l12_instit) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l12_instit"])) {
+    if (trim((string) $this->l12_instit) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l12_instit"])) {
       $sql  .= $virgula . " l12_instit = $this->l12_instit ";
       $virgula = ",";
-      if (trim($this->l12_instit) == null) {
+      if (trim((string) $this->l12_instit) == null) {
         $this->erro_sql = " Campo Instituição não informado.";
         $this->erro_campo = "l12_instit";
         $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_licitaparam
         return false;
       }
     }
-    if (trim($this->l12_escolherprocesso) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l12_escolherprocesso"])) {
+    if (trim((string) $this->l12_escolherprocesso) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l12_escolherprocesso"])) {
       $sql  .= $virgula . " l12_escolherprocesso = '$this->l12_escolherprocesso' ";
       $virgula = ",";
-      if (trim($this->l12_escolherprocesso) == null) {
+      if (trim((string) $this->l12_escolherprocesso) == null) {
         $this->erro_sql = " Campo Escolher Processo de Compras não informado.";
         $this->erro_campo = "l12_escolherprocesso";
         $this->erro_banco = "";
@@ -253,10 +253,10 @@ class cl_licitaparam
         return false;
       }
     }
-    if (trim($this->l12_escolheprotocolo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l12_escolheprotocolo"])) {
+    if (trim((string) $this->l12_escolheprotocolo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l12_escolheprotocolo"])) {
       $sql  .= $virgula . " l12_escolheprotocolo = '$this->l12_escolheprotocolo' ";
       $virgula = ",";
-      if (trim($this->l12_escolheprotocolo) == null) {
+      if (trim((string) $this->l12_escolheprotocolo) == null) {
         $this->erro_sql = " Campo Processo de Protocolo do Sistema não informado.";
         $this->erro_campo = "l12_escolheprotocolo";
         $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_licitaparam
         return false;
       }
     }
-    if (trim($this->l12_qtdediasliberacaoweb) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l12_qtdediasliberacaoweb"])) {
+    if (trim((string) $this->l12_qtdediasliberacaoweb) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l12_qtdediasliberacaoweb"])) {
       $sql  .= $virgula . " l12_qtdediasliberacaoweb = $this->l12_qtdediasliberacaoweb ";
       $virgula = ",";
-      if (trim($this->l12_qtdediasliberacaoweb) == null) {
+      if (trim((string) $this->l12_qtdediasliberacaoweb) == null) {
         $this->erro_sql = " Campo Dias de disponibilidade não informado.";
         $this->erro_campo = "l12_qtdediasliberacaoweb";
         $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_licitaparam
         return false;
       }
     }
-    if (trim($this->l12_tipoliberacaoweb) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l12_tipoliberacaoweb"])) {
+    if (trim((string) $this->l12_tipoliberacaoweb) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l12_tipoliberacaoweb"])) {
       $sql  .= $virgula . " l12_tipoliberacaoweb = $this->l12_tipoliberacaoweb ";
       $virgula = ",";
-      if (trim($this->l12_tipoliberacaoweb) == null) {
+      if (trim((string) $this->l12_tipoliberacaoweb) == null) {
         $this->erro_sql = " Campo Disp. licitação na web até o julgamento não informado.";
         $this->erro_campo = "l12_tipoliberacaoweb";
         $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_licitaparam
         return false;
       }
     }
-    if (trim($this->l12_limitetamanhoarquivo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l12_limitetamanhoarquivo"])) {
+    if (trim((string) $this->l12_limitetamanhoarquivo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l12_limitetamanhoarquivo"])) {
       $sql  .= $virgula . " l12_limitetamanhoarquivo = $this->l12_limitetamanhoarquivo ";
       $virgula = ",";
-      if (trim($this->l12_limitetamanhoarquivo) == null) {
+      if (trim((string) $this->l12_limitetamanhoarquivo) == null) {
         $this->erro_sql = " Campo Limite Tamanho Arquivo não informado.";
         $this->erro_campo = "l12_limitetamanhoarquivo";
         $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_licitaparam
         return false;
       }
     }
-    if (trim($this->l12_urlapi) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l12_urlapi"])) {
+    if (trim((string) $this->l12_urlapi) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l12_urlapi"])) {
       $sql  .= $virgula . " l12_urlapi = '$this->l12_urlapi' ";
       $virgula = ",";
-      if (trim($this->l12_urlapi) == null) {
+      if (trim((string) $this->l12_urlapi) == null) {
         $this->erro_sql = " Campo URL API não informado.";
         $this->erro_campo = "l12_urlapi";
         $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_licitaparam
         return false;
       }
     }
-    if (trim($this->l12_token) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l12_token"])) {
+    if (trim((string) $this->l12_token) != "" || isset($GLOBALS["HTTP_POST_VARS"]["l12_token"])) {
       $sql  .= $virgula . " l12_token = '$this->l12_token' ";
       $virgula = ",";
-      if (trim($this->l12_token) == null) {
+      if (trim((string) $this->l12_token) == null) {
         $this->erro_sql = " Campo Identificador Comprador não informado.";
         $this->erro_campo = "l12_token";
         $this->erro_banco = "";
@@ -345,25 +345,25 @@ class cl_licitaparam
         for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
           $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-          $acount = pg_result($resac, 0, 0);
+          $acount = pg_fetch_result($resac, 0, 0);
           $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
           $resac = db_query("insert into db_acountkey values($acount,11887,'$this->l12_instit','A')");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l12_instit"]) || $this->l12_instit != "")
-            $resac = db_query("insert into db_acount values($acount,2055,11887,'" . AddSlashes(pg_result($resaco, $conresaco, 'l12_instit')) . "','$this->l12_instit'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2055,11887,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l12_instit')) . "','$this->l12_instit'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l12_escolherprocesso"]) || $this->l12_escolherprocesso != "")
-            $resac = db_query("insert into db_acount values($acount,2055,11888,'" . AddSlashes(pg_result($resaco, $conresaco, 'l12_escolherprocesso')) . "','$this->l12_escolherprocesso'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2055,11888,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l12_escolherprocesso')) . "','$this->l12_escolherprocesso'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l12_escolheprotocolo"]) || $this->l12_escolheprotocolo != "")
-            $resac = db_query("insert into db_acount values($acount,2055,15697,'" . AddSlashes(pg_result($resaco, $conresaco, 'l12_escolheprotocolo')) . "','$this->l12_escolheprotocolo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2055,15697,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l12_escolheprotocolo')) . "','$this->l12_escolheprotocolo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l12_qtdediasliberacaoweb"]) || $this->l12_qtdediasliberacaoweb != "")
-            $resac = db_query("insert into db_acount values($acount,2055,17211,'" . AddSlashes(pg_result($resaco, $conresaco, 'l12_qtdediasliberacaoweb')) . "','$this->l12_qtdediasliberacaoweb'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2055,17211,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l12_qtdediasliberacaoweb')) . "','$this->l12_qtdediasliberacaoweb'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l12_tipoliberacaoweb"]) || $this->l12_tipoliberacaoweb != "")
-            $resac = db_query("insert into db_acount values($acount,2055,17210,'" . AddSlashes(pg_result($resaco, $conresaco, 'l12_tipoliberacaoweb')) . "','$this->l12_tipoliberacaoweb'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2055,17210,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l12_tipoliberacaoweb')) . "','$this->l12_tipoliberacaoweb'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l12_limitetamanhoarquivo"]) || $this->l12_limitetamanhoarquivo != "")
-            $resac = db_query("insert into db_acount values($acount,2055,1012020,'" . AddSlashes(pg_result($resaco, $conresaco, 'l12_limitetamanhoarquivo')) . "','$this->l12_limitetamanhoarquivo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2055,1012020,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l12_limitetamanhoarquivo')) . "','$this->l12_limitetamanhoarquivo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l12_urlapi"]) || $this->l12_urlapi != "")
-            $resac = db_query("insert into db_acount values($acount,2055,1013450,'" . AddSlashes(pg_result($resaco, $conresaco, 'l12_urlapi')) . "','$this->l12_urlapi'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2055,1013450,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l12_urlapi')) . "','$this->l12_urlapi'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["l12_token"]) || $this->l12_token != "")
-            $resac = db_query("insert into db_acount values($acount,2055,1013451,'" . AddSlashes(pg_result($resaco, $conresaco, 'l12_token')) . "','$this->l12_token'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2055,1013451,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'l12_token')) . "','$this->l12_token'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
       }
     }
@@ -417,17 +417,17 @@ class cl_licitaparam
         for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
           $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-          $acount = pg_result($resac, 0, 0);
+          $acount = pg_fetch_result($resac, 0, 0);
           $resac  = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
           $resac  = db_query("insert into db_acountkey values($acount,11887,'$l12_instit','E')");
-          $resac  = db_query("insert into db_acount values($acount,2055,11887,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l12_instit')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-          $resac  = db_query("insert into db_acount values($acount,2055,11888,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l12_escolherprocesso')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-          $resac  = db_query("insert into db_acount values($acount,2055,15697,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l12_escolheprotocolo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-          $resac  = db_query("insert into db_acount values($acount,2055,17211,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l12_qtdediasliberacaoweb')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-          $resac  = db_query("insert into db_acount values($acount,2055,17210,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l12_tipoliberacaoweb')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-          $resac  = db_query("insert into db_acount values($acount,2055,1012020,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l12_limitetamanhoarquivo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-          $resac  = db_query("insert into db_acount values($acount,2055,1013450,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l12_urlapi')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-          $resac  = db_query("insert into db_acount values($acount,2055,1013451,'','" . AddSlashes(pg_result($resaco, $iresaco, 'l12_token')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,2055,11887,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l12_instit')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,2055,11888,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l12_escolherprocesso')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,2055,15697,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l12_escolheprotocolo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,2055,17211,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l12_qtdediasliberacaoweb')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,2055,17210,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l12_tipoliberacaoweb')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,2055,1012020,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l12_limitetamanhoarquivo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,2055,1013450,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l12_urlapi')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+          $resac  = db_query("insert into db_acount values($acount,2055,1013451,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'l12_token')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
       }
     }

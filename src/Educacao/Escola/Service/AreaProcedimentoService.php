@@ -35,14 +35,11 @@ use ECidade\Educacao\Escola\Repository\AreaProcedimentoAvaliacaoRepository;
 use ECidade\Educacao\Escola\Repository\AreaProcedimentoComposicaoResultadoRepository;
 use ECidade\Educacao\Escola\Repository\AreaProcedimentoRepository;
 use ECidade\Educacao\Escola\Repository\AreaProcedimentoResultadoRepository;
-use ECidade\Educacao\Escola\Repository\DiarioAlunoRepository;
 use ECidade\Enum\Educacao\Escola\FormaObtencaoEnum;
 use Exception;
-use FormaAvaliacao;
 use FormaAvaliacaoRepository;
 use PeriodoAvaliacaoRepository;
 use ProcedimentoAvaliacao;
-use RegenciaRepository;
 use TipoResultado;
 
 /**

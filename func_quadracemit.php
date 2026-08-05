@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_quadracemit_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clquadracemit = new cl_quadracemit;
 $clquadracemit->rotulo->label("cm22_i_codigo");
 $clquadracemit->rotulo->label("cm22_c_quadra");
@@ -54,7 +55,7 @@ $clquadracemit->rotulo->label("cm22_c_quadra");
               <?=$Lcm22_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("cm22_i_codigo",10,$Icm22_i_codigo,true,"text",4,"","chave_cm22_i_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clquadracemit->rotulo->label("cm22_c_quadra");
               <?=$Lcm22_c_quadra?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("cm22_c_quadra",10,$Icm22_c_quadra,true,"text",4,"","chave_cm22_c_quadra");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clquadracemit->rotulo->label("cm22_c_quadra");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_quadracemit.php")==true){
@@ -122,12 +123,12 @@ $clquadracemit->rotulo->label("cm22_c_quadra");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

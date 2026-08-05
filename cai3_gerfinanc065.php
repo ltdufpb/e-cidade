@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -597,7 +597,7 @@ if (isset ($envia) && (@$k20_codigo == 0 || @$k20_codigo == "")) {
 </head>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"
 	onLoad="parent.document.getElementById('processando').style.visibility = 'hidden'; if(document.form1.tipoDebito.value == 2){ document.getElementById('renuncia').style.display = '' };">
-<form name="form1" method="POST"><?
+<form name="form1" method="POST"><?php 
 echo "<input type='hidden' name='tipo_filtro' value=''>\n";
 echo "<input type='hidden' name='cod_filtro' value=''>\n";
 echo "<input type='hidden' name='numpre' value='".@$numpre1."'>\n";
@@ -617,15 +617,15 @@ echo "<input type='hidden' name='k03_tipo' value='".@$k03_tipo."'>\n";
 		<table align=center >
 			<tr>
 				<td colspan="2" >
-					<? db_ancora("<strong>Processo</strong>","js_pesquisak25_codproc(true);",$db_opcao);?>
-				  <? db_input('k25_codproc',10,$Ik25_codproc,true,'text',$db_opcao," onchange='js_pesquisak25_codproc(false);'")?>
-				  <? db_input('p58_requer',40,$Ip58_requer,true,'text',3,'')?>
+					<?php  db_ancora("<strong>Processo</strong>","js_pesquisak25_codproc(true);",$db_opcao);?>
+				  <?php  db_input('k25_codproc',10,$Ik25_codproc,true,'text',$db_opcao," onchange='js_pesquisak25_codproc(false);'")?>
+				  <?php  db_input('p58_requer',40,$Ip58_requer,true,'text',3,'')?>
 				  (Preenchimento Opcional)
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2" ><b>Tipo de cancelamento:</b>
-				<?
+				<?php 
         $rs = $clnumpref->sql_record($clnumpref->sql_query(db_getsession("DB_anousu"), db_getsession("DB_instit"), 'k03_apenastiporenuncia'));
         $apenasTipoRenuncia = \db_utils::fieldsMemory($rs, 0)->k03_apenastiporenuncia;
 
@@ -654,9 +654,9 @@ echo "<input type='hidden' name='k03_tipo' value='".@$k03_tipo."'>\n";
 			<tr id="renuncia" style="display:none" >
 				<td colspan="2" >
 
-			    <b><? db_ancora("Caracteristica peculiar:","js_pesquisac58_sequencial(true);",$db_opcao,"","carac"); ?></b>
+			    <b><?php  db_ancora("Caracteristica peculiar:","js_pesquisac58_sequencial(true);",$db_opcao,"","carac"); ?></b>
 
-				  <?
+				  <?php 
                   db_input("c58_sequencial",10,$Ic58_sequencial,true,"text",$db_opcao,"onChange='js_pesquisac58_sequencial(false);'","c58_sequencial");
                   db_input("c58_descr",40,0,true,"text",3);
                 ?>
@@ -665,8 +665,8 @@ echo "<input type='hidden' name='k03_tipo' value='".@$k03_tipo."'>\n";
 			</tr>
 			<tr>
 				<td><?=$Lk20_descr?><br>
-				<? db_input('k20_descr',58,$Ik20_descr,true,'text',$db_opcao,"","k20_descr") ?></td>
-				<td rowspan=2 valign='top'><?
+				<?php  db_input('k20_descr',58,$Ik20_descr,true,'text',$db_opcao,"","k20_descr") ?></td>
+				<td rowspan=2 valign='top'><?php 
 				$result = $clcancdebitos->sql_record($clcancdebitos->sql_pendentes( "distinct k20_codigo, k20_descr", "k20_codigo desc", "k20_usuario = ".db_getsession("DB_id_usuario")));
 				if ($clcancdebitos->numrows > 0) {
 				  ?>
@@ -677,16 +677,16 @@ echo "<input type='hidden' name='k03_tipo' value='".@$k03_tipo."'>\n";
 					</tr>
 					<tr>
 						<td><strong>Grupos de Débitos:</strong><br>
-						<? db_selectrecord("k20_codigo",$result,true,1,"","","","0-Gerar novo grupo de Débitos","js_pesquisacancdebitosreg(this.value)")?>
+						<?php  db_selectrecord("k20_codigo",$result,true,1,"","","","0-Gerar novo grupo de Débitos","js_pesquisacancdebitosreg(this.value)")?>
 						</td>
 					</tr>
 					<!-- <tr><td>Para gerar um novo grupo: <input type="button" onclick="js_cancdebitos('novo')" value="Novo"></td></tr> -->
 				</table>
-				<?}?></td>
+				<?php }?></td>
 			</tr>
 			<tr>
 				<td><strong>Observações:</strong><br>
-				<? db_textarea('k21_obs',3,70,$Ik21_obs,true,'text',$db_opcao,"")?></td>
+				<?php  db_textarea('k21_obs',3,70,$Ik21_obs,true,'text',$db_opcao,"")?></td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center">
@@ -817,14 +817,14 @@ function js_mostraconcarpeculiar1(chave1,chave2){
   document.form1.c58_descr.value      = chave2;
   db_iframe_concarpeculiar.hide();
 }
-<?
+<?php 
 if(isset($tipoDebito) and $tipoDebito==2){
 
 	echo "js_mostraRenuncia(2);";
 }
 ?>
 
-<?
+<?php 
 if(isset($k20_codigo) && $k20_codigo!= 0){
 	echo " document.getElementById('k20_descr').readOnly = true;";
 	echo " document.getElementById('k20_descr').style.background='#DEB887'; ";

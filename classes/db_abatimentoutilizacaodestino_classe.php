@@ -59,7 +59,7 @@ class cl_abatimentoutilizacaodestino {
                  k170_valor = float4 = k170_valor 
                  ";
    //funcao construtor da classe 
-   function cl_abatimentoutilizacaodestino() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimentoutilizacaodestino"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

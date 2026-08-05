@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_especmedico_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clespecmedico = new cl_especmedico;
 $clespecmedico->rotulo->label("sd27_i_codigo");
 
@@ -62,7 +63,7 @@ $clrotulo->label("rh70_descr");
               <?=$Lrh70_estrutural?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh70_estrutural",10,$Irh70_estrutural,true,"text",4,"","chave_rh70_estrutural");
 		       ?>
             </td>
@@ -72,7 +73,7 @@ $clrotulo->label("rh70_descr");
               <?=$Lrh70_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh70_descr",60,$Irh70_descr,true,"text",4,"","chave_rh70_descr");
 		       ?>
             </td>
@@ -90,7 +91,7 @@ $clrotulo->label("rh70_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
 
       $where = " sd27_c_situacao = 'A' ";
       if( isset($chave_sd04_i_unidade) && (int)$chave_sd04_i_unidade != 0){
@@ -153,12 +154,12 @@ $clrotulo->label("rh70_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

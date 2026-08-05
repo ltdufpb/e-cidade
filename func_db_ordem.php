@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_ordem_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_ordem = new cl_db_ordem;
 $cldb_ordem->rotulo->label("codordem");
 $cldb_ordem->rotulo->label("descricao");
@@ -54,7 +55,7 @@ $cldb_ordem->rotulo->label("descricao");
               <?=$Lcodordem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("codordem",15,$Icodordem,true,"text",4,"","chave_codordem");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_ordem->rotulo->label("descricao");
               <?=$Ldescricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("descricao",40,$Idescricao,true,"text",4,"","chave_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_ordem->rotulo->label("descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_ordem.php")==true){
@@ -118,12 +119,12 @@ $cldb_ordem->rotulo->label("descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

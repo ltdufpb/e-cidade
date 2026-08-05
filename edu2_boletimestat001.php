@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_ensino_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoEnsino  = db_utils::getdao('ensino');
 $db_opcao    = 1;
 $db_botao    = true;
@@ -61,7 +61,7 @@ $iModulo     = db_getsession('DB_modulo');
    </tr>
   </table>
   <a name="topo"></a>
-  <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+  <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
   <form name="form1" method="post" action="">
    <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
@@ -75,7 +75,7 @@ $iModulo     = db_getsession('DB_modulo');
        <table border="0">
         <tr>
          
-          <?    
+          <?php     
             if ($iModulo == 7159) {   
                          
               echo '<td align="left">'; 
@@ -168,7 +168,7 @@ $iModulo     = db_getsession('DB_modulo');
      </tr>
     </table>
    </form>
-    <?
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
               db_getsession("DB_anousu"),db_getsession("DB_instit")
              );
@@ -301,14 +301,14 @@ function js_retornoPesquisaEnsino(oRetorno) {
 }
 
 </script>
-<?
+<?php 
 if ($iModulo != 7159) {
 ?>
   <script>
     js_escola(<?=$iEscola?>);
   </script>
 
-<?
+<?php 
 
 }
 ?>

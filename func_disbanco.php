@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_disbanco_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldisbanco = new cl_disbanco;
 $cldisbanco->rotulo->label("idret");
 $cldisbanco->rotulo->label("k00_numbco");
@@ -54,7 +55,7 @@ $cldisbanco->rotulo->label("k00_numbco");
               <?=$Lidret?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("idret",6,$Iidret,true,"text",4,"","chave_idret");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldisbanco->rotulo->label("k00_numbco");
               <?=$Lk00_numbco?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k00_numbco",15,$Ik00_numbco,true,"text",4,"","chave_k00_numbco");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldisbanco->rotulo->label("k00_numbco");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_disbanco.php")==true){
@@ -118,12 +119,12 @@ $cldisbanco->rotulo->label("k00_numbco");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

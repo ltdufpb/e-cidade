@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_efetividaderh_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clefetividaderh = new cl_efetividaderh;
 $clefetividaderh->rotulo->label("ed98_i_ano");
 $clefetividaderh->rotulo->label("ed98_c_tipo");
@@ -54,7 +55,7 @@ $clefetividaderh->rotulo->label("ed98_c_tipo");
       <?=@$Led98_c_tipo?>
      </td>
      <td>
-      <?
+      <?php 
       $x = array(""=>"","P"=>"PROFESSORES","F"=>"FUNCIONÁRIOS");
       db_select('ed98_c_tipo',$x,true,@$db_opcao,"","")
       ?>
@@ -65,7 +66,7 @@ $clefetividaderh->rotulo->label("ed98_c_tipo");
       <?=$Led98_i_ano?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?
+      <?php 
       $arr_anos[""] = "";
       for($y=(date("Y")+1);$y>(date("Y")-30);$y--){
        $arr_anos[$y] = $y;
@@ -88,7 +89,7 @@ $clefetividaderh->rotulo->label("ed98_c_tipo");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $escola = db_getsession("DB_coddepto");
    if(!isset($pesquisa_chave)){
     $campos = "ed98_i_codigo,

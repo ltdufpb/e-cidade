@@ -355,9 +355,9 @@ class Instituicao
     /**
      * Retorna boolean referente a pertencer ou nao a Prefeitura
      * @return integer
-     * @deprecated
      * @see prefeitura
      */
+    #[Deprecated]
     public function isPrefeitura()
     {
         return $this->lPrefeitura;
@@ -824,11 +824,11 @@ class Instituicao
      */
     public function toArray()
     {
-        return array(
+        return [
             'sequencial' => $this->getSequencial(),
             'descricao' => $this->getDescricao(),
             'cgm' => $this->getCgm() instanceof CgmBase ? $this->getCgm()->toArray() : null,
             'cnpj' => $this->getCNPJ()
-        );
+        ];
     }
 }

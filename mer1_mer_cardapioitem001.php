@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -129,7 +129,7 @@ if ($naopode==1) {
     <br>
     <center>
      <fieldset style="width:95%"><legend><b>Inclusão de Itens da Refeição</b></legend>
-	  <?include(modification("forms/db_frmmer_cardapioitem.php"));?>
+	  <?php include(modification("forms/db_frmmer_cardapioitem.php"));?>
 	 </fieldset>
     </center>
    </td>
@@ -140,7 +140,7 @@ if ($naopode==1) {
 <script>
 js_tabulacaoforms("form1", "me07_i_alimento", true, 1, "me07_i_alimento", true);
 </script>
-<?
+<?php 
 if (isset($incluir) || isset($alterar) || isset($excluir)) {
 
   if ($clmer_cardapioitem->erro_status == "0") {

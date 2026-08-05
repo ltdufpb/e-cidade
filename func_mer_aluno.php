@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -35,7 +35,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_aluno_classe.php"));
 include(modification("classes/db_serie_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $claluno  = new cl_aluno;
 $clserie  = new cl_serie;
 $clrotulo = new rotulocampo;
@@ -60,9 +61,9 @@ $clrotulo->label("ed223_i_serie");
       <?=$Led47_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed47_i_codigo",10,$Ied47_i_codigo,true,"text",4,"","chave_ed47_i_codigo");?>
+      <?php db_input("ed47_i_codigo",10,$Ied47_i_codigo,true,"text",4,"","chave_ed47_i_codigo");?>
       <?=$Led223_i_serie?>
-      <?
+      <?php 
       $campos        = " ed11_i_codigo,ed11_c_descr,ed11_i_ensino,ed11_i_sequencia ";
       $result_serie = $clserie->sql_record($clserie->sql_query_equiv("",
                                                                      $campos,
@@ -77,7 +78,7 @@ $clrotulo->label("ed223_i_serie");
       }
       ?>
       <b>Situação:</b>
-      <?
+      <?php 
        $x = array(''=>'',
                   'APROVADO'=>'APROVADO',
                   'CANCELADO'=>'CANCELADO',
@@ -99,7 +100,7 @@ $clrotulo->label("ed223_i_serie");
       <?=$Led47_v_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed47_v_nome",40,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
+      <?php db_input("ed47_v_nome",40,$Ied47_v_nome,true,"text",4,"","chave_ed47_v_nome");?>
      </td>
     </tr>
     <tr>
@@ -115,7 +116,7 @@ $clrotulo->label("ed223_i_serie");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $hoje   = date("Y-m-d");   
    $escola = db_getsession("DB_coddepto");
    if (!isset($pesquisa_chave) and (!isset($pesquisa_chave2))) {   	   	

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rharqbanco_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrharqbanco = new cl_rharqbanco;
 $clrharqbanco->rotulo->label("rh34_codarq");
 $clrharqbanco->rotulo->label("rh34_descr");
@@ -54,7 +55,7 @@ $clrharqbanco->rotulo->label("rh34_descr");
               <?=$Lrh34_codarq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh34_codarq",6,$Irh34_codarq,true,"text",4,"","chave_rh34_codarq");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clrharqbanco->rotulo->label("rh34_descr");
               <?=$Lrh34_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh34_descr",40,$Irh34_descr,true,"text",4,"","chave_rh34_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clrharqbanco->rotulo->label("rh34_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rharqbanco.php")==true){
@@ -118,12 +119,12 @@ $clrharqbanco->rotulo->label("rh34_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

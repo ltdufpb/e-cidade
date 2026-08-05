@@ -3,6 +3,7 @@
 
 namespace ECidade\Educacao\Secretaria\BNCC\Model;
 
+use EtapaRepository;
 use ECidade\Educacao\Secretaria\BNCC\Registry\EtapaRegistry;
 use Etapa as EtapaEcidade;
 use Exception;
@@ -98,7 +99,7 @@ class EtapasEquivalente
             $self->setBnccEtapa(EtapaRegistry::get($state['ed154_bnccetapa']));
         }
         if (array_key_exists('ed154_serie', $state)) {
-            $self->setEtapaEcidade(\EtapaRepository::getEtapaByCodigo($state['ed154_serie']));
+            $self->setEtapaEcidade(EtapaRepository::getEtapaByCodigo($state['ed154_serie']));
         }
 
         return $self;

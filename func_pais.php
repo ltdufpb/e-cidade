@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pais_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpais = new cl_pais;
 $clpais->rotulo->label("ed228_i_codigo");
 $clpais->rotulo->label("ed228_c_descr");
@@ -54,7 +55,7 @@ $clpais->rotulo->label("ed228_c_descr");
       <?=$Led228_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed228_i_codigo",20,$Ied228_i_codigo,true,"text",4,"","chave_ed228_i_codigo");?>
+      <?php db_input("ed228_i_codigo",20,$Ied228_i_codigo,true,"text",4,"","chave_ed228_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -62,7 +63,7 @@ $clpais->rotulo->label("ed228_c_descr");
       <?=$Led228_c_descr?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed228_c_descr",40,$Ied228_c_descr,true,"text",4,"","chave_ed228_c_descr");?>
+      <?php db_input("ed228_c_descr",40,$Ied228_c_descr,true,"text",4,"","chave_ed228_c_descr");?>
      </td>
     </tr>
     <tr>
@@ -78,7 +79,7 @@ $clpais->rotulo->label("ed228_c_descr");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_pais.php")==true){

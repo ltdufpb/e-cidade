@@ -57,7 +57,7 @@ try {
      */
     case 'pesquisaEtapas':
 
-      $aFiltros = array();
+      $aFiltros = [];
 
       if (isset($oParam->iEscola) && !empty($oParam->iEscola) && $oParam->iEscola != 0) {
         $aFiltros[] = " ed18_i_codigo in ({$oParam->iEscola}) ";
@@ -165,7 +165,7 @@ try {
 
       db_fim_transacao();
 
-      $oRetorno->message = urlencode( _M( MENSAGENS_EDU4_ETAPAS_RPC . 'etapa_censo_salva' ) );
+      $oRetorno->message = urlencode( (string) _M( MENSAGENS_EDU4_ETAPAS_RPC . 'etapa_censo_salva' ) );
 
       break;
 
@@ -186,7 +186,7 @@ try {
       }
 
       $iLinhas                = pg_num_rows($rsCensoEtapa);
-      $oRetorno->aEtapasCenso = array();
+      $oRetorno->aEtapasCenso = [];
       for ($i=0; $i < $iLinhas; $i++) {
 
         $oRetorno->aEtapasCenso[] = db_utils::fieldsMemory($rsCensoEtapa, $i, false, false, true);

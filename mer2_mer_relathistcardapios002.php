@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -38,7 +38,7 @@ include(modification("classes/db_mer_subitem_classe.php"));
 require_once(modification('libs/db_stdlibwebseller.php'));
 require_once(modification('libs/db_utils.php'));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str($HTTP_SERVER_VARS['QUERY_STRING'] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 
 $clrotulo            = new rotulocampo;
@@ -128,7 +128,7 @@ if ($clmer_cardapiodia->numrows == 0) {?>
     </td>
    </tr>
   </table>
-  <?
+  <?php 
   exit;
   
 }

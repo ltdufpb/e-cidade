@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoAreaConhecimento = db_utils::getdao('areaconhecimento');
 
@@ -57,7 +57,7 @@ if (isset($incluir)) {
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <meta http-equiv="Expires" CONTENT="0">
     
-    <?
+    <?php 
       $sLibs  = "scripts.js,prototype.js,webseller.js,strings.js,datagrid.widget.js,";
       $sLibs .= "estilos.css,grid.style.css";
       db_app::load($sLibs);
@@ -78,7 +78,7 @@ if (isset($incluir)) {
       <tr> 
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
           <center>
-	          <?
+	          <?php 
 	            include(modification("forms/db_frmareaconhecimento.php"));
 	          ?>
           </center>
@@ -86,7 +86,7 @@ if (isset($incluir)) {
       </tr>
     </table>
     </center>
-    <?
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
               db_getsession("DB_anousu"),db_getsession("DB_instit")
              );
@@ -98,7 +98,7 @@ if (isset($incluir)) {
   js_tabulacaoforms("form1", "ed293_descr", true, 1, "ed293_descr", true);
 </script>
 
-<?
+<?php 
 
 if (isset($incluir)) {
 

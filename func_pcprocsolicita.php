@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -45,7 +45,8 @@ $iIdUsuario    = db_getsession("DB_id_usuario");
 
 db_postmemory($_POST);
 db_postmemory($_GET);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clsolicita = new cl_solicita;
 $oRotulo = new rotulocampo();
@@ -121,7 +122,7 @@ $sWhereContrato = " and 1 = 1 ";
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
 
       $where_depart = '';
       $sDepartamento = "";

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -101,12 +101,12 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
           <table>
             <tr>
               <td nowrap title="<?=@$To05_ppalei?>">
-                <?
+                <?php 
                 db_ancora("<b>Lei do PPA</b>","js_pesquisao05_ppalei(true);",$db_opcao);
                 ?>
               </td>
               <td colspan='5'>
-                <?
+                <?php 
                 db_input('o05_ppalei',10,$Io01_sequencial,true,'text',$db_opcao," onchange='js_pesquisao05_ppalei(false);'");
                 db_input('o01_descricao',40,$Io01_descricao,true,'text',3,'')
                 ?>
@@ -125,11 +125,11 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
                  <?=@$Lo01_anoinicio?>
                 </td>
                 <td>
-                <?
+                <?php 
                   db_input('o01_anoinicio',10,$Io01_anoinicio,true,'text',3,"")
                 ?>
                 <?=@$Lo01_anofinal?>
-                <?
+                <?php 
                   db_input('o01_anofinal',10,$Io01_anofinal,true,'text',3,"")
                 ?>
               </td>
@@ -139,7 +139,7 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
                  <?=@$Lo01_numerolei?>
               </td>
               <td>
-                <?
+                <?php 
                   db_input('o01_numerolei',10,$Io01_numerolei,true,'text',3,"")
                 ?>
               </td>
@@ -149,7 +149,7 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
                  <b>Imprime Rodapé: </b>
               </td>
               <td>
-                <?
+                <?php 
         				  $aRodape = array("s"=>"Sim","n"=>"Não");
                   db_select("selrodape",$aRodape,true,1,"");
                 ?>
@@ -161,7 +161,7 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
                  <b>Totalizar por : </b>
               </td>
               <td>
-                <?
+                <?php 
                   $aTotalizar = array("o"=>"Orgão","u"=>"Unidade");
                   db_select("seltotalizar",$aTotalizar,true,1,"");
                 ?>
@@ -172,7 +172,7 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
                  <b>Modelo: </b>
               </td>
               <td>
-                <?
+                <?php 
                   $aModelo = array(
                                    1 => "PPA",
                                    2 => "LDO"
@@ -186,7 +186,7 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
                  <b>Quadro de Ações: </b>
               </td>
               <td>
-                <?
+                <?php 
                   $aQuadro = array(
                                    1 => "Sintético",
                                    2 => "Por Recurso",
@@ -201,14 +201,14 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
                  <b>Ano LDO:</b>
               </td>
               <td>
-                <?
+                <?php 
                   db_select("selanoldo",$aAnos,true,1,"");
                 ?>
               </td>
             </tr>
             <tr>
               <td  colspan='4' style='text-align: center'><table>
-               <?
+               <?php 
                  // $aux = new cl_arquivo_auxiliar;
                  $oListaOrgao->cabecalho = "<strong>Lista por Orgão</strong>";
                  $oListaOrgao->codigo = "o40_orgao"; //chave de retorno da func
@@ -234,7 +234,7 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
             <tr>
                <td>&nbsp;</td>
                <td colspan="4" >
-                 <? db_selinstit('',300,100); ?>
+                 <?php  db_selinstit('',300,100); ?>
               </td>
             </tr>
           </table>
@@ -252,7 +252,7 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
   </center>
 </body>
 </html>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 <script>
@@ -365,7 +365,7 @@ $('seltotalizar').style.width='100px';
 $('selrodape').style.width='100px';
 $('selquadro').style.width='100px';
 js_drawSelectVersaoPPA($('verppa'));
-<?
+<?php 
  if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
    echo "js_getVersoesPPA({$oPost->o05_ppalei})\n";
  }

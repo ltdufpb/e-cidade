@@ -36,12 +36,7 @@ class DBHttpRequest
     /**
      * @var array
      */
-    private $options = array();
-
-    /**
-     * @var AppConfig
-     */
-    private $config;
+    private $options = [];
 
     /**
      * @var string
@@ -51,30 +46,29 @@ class DBHttpRequest
     /**
      * @var array
      */
-    private $responseHeaders = array();
+    private $responseHeaders = [];
 
     /**
      * @param AppConfig $config
      */
-    public function __construct(AppConfig $config)
+    public function __construct(private readonly AppConfig $config)
     {
-        $this->config = $config;
         $proxy = $this->config->get('app.proxy');
 
-        $this->options = array(
+        $this->options = [
             'baseUrl' => null,
-            'headers' => array(),
+            'headers' => [],
             'method' => 'GET',
             'body' > null,
             'timeout' => 60,
-        );
+        ];
 
         if (!empty($proxy['tcp'])) {
             $this->options['proxy'] = 'tcp://' . $proxy['tcp'];
         }
     }
 
-    public function addOptions($options = array())
+    public function addOptions($options = [])
     {
         $this->options = DBArray::merge($this->options, $options);
     }
@@ -89,11 +83,7 @@ class DBHttpRequest
 
     public function getResponseCode()
     {
-        if (isset($this->responseHeaders['response_code'])) {
-            return $this->responseHeaders['response_code'];
-        }
-
-        return null;
+        return $this->responseHeaders['response_code'] ?? null;
     }
 
     /**
@@ -102,7 +92,7 @@ class DBHttpRequest
      * @param array $options
      * @return boolean
      */
-    public function send($url, $method = 'GET', array $options = array())
+    public function send($url, $method = 'GET', array $options = [])
     {
         $options = DBArray::merge($this->options, $options);
         $this->body = $this->__sendFileWrapper($options['baseUrl'] . $url, $method, $options);
@@ -114,15 +104,15 @@ class DBHttpRequest
      * @param string $method
      * @param array $options
      */
-    private function __sendFileWrapper($url, $method = 'GET', array $options = array())
+    private function __sendFileWrapper($url, $method = 'GET', array $options = [])
     {
-        $contextOptions = array(
-            'http' => array(
+        $contextOptions = [
+            'http' => [
             'ignore_errors' => true,
             'method' => $method,
             'timeout' => $options['timeout'],
-            ),
-        );
+            ],
+        ];
 
         if (!empty($options['proxy'])) {
             $contextOptions['http']['proxy'] = $options['proxy'];
@@ -164,10 +154,10 @@ class DBHttpRequest
 
     private function parseResponseHeaders( $headers )
     {
-        $data = array();
+        $data = [];
         foreach($headers as $index => $line) {
 
-            $item = explode( ':', $line, 2 );
+            $item = explode( ':', (string) $line, 2 );
 
             if (isset($item[1])) {
                 $data[ trim($item[0]) ] = trim( $item[1] );
@@ -175,7 +165,7 @@ class DBHttpRequest
             }
 
             $data[] = $line;
-            if (preg_match( "#HTTP/[0-9\.]+\s+([0-9]+)#", $line, $out)) {
+            if (preg_match( "#HTTP/[0-9\.]+\s+([0-9]+)#", (string) $line, $out)) {
                 $data['response_code'] = intval($out[1]);
             }
         }

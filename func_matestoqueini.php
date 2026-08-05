@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matestoqueini_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmatestoqueini = new cl_matestoqueini;
 $clmatestoqueini->rotulo->label("m80_codigo");
 $clmatestoqueini->rotulo->label("m80_matestoqueitem");
@@ -54,7 +55,7 @@ $clmatestoqueini->rotulo->label("m80_matestoqueitem");
               <?=$Lm80_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m80_codigo",10,$Im80_codigo,true,"text",4,"","chave_m80_codigo");
 		       ?>
             </td>
@@ -72,7 +73,7 @@ $clmatestoqueini->rotulo->label("m80_matestoqueitem");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $where_parametro = "";
       if(isset($chave_m80_codtipo)){
 	$where_parametro .= " and matestoqueini.m80_codtipo in ($chave_m80_codtipo) ";
@@ -121,12 +122,12 @@ $clmatestoqueini->rotulo->label("m80_matestoqueitem");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

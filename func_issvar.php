@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issvar_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clissvar = new cl_issvar;
 $clissvar->rotulo->label("q05_codigo");
 $clissvar->rotulo->label("q05_numpre");
@@ -54,7 +55,7 @@ $clissvar->rotulo->label("q05_numpre");
               <?=$Lq05_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q05_codigo",10,$Iq05_codigo,true,"text",4,"","chave_q05_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clissvar->rotulo->label("q05_numpre");
               <?=$Lq05_numpre?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("numpre",10,"",true,"text",1,"","chave_q05_numpre");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clissvar->rotulo->label("q05_numpre");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $where = "";
       $and = "";
       if (isset($inscr)&&$inscr!=""){
@@ -141,12 +142,12 @@ $clissvar->rotulo->label("q05_numpre");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

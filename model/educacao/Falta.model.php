@@ -34,12 +34,6 @@
 class Falta {
   
   /**
-   * Código da falta;
-   * @var integer
-   */
-  private $iCodigo;
-  
-  /**
    * Periodo da Falta;
    */
   private $iPeriodo;
@@ -64,10 +58,16 @@ class Falta {
 
 
   /**
-   * 
+   *
+   * @param int $iCodigo
    */
-  function __construct($iCodigo = '') {
-    $this->iCodigo = $iCodigo;  
+  function __construct(
+      /**
+       * Código da falta;
+       */
+      private $iCodigo = ''
+  )
+  {
   }
   /**
    * Código da falta 

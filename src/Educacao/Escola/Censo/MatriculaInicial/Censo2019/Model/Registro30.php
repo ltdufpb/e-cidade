@@ -1633,7 +1633,7 @@ class Registro30
 
     public function toArray()
     {
-        return array(
+        return [
             "tipoRegistro " => $this->getTipoRegistro(),
             "codigoInepEscola" => $this->getCodigoInepEscola(),
             "codigoPessoa" => $this->getCodigoPessoa(),
@@ -1731,7 +1731,7 @@ class Registro30
             "outros" => $this->getOutros(),
             "nenhumCurso" => $this->getNenhumCurso(),
             "email" => $this->getEmail(),
-        );
+        ];
     }
 
     /**

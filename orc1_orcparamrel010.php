@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -146,15 +146,15 @@ function  js_atualiza(){
     <table>
     <tr>
     <td nowrap title="<?=@$To42_codparrel?>">
-       <?
+       <?php 
        db_ancora(@$Lo42_codparrel,"js_pesquisao42_codparrel(true);",2);
        ?>
     </td>
     <td> 
-       <?
+       <?php 
        db_input('o42_codparrel',8,$Io42_codparrel,true,'text',2," onchange='js_pesquisao42_codparrel(false);'")
        ?>
-       <?
+       <?php 
        db_input('o42_descrrel',50,$Io42_descrrel,true,'text',3,'')
        ?>
     </td>
@@ -162,7 +162,7 @@ function  js_atualiza(){
     <tr>
     <td colspan="2">
     <table>
-    <?
+    <?php 
     if(isset($o42_codparrel)){
      ?>
     <tr>
@@ -183,7 +183,7 @@ function  js_atualiza(){
       <input name="qreceitas" value="" type="hidden" >
     </td>
     </tr>
-    <?
+    <?php 
     }
     ?>
  
@@ -193,7 +193,7 @@ function  js_atualiza(){
   </tr>
 </table>
 </form>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

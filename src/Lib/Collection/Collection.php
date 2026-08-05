@@ -2,13 +2,17 @@
 
 namespace ECidade\Lib\Collection;
 
-abstract class Collection implements \Countable, \Iterator, \ArrayAccess
+use Countable;
+use Iterator;
+use ArrayAccess;
+
+abstract class Collection implements Countable, Iterator, ArrayAccess
 {
     protected $size;
 
     protected $position;
 
-    protected $itens = array();
+    protected $itens = [];
 
     public function __construct()
     {

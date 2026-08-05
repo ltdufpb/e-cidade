@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,8 @@ include(modification("classes/db_ensino_classe.php"));
 include(modification("classes/db_disciplina_classe.php"));
 include(modification("classes/db_rechumanoturmaac_ext_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clatividaderh = new cl_atividaderh;
 $clensino = new cl_ensino;
 $cldisciplina = new cl_disciplina;
@@ -76,7 +77,7 @@ $escola = db_getsession("DB_coddepto");
   }
  }
  team = new Array(
- <?
+ <?php 
  # Seleciona todos os calendários
  $sql = "SELECT DISTINCT ed10_i_codigo,ed10_c_descr,ed10_c_abrev
          FROM ensino
@@ -180,18 +181,18 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
    if (itemArray[i][1] != null){
     selectCtrl.options[j].value = itemArray[i][1];
    }
-   <?if(isset($subgrupo)){?>
+   <?php if(isset($subgrupo)){?>
     if(<?=trim($subgrupo)?>==itemArray[i][1]){
      indice = i;
     }
-   <?}?>
+   <?php }?>
    j++;
   }
-  <?if(isset($subgrupo)){?>
+  <?php if(isset($subgrupo)){?>
    selectCtrl.options[indice].selected = true;
-  <?}else{?>
+  <?php }else{?>
    selectCtrl.options[0].selected = true;
-  <?}?>
+  <?php }?>
   document.form1.subgrupo.disabled = false;
  }
 }
@@ -207,22 +208,22 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
     <tr>
      <td nowrap title="<?=$Ted20_i_codigo?>">
       <?=$Led20_i_codigo?>
-      <?db_input("ed20_i_codigo",10,$Ied20_i_codigo,true,"text",4,"","chave_ed20_i_codigo");?>
+      <?php db_input("ed20_i_codigo",10,$Ied20_i_codigo,true,"text",4,"","chave_ed20_i_codigo");?>
      <td colspan="2">
       <?=$Lz01_nome?>
-      <?db_input("z01_nome",50,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
+      <?php db_input("z01_nome",50,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
      </td>
     </tr>
     <tr>
      <td width="33%" nowrap>
       <b>Atividade:</b>
-      <?
+      <?php 
       $result_ativ = $clatividaderh->sql_record($clatividaderh->sql_query_file("","ed01_i_codigo,ed01_c_descr","ed01_c_descr"));
       $linhas_ativ = pg_num_rows($result_ativ);
       ?>
       <select name="atividaderh" id="atividaderh" onchange="atividade(this.value)" style="font-size:10px;width:150px">
        <option value='' selected></option>
-       <?
+       <?php 
         for($x=0;$x<$linhas_ativ;$x++){
          db_fieldsmemory($result_ativ,$x);
          echo "<option value='$ed01_i_codigo' ".(@$atividaderh==$ed01_i_codigo?"selected":"").">$ed01_c_descr</option>";
@@ -234,7 +235,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
       <?=$Led12_i_ensino?>
       <select name="grupo" onChange="fillSelectFromArray(this.form.subgrupo, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" style="font-size:9px;width:200px;height:18px;">
        <option></option>
-       <?
+       <?php 
        #Seleciona todos os grupos para setar os valores no combo
        $sql = "SELECT DISTINCT ed10_i_codigo,ed10_c_descr,ed10_c_abrev
                FROM ensino
@@ -249,7 +250,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
         $desc_curso=$row["ed10_c_descr"];
         ?>
         <option value="<?=$cod_curso;?>" <?=$cod_curso==@$grupo?"selected":""?>><?=$desc_curso;?></option>
-        <?
+        <?php 
        }
        #Popula o segundo combo de acordo com a escolha no primeiro
        ?>
@@ -260,9 +261,9 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
       <select name="subgrupo" style="font-size:9px;width:200px;height:18px;" disabled>
        <option value=""></option>
       </select>
-      <?if(isset($subgrupo)){?>
+      <?php if(isset($subgrupo)){?>
        <script>fillSelectFromArray2(document.form1.subgrupo, ((document.form1.grupo.selectedIndex == -1) ? null : team[document.form1.grupo.selectedIndex-1]));</script>
-      <?}?>
+      <?php }?>
      </td>
     </tr>
     <tr>
@@ -276,7 +277,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
    </table>
   </td>
  </tr>
- <?
+ <?php 
  $result_regente = $clatividaderh->sql_record($clatividaderh->sql_query_file("","ed01_i_codigo as reg","ed01_c_descr"," ed01_c_regencia = 'S'"));
  if($clatividaderh->numrows>0){
   $sep = "";
@@ -292,18 +293,18 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
  ?>
  <script>
   document.form1.regente.value = "<?=$regencias?>";
-  <?if(!isset($grupo)){?>
+  <?php if(!isset($grupo)){?>
    document.form1.grupo.disabled = true;
    document.form1.subgrupo.disabled = true;
-  <?}?>
-  <?if(isset($ativ)){?>
+  <?php }?>
+  <?php if(isset($ativ)){?>
    document.form1.atividaderh.value = <?=$ativ?>;
-  <?}?>
+  <?php }?>
   js_tabulacaoforms("form1","chave_ed20_i_codigo",true,1,"chave_ed20_i_codigo",true);
  </script>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $escola = db_getsession("DB_coddepto");
    if(!isset($pesquisa_chave)){
     $campos = "ed20_i_codigo,

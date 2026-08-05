@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhbases_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhbases = new cl_rhbases;
 $clrhbases->rotulo->label("rh32_base");
 $clrhbases->rotulo->label("rh32_descr");
@@ -54,7 +55,7 @@ $clrhbases->rotulo->label("rh32_descr");
               <?=$Lrh32_base?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh32_base",4,$Irh32_base,true,"text",4,"","chave_rh32_base");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clrhbases->rotulo->label("rh32_descr");
               <?=$Lrh32_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh32_descr",30,$Irh32_descr,true,"text",4,"","chave_rh32_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clrhbases->rotulo->label("rh32_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $dbwhere = "";
       if(isset($instit)){
       	$dbwhere = " and rh32_instit = $instit ";
@@ -122,12 +123,12 @@ $clrhbases->rotulo->label("rh32_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

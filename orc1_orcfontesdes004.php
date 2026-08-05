@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -48,7 +48,7 @@ $clorcfontesdes = new cl_orcfontesdes;
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <script>
-<?
+<?php 
   if(isset($chavepesquisa)){
     $fonte_full=str_replace(".","",$o50_estrutreceita);
     $mami=db_le_mae($fonte_full,false);
@@ -74,7 +74,7 @@ $clorcfontesdes = new cl_orcfontesdes;
          <b><?=@$RLo60_perc?>(%)</b>
        </td>
     </tr> 
-<?
+<?php 
   $matriz= split("\.",$o50_estrutreceita);
   $inicia=false;//variavel que indica que o nivel não tem mais filhos
   $tam=(count($matriz)-1);

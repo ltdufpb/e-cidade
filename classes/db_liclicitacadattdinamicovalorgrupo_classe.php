@@ -27,33 +27,33 @@
 
 class cl_liclicitacadattdinamicovalorgrupo {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $l16_sequencial = 0;
-   var $l16_cadattdinamicovalorgrupo = 0;
-   var $l16_liclicita = 0;
+   public $l16_sequencial = 0;
+   public $l16_cadattdinamicovalorgrupo = 0;
+   public $l16_liclicita = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  l16_sequencial = int4 = Código
                  l16_cadattdinamicovalorgrupo = int4 = Grupo de Valores
                  l16_liclicita = int4 = Licitação
                  ";
    //funcao construtor da classe
-   function cl_liclicitacadattdinamicovalorgrupo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liclicitacadattdinamicovalorgrupo");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -105,10 +105,10 @@ class cl_liclicitacadattdinamicovalorgrupo {
          $this->erro_status = "0";
          return false;
        }
-       $this->l16_sequencial = pg_result($result,0,0);
+       $this->l16_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from liclicitacadattdinamicovalorgrupo_l16_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $l16_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $l16_sequencial)){
          $this->erro_sql = " Campo l16_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -140,7 +140,7 @@ class cl_liclicitacadattdinamicovalorgrupo {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Vinculo da licitação com os atributos dinamicos ($this->l16_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Vinculo da licitação com os atributos dinamicos já Cadastrado";
@@ -169,12 +169,12 @@ class cl_liclicitacadattdinamicovalorgrupo {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21718,'$this->l16_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3903,21718,'','".AddSlashes(pg_result($resaco,0,'l16_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3903,21719,'','".AddSlashes(pg_result($resaco,0,'l16_cadattdinamicovalorgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3903,21720,'','".AddSlashes(pg_result($resaco,0,'l16_liclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3903,21718,'','".AddSlashes(pg_fetch_result($resaco,0,'l16_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3903,21719,'','".AddSlashes(pg_fetch_result($resaco,0,'l16_cadattdinamicovalorgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3903,21720,'','".AddSlashes(pg_fetch_result($resaco,0,'l16_liclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -184,10 +184,10 @@ class cl_liclicitacadattdinamicovalorgrupo {
       $this->atualizacampos();
      $sql = " update liclicitacadattdinamicovalorgrupo set ";
      $virgula = "";
-     if(trim($this->l16_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l16_sequencial"])){
+     if(trim((string) $this->l16_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l16_sequencial"])){
        $sql  .= $virgula." l16_sequencial = $this->l16_sequencial ";
        $virgula = ",";
-       if(trim($this->l16_sequencial) == null ){
+       if(trim((string) $this->l16_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "l16_sequencial";
          $this->erro_banco = "";
@@ -197,10 +197,10 @@ class cl_liclicitacadattdinamicovalorgrupo {
          return false;
        }
      }
-     if(trim($this->l16_cadattdinamicovalorgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l16_cadattdinamicovalorgrupo"])){
+     if(trim((string) $this->l16_cadattdinamicovalorgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l16_cadattdinamicovalorgrupo"])){
        $sql  .= $virgula." l16_cadattdinamicovalorgrupo = $this->l16_cadattdinamicovalorgrupo ";
        $virgula = ",";
-       if(trim($this->l16_cadattdinamicovalorgrupo) == null ){
+       if(trim((string) $this->l16_cadattdinamicovalorgrupo) == null ){
          $this->erro_sql = " Campo Grupo de Valores não informado.";
          $this->erro_campo = "l16_cadattdinamicovalorgrupo";
          $this->erro_banco = "";
@@ -210,10 +210,10 @@ class cl_liclicitacadattdinamicovalorgrupo {
          return false;
        }
      }
-     if(trim($this->l16_liclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l16_liclicita"])){
+     if(trim((string) $this->l16_liclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l16_liclicita"])){
        $sql  .= $virgula." l16_liclicita = $this->l16_liclicita ";
        $virgula = ",";
-       if(trim($this->l16_liclicita) == null ){
+       if(trim((string) $this->l16_liclicita) == null ){
          $this->erro_sql = " Campo Licitação não informado.";
          $this->erro_campo = "l16_liclicita";
          $this->erro_banco = "";
@@ -237,15 +237,15 @@ class cl_liclicitacadattdinamicovalorgrupo {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21718,'$this->l16_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l16_sequencial"]) || $this->l16_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3903,21718,'".AddSlashes(pg_result($resaco,$conresaco,'l16_sequencial'))."','$this->l16_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3903,21718,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l16_sequencial'))."','$this->l16_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l16_cadattdinamicovalorgrupo"]) || $this->l16_cadattdinamicovalorgrupo != "")
-             $resac = db_query("insert into db_acount values($acount,3903,21719,'".AddSlashes(pg_result($resaco,$conresaco,'l16_cadattdinamicovalorgrupo'))."','$this->l16_cadattdinamicovalorgrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3903,21719,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l16_cadattdinamicovalorgrupo'))."','$this->l16_cadattdinamicovalorgrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l16_liclicita"]) || $this->l16_liclicita != "")
-             $resac = db_query("insert into db_acount values($acount,3903,21720,'".AddSlashes(pg_result($resaco,$conresaco,'l16_liclicita'))."','$this->l16_liclicita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3903,21720,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l16_liclicita'))."','$this->l16_liclicita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -299,12 +299,12 @@ class cl_liclicitacadattdinamicovalorgrupo {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21718,'$l16_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3903,21718,'','".AddSlashes(pg_result($resaco,$iresaco,'l16_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3903,21719,'','".AddSlashes(pg_result($resaco,$iresaco,'l16_cadattdinamicovalorgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3903,21720,'','".AddSlashes(pg_result($resaco,$iresaco,'l16_liclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3903,21718,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l16_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3903,21719,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l16_cadattdinamicovalorgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3903,21720,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l16_liclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

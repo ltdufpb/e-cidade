@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -76,7 +76,7 @@ if(isset($atualizar2)){
    <?=@$Led130_i_codigo?>
   </td>
   <td>
-   <?db_input('ed130_i_codigo',20,$Ied130_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed130_i_codigo',20,$Ied130_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
@@ -84,7 +84,7 @@ if(isset($atualizar2)){
    <?=@$Led130_c_tabela?>
   </td>
   <td>
-   <?db_input('ed130_c_tabela',50,$Ied130_c_tabela,true,'text',$db_opcao,"")?>
+   <?php db_input('ed130_c_tabela',50,$Ied130_c_tabela,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -92,8 +92,8 @@ if(isset($atualizar2)){
    <?=@$Led130_c_tipo?>
   </td>
   <td>
-   <?
-   $x = array('SE'=>'SECRETARIA -> ESCOLA','ES'=>'ESCOLA -> SECRETARIA');
+   <?php 
+   $x = ['SE'=>'SECRETARIA -> ESCOLA','ES'=>'ESCOLA -> SECRETARIA'];
    db_select('ed130_c_tipo',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -103,8 +103,8 @@ if(isset($atualizar2)){
    <?=@$Led130_c_dumpseq?>
   </td>
   <td>
-   <?
-   $x = array('S'=>'SIM','N'=>'NÃO');
+   <?php 
+   $x = ['S'=>'SIM','N'=>'NÃO'];
    db_select('ed130_c_dumpseq',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -114,8 +114,8 @@ if(isset($atualizar2)){
    <?=@$Led130_c_dumptrigger?>
   </td>
   <td>
-   <?
-   $x = array('S'=>'SIM','N'=>'NÃO');
+   <?php 
+   $x = ['S'=>'SIM','N'=>'NÃO'];
    db_select('ed130_c_dumptrigger',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -129,8 +129,8 @@ if(isset($atualizar2)){
    <table>
     <tr>
      <td valign="top"><br>
-     <?
-      $chavepri= array("ed130_i_codigo"=>@$ed130_i_codigo,"ed130_c_tabela"=>@$ed130_c_tabela,"ed130_c_tipo"=>@$ed130_c_tipo,"ed130_c_dumpseq"=>@$ed130_c_dumpseq,"ed130_i_sequencia"=>@$ed130_i_sequencia);
+     <?php 
+      $chavepri= ["ed130_i_codigo"=>@$ed130_i_codigo,"ed130_c_tabela"=>@$ed130_c_tabela,"ed130_c_tipo"=>@$ed130_c_tipo,"ed130_c_dumpseq"=>@$ed130_c_dumpseq,"ed130_i_sequencia"=>@$ed130_i_sequencia];
       $cliframe_alterar_excluir->chavepri=$chavepri;
       @$cliframe_alterar_excluir->sql = $cledutabelasdump->sql_query("","*","ed130_i_sequencia"," ed130_c_tipo = 'SE'");
       $cliframe_alterar_excluir->campos  ="ed130_c_tabela,ed130_c_dumpseq,ed130_c_dumptrigger";
@@ -155,8 +155,8 @@ if(isset($atualizar2)){
    <table>
     <tr>
      <td valign="top"><br>
-     <?
-      $chavepri= array("ed130_i_codigo"=>@$ed130_i_codigo,"ed130_c_tabela"=>@$ed130_c_tabela,"ed130_c_tipo"=>@$ed130_c_tipo,"ed130_c_dumpseq"=>@$ed130_c_dumpseq,"ed130_i_sequencia"=>@$ed130_i_sequencia);
+     <?php 
+      $chavepri= ["ed130_i_codigo"=>@$ed130_i_codigo,"ed130_c_tabela"=>@$ed130_c_tabela,"ed130_c_tipo"=>@$ed130_c_tipo,"ed130_c_dumpseq"=>@$ed130_c_dumpseq,"ed130_i_sequencia"=>@$ed130_i_sequencia];
       $cliframe_alterar_excluir->chavepri=$chavepri;
       @$cliframe_alterar_excluir->sql = $cledutabelasdump->sql_query("","*","ed130_i_sequencia"," ed130_c_tipo = 'ES'");
       $cliframe_alterar_excluir->campos  ="ed130_c_tabela,ed130_c_dumpseq,ed130_c_dumptrigger";
@@ -185,18 +185,18 @@ if(isset($atualizar2)){
    <table border="0">
     <tr>
      <td>
-      <?
+      <?php 
       $sql = "SELECT ed130_i_codigo,ed130_i_sequencia,ed130_c_tabela from edutabelasdump where ed130_c_tipo = 'SE' order by ed130_i_sequencia";
       $query = db_query($sql);
       $linhas = pg_num_rows($query);
       ?>
       <b>Ordenar Tabelas(<?=$linhas?>) SE:</b><br>
       <select name="camposse[]" id="camposse" size="20" style="font-size:10px;width:230px" multiple>
-      <?
+      <?php 
        if($linhas>0){
         for($i=0;$i<$linhas;$i++){
          $dados = pg_fetch_array($query);
-         echo "<option value=\"".$dados["ed130_i_codigo"]."\">".str_pad($dados["ed130_i_sequencia"],3,0,str_pad_left)." - ".trim($dados["ed130_c_tabela"])."</option>\n";
+         echo "<option value=\"".$dados["ed130_i_codigo"]."\">".str_pad((string) $dados["ed130_i_sequencia"],3,0,\STR_PAD_LEFT)." - ".trim((string) $dados["ed130_c_tabela"])."</option>\n";
         }
        }
       ?>
@@ -217,18 +217,18 @@ if(isset($atualizar2)){
    <table border="0">
     <tr>
      <td>
-      <?
+      <?php 
       $sql = "SELECT ed130_i_codigo,ed130_i_sequencia,ed130_c_tabela from edutabelasdump where ed130_c_tipo = 'ES' order by ed130_i_sequencia";
       $query = db_query($sql);
       $linhas = pg_num_rows($query);
       ?>
       <b>Ordenar Tabelas(<?=$linhas?>) ES:</b><br>
       <select name="camposes[]" id="camposes" size="20" style="font-size:10px;width:230px" multiple>
-      <?
+      <?php 
        if($linhas>0){
         for($i=0;$i<$linhas;$i++){
          $dados = pg_fetch_array($query);
-         echo "<option value=\"".$dados["ed130_i_codigo"]."\">".str_pad($dados["ed130_i_sequencia"],3,0,str_pad_left)." - ".trim($dados["ed130_c_tabela"])."</option>\n";
+         echo "<option value=\"".$dados["ed130_i_codigo"]."\">".str_pad((string) $dados["ed130_i_sequencia"],3,0,\STR_PAD_LEFT)." - ".trim((string) $dados["ed130_c_tabela"])."</option>\n";
         }
        }
       ?>

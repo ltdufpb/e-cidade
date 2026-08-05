@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: material
 //CLASSE DA ENTIDADE matordemprocesso
 class cl_matordemprocesso { 
@@ -26,7 +26,7 @@ class cl_matordemprocesso {
                  m08_numeroprocesso = varchar(15) = numero processo 
                  ";
    //funcao construtor da classe 
-   function cl_matordemprocesso() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matordemprocesso"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

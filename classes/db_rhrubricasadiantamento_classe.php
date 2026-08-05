@@ -1,32 +1,32 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhrubricasadiantamento
 class cl_rhrubricasadiantamento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh262_rubrica_principal = null; 
-   var $rh262_rubrica_adiantamento = null; 
-   var $rh262_instituicao = 0; 
+   public $rh262_rubrica_principal = null; 
+   public $rh262_rubrica_adiantamento = null; 
+   public $rh262_instituicao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh262_rubrica_principal = varchar(4) = Rubrica do Saldo do 13º Salário 
                  rh262_rubrica_adiantamento = varchar(4) = Rubrica de Adiantamento do 13º Salário 
                  rh262_instituicao = int4 = Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_rhrubricasadiantamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhrubricasadiantamento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -91,7 +91,7 @@ class cl_rhrubricasadiantamento {
                       )");
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Rubrica de Adiantamento de 13º Salário ($this->rh262_rubrica_principal."-".$this->rh262_rubrica_adiantamento."-".$this->rh262_instituicao) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Rubrica de Adiantamento de 13º Salário já Cadastrado";
@@ -113,13 +113,13 @@ class cl_rhrubricasadiantamento {
      $resaco = $this->sql_record($this->sql_query_file($this->rh262_rubrica_principal,$this->rh262_rubrica_adiantamento,$this->rh262_instituicao));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,1014155,'$this->rh262_rubrica_principal','I')");
        $resac = db_query("insert into db_acountkey values($acount,1014156,'$this->rh262_rubrica_adiantamento','I')");
        $resac = db_query("insert into db_acountkey values($acount,1014157,'$this->rh262_instituicao','I')");
-       $resac = db_query("insert into db_acount values($acount,1010931,1014155,'','".pg_result($resaco,0,'rh262_rubrica_principal')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010931,1014156,'','".pg_result($resaco,0,'rh262_rubrica_adiantamento')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010931,1014157,'','".pg_result($resaco,0,'rh262_instituicao')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010931,1014155,'','".pg_fetch_result($resaco,0,'rh262_rubrica_principal')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010931,1014156,'','".pg_fetch_result($resaco,0,'rh262_rubrica_adiantamento')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010931,1014157,'','".pg_fetch_result($resaco,0,'rh262_instituicao')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -128,21 +128,21 @@ class cl_rhrubricasadiantamento {
       $this->atualizacampos();
      $sql = " update rhrubricasadiantamento set ";
      $virgula = "";
-     if(trim($this->rh262_rubrica_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh262_rubrica_principal"])){ 
+     if(trim((string) $this->rh262_rubrica_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh262_rubrica_principal"])){ 
        $sql  .= $virgula." rh262_rubrica_principal = '$this->rh262_rubrica_principal' ";
        $virgula = ",";
      }
-     if(trim($this->rh262_rubrica_adiantamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh262_rubrica_adiantamento"])){ 
+     if(trim((string) $this->rh262_rubrica_adiantamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh262_rubrica_adiantamento"])){ 
        $sql  .= $virgula." rh262_rubrica_adiantamento = '$this->rh262_rubrica_adiantamento' ";
        $virgula = ",";
      }
-     if(trim($this->rh262_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh262_instituicao"])){ 
-        if(trim($this->rh262_instituicao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh262_instituicao"])){ 
+     if(trim((string) $this->rh262_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh262_instituicao"])){ 
+        if(trim((string) $this->rh262_instituicao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh262_instituicao"])){ 
            $this->rh262_instituicao = "0" ; 
         } 
        $sql  .= $virgula." rh262_instituicao = $this->rh262_instituicao ";
        $virgula = ",";
-       if(trim($this->rh262_instituicao) == null ){ 
+       if(trim((string) $this->rh262_instituicao) == null ){ 
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "rh262_instituicao";
          $this->erro_banco = "";
@@ -156,16 +156,16 @@ class cl_rhrubricasadiantamento {
 
      $resaco = $this->sql_record($this->sql_query_file($this->rh262_rubrica_principal,$this->rh262_rubrica_adiantamento,$this->rh262_instituicao));
      if($this->numrows>0){       $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,1014155,'$this->rh262_rubrica_principal','A')");
        $resac = db_query("insert into db_acountkey values($acount,1014156,'$this->rh262_rubrica_adiantamento','A')");
        $resac = db_query("insert into db_acountkey values($acount,1014157,'$this->rh262_instituicao','A')");
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh262_rubrica_principal"]))
-         $resac = db_query("insert into db_acount values($acount,1010931,1014155,'".pg_result($resaco,0,'rh262_rubrica_principal')."','$this->rh262_rubrica_principal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010931,1014155,'".pg_fetch_result($resaco,0,'rh262_rubrica_principal')."','$this->rh262_rubrica_principal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh262_rubrica_adiantamento"]))
-         $resac = db_query("insert into db_acount values($acount,1010931,1014156,'".pg_result($resaco,0,'rh262_rubrica_adiantamento')."','$this->rh262_rubrica_adiantamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010931,1014156,'".pg_fetch_result($resaco,0,'rh262_rubrica_adiantamento')."','$this->rh262_rubrica_adiantamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh262_instituicao"]))
-         $resac = db_query("insert into db_acount values($acount,1010931,1014157,'".pg_result($resaco,0,'rh262_instituicao')."','$this->rh262_instituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010931,1014157,'".pg_fetch_result($resaco,0,'rh262_instituicao')."','$this->rh262_instituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $result = @db_query($sql);
      if($result==false){ 
@@ -202,13 +202,13 @@ class cl_rhrubricasadiantamento {
      $resaco = $this->sql_record($this->sql_query_file($this->rh262_rubrica_principal,$this->rh262_rubrica_adiantamento,$this->rh262_instituicao));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,1014155,'$this->rh262_rubrica_principal','E')");
        $resac = db_query("insert into db_acountkey values($acount,1014156,'$this->rh262_rubrica_adiantamento','E')");
        $resac = db_query("insert into db_acountkey values($acount,1014157,'$this->rh262_instituicao','E')");
-       $resac = db_query("insert into db_acount values($acount,1010931,1014155,'','".pg_result($resaco,0,'rh262_rubrica_principal')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010931,1014156,'','".pg_result($resaco,0,'rh262_rubrica_adiantamento')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010931,1014157,'','".pg_result($resaco,0,'rh262_instituicao')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010931,1014155,'','".pg_fetch_result($resaco,0,'rh262_rubrica_principal')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010931,1014156,'','".pg_fetch_result($resaco,0,'rh262_rubrica_adiantamento')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010931,1014157,'','".pg_fetch_result($resaco,0,'rh262_instituicao')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $sql = " delete from rhrubricasadiantamento
                     where ";
@@ -272,7 +272,7 @@ class cl_rhrubricasadiantamento {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Dados do Grupo nao Encontrado";
@@ -287,7 +287,7 @@ class cl_rhrubricasadiantamento {
    function sql_query ( $rh262_rubrica_principal=null,$rh262_rubrica_adiantamento=null,$rh262_instituicao=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -325,7 +325,7 @@ class cl_rhrubricasadiantamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -338,7 +338,7 @@ class cl_rhrubricasadiantamento {
    function sql_query_file ( $rh262_rubrica_principal=null,$rh262_rubrica_adiantamento=null,$rh262_instituicao=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -375,7 +375,7 @@ class cl_rhrubricasadiantamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

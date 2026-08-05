@@ -38,7 +38,7 @@ class EscolaProcedenciaRepository {
    * Collection de EscolaProcedencia
    * @var array
    */
-  private $aEscolas = array();
+  private $aEscolas = [];
 
   /**
    * Instancia da classe
@@ -60,7 +60,7 @@ class EscolaProcedenciaRepository {
    */
   public static function getEscolaByCodigo($iCodigoEscola) {
 
-    if (!array_key_exists($iCodigoEscola, EscolaProcedenciaRepository::getInstance()->aEscolas)) {
+    if (!array_key_exists((string) $iCodigoEscola, EscolaProcedenciaRepository::getInstance()->aEscolas)) {
       EscolaProcedenciaRepository::getInstance()->aEscolas[$iCodigoEscola] = new EscolaProcedencia($iCodigoEscola);
     }
     return EscolaProcedenciaRepository::getInstance()->aEscolas[$iCodigoEscola];

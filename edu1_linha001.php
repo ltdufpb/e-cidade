@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_linha_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cllinha = new cl_linha;
 $db_opcao = 1;
 $db_botao = true;
@@ -65,13 +65,13 @@ if(isset($incluir)){
     <br>
     <fieldset style="width:95%"><legend><b>Inclusão de Linha</b></legend>
     <center>
-    <?include(modification("forms/db_frmlinha.php"));?>
+    <?php include(modification("forms/db_frmlinha.php"));?>
     </center>
     </fieldset>
    </td>
   </tr>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -79,7 +79,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","ed217_i_tipolinha",true,1,"ed217_i_tipolinha",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
   if($cllinha->erro_status=="0"){
     $cllinha->erro(true,false);

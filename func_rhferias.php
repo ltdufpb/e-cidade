@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -36,7 +36,8 @@ require_once(modification("std/DBDate.php"));
 
 $oGet = db_utils::postMemory($_GET);
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clrhferias = new cl_rhferias();
 $clrhferias->rotulo->label("rh109_sequencial");
@@ -145,7 +146,7 @@ if (isset($chave_rh109_sequencial) && !DBNumber::isInteger($chave_rh109_sequenci
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script type="text/javascript">
@@ -155,7 +156,7 @@ if(!isset($pesquisa_chave)){
       return true;
     }
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issnotaavulsa_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clissnotaavulsa = new cl_issnotaavulsa;
 $clrotulo = new rotulocampo;
 $clrotulo->label("q02_inscr");
@@ -55,7 +56,7 @@ $clissnotaavulsa->rotulo->label("q51_numnota");
               <?=$Lq51_numnota?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q51_numnota",10,$Iq51_numnota,true,"text",4,"","chave_q51_numnota");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clissnotaavulsa->rotulo->label("q51_numnota");
               <?=$Lq02_inscr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q02_inscr",10,$Iq02_inscr,true,"text",4,"","chave_q02_inscr");
 		       ?>
             </td>
@@ -83,7 +84,7 @@ $clissnotaavulsa->rotulo->label("q51_numnota");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       (string)$where  = null;
        $where  = " q63_issnotaavulsa is null and q69_issnotaavulsa is null and q52_issnotaavulsa is null";
        $and    = " and ";
@@ -131,12 +132,12 @@ $clissnotaavulsa->rotulo->label("q51_numnota");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

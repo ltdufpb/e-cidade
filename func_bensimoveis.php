@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bensimoveis_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbensimoveis = new cl_bensimoveis;
 $clbensimoveis->rotulo->label("t54_codbem");
 $clbensimoveis->rotulo->label("t54_idbql");
@@ -55,7 +56,7 @@ $clbensimoveis->rotulo->label("t54_obs");
               <?=$Lt54_codbem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t54_codbem",10,$It54_codbem,true,"text",4,"","chave_t54_codbem");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clbensimoveis->rotulo->label("t54_obs");
               <?=$Lt54_idbql?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t54_idbql",6,$It54_idbql,true,"text",4,"","chave_t54_idbql");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clbensimoveis->rotulo->label("t54_obs");
               <?=$Lt54_obs?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t54_obs",1,$It54_obs,true,"text",4,"","chave_t54_obs");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clbensimoveis->rotulo->label("t54_obs");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bensimoveis.php")==true){
@@ -129,12 +130,12 @@ $clbensimoveis->rotulo->label("t54_obs");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

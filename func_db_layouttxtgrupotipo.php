@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_layouttxtgrupotipo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_layouttxtgrupotipo = new cl_db_layouttxtgrupotipo;
 $cldb_layouttxtgrupotipo->rotulo->label("db57_sequencial");
 $cldb_layouttxtgrupotipo->rotulo->label("db57_descr");
@@ -54,7 +55,7 @@ $cldb_layouttxtgrupotipo->rotulo->label("db57_descr");
               <?=$Ldb57_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db57_sequencial",4,$Idb57_sequencial,true,"text",4,"","chave_db57_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_layouttxtgrupotipo->rotulo->label("db57_descr");
               <?=$Ldb57_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db57_descr",40,$Idb57_descr,true,"text",4,"","chave_db57_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_layouttxtgrupotipo->rotulo->label("db57_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_layouttxtgrupotipo.php")==true){
@@ -122,12 +123,12 @@ $cldb_layouttxtgrupotipo->rotulo->label("db57_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

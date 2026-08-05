@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -87,7 +87,7 @@ aproveitei para colocar a barra de progresso no teu prog
   </tr>
   <tr>
     <td width="100%"  align="center">
-    <?
+    <?php 
       db_criatermometro('termometro','Concluido...','blue',1); 
     ?>    
     </td>
@@ -96,7 +96,7 @@ aproveitei para colocar a barra de progresso no teu prog
 <form name='form1'>
 </body> 
  
-<?
+<?php 
 
 
     $modelo = 2;

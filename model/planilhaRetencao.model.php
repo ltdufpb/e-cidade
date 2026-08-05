@@ -53,21 +53,18 @@ class planilhaRetencao {
    */
   protected $iMesCompetencia = 0;
   
-  protected $iInscricao      = 0;
-  
   protected $iNumCgm         = null;
 
-  protected $aNotas          = array();
+  protected $aNotas          = [];
            
   /**
    * Adiciona uma planilha
    */
-  function __construct($iCodigoPlanilha = null, $iNumCgm = null, $iAnoUsu = null, $iMesUsu = null, $iInscricao = null) {
+  function __construct($iCodigoPlanilha = null, $iNumCgm = null, $iAnoUsu = null, $iMesUsu = null, protected $iInscricao = null) {
     
     $this->dtDatausu = date("Y-m-d", db_getsession("DB_datausu"));
     $this->iAnoUsu   = !empty($iAnoUsu) ? $iAnoUsu : db_getsession("DB_anousu");
     $this->iMes      = !empty($iMesUsu) ? $iMesUsu : date("m", db_getsession("DB_datausu"));
-    $this->iInscricao= $iInscricao;
     
     if (empty($iCodigoPlanilha)) {
       
@@ -97,11 +94,11 @@ class planilhaRetencao {
 
       $this->iCodigoPlanilha = $oDaoIssPlan->q20_planilha;
       
-      if ( !empty($iInscricao) ) {
+      if ( !empty($this->iInscricao) ) {
         
         $oDaoIssPlanInscri                 = db_utils::getDao("issplaninscr");
         $oDaoIssPlanInscri->q24_planilha   = $this->iCodigoPlanilha;
-        $oDaoIssPlanInscri->q24_inscr      = $iInscricao;
+        $oDaoIssPlanInscri->q24_inscr      = $this->iInscricao;
         $oDaoIssPlanInscri->incluir(null);
         
         if ($oDaoIssPlanInscri->erro_status == 0) {
@@ -166,9 +163,9 @@ class planilhaRetencao {
    *
    * @param  object $oNota Objeto com os dados da nota
    * @return void
-   * @deprecated
    * @see -  planilhaRetencao::adicionarNota();
    */
+  #[Deprecated]
   function adicionaNota($oNota) {
     
     if (!db_utils::inTransaction()) {
@@ -408,7 +405,7 @@ class planilhaRetencao {
     $result = db_query($sql);
     $linhas = pg_num_rows($result);
     if($linhas > 0){
-      $q20_numpre = pg_result($result,0,"q20_numpre");
+      $q20_numpre = pg_fetch_result($result,0,"q20_numpre");
     } else {
       $q20_numpre = "";
     }
@@ -444,7 +441,7 @@ class planilhaRetencao {
       $linhastipo = pg_num_rows($resulttipo);
       if($linhastipo > 0){
         //db_fieldsmemory($resulttipo,0);
-        $w10_tipo = pg_result($resulttipo,0,"w10_tipo");
+        $w10_tipo = pg_fetch_result($resulttipo,0,"w10_tipo");
       }else{
         $sqlerro = true;
         throw new Exception("Deve-se configurar a planilha (db_confplan)");

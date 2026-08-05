@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiculotransportemunicipalveiculos_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clveiculotransportemunicipalveiculos = new cl_veiculotransportemunicipalveiculos;
 $clveiculotransportemunicipalveiculos->rotulo->label("tre02_sequencial");
 $clveiculotransportemunicipalveiculos->rotulo->label("tre02_sequencial");
@@ -54,7 +55,7 @@ $clveiculotransportemunicipalveiculos->rotulo->label("tre02_sequencial");
               <?=$Ltre02_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("tre02_sequencial",10,$Itre02_sequencial,true,"text",4,"","chave_tre02_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clveiculotransportemunicipalveiculos->rotulo->label("tre02_sequencial");
               <?=$Ltre02_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("tre02_sequencial",10,$Itre02_sequencial,true,"text",4,"","chave_tre02_sequencial");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clveiculotransportemunicipalveiculos->rotulo->label("tre02_sequencial");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veiculotransportemunicipalveiculos.php")==true){
@@ -122,12 +123,12 @@ $clveiculotransportemunicipalveiculos->rotulo->label("tre02_sequencial");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

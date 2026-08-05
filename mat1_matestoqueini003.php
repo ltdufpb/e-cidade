@@ -67,7 +67,8 @@ db_app::import("Dotacao");
 db_app::import("contabilidade.contacorrente.*");
 
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 
 $oPost = db_utils::postMemory($_POST);
@@ -154,7 +155,7 @@ if (isset($excluir)) {
   </tr>
 </table>
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmmatestoqueini.php"));
 	?>
     </center>

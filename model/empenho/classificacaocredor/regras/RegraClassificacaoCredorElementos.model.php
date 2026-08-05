@@ -56,9 +56,7 @@ class RegraClassificacaoCredorElementos extends RegraClassificacaoCredor {
 
   public function regra() {
 
-    $aContasInclusao = array_filter($this->oListaClassificacaoCredor->getContas(), function($valor) {
-      return $valor->contaExclusao() === false;
-    });
+    $aContasInclusao = array_filter($this->oListaClassificacaoCredor->getContas(), fn($valor) => $valor->contaExclusao() === false);
     $oContaEmpenho = $this->oAtributosEmpenho->getContaOrcamento();
     $oContaElemento = new ContaOrcamento($this->oAtributosEmpenho->getElemento(), $oContaEmpenho->getAno());
 

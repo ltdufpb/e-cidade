@@ -128,7 +128,7 @@ class LancamentoAuxiliarEmpenhoLiquidacao extends LancamentoAuxiliarBase impleme
    * @param string $dtLancamento
    *
    * @return bool
-   * @throws \BusinessException
+   * @throws BusinessException
    *
    * @todo fazer com que chame os métodos da classe LancamentoAuxiliarBase
    */
@@ -311,6 +311,7 @@ class LancamentoAuxiliarEmpenhoLiquidacao extends LancamentoAuxiliarBase impleme
    * Seta o codigo da nota de liquidacao
    * @param integer $iCodigoNotaLiquidacao
    */
+  #[Override]
   public function setCodigoNotaLiquidacao($iCodigoNotaLiquidacao) {
     $this->iCodigoNotaLiquidacao = $iCodigoNotaLiquidacao;
   }
@@ -319,6 +320,7 @@ class LancamentoAuxiliarEmpenhoLiquidacao extends LancamentoAuxiliarBase impleme
    * Retorna o codigo da nota de liquidacao
    * @return integer
    */
+  #[Override]
   public function getCodigoNotaLiquidacao() {
     return $this->iCodigoNotaLiquidacao;
   }
@@ -343,6 +345,7 @@ class LancamentoAuxiliarEmpenhoLiquidacao extends LancamentoAuxiliarBase impleme
    * Seta o codigo da dotacao
    * @param integer $iCodigoDotacao
    */
+  #[Override]
   public function setCodigoDotacao($iCodigoDotacao) {
     $this->iCodigoDotacao = $iCodigoDotacao;
   }
@@ -351,6 +354,7 @@ class LancamentoAuxiliarEmpenhoLiquidacao extends LancamentoAuxiliarBase impleme
    * Retorna o codigo da dotacao
    * @return integer
    */
+  #[Override]
   public function getCodigoDotacao() {
     return $this->iCodigoDotacao;
   }
@@ -359,6 +363,7 @@ class LancamentoAuxiliarEmpenhoLiquidacao extends LancamentoAuxiliarBase impleme
    * Seta o numero do empenho
    * @param integer $iNumeroEmpenho
    */
+  #[Override]
   public function setNumeroEmpenho($iNumeroEmpenho) {
     $this->iNumeroEmpenho = $iNumeroEmpenho;
   }
@@ -367,6 +372,7 @@ class LancamentoAuxiliarEmpenhoLiquidacao extends LancamentoAuxiliarBase impleme
    * Retorna o numero do empenho
    * @return integer
    */
+  #[Override]
   public function getNumeroEmpenho() {
     return $this->iNumeroEmpenho;
   }
@@ -375,6 +381,7 @@ class LancamentoAuxiliarEmpenhoLiquidacao extends LancamentoAuxiliarBase impleme
    * Seta o favorecido CGM
    * @param integer $iFavorecido
    */
+  #[Override]
   public function setFavorecido($iFavorecido) {
     $this->iFavorecido = $iFavorecido;
   }
@@ -383,6 +390,7 @@ class LancamentoAuxiliarEmpenhoLiquidacao extends LancamentoAuxiliarBase impleme
    * Retorna o favorecido CGM
    * @return integer
    */
+  #[Override]
   public function getFavorecido() {
   	return $this->iFavorecido;
   }
@@ -391,6 +399,7 @@ class LancamentoAuxiliarEmpenhoLiquidacao extends LancamentoAuxiliarBase impleme
    * Seta o codigo do elemento
    * @param integer $iCodigoElemento
    */
+  #[Override]
   public function setCodigoElemento($iCodigoElemento) {
   	$this->iCodigoElemento = $iCodigoElemento;
   }
@@ -399,6 +408,7 @@ class LancamentoAuxiliarEmpenhoLiquidacao extends LancamentoAuxiliarBase impleme
    * Retorna o codigo do elemento
    * @return integer
    */
+  #[Override]
   public function getCodigoElemento() {
   	return $this->iCodigoElemento;
   }
@@ -434,12 +444,14 @@ class LancamentoAuxiliarEmpenhoLiquidacao extends LancamentoAuxiliarBase impleme
   /**
    * @see ILancamentoAuxiliar::setObservacaoHistorico()
    */
+  #[Override]
   public function setObservacaoHistorico($sObservacaoHistorico) {
     $this->sObservacao = $sObservacaoHistorico;
   }
   /**
    * @see ILancamentoAuxiliar::getObservacaoHistorico()
    */
+  #[Override]
   public function getObservacaoHistorico() {
     return $this->sObservacao;
   }

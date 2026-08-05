@@ -2,6 +2,8 @@
 
 namespace ECidade\Patrimonial\Compras\ItemEmpenho\Model;
 
+use cl_pcmater;
+
 class Item
 {
 
@@ -78,7 +80,7 @@ class Item
     public function __construct($codigoItem = null)
     {
         if ($codigoItem) {
-            $dao = new \cl_pcmater();
+            $dao = new cl_pcmater();
             $sql = $dao->sql_query_file($codigoItem);
 
             $rs = $dao->sql_record($sql);
@@ -88,16 +90,16 @@ class Item
                 $this->descricaoItem = pg_fetch_result($rs, 0, 'pc01_descrmater');
                 $this->complemento = pg_fetch_result($rs, 0, 'pc01_complmater');
                 $this->codigoSubgrupo = (int) pg_fetch_result($rs, 0, 'pc01_codsubgrupo');
-                $this->ativo = (boolean) pg_fetch_result($rs, 0, 'pc01_ativo');
-                $this->conversao = (boolean) pg_fetch_result($rs, 0, 'pc01_conversao');
+                $this->ativo = (bool) pg_fetch_result($rs, 0, 'pc01_ativo');
+                $this->conversao = (bool) pg_fetch_result($rs, 0, 'pc01_conversao');
                 $this->idUsuario = (int) pg_fetch_result($rs, 0, 'pc01_id_usuario');
-                $this->liberacaoAutomatica = (boolean) pg_fetch_result($rs, 0, 'pc01_libaut');
-                $this->servico = (boolean) pg_fetch_result($rs, 0, 'pc01_servico');
-                $this->veiculo = (boolean) pg_fetch_result($rs, 0, 'pc01_veiculo');
-                $this->validadeMinima = (boolean) pg_fetch_result($rs, 0, 'pc01_validademinima');
-                $this->obrigatorio = (boolean) pg_fetch_result($rs, 0, 'pc01_obrigatorio');
-                $this->fraciona = (boolean) pg_fetch_result($rs, 0, 'pc01_fraciona');
-                $this->liberaResumo = (boolean) pg_fetch_result($rs, 0, 'pc01_liberaresumo');
+                $this->liberacaoAutomatica = (bool) pg_fetch_result($rs, 0, 'pc01_libaut');
+                $this->servico = (bool) pg_fetch_result($rs, 0, 'pc01_servico');
+                $this->veiculo = (bool) pg_fetch_result($rs, 0, 'pc01_veiculo');
+                $this->validadeMinima = (bool) pg_fetch_result($rs, 0, 'pc01_validademinima');
+                $this->obrigatorio = (bool) pg_fetch_result($rs, 0, 'pc01_obrigatorio');
+                $this->fraciona = (bool) pg_fetch_result($rs, 0, 'pc01_fraciona');
+                $this->liberaResumo = (bool) pg_fetch_result($rs, 0, 'pc01_liberaresumo');
             }
         }
     }
@@ -328,7 +330,7 @@ class Item
 
     public function toArray()
     {
-        return array(
+        return [
             'pc01_codmater' => $this->getCodigoItem(),
             'pc01_descrmater' => $this->getDescricaoItem(),
             'pc01_complmater' => $this->getComplemento(),
@@ -343,7 +345,7 @@ class Item
             'pc01_obrigatorio' => $this->isObrigatorio(),
             'pc01_fraciona' => $this->isFraciona(),
             'pc01_liberaresumo' => $this->isLiberaResumo()
-        );
+        ];
     }
 
     public static function fromState(array $state)
@@ -367,11 +369,11 @@ class Item
         }
 
         if (array_key_exists(('pc01_ativo'), $state)) {
-            $item->setAtivo((boolean) $state['pc01_ativo']);
+            $item->setAtivo((bool) $state['pc01_ativo']);
         }
 
         if (array_key_exists(('pc01_conversao'), $state)) {
-            $item->setConversao((boolean) $state['pc01_conversao']);
+            $item->setConversao((bool) $state['pc01_conversao']);
         }
 
         if (array_key_exists(('pc01_id_usuario'), $state)) {
@@ -379,11 +381,11 @@ class Item
         }
 
         if (array_key_exists(('pc01_libaut'), $state)) {
-            $item->setLiberacaoAutomatica((boolean) $state['pc01_libaut']);
+            $item->setLiberacaoAutomatica((bool) $state['pc01_libaut']);
         }
 
         if (array_key_exists(('pc01_servico'), $state)) {
-            $item->setServico((boolean) $state['pc01_servico']);
+            $item->setServico((bool) $state['pc01_servico']);
         }
 
         if (array_key_exists(('pc01_veiculo'), $state)) {
@@ -391,19 +393,19 @@ class Item
         }
 
         if (array_key_exists(('pc01_validademinima'), $state)) {
-            $item->setValidadeMinima((boolean) $state['pc01_validademinima']);
+            $item->setValidadeMinima((bool) $state['pc01_validademinima']);
         }
 
         if (array_key_exists(('pc01_obrigatorio'), $state)) {
-            $item->setObrigatorio((boolean) $state['pc01_obrigatorio']);
+            $item->setObrigatorio((bool) $state['pc01_obrigatorio']);
         }
 
         if (array_key_exists(('pc01_fraciona'), $state)) {
-            $item->setFraciona((boolean) $state['pc01_fraciona']);
+            $item->setFraciona((bool) $state['pc01_fraciona']);
         }
 
         if (array_key_exists(('pc01_liberaresumo'), $state)) {
-            $item->setLiberaResumo((boolean) $state['pc01_liberaresumo']);
+            $item->setLiberaResumo((bool) $state['pc01_liberaresumo']);
         }
 
         return $item;

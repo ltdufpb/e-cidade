@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tipoproc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltipoproc = new cl_tipoproc;
 $cltipoproc->rotulo->label("p51_codigo");
 $cltipoproc->rotulo->label("p51_descr");
@@ -55,7 +56,7 @@ $cltipoproc->rotulo->label("p51_descr");
               <?=$Lp51_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p51_codigo",8,$Ip51_codigo,true,"text",4,"","chave_p51_codigo");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $cltipoproc->rotulo->label("p51_descr");
               <?=$Lp51_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p51_descr",60,$Ip51_descr,true,"text",4,"","chave_p51_descr");
 		       ?>
             </td>
@@ -84,7 +85,7 @@ $cltipoproc->rotulo->label("p51_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $where = " p51_instit=".db_getsession("DB_instit");
       
       if(isset($grupo) && trim($grupo) != '' ){
@@ -126,7 +127,7 @@ $cltipoproc->rotulo->label("p51_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
@@ -139,7 +140,7 @@ if(!isset($pesquisa_chave)){
 document.form2.chave_p51_descr.focus();
 document.form2.chave_p51_descr.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -33,7 +33,7 @@ class cl_historicompsforaarea
     public function __construct()
     {
         $this->rotulo = new rotulo("historicompsforaarea"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -90,10 +90,10 @@ class cl_historicompsforaarea
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed172_codigo = pg_result($result,0,0); 
+       $this->ed172_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from historicompsforaarea_ed172_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed172_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed172_codigo)){
          $this->erro_sql = " Campo ed172_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -129,7 +129,7 @@ class cl_historicompsforaarea
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Histórico MPS Fora Area ($this->ed172_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Histórico MPS Fora Area já Cadastrado";
@@ -158,14 +158,14 @@ class cl_historicompsforaarea
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1012050,'$this->ed172_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,1010679,1012050,'','".AddSlashes(pg_result($resaco,0,'ed172_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010679,1012051,'','".AddSlashes(pg_result($resaco,0,'ed172_historicompsfora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010679,1012052,'','".AddSlashes(pg_result($resaco,0,'ed172_areaconhecimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010679,1012053,'','".AddSlashes(pg_result($resaco,0,'ed172_resultadoobtido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010679,1012054,'','".AddSlashes(pg_result($resaco,0,'ed172_resultadofinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010679,1012050,'','".AddSlashes(pg_fetch_result($resaco,0,'ed172_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010679,1012051,'','".AddSlashes(pg_fetch_result($resaco,0,'ed172_historicompsfora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010679,1012052,'','".AddSlashes(pg_fetch_result($resaco,0,'ed172_areaconhecimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010679,1012053,'','".AddSlashes(pg_fetch_result($resaco,0,'ed172_resultadoobtido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010679,1012054,'','".AddSlashes(pg_fetch_result($resaco,0,'ed172_resultadofinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -176,10 +176,10 @@ class cl_historicompsforaarea
       $this->atualizacampos();
      $sql = " update historicompsforaarea set ";
      $virgula = "";
-     if(trim($this->ed172_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed172_codigo"])){ 
+     if(trim((string) $this->ed172_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed172_codigo"])){ 
        $sql  .= $virgula." ed172_codigo = $this->ed172_codigo ";
        $virgula = ",";
-       if(trim($this->ed172_codigo) == null ){ 
+       if(trim((string) $this->ed172_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed172_codigo";
          $this->erro_banco = "";
@@ -189,10 +189,10 @@ class cl_historicompsforaarea
          return false;
        }
      }
-     if(trim($this->ed172_historicompsfora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed172_historicompsfora"])){ 
+     if(trim((string) $this->ed172_historicompsfora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed172_historicompsfora"])){ 
        $sql  .= $virgula." ed172_historicompsfora = $this->ed172_historicompsfora ";
        $virgula = ",";
-       if(trim($this->ed172_historicompsfora) == null ){ 
+       if(trim((string) $this->ed172_historicompsfora) == null ){ 
          $this->erro_sql = " Campo Histórico MPS Fora não informado.";
          $this->erro_campo = "ed172_historicompsfora";
          $this->erro_banco = "";
@@ -202,10 +202,10 @@ class cl_historicompsforaarea
          return false;
        }
      }
-     if(trim($this->ed172_areaconhecimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed172_areaconhecimento"])){ 
+     if(trim((string) $this->ed172_areaconhecimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed172_areaconhecimento"])){ 
        $sql  .= $virgula." ed172_areaconhecimento = $this->ed172_areaconhecimento ";
        $virgula = ",";
-       if(trim($this->ed172_areaconhecimento) == null ){ 
+       if(trim((string) $this->ed172_areaconhecimento) == null ){ 
          $this->erro_sql = " Campo Área de Conhecimento não informado.";
          $this->erro_campo = "ed172_areaconhecimento";
          $this->erro_banco = "";
@@ -215,11 +215,11 @@ class cl_historicompsforaarea
          return false;
        }
      }
-     if(trim($this->ed172_resultadoobtido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed172_resultadoobtido"])){ 
+     if(trim((string) $this->ed172_resultadoobtido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed172_resultadoobtido"])){ 
        $sql  .= $virgula." ed172_resultadoobtido = '$this->ed172_resultadoobtido' ";
        $virgula = ",";
      }
-     if(trim($this->ed172_resultadofinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed172_resultadofinal"])){ 
+     if(trim((string) $this->ed172_resultadofinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed172_resultadofinal"])){ 
        $sql  .= $virgula." ed172_resultadofinal = '$this->ed172_resultadofinal' ";
        $virgula = ",";
      }
@@ -237,19 +237,19 @@ class cl_historicompsforaarea
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1012050,'$this->ed172_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed172_codigo"]) || $this->ed172_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,1010679,1012050,'".AddSlashes(pg_result($resaco,$conresaco,'ed172_codigo'))."','$this->ed172_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010679,1012050,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed172_codigo'))."','$this->ed172_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed172_historicompsfora"]) || $this->ed172_historicompsfora != "")
-             $resac = db_query("insert into db_acount values($acount,1010679,1012051,'".AddSlashes(pg_result($resaco,$conresaco,'ed172_historicompsfora'))."','$this->ed172_historicompsfora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010679,1012051,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed172_historicompsfora'))."','$this->ed172_historicompsfora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed172_areaconhecimento"]) || $this->ed172_areaconhecimento != "")
-             $resac = db_query("insert into db_acount values($acount,1010679,1012052,'".AddSlashes(pg_result($resaco,$conresaco,'ed172_areaconhecimento'))."','$this->ed172_areaconhecimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010679,1012052,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed172_areaconhecimento'))."','$this->ed172_areaconhecimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed172_resultadoobtido"]) || $this->ed172_resultadoobtido != "")
-             $resac = db_query("insert into db_acount values($acount,1010679,1012053,'".AddSlashes(pg_result($resaco,$conresaco,'ed172_resultadoobtido'))."','$this->ed172_resultadoobtido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010679,1012053,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed172_resultadoobtido'))."','$this->ed172_resultadoobtido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed172_resultadofinal"]) || $this->ed172_resultadofinal != "")
-             $resac = db_query("insert into db_acount values($acount,1010679,1012054,'".AddSlashes(pg_result($resaco,$conresaco,'ed172_resultadofinal'))."','$this->ed172_resultadofinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010679,1012054,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed172_resultadofinal'))."','$this->ed172_resultadofinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -303,14 +303,14 @@ class cl_historicompsforaarea
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1012050,'$ed172_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010679,1012050,'','".AddSlashes(pg_result($resaco,$iresaco,'ed172_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010679,1012051,'','".AddSlashes(pg_result($resaco,$iresaco,'ed172_historicompsfora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010679,1012052,'','".AddSlashes(pg_result($resaco,$iresaco,'ed172_areaconhecimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010679,1012053,'','".AddSlashes(pg_result($resaco,$iresaco,'ed172_resultadoobtido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010679,1012054,'','".AddSlashes(pg_result($resaco,$iresaco,'ed172_resultadofinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010679,1012050,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed172_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010679,1012051,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed172_historicompsfora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010679,1012052,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed172_areaconhecimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010679,1012053,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed172_resultadoobtido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010679,1012054,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed172_resultadofinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

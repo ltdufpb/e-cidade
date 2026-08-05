@@ -27,16 +27,18 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
-use ECidade\RecursosHumanos\ESocial\Repository\TrabalhadorSemVinculoInicio;
+use Override;
+use ServidorRepository;
+use Assentamento;
+use DBException;
 use ECidade\RecursosHumanos\RH\Assentamento\Model\ControleMedico;
 use stdClass;
-use DBCompetencia;
 use DBDate;
 
 class MonitoramentoSaudeFormatter extends Formatter
 {
     /**
-     * @var \Assentamento
+     * @var Assentamento
      */
     private $dadoAtual;
     /**
@@ -55,9 +57,10 @@ class MonitoramentoSaudeFormatter extends Formatter
 
     /**
      * @param array $dados
-     * @return array|\Assentamento[]
-     * @throws \DBException
+     * @return array|Assentamento[]
+     * @throws DBException
      */
+    #[Override]
     public function formatar($dados)
     {
         $this->ano = $dados->ano;
@@ -83,7 +86,7 @@ class MonitoramentoSaudeFormatter extends Formatter
 
     private function montarVinculo()
     {
-        $servidor = \ServidorRepository::getInstanciaByCodigo($this->dadoAtual->getMatricula(), $this->ano, $this->mes);
+        $servidor = ServidorRepository::getInstanciaByCodigo($this->dadoAtual->getMatricula(), $this->ano, $this->mes);
         $vinculo = new stdClass();
         $vinculo->cpfTrab = $servidor->getCgm()->getCpf();
         if ($servidor->temVinculoEmpregaticio()) {

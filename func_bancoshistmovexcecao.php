@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bancoshistmovexcecao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbancoshistmovexcecao = new cl_bancoshistmovexcecao;
 $clbancoshistmovexcecao->rotulo->label("k166_sequencial");
 $clbancoshistmovexcecao->rotulo->label("k166_bancoshistmov");
@@ -54,7 +55,7 @@ $clbancoshistmovexcecao->rotulo->label("k166_bancoshistmov");
               <?=$Lk166_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k166_sequencial",10,$Ik166_sequencial,true,"text",4,"","chave_k166_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clbancoshistmovexcecao->rotulo->label("k166_bancoshistmov");
               <?=$Lk166_bancoshistmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k166_bancoshistmov",10,$Ik166_bancoshistmov,true,"text",4,"","chave_k166_bancoshistmov");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clbancoshistmovexcecao->rotulo->label("k166_bancoshistmov");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bancoshistmovexcecao.php")==true){
@@ -122,12 +123,12 @@ $clbancoshistmovexcecao->rotulo->label("k166_bancoshistmov");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

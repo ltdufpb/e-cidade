@@ -34,6 +34,7 @@
  */
 class Caucao extends Transferencia {
 
+  #[Override]
   public function salvar () {
 
     parent::salvar();

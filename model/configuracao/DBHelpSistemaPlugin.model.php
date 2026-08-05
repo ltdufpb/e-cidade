@@ -4,12 +4,9 @@ use \ECidade\Core\Config as AppConfig;
 
 class DBHelpSistemaPlugin extends DBHelpSistema {
 
-  private $oPlugin;
-
-  public function __construct(AppConfig $oConfig, $iIdItemMenu, Plugin $oPlugin) {
+  public function __construct(AppConfig $oConfig, $iIdItemMenu, private readonly Plugin $oPlugin) {
 
     parent::__construct($oConfig, $iIdItemMenu);
-    $this->oPlugin = $oPlugin;
   }
 
   private function loadHelpFile() {
@@ -31,18 +28,18 @@ class DBHelpSistemaPlugin extends DBHelpSistema {
 
   public function load() {
 
-    $oTemplate = (object) array(
-      'helps_releases' => (object) array(
-        'group' => (object) array(
+    $oTemplate = (object) [
+      'helps_releases' => (object) [
+        'group' => (object) [
           'id' => null,
           'parent_id' => null,
           'title' => null,
           'content' => null, 
-          'fields' => array(),
-          'groups' => array(),
-        ),
-      )
-    );
+          'fields' => [],
+          'groups' => [],
+        ],
+      ]
+    ];
 
     $oHelp = $this->loadHelpFile();
 

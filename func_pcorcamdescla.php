@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pcorcamdescla_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpcorcamdescla = new cl_pcorcamdescla;
 $clpcorcamdescla->rotulo->label("pc32_orcamitem");
 $clpcorcamdescla->rotulo->label("pc32_orcamforne");
@@ -55,7 +56,7 @@ $clpcorcamdescla->rotulo->label("pc32_orcamforne");
               <?=$Lpc32_orcamitem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc32_orcamitem",10,$Ipc32_orcamitem,true,"text",4,"","chave_pc32_orcamitem");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clpcorcamdescla->rotulo->label("pc32_orcamforne");
               <?=$Lpc32_orcamforne?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc32_orcamforne",10,$Ipc32_orcamforne,true,"text",4,"","chave_pc32_orcamforne");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clpcorcamdescla->rotulo->label("pc32_orcamforne");
               <?=$Lpc32_orcamforne?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc32_orcamforne",10,$Ipc32_orcamforne,true,"text",4,"","chave_pc32_orcamforne");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clpcorcamdescla->rotulo->label("pc32_orcamforne");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_pcorcamdescla.php")==true){
@@ -129,12 +130,12 @@ $clpcorcamdescla->rotulo->label("pc32_orcamforne");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

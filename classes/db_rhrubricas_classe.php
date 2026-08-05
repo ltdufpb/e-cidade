@@ -32,52 +32,52 @@ use ECidade\RecursosHumanos\Pessoal\Interfaces\PesquisaRubricas;
 class cl_rhrubricas implements PesquisaRubricas
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $rh27_rubric = null;
-    var $rh27_descr = null;
-    var $rh27_pd = 0;
-    var $rh27_quant = 0;
-    var $rh27_cond2 = null;
-    var $rh27_cond3 = null;
-    var $rh27_form = null;
-    var $rh27_form2 = null;
-    var $rh27_form3 = null;
-    var $rh27_formq = null;
-    var $rh27_calc1 = 0;
-    var $rh27_calc2 = 0;
-    var $rh27_calc3 = 'f';
-    var $rh27_tipo = 0;
-    var $rh27_limdat = 'f';
-    var $rh27_presta = 'f';
-    var $rh27_calcp = 'f';
-    var $rh27_propq = 'f';
-    var $rh27_propi = 'f';
-    var $rh27_obs = null;
-    var $rh27_instit = 0;
-    var $rh27_ativo = 'f';
-    var $rh27_complementarautomatica = 'f';
-    var $rh27_valorpadrao = 0;
-    var $rh27_quantidadepadrao = 0;
-    var $rh27_rhfundamentacaolegal = 0;
-    var $rh27_valorlimite = 0;
-    var $rh27_quantidadelimite = 0;
-    var $rh27_tipobloqueio = null;
-    var $rh27_periodolancamento = 'f';
-    var $rh27_previdenciacomplementar = 0;
+    public $rh27_rubric = null;
+    public $rh27_descr = null;
+    public $rh27_pd = 0;
+    public $rh27_quant = 0;
+    public $rh27_cond2 = null;
+    public $rh27_cond3 = null;
+    public $rh27_form = null;
+    public $rh27_form2 = null;
+    public $rh27_form3 = null;
+    public $rh27_formq = null;
+    public $rh27_calc1 = 0;
+    public $rh27_calc2 = 0;
+    public $rh27_calc3 = 'f';
+    public $rh27_tipo = 0;
+    public $rh27_limdat = 'f';
+    public $rh27_presta = 'f';
+    public $rh27_calcp = 'f';
+    public $rh27_propq = 'f';
+    public $rh27_propi = 'f';
+    public $rh27_obs = null;
+    public $rh27_instit = 0;
+    public $rh27_ativo = 'f';
+    public $rh27_complementarautomatica = 'f';
+    public $rh27_valorpadrao = 0;
+    public $rh27_quantidadepadrao = 0;
+    public $rh27_rhfundamentacaolegal = 0;
+    public $rh27_valorlimite = 0;
+    public $rh27_quantidadelimite = 0;
+    public $rh27_tipobloqueio = null;
+    public $rh27_periodolancamento = 'f';
+    public $rh27_previdenciacomplementar = 0;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  rh27_rubric = char(4) = Rubrica
                  rh27_descr = varchar(50) = Descrição do Código
                  rh27_pd = int4 = Tipo Rubrica
@@ -112,11 +112,11 @@ class cl_rhrubricas implements PesquisaRubricas
                  ";
 
     //funcao construtor da classe
-    function cl_rhrubricas()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("rhrubricas");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -324,7 +324,7 @@ class cl_rhrubricas implements PesquisaRubricas
         /**
          * Se a fundamentação for vázia o campo é preenchido com null.
          */
-        if (trim($this->rh27_rhfundamentacaolegal) == null) {
+        if (trim((string) $this->rh27_rhfundamentacaolegal) == null) {
             $this->rh27_rhfundamentacaolegal = "null";
         }
         if ($this->rh27_valorlimite == null) {
@@ -459,7 +459,7 @@ class cl_rhrubricas implements PesquisaRubricas
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Tabela de rubricas ($this->rh27_rubric." - ".$this->rh27_instit) não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Tabela de rubricas já Cadastrado";
@@ -491,101 +491,101 @@ class cl_rhrubricas implements PesquisaRubricas
             if (($resaco != false) || ($this->numrows != 0)) {
 
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,7104,'$this->rh27_rubric','I')");
                 $resac = db_query("insert into db_acountkey values($acount,7472,'$this->rh27_instit','I')");
-                $resac = db_query("insert into db_acount values($acount,1177,7104,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7104,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_rubric')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7105,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7105,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_descr')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7106,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7106,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_pd')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7108,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7108,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_quant')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7115,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7115,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_cond2')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7116,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7116,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_cond3')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7107,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7107,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_form')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7117,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7117,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_form2')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7118,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7118,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_form3')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7122,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7122,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_formq')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7109,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7109,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_calc1')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7110,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7110,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_calc2')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7111,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7111,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_calc3')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7112,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7112,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_tipo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7113,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7113,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_limdat')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7121,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7121,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_presta')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7119,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7119,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_calcp')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7120,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7120,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_propq')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7123,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7123,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_propi')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7114,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7114,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_obs')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,7472,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,7472,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_instit')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,11886,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,11886,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,20048,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,20048,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_complementarautomatica')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,20068,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,20068,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_valorpadrao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,20069,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,20069,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_quantidadepadrao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,20539,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,20539,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_rhfundamentacaolegal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,21780,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,21780,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_valorlimite')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,21781,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,21781,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_quantidadelimite')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,21783,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,21783,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_tipobloqueio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,22106,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,22106,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_periodolancamento')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1177,22305,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1177,22305,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh27_previdenciacomplementar')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -599,10 +599,10 @@ class cl_rhrubricas implements PesquisaRubricas
         $this->atualizacampos();
         $sql = " UPDATE rhrubricas SET ";
         $virgula = "";
-        if (trim($this->rh27_rubric) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_rubric"])) {
+        if (trim((string) $this->rh27_rubric) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_rubric"])) {
             $sql .= $virgula . " rh27_rubric = '$this->rh27_rubric' ";
             $virgula = ",";
-            if (trim($this->rh27_rubric) == null) {
+            if (trim((string) $this->rh27_rubric) == null) {
                 $this->erro_sql = " Campo Rubrica não informado.";
                 $this->erro_campo = "rh27_rubric";
                 $this->erro_banco = "";
@@ -613,10 +613,10 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_descr) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_descr"])) {
+        if (trim((string) $this->rh27_descr) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_descr"])) {
             $sql .= $virgula . " rh27_descr = '$this->rh27_descr' ";
             $virgula = ",";
-            if (trim($this->rh27_descr) == null) {
+            if (trim((string) $this->rh27_descr) == null) {
                 $this->erro_sql = " Campo Descrição do Código não informado.";
                 $this->erro_campo = "rh27_descr";
                 $this->erro_banco = "";
@@ -627,10 +627,10 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_pd) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_pd"])) {
+        if (trim((string) $this->rh27_pd) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_pd"])) {
             $sql .= $virgula . " rh27_pd = $this->rh27_pd ";
             $virgula = ",";
-            if (trim($this->rh27_pd) == null) {
+            if (trim((string) $this->rh27_pd) == null) {
                 $this->erro_sql = " Campo Tipo Rubrica não informado.";
                 $this->erro_campo = "rh27_pd";
                 $this->erro_banco = "";
@@ -641,10 +641,10 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_quant) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_quant"])) {
+        if (trim((string) $this->rh27_quant) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_quant"])) {
             $sql .= $virgula . " rh27_quant = $this->rh27_quant ";
             $virgula = ",";
-            if (trim($this->rh27_quant) == null) {
+            if (trim((string) $this->rh27_quant) == null) {
                 $this->erro_sql = " Campo Qtda ou Valor para Inicializar não informado.";
                 $this->erro_campo = "rh27_quant";
                 $this->erro_banco = "";
@@ -655,34 +655,34 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_cond2) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_cond2"])) {
+        if (trim((string) $this->rh27_cond2) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_cond2"])) {
             $sql .= $virgula . " rh27_cond2 = '$this->rh27_cond2' ";
             $virgula = ",";
         }
-        if (trim($this->rh27_cond3) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_cond3"])) {
+        if (trim((string) $this->rh27_cond3) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_cond3"])) {
             $sql .= $virgula . " rh27_cond3 = '$this->rh27_cond3' ";
             $virgula = ",";
         }
-        if (trim($this->rh27_form) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_form"])) {
+        if (trim((string) $this->rh27_form) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_form"])) {
             $sql .= $virgula . " rh27_form = '$this->rh27_form' ";
             $virgula = ",";
         }
-        if (trim($this->rh27_form2) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_form2"])) {
+        if (trim((string) $this->rh27_form2) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_form2"])) {
             $sql .= $virgula . " rh27_form2 = '$this->rh27_form2' ";
             $virgula = ",";
         }
-        if (trim($this->rh27_form3) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_form3"])) {
+        if (trim((string) $this->rh27_form3) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_form3"])) {
             $sql .= $virgula . " rh27_form3 = '$this->rh27_form3' ";
             $virgula = ",";
         }
-        if (trim($this->rh27_formq) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_formq"])) {
+        if (trim((string) $this->rh27_formq) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_formq"])) {
             $sql .= $virgula . " rh27_formq = '$this->rh27_formq' ";
             $virgula = ",";
         }
-        if (trim($this->rh27_calc1) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_calc1"])) {
+        if (trim((string) $this->rh27_calc1) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_calc1"])) {
             $sql .= $virgula . " rh27_calc1 = $this->rh27_calc1 ";
             $virgula = ",";
-            if (trim($this->rh27_calc1) == null) {
+            if (trim((string) $this->rh27_calc1) == null) {
                 $this->erro_sql = " Campo Média p/ Férias não informado.";
                 $this->erro_campo = "rh27_calc1";
                 $this->erro_banco = "";
@@ -693,10 +693,10 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_calc2) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_calc2"])) {
+        if (trim((string) $this->rh27_calc2) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_calc2"])) {
             $sql .= $virgula . " rh27_calc2 = $this->rh27_calc2 ";
             $virgula = ",";
-            if (trim($this->rh27_calc2) == null) {
+            if (trim((string) $this->rh27_calc2) == null) {
                 $this->erro_sql = " Campo Média p/ 13º  Salário não informado.";
                 $this->erro_campo = "rh27_calc2";
                 $this->erro_banco = "";
@@ -707,10 +707,10 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_calc3) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_calc3"])) {
+        if (trim((string) $this->rh27_calc3) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_calc3"])) {
             $sql .= $virgula . " rh27_calc3 = '$this->rh27_calc3' ";
             $virgula = ",";
-            if (trim($this->rh27_calc3) == null) {
+            if (trim((string) $this->rh27_calc3) == null) {
                 $this->erro_sql = " Campo Código Rescisão não informado.";
                 $this->erro_campo = "rh27_calc3";
                 $this->erro_banco = "";
@@ -721,10 +721,10 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_tipo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_tipo"])) {
+        if (trim((string) $this->rh27_tipo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_tipo"])) {
             $sql .= $virgula . " rh27_tipo = $this->rh27_tipo ";
             $virgula = ",";
-            if (trim($this->rh27_tipo) == null) {
+            if (trim((string) $this->rh27_tipo) == null) {
                 $this->erro_sql = " Campo Tipo de Inicialização não informado.";
                 $this->erro_campo = "rh27_tipo";
                 $this->erro_banco = "";
@@ -735,10 +735,10 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_limdat) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_limdat"])) {
+        if (trim((string) $this->rh27_limdat) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_limdat"])) {
             $sql .= $virgula . " rh27_limdat = '$this->rh27_limdat' ";
             $virgula = ",";
-            if (trim($this->rh27_limdat) == null) {
+            if (trim((string) $this->rh27_limdat) == null) {
                 $this->erro_sql = " Campo Usa Data Limite não informado.";
                 $this->erro_campo = "rh27_limdat";
                 $this->erro_banco = "";
@@ -749,10 +749,10 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_presta) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_presta"])) {
+        if (trim((string) $this->rh27_presta) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_presta"])) {
             $sql .= $virgula . " rh27_presta = '$this->rh27_presta' ";
             $virgula = ",";
-            if (trim($this->rh27_presta) == null) {
+            if (trim((string) $this->rh27_presta) == null) {
                 $this->erro_sql = " Campo Calcula Prestações não informado.";
                 $this->erro_campo = "rh27_presta";
                 $this->erro_banco = "";
@@ -763,10 +763,10 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_calcp) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_calcp"])) {
+        if (trim((string) $this->rh27_calcp) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_calcp"])) {
             $sql .= $virgula . " rh27_calcp = '$this->rh27_calcp' ";
             $virgula = ",";
-            if (trim($this->rh27_calcp) == null) {
+            if (trim((string) $this->rh27_calcp) == null) {
                 $this->erro_sql = " Campo Proporcionaliza no Afastamento não informado.";
                 $this->erro_campo = "rh27_calcp";
                 $this->erro_banco = "";
@@ -777,10 +777,10 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_propq) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_propq"])) {
+        if (trim((string) $this->rh27_propq) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_propq"])) {
             $sql .= $virgula . " rh27_propq = '$this->rh27_propq' ";
             $virgula = ",";
-            if (trim($this->rh27_propq) == null) {
+            if (trim((string) $this->rh27_propq) == null) {
                 $this->erro_sql = " Campo Proporcionaliza nas Médias não informado.";
                 $this->erro_campo = "rh27_propq";
                 $this->erro_banco = "";
@@ -791,10 +791,10 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_propi) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_propi"])) {
+        if (trim((string) $this->rh27_propi) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_propi"])) {
             $sql .= $virgula . " rh27_propi = '$this->rh27_propi' ";
             $virgula = ",";
-            if (trim($this->rh27_propi) == null) {
+            if (trim((string) $this->rh27_propi) == null) {
                 $this->erro_sql = " Campo Proporção para Inativos não informado.";
                 $this->erro_campo = "rh27_propi";
                 $this->erro_banco = "";
@@ -805,14 +805,14 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_obs) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_obs"])) {
+        if (trim((string) $this->rh27_obs) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_obs"])) {
             $sql .= $virgula . " rh27_obs = '$this->rh27_obs' ";
             $virgula = ",";
         }
-        if (trim($this->rh27_instit) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_instit"])) {
+        if (trim((string) $this->rh27_instit) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_instit"])) {
             $sql .= $virgula . " rh27_instit = $this->rh27_instit ";
             $virgula = ",";
-            if (trim($this->rh27_instit) == null) {
+            if (trim((string) $this->rh27_instit) == null) {
                 $this->erro_sql = " Campo codigo da instituicao não informado.";
                 $this->erro_campo = "rh27_instit";
                 $this->erro_banco = "";
@@ -823,10 +823,10 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_ativo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_ativo"])) {
+        if (trim((string) $this->rh27_ativo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_ativo"])) {
             $sql .= $virgula . " rh27_ativo = '$this->rh27_ativo' ";
             $virgula = ",";
-            if (trim($this->rh27_ativo) == null) {
+            if (trim((string) $this->rh27_ativo) == null) {
                 $this->erro_sql = " Campo Ativo não informado.";
                 $this->erro_campo = "rh27_ativo";
                 $this->erro_banco = "";
@@ -837,10 +837,10 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_complementarautomatica) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_complementarautomatica"])) {
+        if (trim((string) $this->rh27_complementarautomatica) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_complementarautomatica"])) {
             $sql .= $virgula . " rh27_complementarautomatica = '$this->rh27_complementarautomatica' ";
             $virgula = ",";
-            if (trim($this->rh27_complementarautomatica) == null) {
+            if (trim((string) $this->rh27_complementarautomatica) == null) {
                 $this->erro_sql = " Campo Auto. Complementar não informado.";
                 $this->erro_campo = "rh27_complementarautomatica";
                 $this->erro_banco = "";
@@ -851,15 +851,15 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_valorpadrao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_valorpadrao"])) {
-            if (trim($this->rh27_valorpadrao) == "" && isset($GLOBALS["HTTP_POST_VARS"]["rh27_valorpadrao"])) {
+        if (trim((string) $this->rh27_valorpadrao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_valorpadrao"])) {
+            if (trim((string) $this->rh27_valorpadrao) == "" && isset($GLOBALS["HTTP_POST_VARS"]["rh27_valorpadrao"])) {
                 $this->rh27_valorpadrao = "0";
             }
             $sql .= $virgula . " rh27_valorpadrao = $this->rh27_valorpadrao ";
             $virgula = ",";
         }
-        if (trim($this->rh27_quantidadepadrao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_quantidadepadrao"])) {
-            if (trim($this->rh27_quantidadepadrao) == "" && isset($GLOBALS["HTTP_POST_VARS"]["rh27_quantidadepadrao"])) {
+        if (trim((string) $this->rh27_quantidadepadrao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_quantidadepadrao"])) {
+            if (trim((string) $this->rh27_quantidadepadrao) == "" && isset($GLOBALS["HTTP_POST_VARS"]["rh27_quantidadepadrao"])) {
                 $this->rh27_quantidadepadrao = "0";
             }
             $sql .= $virgula . " rh27_quantidadepadrao = $this->rh27_quantidadepadrao ";
@@ -868,14 +868,14 @@ class cl_rhrubricas implements PesquisaRubricas
         /**
          * Se a fundamentação for vázia o campo é preenchido com null.
          */
-        if (trim($this->rh27_rhfundamentacaolegal) == "") {
+        if (trim((string) $this->rh27_rhfundamentacaolegal) == "") {
             $this->rh27_rhfundamentacaolegal = "null";
         }
         $sql .= $virgula . " rh27_rhfundamentacaolegal = $this->rh27_rhfundamentacaolegal ";
-        if (trim($this->rh27_valorlimite) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_valorlimite"])) {
+        if (trim((string) $this->rh27_valorlimite) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_valorlimite"])) {
             $sql .= $virgula . " rh27_valorlimite = $this->rh27_valorlimite ";
             $virgula = ",";
-            if (trim($this->rh27_valorlimite) == null) {
+            if (trim((string) $this->rh27_valorlimite) == null) {
                 $this->erro_sql = " Campo Valor limite não informado.";
                 $this->erro_campo = "rh27_valorlimite";
                 $this->erro_banco = "";
@@ -886,10 +886,10 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_quantidadelimite) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_quantidadelimite"])) {
+        if (trim((string) $this->rh27_quantidadelimite) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_quantidadelimite"])) {
             $sql .= $virgula . " rh27_quantidadelimite = $this->rh27_quantidadelimite ";
             $virgula = ",";
-            if (trim($this->rh27_quantidadelimite) == null) {
+            if (trim((string) $this->rh27_quantidadelimite) == null) {
                 $this->erro_sql = " Campo Quantidade limite não informado.";
                 $this->erro_campo = "rh27_quantidadelimite";
                 $this->erro_banco = "";
@@ -900,10 +900,10 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_tipobloqueio) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_tipobloqueio"])) {
+        if (trim((string) $this->rh27_tipobloqueio) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_tipobloqueio"])) {
             $sql .= $virgula . " rh27_tipobloqueio = '$this->rh27_tipobloqueio' ";
             $virgula = ",";
-            if (trim($this->rh27_tipobloqueio) == null) {
+            if (trim((string) $this->rh27_tipobloqueio) == null) {
                 $this->erro_sql = " Campo Tipo de Bloqueio não informado.";
                 $this->erro_campo = "rh27_tipobloqueio";
                 $this->erro_banco = "";
@@ -914,10 +914,10 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_periodolancamento) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_periodolancamento"])) {
+        if (trim((string) $this->rh27_periodolancamento) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_periodolancamento"])) {
             $sql .= $virgula . " rh27_periodolancamento = '$this->rh27_periodolancamento' ";
             $virgula = ",";
-            if (trim($this->rh27_periodolancamento) == null) {
+            if (trim((string) $this->rh27_periodolancamento) == null) {
                 $this->erro_sql = " Campo Período de Lançamento não informado.";
                 $this->erro_campo = "rh27_periodolancamento";
                 $this->erro_banco = "";
@@ -928,8 +928,8 @@ class cl_rhrubricas implements PesquisaRubricas
                 return false;
             }
         }
-        if (trim($this->rh27_previdenciacomplementar) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_previdenciacomplementar"])) {
-            if (trim($this->rh27_previdenciacomplementar) == "" && isset($GLOBALS["HTTP_POST_VARS"]["rh27_previdenciacomplementar"])) {
+        if (trim((string) $this->rh27_previdenciacomplementar) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh27_previdenciacomplementar"])) {
+            if (trim((string) $this->rh27_previdenciacomplementar) == "" && isset($GLOBALS["HTTP_POST_VARS"]["rh27_previdenciacomplementar"])) {
                 $this->rh27_previdenciacomplementar = "0";
             }
             $sql .= $virgula . " rh27_previdenciacomplementar = $this->rh27_previdenciacomplementar ";
@@ -952,162 +952,162 @@ class cl_rhrubricas implements PesquisaRubricas
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,7104,'$this->rh27_rubric','A')");
                     $resac = db_query("insert into db_acountkey values($acount,7472,'$this->rh27_instit','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_rubric"]) || $this->rh27_rubric != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7104,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7104,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_rubric')) . "','$this->rh27_rubric'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_descr"]) || $this->rh27_descr != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7105,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7105,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_descr')) . "','$this->rh27_descr'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_pd"]) || $this->rh27_pd != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7106,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7106,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_pd')) . "','$this->rh27_pd'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_quant"]) || $this->rh27_quant != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7108,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7108,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_quant')) . "','$this->rh27_quant'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_cond2"]) || $this->rh27_cond2 != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7115,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7115,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_cond2')) . "','$this->rh27_cond2'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_cond3"]) || $this->rh27_cond3 != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7116,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7116,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_cond3')) . "','$this->rh27_cond3'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_form"]) || $this->rh27_form != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7107,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7107,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_form')) . "','$this->rh27_form'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_form2"]) || $this->rh27_form2 != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7117,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7117,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_form2')) . "','$this->rh27_form2'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_form3"]) || $this->rh27_form3 != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7118,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7118,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_form3')) . "','$this->rh27_form3'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_formq"]) || $this->rh27_formq != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7122,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7122,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_formq')) . "','$this->rh27_formq'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_calc1"]) || $this->rh27_calc1 != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7109,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7109,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_calc1')) . "','$this->rh27_calc1'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_calc2"]) || $this->rh27_calc2 != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7110,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7110,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_calc2')) . "','$this->rh27_calc2'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_calc3"]) || $this->rh27_calc3 != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7111,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7111,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_calc3')) . "','$this->rh27_calc3'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_tipo"]) || $this->rh27_tipo != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7112,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7112,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_tipo')) . "','$this->rh27_tipo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_limdat"]) || $this->rh27_limdat != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7113,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7113,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_limdat')) . "','$this->rh27_limdat'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_presta"]) || $this->rh27_presta != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7121,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7121,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_presta')) . "','$this->rh27_presta'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_calcp"]) || $this->rh27_calcp != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7119,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7119,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_calcp')) . "','$this->rh27_calcp'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_propq"]) || $this->rh27_propq != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7120,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7120,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_propq')) . "','$this->rh27_propq'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_propi"]) || $this->rh27_propi != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7123,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7123,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_propi')) . "','$this->rh27_propi'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_obs"]) || $this->rh27_obs != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7114,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7114,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_obs')) . "','$this->rh27_obs'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_instit"]) || $this->rh27_instit != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,7472,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,7472,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_instit')) . "','$this->rh27_instit'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_ativo"]) || $this->rh27_ativo != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,11886,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,11886,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_ativo')) . "','$this->rh27_ativo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_complementarautomatica"]) || $this->rh27_complementarautomatica != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,20048,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,20048,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_complementarautomatica')) . "','$this->rh27_complementarautomatica'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_valorpadrao"]) || $this->rh27_valorpadrao != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,20068,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,20068,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_valorpadrao')) . "','$this->rh27_valorpadrao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_quantidadepadrao"]) || $this->rh27_quantidadepadrao != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,20069,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,20069,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_quantidadepadrao')) . "','$this->rh27_quantidadepadrao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_rhfundamentacaolegal"]) || $this->rh27_rhfundamentacaolegal != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,20539,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,20539,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_rhfundamentacaolegal')) . "','$this->rh27_rhfundamentacaolegal'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_valorlimite"]) || $this->rh27_valorlimite != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,21780,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,21780,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_valorlimite')) . "','$this->rh27_valorlimite'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_quantidadelimite"]) || $this->rh27_quantidadelimite != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,21781,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,21781,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_quantidadelimite')) . "','$this->rh27_quantidadelimite'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_tipobloqueio"]) || $this->rh27_tipobloqueio != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,21783,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,21783,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_tipobloqueio')) . "','$this->rh27_tipobloqueio'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_periodolancamento"]) || $this->rh27_periodolancamento != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,22106,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,22106,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_periodolancamento')) . "','$this->rh27_periodolancamento'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh27_previdenciacomplementar"]) || $this->rh27_previdenciacomplementar != "") {
-                        $resac = db_query("insert into db_acount values($acount,1177,22305,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1177,22305,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh27_previdenciacomplementar')) . "','$this->rh27_previdenciacomplementar'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
@@ -1169,101 +1169,101 @@ class cl_rhrubricas implements PesquisaRubricas
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,7104,'$rh27_rubric','E')");
                     $resac = db_query("insert into db_acountkey values($acount,7472,'$rh27_instit','E')");
-                    $resac = db_query("insert into db_acount values($acount,1177,7104,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7104,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_rubric')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7105,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7105,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_descr')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7106,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7106,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_pd')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7108,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7108,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_quant')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7115,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7115,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_cond2')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7116,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7116,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_cond3')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7107,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7107,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_form')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7117,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7117,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_form2')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7118,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7118,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_form3')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7122,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7122,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_formq')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7109,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7109,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_calc1')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7110,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7110,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_calc2')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7111,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7111,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_calc3')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7112,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7112,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_tipo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7113,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7113,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_limdat')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7121,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7121,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_presta')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7119,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7119,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_calcp')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7120,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7120,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_propq')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7123,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7123,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_propi')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7114,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7114,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_obs')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,7472,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,7472,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_instit')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,11886,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,11886,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,20048,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,20048,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_complementarautomatica')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,20068,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,20068,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_valorpadrao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,20069,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,20069,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_quantidadepadrao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,20539,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,20539,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_rhfundamentacaolegal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,21780,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,21780,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_valorlimite')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,21781,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,21781,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_quantidadelimite')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,21783,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,21783,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_tipobloqueio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,22106,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,22106,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_periodolancamento')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1177,22305,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1177,22305,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh27_previdenciacomplementar')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -1455,11 +1455,11 @@ class cl_rhrubricas implements PesquisaRubricas
         $ordem = null,
         $dbwhere = "",
         $basereg = "",
-        $regist
+        $regist = null
     ) {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1470,7 +1470,7 @@ class cl_rhrubricas implements PesquisaRubricas
         }
         $sql .= " from rhrubricas ";
         $sql .= "      left join rhbasesreg on rhbasesreg.rh54_rubric = rhrubricas.rh27_rubric ";
-        if (trim($basereg) != "" && $basereg != null && trim($regist) && $regist != null) {
+        if (trim((string) $basereg) != "" && $basereg != null && trim((string) $regist) && $regist != null) {
             $sql .= "                        and rhbasesreg.rh54_base   = '" . $basereg . "'
                                         and rhbasesreg.rh54_regist = " . $regist;
             $sql .= "    left join   basesr   on   basesr.r09_base     = '" . $basereg . "'
@@ -1501,7 +1501,7 @@ class cl_rhrubricas implements PesquisaRubricas
         //echo $sql;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1517,7 +1517,7 @@ class cl_rhrubricas implements PesquisaRubricas
      * @param array $ordem
      * @return string
      */
-    public function sqlRubricas($campos = '*', $where = array(), $ordem = array())
+    public function sqlRubricas($campos = '*', $where = [], $ordem = [])
     {
         $sql = "
             select {$campos}

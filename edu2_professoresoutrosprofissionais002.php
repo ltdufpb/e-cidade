@@ -29,7 +29,7 @@ require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_utils.php"));
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str($_SERVER['QUERY_STRING'] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 
 $iEscola = db_getsession("DB_coddepto");
 
@@ -46,7 +46,7 @@ if ($formato == "PDF") {
     $oPdf->AliasNbPages();
     $oPdf->setfillcolor(235);
     $logo = db_query($conn,"SELECT logo FROM db_config WHERE codigo = ".db_getsession("DB_instit"));
-    $oPdf->Image('imagens/files/'.pg_result($logo,0,"logo"),7,3,26,28);
+    $oPdf->Image('imagens/files/'.pg_fetch_result($logo,0,"logo"),7,3,26,28);
 }
 
 $sSql = "SELECT DISTINCT
@@ -145,7 +145,7 @@ if($iLinhas>0) {
         if ($formato == "PDF") {
             
             $logo = db_query($conn,"SELECT logo FROM db_config WHERE codigo = ".db_getsession("DB_instit"));
-            $oPdf->Image('imagens/files/'.pg_result($logo,0,"logo"),7,3,26,28);
+            $oPdf->Image('imagens/files/'.pg_fetch_result($logo,0,"logo"),7,3,26,28);
             if ( $oPdf->gety() > $oPdf->h - 0 || $iInd == 0) {
                 $oPdf->addpage();
                 $oPdf->ln(1);

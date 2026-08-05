@@ -12,28 +12,23 @@ class File {
   /**
    * @var string
    */
-  private $path;
-
-  /**
-   * @var string
-   */
   private $content;
 
   /**
    * @var Operation[]
    */
-  private $operations = array();
+  private $operations = [];
 
   /**
    * @var Operation[]
    */
-  private $failOperations = array();
+  private $failOperations = [];
 
   /**
    * @param string $path
    */
-  public function __construct($path = null) {
-    $this->path = $path;
+  public function __construct(private $path = null)
+  {
   }
 
   /**

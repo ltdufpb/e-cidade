@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -60,7 +60,8 @@ $clrotulo->label('v83_sequencial');
 $clrotulo->label('v83_nomearq');
 $instit = db_getsession("DB_instit");
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oPost = db_utils::postMemory($_POST);
 
@@ -104,7 +105,7 @@ $oPost = db_utils::postMemory($_POST);
             <b>Sequencial</b>
           </td>
           <td align="left">
-            <?
+            <?php 
               db_input("v83_sequencial",  4, $Iv83_sequencial, true, "text", 1, "");
             ?>
           </td>
@@ -115,7 +116,7 @@ $oPost = db_utils::postMemory($_POST);
             <b>Nome do Arquivo</b>
           </td>
           <td align="left">
-            <?
+            <?php 
               db_input("v83_nomearq",  47, $Iv83_nomearq, true, "text", 1, "");
             ?>
           </td>
@@ -123,10 +124,10 @@ $oPost = db_utils::postMemory($_POST);
 
         <tr>
           <td align="right" nowrap title="<?=@$Tk60_codigo?>" >
-            <b><?db_ancora("Lista", "js_pesquisalista(true);", 4);?></b>
+            <b><?php db_ancora("Lista", "js_pesquisalista(true);", 4);?></b>
           </td>
           <td align="left">
-            <?
+            <?php 
               db_input("k60_codigo",  4, $Ik60_codigo, true, "text", 4, "onchange='js_pesquisalista(false);'");
               db_input("k60_descr",  40, $Ik60_descr,  true, "text", 3, "");
             ?>
@@ -147,7 +148,7 @@ $oPost = db_utils::postMemory($_POST);
     </fieldset> 
   </form>
 </center>
-<? 
+<?php  
 //db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>

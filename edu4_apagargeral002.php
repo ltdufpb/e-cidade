@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $claluno                     = new cl_aluno;
 $clalunobairro               = new cl_alunobairro;
 $clalunocurso                = new cl_alunocurso;
@@ -276,14 +276,14 @@ if ( isset( $excluir ) ) {
   <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
    <br>
    <fieldset style="width:95%"><legend><b>Exclusão Geral de Alunos</b></legend>
-    <?if(!isset($pesquisar)){?>
+    <?php if(!isset($pesquisar)){?>
      <input type="button" value="Buscar Alunos" name="pesquisar" onclick="location.href='edu4_apagargeral002.php?pesquisar'">
-    <?}else{?>
+    <?php }else{?>
       <table border="0" cellspacing="0" width="100%">
 	<tr>
 	<td>
 	  <b>Alunos sem movimentação no sistema:</b><br>
-	  <?
+	  <?php 
 	  $sql_aluno = "SELECT DISTINCT ed47_i_codigo,to_ascii(ed47_v_nome) as ed47_v_nome
 			FROM aluno
 			left join historico        on ed47_i_codigo = ed61_i_aluno
@@ -299,21 +299,21 @@ if ( isset( $excluir ) ) {
 	  $result_aluno = db_query($sql_aluno);
 	  $linhas_aluno = pg_num_rows($result_aluno);
 	  if($linhas_aluno==0){
-	  $x = array(''=>'Nenhum registro');
+	  $x = [''=>'Nenhum registro'];
 	  db_select('aluno',$x,true,1,"style='width:400px;'");
 	  }else{
 	  ?>
 	  <select name="aluno" id="aluno" size="20" style="width:400px;font-size:9px;" multiple>
-	    <?
+	    <?php 
 	    for($x=0;$x<$linhas_aluno;$x++){
 	    db_fieldsmemory($result_aluno,$x);
 	    ?>
 	    <option value="<?=$ed47_i_codigo?>"><?=$ed47_i_codigo?> - <?=$ed47_v_nome?></option>
-	    <?
+	    <?php 
 	    }
 	    ?>
 	  </select>
-	  <?
+	  <?php 
 	  }
 	  ?>
 	</td>
@@ -332,7 +332,7 @@ if ( isset( $excluir ) ) {
 	</td>
 	</tr>
       </table>
-    <?}?>
+    <?php }?>
    </fieldset>
   </td>
  </tr>
@@ -345,7 +345,7 @@ if ( isset( $excluir ) ) {
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>

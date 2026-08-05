@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -46,8 +46,8 @@ include(modification("classes/db_turmaserieregimemat_classe.php"));
 include(modification("classes/db_turmalog_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_jsplibwebseller.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 $iAnoEtapaCenso        = null;
 $clturma               = new cl_turma;
 $clescola              = new cl_escola;
@@ -184,7 +184,7 @@ if(isset($excluir)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Exclusão de Turma</b></legend>
-    <?include(modification("forms/db_frmturma.php"));?>
+    <?php include(modification("forms/db_frmturma.php"));?>
    </fieldset>
    </center>
   </td>
@@ -192,7 +192,7 @@ if(isset($excluir)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if (isset($excluir)) {
 
   if ($clturma->erro_status == "0") {
@@ -202,7 +202,7 @@ if (isset($excluir)) {
     $clturma->erro(true,false);
     ?>
     <script>parent.document.form2.teste.click();</script>
-    <?
+    <?php 
 
   }
 }

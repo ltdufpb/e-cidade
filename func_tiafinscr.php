@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tiafinscr_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltiafinscr = new cl_tiafinscr;
 $cltiafinscr->rotulo->label("y94_codtiaf");
 $cltiafinscr->rotulo->label("y94_inscr");
@@ -54,7 +55,7 @@ $cltiafinscr->rotulo->label("y94_inscr");
               <?=$Ly94_codtiaf?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y94_codtiaf",10,$Iy94_codtiaf,true,"text",4,"","chave_y94_codtiaf");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cltiafinscr->rotulo->label("y94_inscr");
               <?=$Ly94_inscr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y94_inscr",8,$Iy94_inscr,true,"text",4,"","chave_y94_inscr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cltiafinscr->rotulo->label("y94_inscr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_tiafinscr.php")==true){
@@ -118,12 +119,12 @@ $cltiafinscr->rotulo->label("y94_inscr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

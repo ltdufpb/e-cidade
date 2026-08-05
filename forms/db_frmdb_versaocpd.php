@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,7 +56,7 @@ if(isset($db_opcaoal)){
 <form name="form1" method="post" action="">
 <center>
 <table border="0">
-<?
+<?php 
 
 db_input('db33_codcpd',6,$Idb33_codcpd,true,'hidden',3,"")
 ?>
@@ -65,10 +65,10 @@ db_input('db33_codcpd',6,$Idb33_codcpd,true,'hidden',3,"")
        <?=@$Ldb30_codversao?>
     </td>
     <td> 
-<?
+<?php 
 db_input('db30_codversao',6,$Idb30_codversao,true,'text',3);
 ?>/
-       <?
+       <?php 
 db_input('db30_codrelease',6,$Idb30_codrelease,true,'text',3);
        if(@$db33_codcpd > 0){
        ?>
@@ -76,17 +76,17 @@ db_input('db30_codrelease',6,$Idb30_codrelease,true,'text',3);
        <td rowspan="19" valign="top">
           <table border="0" cellpadding="0" cellspacing="0">
              <tr><td align="center"><b>Anexos</b></td></tr>
-	     <?
+	     <?php 
 	     $result = $cldb_versaocpdarq->sql_record($cldb_versaocpdarq->sql_query_file(null,"*","","db34_codcpd=".@$db33_codcpd));
 	     ?>
              <tr>
                  <td align="center">
 		  <select name='selid' onchange='js_novo(<?=$db33_codcpd?>,1,0)'  size=3>
-                   <?for($x=0;$x<$cldb_versaocpdarq->numrows;$x++){
+                   <?php for($x=0;$x<$cldb_versaocpdarq->numrows;$x++){
 		     db_fieldsmemory($result,$x);
 		   ?> 		   
                     <option value='<?=$db34_codarq?>'><?=$db34_descr?></option>
-                   <?
+                   <?php 
 	            }
 		   ?>
 		 </td>
@@ -100,7 +100,7 @@ db_input('db30_codrelease',6,$Idb30_codrelease,true,'text',3);
               </tr>
 	   </table>
 	 </td>
-	<?
+	<?php 
 	}
 	?>
     </td>
@@ -112,7 +112,7 @@ db_input('db30_codrelease',6,$Idb30_codrelease,true,'text',3);
 									
     </td>
     <td> 
-<?
+<?php 
 db_textarea('db33_obs',4,70,$Idb33_obs,true,'text',$db_opcao,"")
 ?>
 
@@ -123,7 +123,7 @@ db_textarea('db33_obs',4,70,$Idb33_obs,true,'text',$db_opcao,"")
        <?=@$Ldb33_obscpd?>
     </td>
     <td> 
-<?
+<?php 
 db_textarea('db33_obscpd',4,70,$Idb33_obscpd,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -133,7 +133,7 @@ db_textarea('db33_obscpd',4,70,$Idb33_obscpd,true,'text',$db_opcao,"")
        <?=@$Ldb33_data?>
     </td>
     <td> 
-<?
+<?php 
 if(!isset($db33_data_dia)){
    $db33_data_dia     = date('d',db_getsession("DB_datausu") );
    $db33_data_mes  = date('m',db_getsession("DB_datausu") );
@@ -153,7 +153,7 @@ db_inputdata('db33_data',@$db33_data_dia,@$db33_data_mes,@$db33_data_ano,true,'t
  <table>
   <tr>
     <td valign="top"  align="center">  
-    <?
+    <?php 
 	 $chavepri= array("db33_codcpd"=>@$db33_codcpd);
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $db33_codver=$db30_codver;

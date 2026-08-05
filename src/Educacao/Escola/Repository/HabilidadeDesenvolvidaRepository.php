@@ -8,7 +8,6 @@ use ECidade\Educacao\Escola\Model\ConteudoDesenvolvido;
 use ECidade\Educacao\Escola\Model\HabilidadeDesenvolvida;
 use ECidade\Educacao\Secretaria\BNCC\Model\Disciplina;
 use ECidade\Educacao\Secretaria\Services\ParametrosGlobaisService;
-use ECidade\Enum\Educacao\BNCC\TipoBaseCurricularEnum;
 use Exception;
 
 /**

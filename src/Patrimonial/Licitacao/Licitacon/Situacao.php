@@ -48,18 +48,13 @@ class Situacao {
 	const SIGLA_SITUACAO_HOMOLOGADA   = 'H';
 
 	/**
-	 * @var int
-	 */
-	private $iCodigo;
-
-	/**
 	 * Situacao constructor.
 	 *
 	 * @param int $iCodigo
 	 */
-	public function __construct($iCodigo) {
-		$this->iCodigo = $iCodigo;
-	}
+	public function __construct(private $iCodigo)
+    {
+    }
 
 	/**
 	 * @return int
@@ -75,35 +70,17 @@ class Situacao {
 	 */
 	public function getSigla() {
 
-		switch ($this->iCodigo) {
-
-			case SituacaoLicitacao::SITUACAO_ANULADA:
-				return self::SIGLA_SITUACAO_ANULADA;
-
-			case SituacaoLicitacao::SITUACAO_DESERTA;
-				return self::SIGLA_SITUACAO_DESERTA;
-
-			case SituacaoLicitacao::SITUACAO_EM_ANDAMENTO:
-				return self::SIGLA_SITUACAO_EM_ANDAMENTO;
-
-			case SituacaoLicitacao::SITUACAO_FRACASSADA:
-				return self::SIGLA_SITUACAO_FRACASSADA;
-
-			case SituacaoLicitacao::SITUACAO_ADJUDICADA:
-				return self::SIGLA_SITUACAO_ADJUDICADO;
-
-			case SituacaoLicitacao::SITUACAO_HOMOLOGADA:
-				return self::SIGLA_SITUACAO_HOMOLOGADA;
-
-			case SituacaoLicitacao::SITUACAO_JULGADA:
-				return self::SIGLA_SITUACAO_JULGADA;
-
-			case SituacaoLicitacao::SITUACAO_REVOGADA:
-				return self::SIGLA_SITUACAO_REVOGADA;
-
-			default:
-				return null;
-		}
+		return match ($this->iCodigo) {
+            SituacaoLicitacao::SITUACAO_ANULADA => self::SIGLA_SITUACAO_ANULADA,
+            SituacaoLicitacao::SITUACAO_DESERTA => self::SIGLA_SITUACAO_DESERTA,
+            SituacaoLicitacao::SITUACAO_EM_ANDAMENTO => self::SIGLA_SITUACAO_EM_ANDAMENTO,
+            SituacaoLicitacao::SITUACAO_FRACASSADA => self::SIGLA_SITUACAO_FRACASSADA,
+            SituacaoLicitacao::SITUACAO_ADJUDICADA => self::SIGLA_SITUACAO_ADJUDICADO,
+            SituacaoLicitacao::SITUACAO_HOMOLOGADA => self::SIGLA_SITUACAO_HOMOLOGADA,
+            SituacaoLicitacao::SITUACAO_JULGADA => self::SIGLA_SITUACAO_JULGADA,
+            SituacaoLicitacao::SITUACAO_REVOGADA => self::SIGLA_SITUACAO_REVOGADA,
+            default => null,
+        };
 	}
 
 	/**

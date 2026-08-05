@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $lDbOpcao    = 1;
 $lDbBotao    = true;
 $iEscola     = db_getsession("DB_coddepto");
@@ -68,7 +68,7 @@ $dDataFimAno = date('Y');
    <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
      <td valign="top" bgcolor="#CCCCCC">
-      <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+      <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
       <br>
       <form name="form1" method="post" action="">
        <fieldset style="width:95%"><legend><b>Relatório de Entradas / Saídas por Transferências</b></legend>
@@ -78,13 +78,13 @@ $dDataFimAno = date('Y');
            <b>Período:</b>
           </td>
           <td>
-           <?db_inputdata('inicio', "$dDataIniDia", "$dDataIniMes", "$dDataIniAno", true, 'text', $lDbOpcao, "")?>
+           <?php db_inputdata('inicio', "$dDataIniDia", "$dDataIniMes", "$dDataIniAno", true, 'text', $lDbOpcao, "")?>
            <b>até</b>
-           <?db_inputdata('final', "$dDataFimDia", "$dDataFimMes", "$dDataFimAno", true, 'text', $lDbOpcao,"")?>
+           <?php db_inputdata('final', "$dDataFimDia", "$dDataFimMes", "$dDataFimAno", true, 'text', $lDbOpcao,"")?>
           </td>
          </tr>
          <tr>    
-          <?
+          <?php 
             if ($iModulo == 7159) {   
             	    	     
               echo '<td align="left">'; 
@@ -145,7 +145,7 @@ $dDataFimAno = date('Y');
      </td>
     </tr>
    </table>
-    <?
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
               db_getsession("DB_anousu"),db_getsession("DB_instit")
              );

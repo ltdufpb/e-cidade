@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,7 @@ class rubrica {
 
   var $arq=null;
 
-  function rubrica($header){
+  function __construct($header){
      umask(74);
      $this->arq = fopen("tmp/RUBRICA.TXT",'w+');
      fputs($this->arq,$header);

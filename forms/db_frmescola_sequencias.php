@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -59,16 +59,16 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led129_i_codigo?>
   </td>
   <td>
-   <?db_input('ed129_i_codigo',10,$Ied129_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed129_i_codigo',10,$Ied129_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted129_i_escola?>">
-   <?db_ancora(@$Led129_i_escola,"js_pesquisaed129_i_escola(true);",$db_opcao1);?>
+   <?php db_ancora(@$Led129_i_escola,"js_pesquisaed129_i_escola(true);",$db_opcao1);?>
   </td>
   <td>
-   <?db_input('ed129_i_escola',10,$Ied129_i_escola,true,'text',$db_opcao1," onchange='js_pesquisaed129_i_escola(false);'")?>
-   <?db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
+   <?php db_input('ed129_i_escola',10,$Ied129_i_escola,true,'text',$db_opcao1," onchange='js_pesquisaed129_i_escola(false);'")?>
+   <?php db_input('ed18_c_nome',40,@$Ied18_c_nome,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -76,7 +76,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led129_i_numinicio?>
   </td>
   <td>
-   <?db_input('ed129_i_numinicio',20,$Ied129_i_numinicio,true,'text',$db_opcao,"")?>
+   <?php db_input('ed129_i_numinicio',20,$Ied129_i_numinicio,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -84,7 +84,7 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led129_i_numfinal?>
   </td>
   <td>
-   <?db_input('ed129_i_numfinal',20,$Ied129_i_numfinal,true,'text',$db_opcao,"")?>
+   <?php db_input('ed129_i_numfinal',20,$Ied129_i_numfinal,true,'text',$db_opcao,"")?>
   </td>
  </tr>
  <tr>
@@ -92,8 +92,8 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led129_c_ativo?>
   </td>
   <td>
-   <?
-   $x = array('S'=>'SIM','N'=>'NÃO');
+   <?php 
+   $x = ['S'=>'SIM','N'=>'NÃO'];
    db_select('ed129_c_ativo',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -104,8 +104,8 @@ if(isset($opcao) && $opcao=="alterar"){
 <table width="100%">
  <tr>
   <td valign="top">
-  <?
-   $chavepri= array("ed129_i_codigo"=>@$ed129_i_codigo,"ed129_i_escola"=>@$ed129_i_escola,"ed18_c_nome"=>@$ed18_c_nome,"ed129_i_numinicio"=>@$ed129_i_numinicio,"ed129_i_numfinal"=>@$ed129_i_numfinal);
+  <?php 
+   $chavepri= ["ed129_i_codigo"=>@$ed129_i_codigo,"ed129_i_escola"=>@$ed129_i_escola,"ed18_c_nome"=>@$ed18_c_nome,"ed129_i_numinicio"=>@$ed129_i_numinicio,"ed129_i_numfinal"=>@$ed129_i_numfinal];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clescola_sequencias->sql_query($ed129_i_codigo,"*","ed129_i_numinicio");
    $cliframe_alterar_excluir->campos  ="ed129_i_codigo,ed129_i_escola,ed18_c_nome,ed129_i_numinicio,ed129_i_numfinal,ed129_c_ativo";

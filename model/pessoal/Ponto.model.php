@@ -52,7 +52,7 @@ abstract class Ponto {
    * Registros do Ponto do Servidor
    * @var RegistroPonto[]
    */
-  protected $aRegistros = array();
+  protected $aRegistros = [];
 
   /**
    * Tabela do ponto
@@ -154,7 +154,7 @@ abstract class Ponto {
        */
       if ( is_array($mRubrica) ) {
 
-        $aRubricas = array();
+        $aRubricas = [];
 
         foreach ( $mRubrica as $sRubrica ) {
           $aRubricas[] = "'$sRubrica'";
@@ -171,23 +171,8 @@ abstract class Ponto {
       }
     }
 
-    switch ( $this->sTabela ) {
-
-      default :
-
-        $sSql  = $oDaoPonto->sql_query_file(null,
-                                            null,
-                                            null,
-                                            null,
-                                            " {$this->sSigla}_rubric as codigo_rubrica,
-                                              {$this->sSigla}_valor  as valor_rubrica,
-                                              {$this->sSigla}_quant  as quantidade_rubrica",
-                                            null,
-                                            $sWhere);
-
-      break;
-      case Ponto::FIXO :
-        $sSql  = $oDaoPonto->sql_query_file(null,
+    $sSql = match ($this->sTabela) {
+        Ponto::FIXO => $oDaoPonto->sql_query_file(null,
                                             null,
                                             null,
                                             null,
@@ -196,14 +181,9 @@ abstract class Ponto {
                                               {$this->sSigla}_quant  as quantidade_rubrica,
                                               {$this->sSigla}_datlim  as data_limite",
                                             null,
-                                          $sWhere);
-
-      break;
-      case Ponto::RESCISAO :
-      case Ponto::PROVISAO_FERIAS :
-    //  case Ponto::FERIAS : Tem Carregamento especifico PontoFerias::carregarRegistros();
-
-        $sSql  = $oDaoPonto->sql_query_file(null,
+                                          $sWhere),
+        //  case Ponto::FERIAS : Tem Carregamento especifico PontoFerias::carregarRegistros();
+        Ponto::RESCISAO, Ponto::PROVISAO_FERIAS => $oDaoPonto->sql_query_file(null,
                                             null,
                                             null,
                                             null,
@@ -212,11 +192,17 @@ abstract class Ponto {
                                               {$this->sSigla}_valor  as valor_rubrica,
                                               {$this->sSigla}_quant  as quantidade_rubrica ",
                                             null,
-                                            $sWhere);
-
-
-      break;
-    }
+                                            $sWhere),
+        default => $oDaoPonto->sql_query_file(null,
+                                            null,
+                                            null,
+                                            null,
+                                            " {$this->sSigla}_rubric as codigo_rubrica,
+                                              {$this->sSigla}_valor  as valor_rubrica,
+                                              {$this->sSigla}_quant  as quantidade_rubrica",
+                                            null,
+                                            $sWhere),
+    };
 
     $rsRegistros = db_query($sSql);
 
@@ -352,41 +338,21 @@ abstract class Ponto {
      */
   public static function buscaTabelaPorSigla($sigla)
   {
-      if (substr($sigla, 0, 1) == 'R') {
-          $sigla = substr($sigla, 1);
+      if (str_starts_with((string) $sigla, 'R')) {
+          $sigla = substr((string) $sigla, 1);
       }
 
-      switch ($sigla) {
-          case 'fs':
-              return self::SALARIO;
-              break;
-          case 'fa':
-              return self::ADIANTAMENTO;
-              break;
-          case 'fe':
-              return self::FERIAS;
-              break;
-          case 'com':
-              return self::COMPLEMENTAR;
-              break;
-          case 'f13':
-              return self::PONTO_13o;
-              break;
-          case 'fr':
-              return self::RESCISAO;
-              break;
-          case 'fx':
-              return self::FIXO;
-              break;
-          case 'provfe':
-              return self::PROVISAO_FERIAS;
-              break;
-          case 'provf13':
-              return self::PROVISAO_13o;
-              break;
-          default:
-              throw new Exception('Não foi possível identificar o ponto selecionado.');
-              break;
-      }
+      return match ($sigla) {
+          'fs' => self::SALARIO,
+          'fa' => self::ADIANTAMENTO,
+          'fe' => self::FERIAS,
+          'com' => self::COMPLEMENTAR,
+          'f13' => self::PONTO_13o,
+          'fr' => self::RESCISAO,
+          'fx' => self::FIXO,
+          'provfe' => self::PROVISAO_FERIAS,
+          'provf13' => self::PROVISAO_13o,
+          default => throw new Exception('Não foi possível identificar o ponto selecionado.'),
+      };
   }
 }

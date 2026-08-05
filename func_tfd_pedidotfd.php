@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tfd_pedidotfd_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oDaotfd_pedidotfd = new cl_tfd_pedidotfd;
 $oRotulo = new rotulocampo;
@@ -58,7 +59,7 @@ $oRotulo->label('z01_v_nome');
               <?=$Ltf01_i_codigo?>
             </td>
             <td nowrap colspan="3">
-              <?
+              <?php 
 		          db_input("tf01_i_codigo",10,$Itf01_i_codigo,true,"text",4,"","chave_tf01_i_codigo");
 		          ?>
             </td>
@@ -68,7 +69,7 @@ $oRotulo->label('z01_v_nome');
               <?=$Ltf01_i_cgsund?>
             </td>
             <td nowrap>
-              <?
+              <?php 
 		          db_input("tf01_i_cgsund",10,$Itf01_i_cgsund,true,"text",4,"","chave_tf01_i_cgsund");
 		          ?>
             </td>
@@ -76,7 +77,7 @@ $oRotulo->label('z01_v_nome');
               <?=$Lz01_v_nome?>
             </td>
             <td nowrap>
-              <?
+              <?php 
 		          db_input("z01_v_nome",50,$Iz01_v_nome,true,"text",4,"","chave_z01_v_nome");
 		          ?>
             </td>
@@ -94,7 +95,7 @@ $oRotulo->label('z01_v_nome');
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if(!isset($pesquisa_chave)) {
 
         if(isset($campos)==false) {
@@ -200,12 +201,12 @@ $oRotulo->label('z01_v_nome');
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
 ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

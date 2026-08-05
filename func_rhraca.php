@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhraca_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhraca = new cl_rhraca;
 $clrhraca->rotulo->label("rh18_raca");
 $clrhraca->rotulo->label("rh18_descr");
@@ -60,7 +61,7 @@ function libera_inc($mnu_item,$modulo,$arq_inserir,$label,$fc_ret){
               <?=$Lrh18_raca?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh18_raca",6,$Irh18_raca,true,"text",4,"","chave_rh18_raca");
 		       ?>
             </td>
@@ -70,7 +71,7 @@ function libera_inc($mnu_item,$modulo,$arq_inserir,$label,$fc_ret){
               <?=$Lrh18_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh18_descr",40,$Irh18_descr,true,"text",4,"","chave_rh18_descr");
 		       ?>
             </td>
@@ -80,7 +81,7 @@ function libera_inc($mnu_item,$modulo,$arq_inserir,$label,$fc_ret){
               <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar"> 
               <input name="limpar" type="reset" id="limpar" value="Limpar" >
               <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_rhraca.hide();">
-              <? libera_inc(4363, 952,"pes1_rhraca001.php","Incluir Nova Raça",
+              <?php  libera_inc(4363, 952,"pes1_rhraca001.php","Incluir Nova Raça",
                             "func_rhraca.php?chave_rh18_raca&funcao_js=parent.js_mostraraca1|rh18_raca|rh18_descr");?>
              </td>
           </tr>
@@ -90,7 +91,7 @@ function libera_inc($mnu_item,$modulo,$arq_inserir,$label,$fc_ret){
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhraca.php")==true){
@@ -126,12 +127,12 @@ function libera_inc($mnu_item,$modulo,$arq_inserir,$label,$fc_ret){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

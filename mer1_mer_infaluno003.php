@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_mer_infaluno_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clmer_infaluno = new cl_mer_infaluno;
 $db_botao       = false;
@@ -79,13 +79,13 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Exclusão de Informações do Aluno</b></legend>
-    <?include(modification("forms/db_frmmer_infaluno.php"));?>
+    <?php include(modification("forms/db_frmmer_infaluno.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")
@@ -93,7 +93,7 @@ if (isset($excluir)) {
 ?>
 </body>
 </html>
-<?
+<?php 
 if (isset($excluir)) {
 	
   if ($clmer_infaluno->erro_status=="0") {

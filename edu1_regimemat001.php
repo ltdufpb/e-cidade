@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-use ECidade\Enum\Educacao\Escola\FormaOrganizacaoTurmaEum;
+
 
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_stdlibwebseller.php"));
@@ -35,7 +35,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_regimemat_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clregimemat = new cl_regimemat;
 $db_opcao = 1;
 $db_botao = true;

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_isencaolanc_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clisencaolanc = new cl_isencaolanc;
 $clisencaolanc->rotulo->label("v18_sequencial");
 $clisencaolanc->rotulo->label("v18_isencao");
@@ -54,7 +55,7 @@ $clisencaolanc->rotulo->label("v18_isencao");
               <?=$Lv18_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v18_sequencial",10,$Iv18_sequencial,true,"text",4,"","chave_v18_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clisencaolanc->rotulo->label("v18_isencao");
               <?=$Lv18_isencao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("v18_isencao",10,$Iv18_isencao,true,"text",4,"","chave_v18_isencao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clisencaolanc->rotulo->label("v18_isencao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_isencaolanc.php")==true){
@@ -122,12 +123,12 @@ $clisencaolanc->rotulo->label("v18_isencao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

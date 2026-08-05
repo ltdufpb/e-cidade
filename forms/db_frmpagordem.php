@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -184,7 +184,7 @@ if(isset($e50_numemp) || isset($e50_codord) ){
 }
 ?>
 <style>
-<?$cor="#999999"?>
+<?php $cor="#999999"?>
 .bordas02{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -210,7 +210,7 @@ if(isset($e50_numemp) || isset($e50_codord) ){
        <?=@$Le50_codord?>
     </td>
     <td> 
-<?
+<?php 
 db_input('e50_codord',6,$Ie50_codord,true,'text',3)
 ?>
     </td>
@@ -219,7 +219,7 @@ db_input('e50_codord',6,$Ie50_codord,true,'text',3)
        <?=db_ancora($Le60_numemp,"js_JanelaAutomatica('empempenho','".@$e50_numemp."')",$db_opcao_ancora)?>        
     </td>
     <td> 
-<?
+<?php 
 db_input('e50_numemp',13,$Ie50_numemp,true,'text',3);
 ?>
     </td>
@@ -227,13 +227,13 @@ db_input('e50_numemp',13,$Ie50_numemp,true,'text',3);
               <?=db_ancora($Le60_coddot,"js_JanelaAutomatica('orcdotacao','".@$e60_coddot."')",$db_opcao_ancora)?>        
             </td>
             <td>
-               <? db_input('e60_coddot',8,$Ie60_coddot,true,'text',3); ?>
+               <?php  db_input('e60_coddot',8,$Ie60_coddot,true,'text',3); ?>
             </td>
             <td  align="left" nowrap title="Credor de empenho diferente do credor de pagamento">
-	      <?db_ancora("<b>Credor</b>","js_pesquisa_cgm(true);",$db_opcao);?>
+	      <?php db_ancora("<b>Credor</b>","js_pesquisa_cgm(true);",$db_opcao);?>
 	    </td>
 	    <td align="left" nowrap title="Credor de empenho diferente do credor de pagamento">
-	      <?
+	      <?php 
 		 db_input("z01_numcgm2",6,$Iz01_numcgm,true,"text",$db_opcao,"onchange='js_pesquisa_cgm(false);'","z01_numcgm2",($db_opcao!=3?"#E6E4F1":""));
 		 db_input("z01_nome2",40,"",true,"text",3);  
 	      ?>
@@ -255,7 +255,7 @@ db_input('e50_numemp',13,$Ie50_numemp,true,'text',3);
 	       <?=@$Le53_valor?>
 	    </td>
 	    <td class='bordas'> 
-	<?
+	<?php 
 	  db_input('total_valor',15,$Ie60_vlranu,true,'text',3,'')
 	?>
 	    </td>
@@ -265,7 +265,7 @@ db_input('e50_numemp',13,$Ie50_numemp,true,'text',3);
 	       <?=@$Le53_vlrpag?>
 	    </td>
 	    <td class='bordas'> 
-	<?
+	<?php 
 	  db_input('total_vlrpag',15,$Ie53_vlrpag,true,'text',3,'')
 	?>
 	    </td>
@@ -275,7 +275,7 @@ db_input('e50_numemp',13,$Ie50_numemp,true,'text',3);
 	       <?=@$Le53_vlranu?>
 	    </td>
 	    <td class='bordas'> 
-	<?
+	<?php 
 	  db_input('total_vlranu',15,$Ie53_vlranu,true,'text',3,'')
 	?>
 	    </td>
@@ -295,7 +295,7 @@ db_input('e50_numemp',13,$Ie50_numemp,true,'text',3);
 	       <?=@$Le60_vlremp?>
 	    </td>
 	    <td class='bordas'> 
-	<?
+	<?php 
 	  db_input('e60_vlremp',15,$Ie60_vlremp,true,'text',3,'')
 	?>
 	    </td>
@@ -305,7 +305,7 @@ db_input('e50_numemp',13,$Ie50_numemp,true,'text',3);
 	       <?=@$Le60_vlranu?>
 	    </td>
 	    <td class='bordas'> 
-	<?
+	<?php 
 	  db_input('e60_vlranu',15,$Ie60_vlranu,true,'text',3,'')
 	?>
 	    </td>
@@ -315,7 +315,7 @@ db_input('e50_numemp',13,$Ie50_numemp,true,'text',3);
 	       <?=@$Le60_vlrliq?>
 	    </td>
 	    <td class='bordas'> 
-	<?
+	<?php 
 	  db_input('e60_vlrliq',15,$Ie60_vlrliq,true,'text',3,'')
 	?>
 	    </td>
@@ -325,7 +325,7 @@ db_input('e50_numemp',13,$Ie50_numemp,true,'text',3);
 	       <?=@$Le60_vlrpag?>
 	    </td>
 	    <td class='bordas'> 
-	<?
+	<?php 
 	  db_input('e60_vlrpag',15,$Ie60_vlrpag,true,'text',3,'')
 	?>
 	    </td>
@@ -350,7 +350,7 @@ db_input('e50_numemp',13,$Ie50_numemp,true,'text',3);
 	   </tr> 
 	   <tr>
 	    <td colspan='7' align='center'> 
-	<?
+	<?php 
 	if($db_opcao==1){
 
 	  $result_parametro = $clempparametro->sql_record($clempparametro->sql_query(db_getsession("DB_anousu"),"e30_opimportaresumo, e30_trazobsultop",null,""));
@@ -385,7 +385,7 @@ db_input('e50_numemp',13,$Ie50_numemp,true,'text',3);
 	}
 	db_textarea('e50_obs',6,70,$Ie50_obs,true,'text',$db_opcao_desab,"onblur='js_mudacampo(this.name);'")
 	?>
-	<?
+	<?php 
 	db_input('dados',6,0,true,'hidden',3);
 	?>
 	    </td>
@@ -401,7 +401,7 @@ db_input('e50_numemp',13,$Ie50_numemp,true,'text',3);
 
 	  <tr class='bordas'>
 	    <td class='bordas' nowrap title="Valor que deseja anular">
-		<?
+		<?php 
 		if($db_opcao==3){
 	          echo " <b>Disponível anular:</b>";
                 }else{
@@ -410,12 +410,12 @@ db_input('e50_numemp',13,$Ie50_numemp,true,'text',3);
 		?>	
 	    </td>
 	    <td class='bordas'> 
-      	     <?db_input('vlrdis',10,0,true,'text',3);?>
+      	     <?php db_input('vlrdis',10,0,true,'text',3);?>
 	    </td>
 	  </tr>  
 	   <tr class='bordas'>
 	    <td class='bordas' nowrap title="Valor à pagar">
-   <?if($db_opcao==2){	    
+   <?php if($db_opcao==2){	    
          echo " <b>Valor acrescentar:</b>";
    }else if($db_opcao==3){ 	    
           echo "<b>Valor a anular: </b>";
@@ -424,7 +424,7 @@ db_input('e50_numemp',13,$Ie50_numemp,true,'text',3);
     }?>	    
 	    </td>
 	    <td class='bordas'> 
-             <?db_input('vlrpag',10,4,true,'text',$db_opcao_desab,"onchange='js_verificar(\"campo\");'");?>
+             <?php db_input('vlrpag',10,4,true,'text',$db_opcao_desab,"onchange='js_verificar(\"campo\");'");?>
 	    </td>
 	  </tr>  
       </table> 	  
@@ -436,12 +436,12 @@ db_input('e50_numemp',13,$Ie50_numemp,true,'text',3);
    <tr>
     <td  align='center'>
        <input name="<?=($db_opcao==1||$db_opcao==11?"incluir":($db_opcao==2||$db_opcao==22?"alterar":"anular"))?>" type="submit" id="db_opcao" value="<?=($db_opcao==1||$db_opcao==11?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Anular"))?>" <?=($db_botao==false?"disabled":"")?> onclick="return js_verif();">
-       <?if($db_opcao!=3 && $db_opcao!=33){?>
+       <?php if($db_opcao!=3 && $db_opcao!=33){?>
        <input name="<?=(($db_opcao==1||$db_opcao==11)?"incluirimp":"alterarimp")?>" type="submit" id="db_opcaoimp" value="<?=(($db_opcao==1||$db_opcao==11)?"Incluir e imprimir":"Alterar e imprimir")?>" <?=($db_botao==false?"disabled":"")?> onclick="js_verif();return js_imprimeincalt(this.name);">
-       <?}?>
+       <?php }?>
        <input name="pesquisar" type="button" id="pesquisar" value="<?=($db_opcao==11||$db_opcao==1?"Pesquisar empenhos":"Pesquisar ordens")?>"  <?=($db_opcao==11||$db_opcao==1?"onclick=\"js_pesquisa_emp();\"":"onclick=\"js_pesquisa_ordem();\"")?>  >
        <input name="imprimir" type="button" id="imprimir" value="<?=($db_opcao==11||$db_opcao==1?"Imprimir":"Imprimir")?>"  <?=($db_opcao==11||$db_opcao==1?"onclick=\"js_imprimir();\"":"onclick=\"js_imprimir();\"")?>  >
-       <?
+       <?php 
        echo "<script>
              function js_retornaliq(){
 	       (window.CurrentWindow || parent.CurrentWindow).corpo.location.href = 'emp1_empliquida001.php';
@@ -454,7 +454,7 @@ db_input('e50_numemp',13,$Ie50_numemp,true,'text',3);
        ?>
     </td>
      <td align='center'>
-  <?
+  <?php 
     if(isset($e50_numemp)){
      
         if($db_opcao==3){
@@ -564,20 +564,20 @@ function js_mostracgm1(chave1,chave2){
    document.form1.z01_nome2.value = chave2;
    db_iframe_cgm.hide();
 }
-<?
+<?php 
      $campo = "vlrpag";
 ?>
 
 function js_verif(){
   //alert(2);
   if(document.form1.vlrpag.value=='' || document.form1.vlrpag.value==0){
-    <?if($db_opcao != 2){?>
+    <?php if($db_opcao != 2){?>
       alert("Informe o valor da ordem!");
       return false;
-    <?}?>
+    <?php }?>
   }
   
-  <?
+  <?php 
    if(isset($agendado)) {
      
     echo "if (!confirm('Esta Ordem de Pagamento consta na agenda $e81_codage.\\n realmente confirmar a anulação ?'))  {\n";
@@ -592,7 +592,7 @@ function js_verif(){
      }
   ?> 
 }  
-<?if(isset($e50_codord) && ($db_opcao==2||$db_opcao==3)){?>
+<?php if(isset($e50_codord) && ($db_opcao==2||$db_opcao==3)){?>
 
 
 function js_verifica_receita(){
@@ -601,7 +601,7 @@ function js_verifica_receita(){
    return false;
 }
 function js_confere(pode){
-  <?
+  <?php 
     if($db_opcao==2){
       $nomec="alterar";
     }else{
@@ -610,9 +610,9 @@ function js_confere(pode){
   ?>
   if(pode==true){
   //só irar gerar as chaves da notas quando tiver notas...hehee  
-  <?if(isset($numrows_nota) && $numrows_nota>0){?>
+  <?php if(isset($numrows_nota) && $numrows_nota>0){?>
       js_gera_chaves();
-   <?}?>   
+   <?php }?>   
       document.form1.<?=$nomec?>.onclick='';
       document.form1.<?=$nomec?>.click();
   }else{
@@ -628,8 +628,8 @@ function js_confere(pode){
     }
   }
 }
-<?}?>
-  <?
+<?php }?>
+  <?php 
   if(isset($mens_erro)){
    echo "alert('$mens_erro');\n";
   }
@@ -649,9 +649,9 @@ function js_calcula(campo){
 	    document.form1.vlrpag.value = '0.00';
 	    document.form1.<?=$campo?>.value = '0.00';
             elementos.js_zeracampos(true);  
-	    <?if($db_opcao==1){?>
+	    <?php if($db_opcao==1){?>
             elementos.js_tranca(); 
-	    <?}?>
+	    <?php }?>
           }
     	  cont++;
 	}else{ 
@@ -662,9 +662,9 @@ function js_calcula(campo){
    	      document.form1.vlrpag.value = '0.00';
    	      document.form1.<?=$campo?>.value = '0.00';
               elementos.js_zeracampos(true);  
-	      <?if($db_opcao==1){?>
+	      <?php if($db_opcao==1){?>
                 elementos.js_libera(); 
-	      <?}?>	
+	      <?php }?>	
 	      return true;
 	    }   
         }
@@ -769,7 +769,7 @@ function js_calcula(campo){
 	  erro=true;
 	}
         
-     <?if($db_opcao==3){ 
+     <?php if($db_opcao==3){ 
        echo "
            if(vlrpag > $saldo){
 	     alert('O máximo que se pode anular sem nota é $saldo  menos o que já foi pago desse valor!');
@@ -806,7 +806,7 @@ function js_calcula(campo){
 	}
 	
 	}
-<?
+<?php 
   }
   
 ?>
@@ -814,22 +814,22 @@ function js_pesquisa_emp(){
   js_OpenJanelaIframe('CurrentWindow.corpo.iframe_pagordem','db_iframe_empempenho','func_empempenho.php?funcao_js=parent.js_preenchepesquisa|e60_numemp','Pesquisa',true,0);
 }
 function js_pesquisa_ordem(){
- <? if(isset($procedimento) && $procedimento=="anulacao"){?>//variavel procedimento, é para indicar quando esta anulando, dae abre uma func que tras só as ordens com saldo
+ <?php  if(isset($procedimento) && $procedimento=="anulacao"){?>//variavel procedimento, é para indicar quando esta anulando, dae abre uma func que tras só as ordens com saldo
      js_OpenJanelaIframe('CurrentWindow.corpo.iframe_pagordem','db_iframe_pagordem','func_pagordem_anula.php?funcao_js=parent.js_preenchepesquisa|e50_codord','Pesquisa',true,0);
- <? }else{?>
+ <?php  }else{?>
      js_OpenJanelaIframe('CurrentWindow.corpo.iframe_pagordem','db_iframe_pagordem','func_pagordem.php?funcao_js=parent.js_preenchepesquisa|e50_codord','Pesquisa',true,0);
- <? }?>
+ <?php  }?>
 }
 function js_preenchepesquisa(chave){
-  <?
+  <?php 
       if($db_opcao==1 || $db_opcao==11){
   ?>
      db_iframe_empempenho.hide();
-  <?
+  <?php 
      }else{  
   ?>  
      db_iframe_pagordem.hide();
-  <?
+  <?php 
      }
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&z01_numcgm2='+document.form1.z01_numcgm2.value";
   ?>

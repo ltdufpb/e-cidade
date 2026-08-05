@@ -10,11 +10,8 @@ use ECidade\Tributario\Issqn\Acao\Transicao\Factory\AcaoFactory as AcoesFactory;
 
 class Transicao
 {
-    private $acaoRepository;
-
-    public function __construct(AcaoRepository $acaoRepository)
+    public function __construct(private readonly AcaoRepository $acaoRepository)
     {
-        $this->acaoRepository = $acaoRepository;
     }
 
     public function run(FiltroTransicao $filtro)

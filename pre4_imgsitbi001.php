@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -104,7 +104,7 @@ table {
 	<br><br><Br>
 	<center>
   <form method="post" enctype="multipart/form-data" name="form1">
-    <?
+    <?php 
 	if(isset($HTTP_POST_VARS["procura"])) {
 	  if(isset($_FILES["arq"]))
         db_postmemory($_FILES["arq"]);	  
@@ -193,13 +193,13 @@ table {
 		</td>
 	 </tr>
      </table>
-	 <img src="<? echo $DocHome."/tmp/".$name ?>" border="0">
+	 <img src="<?php  echo $DocHome."/tmp/".$name ?>" border="0">
      <input name="imagem" type="hidden" value="<?=$name?>">
 	 <script>
        var x = js_CalculaDV("<?=@$v11_matric?>",11);
        document.getElementById("Digito").innerHTML += x;
      </script>
-    <?
+    <?php 
 	} else {
 	?>
     <table width="60%" border="0" cellspacing="0" cellpadding="0">
@@ -214,13 +214,13 @@ table {
           <input name="procura" type="submit" id="procura" value="Enviar"></td>
       </tr>
     </table>
-	<?
+	<?php 
 	}
 	?>
   </form>
 </center>
 	
-	<?
+	<?php 
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 	</td>

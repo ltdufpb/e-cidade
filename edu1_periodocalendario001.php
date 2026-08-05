@@ -267,7 +267,7 @@ if( isset( $excluir ) ) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Períodos de Avaliação do Calendário <?=$ed52_c_descr?></b></legend>
-    <?include(modification("forms/db_frmperiodocalendario.php"));?>
+    <?php include(modification("forms/db_frmperiodocalendario.php"));?>
    </fieldset>
    </center>
   </td>

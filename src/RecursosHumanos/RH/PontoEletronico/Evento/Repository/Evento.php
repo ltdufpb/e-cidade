@@ -27,6 +27,19 @@
 
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Evento\Repository;
 
+use BaseClassRepository;
+use cl_pontoeletronicoevento;
+use ParameterException;
+use DBException;
+use db_utils;
+use DBDate;
+use DateTime;
+use cl_pontoeletronicoeventomatricula;
+use BusinessException;
+use Servidor;
+use ServidorRepository;
+use InstituicaoRepository;
+use stdClass;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Evento\Model\Evento as EventoModel;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Manutencao\Repository\EspelhoPontoCache as EspelhoPontoCache;
 
@@ -34,7 +47,7 @@ use ECidade\RecursosHumanos\RH\PontoEletronico\Manutencao\Repository\EspelhoPont
  * Class Evento
  * @package ECidade\RecursosHumanos\RH\PontoEletronico\Evento\Repository
  */
-class Evento extends \BaseClassRepository
+class Evento extends BaseClassRepository
 {
     /**
      * Sobrescreve o atributo da classe pai para
@@ -43,7 +56,7 @@ class Evento extends \BaseClassRepository
     protected static $oInstance;
 
     /**
-     * @var \cl_pontoeletronicoevento
+     * @var cl_pontoeletronicoevento
      */
     private $daoEvento;
 
@@ -52,41 +65,41 @@ class Evento extends \BaseClassRepository
      */
     protected function __construct()
     {
-        $this->daoEvento = new \cl_pontoeletronicoevento();
+        $this->daoEvento = new cl_pontoeletronicoevento();
     }
 
     public function make($codigo)
     {
         if (empty($codigo)) {
-            throw new \ParameterException("Não foi informado o parâmetro Código");
+            throw new ParameterException("Não foi informado o parâmetro Código");
         }
 
         $buscaEvento = $this->daoEvento->sql_query_file($codigo);
         $resBuscaEvento = $this->daoEvento->sql_record($buscaEvento);
         if (!$resBuscaEvento) {
-            throw new \DBException("Ocorre um erro ao buscar o evento de código {$codigo}.");
+            throw new DBException("Ocorre um erro ao buscar o evento de código {$codigo}.");
         }
 
         if ($this->daoEvento->numrows == 0) {
             return null;
         }
 
-        $stdEvento = \db_utils::fieldsMemory($resBuscaEvento, 0);
+        $stdEvento = db_utils::fieldsMemory($resBuscaEvento, 0);
         $evento = new EventoModel();
         $evento->setCodigo($stdEvento->rh207_sequencial);
         $evento->setTitulo($stdEvento->rh207_titulo);
-        $evento->setDataInicial(new \DBDate($stdEvento->rh207_datainicial));
-        $evento->setDataFinal(new \DBDate($stdEvento->rh207_datafinal));
-        $evento->setEntradaUm(new \DateTime($stdEvento->rh207_datafinal . ' ' . $stdEvento->rh207_entrada_1));
+        $evento->setDataInicial(new DBDate($stdEvento->rh207_datainicial));
+        $evento->setDataFinal(new DBDate($stdEvento->rh207_datafinal));
+        $evento->setEntradaUm(new DateTime($stdEvento->rh207_datafinal . ' ' . $stdEvento->rh207_entrada_1));
 
-        $oSaidaUm = new \DateTime($stdEvento->rh207_datafinal . ' ' . $stdEvento->rh207_saida_1);
+        $oSaidaUm = new DateTime($stdEvento->rh207_datafinal . ' ' . $stdEvento->rh207_saida_1);
         if ($evento->getEntradaUm()->diff($oSaidaUm)->invert) {
             $oSaidaUm->modify('+1 day');
         }
         $evento->setSaidaUm($oSaidaUm);
 
         if (!empty($stdEvento->rh207_entrada_2)) {
-            $oEntradaDois = new \DateTime($stdEvento->rh207_datafinal . ' ' . $stdEvento->rh207_entrada_2);
+            $oEntradaDois = new DateTime($stdEvento->rh207_datafinal . ' ' . $stdEvento->rh207_entrada_2);
             if ($evento->getEntradaUm()->diff($oEntradaDois)->invert) {
                 $oEntradaDois->modify('+1 day');
             }
@@ -95,7 +108,7 @@ class Evento extends \BaseClassRepository
         }
 
         if (!empty($stdEvento->rh207_saida_2)) {
-            $oSaidaDois = new \DateTime($stdEvento->rh207_datafinal . ' ' . $stdEvento->rh207_saida_2);
+            $oSaidaDois = new DateTime($stdEvento->rh207_datafinal . ' ' . $stdEvento->rh207_saida_2);
             if ($evento->getEntradaUm()->diff($oSaidaDois)->invert) {
                 $oSaidaDois->modify('+1 day');
             }
@@ -128,7 +141,7 @@ class Evento extends \BaseClassRepository
 
         $entrada_1 = null;
 
-        if ($evento->getEntradaUm() instanceof \DateTime) {
+        if ($evento->getEntradaUm() instanceof DateTime) {
             $entrada_1 = $evento->getEntradaUm()->format('H:i');
         }
 
@@ -136,7 +149,7 @@ class Evento extends \BaseClassRepository
 
         $saida_1 = null;
 
-        if ($evento->getSaidaUm() instanceof \DateTime) {
+        if ($evento->getSaidaUm() instanceof DateTime) {
             $saida_1 = $evento->getSaidaUm()->format('H:i');
         }
 
@@ -145,7 +158,7 @@ class Evento extends \BaseClassRepository
 
         $entrada_2 = null;
 
-        if ($evento->getEntradaDois() instanceof \DateTime) {
+        if ($evento->getEntradaDois() instanceof DateTime) {
             $entrada_2 = $evento->getEntradaDois()->format('H:i');
         }
 
@@ -153,7 +166,7 @@ class Evento extends \BaseClassRepository
 
         $saida_2 = null;
 
-        if ($evento->getSaidaDois() instanceof \DateTime) {
+        if ($evento->getSaidaDois() instanceof DateTime) {
             $saida_2 = $evento->getSaidaDois()->format('H:i');
         }
 
@@ -171,11 +184,11 @@ class Evento extends \BaseClassRepository
         $this->daoEvento->salvar();
 
         if ($this->daoEvento->erro_status === "0") {
-            throw new \DBException("Ocorreu um erro ao salvar os dados do evento.");
+            throw new DBException("Ocorreu um erro ao salvar os dados do evento.");
         }
         $evento->setCodigo($this->daoEvento->rh207_sequencial);
 
-        $daoEventoMatricula = new \cl_pontoeletronicoeventomatricula();
+        $daoEventoMatricula = new cl_pontoeletronicoeventomatricula();
         $daoEventoMatricula->excluir(null, "rh208_pontoeletronicoevento = {$evento->getCodigo()}");
         foreach ($evento->getServidores() as $servidor) {
             if (in_array($servidor->getMatricula(), $servidoresIgnorados)) {
@@ -187,7 +200,7 @@ class Evento extends \BaseClassRepository
             $daoEventoMatricula->rh208_rhpessoal = $servidor->getMatricula();
             $daoEventoMatricula->salvar();
             if ($daoEventoMatricula->erro_status === "0") {
-                throw new \DBException("Ocorreu um erro ao víncular os servidores selecionados no evento.");
+                throw new DBException("Ocorreu um erro ao víncular os servidores selecionados no evento.");
             }
 
             EspelhoPontoCache::init()->invalidarCacheNoPeriodo(
@@ -201,7 +214,7 @@ class Evento extends \BaseClassRepository
             $mensagem = 'O evento não pode ser salvo. Foram encontradas inconsistências em todos servidores. ';
             $mensagem .= 'Deseja imprimí-las?';
 
-            throw new \BusinessException($mensagem);
+            throw new BusinessException($mensagem);
         }
 
         return true;
@@ -211,13 +224,13 @@ class Evento extends \BaseClassRepository
      *
      * Verifica se existe evento cadastrado para o servidor em que haja conflito entre as datas do evento
      * @param EventoModel $evento
-     * @param \Servidor $servidor
+     * @param Servidor $servidor
      * @return bool
-     * @throws \DBException
+     * @throws DBException
      */
-    public function existeConflitoEntreDataServidor(EventoModel $evento, \Servidor $servidor)
+    public function existeConflitoEntreDataServidor(EventoModel $evento, Servidor $servidor)
     {
-        $daoEventoMatricula = new \cl_pontoeletronicoeventomatricula();
+        $daoEventoMatricula = new cl_pontoeletronicoeventomatricula();
         $camposOverlaps = "(cast(rh207_datainicial as date), cast(rh207_datafinal as date))";
         $camposOverlaps .= " overlaps ";
         $camposOverlaps .= "(cast('{$evento->getDataInicial()->getDate()}' as date),";
@@ -234,13 +247,13 @@ class Evento extends \BaseClassRepository
         $resPeriodoConflitante = db_query($buscaPeriodoConflitante);
 
         if (!$resPeriodoConflitante) {
-            throw new \DBException("Ocorreu um erro ao verificar conflito de datas para o servidor.");
+            throw new DBException("Ocorreu um erro ao verificar conflito de datas para o servidor.");
         }
 
         $totalRegistros = pg_num_rows($resPeriodoConflitante);
 
         for ($rowConflito = 0; $rowConflito < $totalRegistros; $rowConflito++) {
-            if (\db_utils::fieldsMemory($resPeriodoConflitante, $rowConflito)->resultado == 't') {
+            if (db_utils::fieldsMemory($resPeriodoConflitante, $rowConflito)->resultado == 't') {
                 return true;
             }
         }
@@ -251,7 +264,7 @@ class Evento extends \BaseClassRepository
     /**
      * @param EventoModel $evento
      * @return EventoModel
-     * @throws \DBException
+     * @throws DBException
      */
     public function carregarServidores(EventoModel $evento)
     {
@@ -259,7 +272,7 @@ class Evento extends \BaseClassRepository
             return $evento;
         }
 
-        $daoMatricula = new \cl_pontoeletronicoeventomatricula();
+        $daoMatricula = new cl_pontoeletronicoeventomatricula();
         $buscaMatricula = $daoMatricula->sql_query_file(
             null,
             'rh208_rhpessoal',
@@ -268,16 +281,14 @@ class Evento extends \BaseClassRepository
         );
         $resBuscaMatriculas = db_query($buscaMatricula);
         if (!$resBuscaMatriculas) {
-            throw new \DBException("Ocorreu um erro ao buscar as matrículas vinculadas ao evento.");
+            throw new DBException("Ocorreu um erro ao buscar as matrículas vinculadas ao evento.");
         }
 
         $totalRegistros = pg_num_rows($resBuscaMatriculas);
 
         for ($rowServidor = 0; $rowServidor < $totalRegistros; $rowServidor++) {
             $evento->adicionarServidor(
-                \db_utils::makeFromRecord($resBuscaMatriculas, function ($stdServidor) {
-                    return \ServidorRepository::getInstanciaByCodigo($stdServidor->rh208_rhpessoal);
-                }, $rowServidor)
+                db_utils::makeFromRecord($resBuscaMatriculas, fn($stdServidor) => ServidorRepository::getInstanciaByCodigo($stdServidor->rh208_rhpessoal), $rowServidor)
             );
         }
 
@@ -287,15 +298,15 @@ class Evento extends \BaseClassRepository
     /**
      * Verifica se existe evento para a data desejada
      *
-     * @param \DBDate $data
+     * @param DBDate $data
      * @return bool|EventoModel
-     * @throws \DBException
-     * @throws \ParameterException
+     * @throws DBException
+     * @throws ParameterException
      */
-    public function possuiEventoNoDia(\DBDate $data)
+    public function possuiEventoNoDia(DBDate $data)
     {
-        $instituicao = \InstituicaoRepository::getInstituicaoSessao();
-        $daoEvento = new \cl_pontoeletronicoevento();
+        $instituicao = InstituicaoRepository::getInstituicaoSessao();
+        $daoEvento = new cl_pontoeletronicoevento();
         $buscaEventoDia = $daoEvento->sql_query_file(
             null,
             'rh207_sequencial',
@@ -306,23 +317,23 @@ class Evento extends \BaseClassRepository
 
         if (!$resBuscaEventoDia) {
             $mensagem = "Ocorreu um erro ao verificar a existência evento para a data";
-            $mensagem .= $data->getDate(\DBDate::DATA_PTBR) . ".";
+            $mensagem .= $data->getDate(DBDate::DATA_PTBR) . ".";
 
-            throw new \DBException($mensagem);
+            throw new DBException($mensagem);
         }
 
         if (pg_num_rows($resBuscaEventoDia) === 0) {
             return false;
         }
 
-        return $this->getPorCodigo(\db_utils::fieldsMemory($resBuscaEventoDia, 0)->rh207_sequencial);
+        return $this->getPorCodigo(db_utils::fieldsMemory($resBuscaEventoDia, 0)->rh207_sequencial);
     }
 
     /**
      * @param $codigo
      * @return EventoModel
-     * @throws \DBException
-     * @throws \ParameterException
+     * @throws DBException
+     * @throws ParameterException
      */
     public function getPorCodigo($codigo)
     {
@@ -332,17 +343,17 @@ class Evento extends \BaseClassRepository
     /**
      * Verifica se existe evento para a data desejada e para o servidor informado
      *
-     * @param \DBDate $data
-     * @param \Servidor $servidor
+     * @param DBDate $data
+     * @param Servidor $servidor
      * @return bool|EventoModel
-     * @throws \DBException
-     * @throws \ParameterException
+     * @throws DBException
+     * @throws ParameterException
      */
-    public function possuiEventoNoDiaParaServidor(\DBDate $data, \Servidor $servidor)
+    public function possuiEventoNoDiaParaServidor(DBDate $data, Servidor $servidor)
     {
-        $instituicao = \InstituicaoRepository::getInstituicaoSessao();
+        $instituicao = InstituicaoRepository::getInstituicaoSessao();
 
-        $daoEvento = new \cl_pontoeletronicoeventomatricula();
+        $daoEvento = new cl_pontoeletronicoeventomatricula();
         $where[] = "rh207_datainicial = '{$data->getDate()}'";
         $where[] = "rh208_rhpessoal   = {$servidor->getMatricula()}";
         $where[] = "rh207_instit      = {$instituicao->getCodigo()}";
@@ -351,25 +362,25 @@ class Evento extends \BaseClassRepository
 
         if (!$resBuscaEventoDia) {
             $mensagem = "Ocorreu um erro ao verificar a existência evento com os dados:\n";
-            $mensagem .= "Data: " . $data->getDate(\DBDate::DATA_PTBR) . "\n";
+            $mensagem .= "Data: " . $data->getDate(DBDate::DATA_PTBR) . "\n";
             $mensagem .= "Servidor: " . $servidor->getMatricula() . " - " . $servidor->getCgm()->getNome();
-            throw new \DBException($mensagem);
+            throw new DBException($mensagem);
         }
 
         if (pg_num_rows($resBuscaEventoDia) === 0) {
             return false;
         }
 
-        return $this->getPorCodigo(\db_utils::fieldsMemory($resBuscaEventoDia, 0)->rh207_sequencial);
+        return $this->getPorCodigo(db_utils::fieldsMemory($resBuscaEventoDia, 0)->rh207_sequencial);
     }
 
     /**
-     * @param \DBDate $data
-     * @param \Servidor $servidor
+     * @param DBDate $data
+     * @param Servidor $servidor
      * @return bool
-     * @throws \DBException
+     * @throws DBException
      */
-    public function marcacoes(\DBDate $data, \Servidor $servidor)
+    public function marcacoes(DBDate $data, Servidor $servidor)
     {
         $buscaEventoDia = " select array_to_string( ";
         $buscaEventoDia .= "   (array_accum(distinct substr(hora::varchar,1,5)),';'";
@@ -381,14 +392,14 @@ class Evento extends \BaseClassRepository
         $resBuscaEventoDia = db_query($buscaEventoDia);
         if (!$resBuscaEventoDia) {
             $mensagem = "Ocorreu um erro ao verificar as marcacoes:\n";
-            $mensagem .= "Data: " . $data->getDate(\DBDate::DATA_PTBR) . "\n";
+            $mensagem .= "Data: " . $data->getDate(DBDate::DATA_PTBR) . "\n";
             $mensagem .= "Servidor: " . $servidor->getMatricula() . " - " . $servidor->getCgm()->getNome();
-            throw new \DBException($mensagem);
+            throw new DBException($mensagem);
         }
 
-        $oDados = new \stdClass();
-        $oDados->dadosEvento = new \stdClass();
-        $oDados->dadosEvento->descricao .= pg_result($resBuscaEventoDia, 0, 0);
+        $oDados = new stdClass();
+        $oDados->dadosEvento = new stdClass();
+        $oDados->dadosEvento->descricao .= pg_fetch_result($resBuscaEventoDia, 0, 0);
 
         if (pg_num_rows($resBuscaEventoDia) === 0) {
             return false;
@@ -400,16 +411,16 @@ class Evento extends \BaseClassRepository
     /**
      * Retorna todos os eventos cadastrados
      * @return bool|EventoModel[]
-     * @throws \DBException
+     * @throws DBException
      */
     public function getTodos()
     {
-        $daoEvento = new \cl_pontoeletronicoevento();
-        $codigoInstituicao = \InstituicaoRepository::getInstituicaoSessao()->getCodigo();
+        $daoEvento = new cl_pontoeletronicoevento();
+        $codigoInstituicao = InstituicaoRepository::getInstituicaoSessao()->getCodigo();
         $whereEventoEfetividadeAberta[] = "rh186_instituicao = {$codigoInstituicao}";
         $whereEventoEfetividadeAberta[] = "rh186_processado = FALSE";
 
-        $campos = array(
+        $campos = [
           'distinct rh207_sequencial',
           'rh207_datainicial',
           "
@@ -423,7 +434,7 @@ class Evento extends \BaseClassRepository
                                                     FROM configuracoesdatasefetividade
                                                    WHERE rh186_instituicao = {$codigoInstituicao}) )
       ) as conflito_data "
-        );
+        ];
 
         $buscaEventoDia = $daoEvento->sql_query_join_configuracoesdatasefetividade(
             null,
@@ -434,16 +445,16 @@ class Evento extends \BaseClassRepository
 
         $resBuscaEventoDia = db_query($buscaEventoDia);
         if (!$resBuscaEventoDia) {
-            throw new \DBException("Ocorreu um erro ao verificar a existência de eventos.");
+            throw new DBException("Ocorreu um erro ao verificar a existência de eventos.");
         }
 
         if (pg_num_rows($resBuscaEventoDia) === 0) {
-            return array();
+            return [];
         }
 
         $eventoRepository = $this;
 
-        return \db_utils::makeCollectionFromRecord($resBuscaEventoDia, function ($retorno) use ($eventoRepository) {
+        return db_utils::makeCollectionFromRecord($resBuscaEventoDia, function ($retorno) use ($eventoRepository) {
 
             if ($retorno->conflito_data === 'f' || $retorno->conflito_data === false) {
                 return $eventoRepository->getPorCodigo($retorno->rh207_sequencial);
@@ -454,19 +465,19 @@ class Evento extends \BaseClassRepository
     /**
      * Exclui um evento
      * @return bool
-     * @throws \DBException
+     * @throws DBException
      */
     public function excluir($evento)
     {
         $evento->getServidores();
-        $daoEventoMatriculas = new \cl_pontoeletronicoeventomatricula();
+        $daoEventoMatriculas = new cl_pontoeletronicoeventomatricula();
 
         if (!$daoEventoMatriculas->excluir(null, "rh208_pontoeletronicoevento = {$evento->getCodigo()}")) {
-            throw new \DBException($daoEventoMatriculas->erro_msg);
+            throw new DBException($daoEventoMatriculas->erro_msg);
         }
 
         if (!$this->daoEvento->excluir($evento->getCodigo())) {
-            throw new \DBException($this->daoEvento->erro_msg);
+            throw new DBException($this->daoEvento->erro_msg);
         }
 
         $evento->invalidaCacheServidores();

@@ -12,9 +12,9 @@ final class RecibopagaCollectionCast
 {
     public function toDebitoCollection(RecibopagaCollection $recibopagaCollection)
     {
-        $receitas = array();
-        $parcelas = array();
-        $debitos = array();
+        $receitas = [];
+        $parcelas = [];
+        $debitos = [];
 
         foreach ($recibopagaCollection as $recibopaga) {
 

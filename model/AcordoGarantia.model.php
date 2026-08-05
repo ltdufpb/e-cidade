@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -66,7 +66,7 @@ class AcordoGarantia  {
    */
   private $dtDataLimite = '';
   
-  private $aTiposContratos = array();
+  private $aTiposContratos = [];
   /**
    * 
    * 
@@ -238,7 +238,7 @@ class AcordoGarantia  {
         }
       }
     } else {
-      $this->aTiposContratos = array();
+      $this->aTiposContratos = [];
     }
     return $this;
   }

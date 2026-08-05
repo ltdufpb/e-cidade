@@ -65,7 +65,7 @@ class cl_cgmfoto {
                  z16_arquivofoto = oid = Arquivo da Foto 
                  ";
    //funcao construtor da classe 
-   function cl_cgmfoto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cgmfoto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -96,7 +96,7 @@ function js_desab(cod){
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-    <?
+    <?php 
 	 
      if($z01_nome!=""){
        $sql = "select z01_numcgm,z01_nome,z01_ender,z01_munic,z01_cgccpf 

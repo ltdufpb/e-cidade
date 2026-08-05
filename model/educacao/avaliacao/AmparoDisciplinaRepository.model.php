@@ -38,7 +38,7 @@ class AmparoDisciplinaRepository {
    * Array com os Amparos
    * @var array
    */
-  private $aAmparoDisciplina = array();
+  private $aAmparoDisciplina = [];
 
   /**
    * Instância da classe

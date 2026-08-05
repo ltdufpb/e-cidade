@@ -28,10 +28,6 @@ namespace ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial;
 
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\ProcessoJudicialRepository;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\ServidorRepository as ServidorProcessoRepository;
-use ECidade\RecursosHumanos\RH\PontoEletronico\Contrato\Model\ContratoJornada;
-use ECidade\RecursosHumanos\Pessoal\Model\ContratoEmergencial;
-use ECidade\RecursosHumanos\Pessoal\Repository\ServidorOutrosVinculosRepository;
-use Admissao;
 use Cedencia;
 use DBDate;
 use JSON;
@@ -77,12 +73,12 @@ class Servidor
     private $nomeServidor;
 
     /**
-     * @var  \DBDate  $dataAdmissao  | null
+     * @var DBDate $dataAdmissao | null
      */
     private $dataAdmissao;
 
     /**
-     * @var  \DBDate  $dataDemissao  | null
+     * @var DBDate $dataDemissao | null
      */
     private $dataDemissao;
 
@@ -118,7 +114,7 @@ class Servidor
     private $tipoContratoPrazo;
 
     /**
-     * @var \DBDate  $dataTerminoPrazoDeterminado  | null
+     * @var DBDate $dataTerminoPrazoDeterminado | null
      */
     private $dataTerminoPrazoDeterminado;
 
@@ -133,7 +129,7 @@ class Servidor
     private $motivoDesligamento;
 
     /**
-     * @var \DBDate  $dataProjetadaAvisoPrevioIndenizado  | null
+     * @var DBDate $dataProjetadaAvisoPrevioIndenizado | null
      */
     private $dataProjetadaAvisoPrevioIndenizado;
 
@@ -470,7 +466,7 @@ class Servidor
     /**
      * Get $dataAdmissao | null
      *
-     * @return  \DBDate
+     * @return DBDate
      */
     public function getDataAdmissao()
     {
@@ -644,7 +640,7 @@ class Servidor
     /**
      * Get $dataTerminoPrazoDeterminado | null
      *
-     * @return  \DBDate
+     * @return DBDate
      */
     public function getDataTerminoPrazoDeterminado()
     {
@@ -654,7 +650,7 @@ class Servidor
     /**
      * Set $dataTerminoPrazoDeterminado | null
      *
-     * @param  \DBDate  $dataTerminoPrazoDeterminado  $dataTerminoPrazoDeterminado | null
+     * @param DBDate $dataTerminoPrazoDeterminado $dataTerminoPrazoDeterminado | null
      *
      * @return  self
      */
@@ -708,7 +704,7 @@ class Servidor
     /**
      * Get $dataProjetadaAvisoPrevioIndenizado | null
      *
-     * @return  \DBDate
+     * @return DBDate
      */
     public function getDataProjetadaAvisoPrevioIndenizado()
     {
@@ -718,7 +714,7 @@ class Servidor
     /**
      * Set $dataProjetadaAvisoPrevioIndenizado | null
      *
-     * @param  \DBDate  $dataProjetadaAvisoPrevioIndenizado  $dataProjetadaAvisoPrevioIndenizado | null
+     * @param DBDate $dataProjetadaAvisoPrevioIndenizado $dataProjetadaAvisoPrevioIndenizado | null
      */
     public function setDataProjetadaAvisoPrevioIndenizado($dataProjetadaAvisoPrevioIndenizado)
     {

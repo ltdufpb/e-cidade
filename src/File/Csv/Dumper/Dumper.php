@@ -63,9 +63,9 @@ class Dumper extends Csv
 
         foreach ($content as $line) {
             if (!is_array($line)) {
-                $line = array($line);
+                $line = [$line];
             }
-            fputcsv($handle, $line, $this->delimiter, $this->enclosure);
+            fputcsv($handle, $line, $this->delimiter, $this->enclosure, escape: '\\');
         }
 
         rewind($handle);
@@ -83,10 +83,10 @@ class Dumper extends Csv
     public function ler($caminhoCsv)
     {
         $arquivo = fopen($caminhoCsv, 'r');
-        $linhas = array();
+        $linhas = [];
 
         while (!feof($arquivo)) {
-            $linhas[] = fgetcsv($arquivo, 0, $this->delimiter, $this->enclosure);
+            $linhas[] = fgetcsv($arquivo, 0, $this->delimiter, $this->enclosure, escape: '\\');
         }
 
         fclose($arquivo);

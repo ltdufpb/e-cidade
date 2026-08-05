@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -65,7 +65,7 @@ class cl_cancdebitos {
                  k20_depart = int8 = Departamento
                  ";
    //funcao construtor da classe
-   function cl_cancdebitos() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cancdebitos");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -30,35 +30,35 @@
 class cl_retencaoreceitas
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $e23_sequencial = 0;
-    var $e23_retencaotiporec = 0;
-    var $e23_retencaopagordem = 0;
-    var $e23_dtcalculo_dia = null;
-    var $e23_dtcalculo_mes = null;
-    var $e23_dtcalculo_ano = null;
-    var $e23_dtcalculo = null;
-    var $e23_valor = 0;
-    var $e23_deducao = 0;
-    var $e23_valorbase = 0;
-    var $e23_aliquota = 0;
-    var $e23_valorretencao = 0;
-    var $e23_ativo = 'f';
-    var $e23_recolhido = 'f';
+    public $e23_sequencial = 0;
+    public $e23_retencaotiporec = 0;
+    public $e23_retencaopagordem = 0;
+    public $e23_dtcalculo_dia = null;
+    public $e23_dtcalculo_mes = null;
+    public $e23_dtcalculo_ano = null;
+    public $e23_dtcalculo = null;
+    public $e23_valor = 0;
+    public $e23_deducao = 0;
+    public $e23_valorbase = 0;
+    public $e23_aliquota = 0;
+    public $e23_valorretencao = 0;
+    public $e23_ativo = 'f';
+    public $e23_recolhido = 'f';
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  e23_sequencial = int4 = Código Sequencial
                  e23_retencaotiporec = int4 = Retenção
                  e23_retencaopagordem = int4 = Código da Retenção
@@ -73,11 +73,11 @@ class cl_retencaoreceitas
                  ";
 
     //funcao construtor da classe
-    function cl_retencaoreceitas()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("retencaoreceitas");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -222,10 +222,10 @@ class cl_retencaoreceitas
                 $this->erro_status = "0";
                 return false;
             }
-            $this->e23_sequencial = pg_result($result, 0, 0);
+            $this->e23_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from retencaoreceitas_e23_sequencial_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $e23_sequencial)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $e23_sequencial)) {
                 $this->erro_sql = " Campo e23_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -273,7 +273,7 @@ class cl_retencaoreceitas
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "receitas da Retenção ($this->e23_sequencial) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "receitas da Retenção já Cadastrado";
@@ -297,20 +297,20 @@ class cl_retencaoreceitas
         $resaco = $this->sql_record($this->sql_query_file($this->e23_sequencial));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,12176,'$this->e23_sequencial','I')");
-            $resac = db_query("insert into db_acount values($acount,2116,12176,'','" . AddSlashes(pg_result($resaco, 0, 'e23_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2116,12177,'','" . AddSlashes(pg_result($resaco, 0, 'e23_retencaotiporec')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2116,12178,'','" . AddSlashes(pg_result($resaco, 0, 'e23_retencaopagordem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2116,12185,'','" . AddSlashes(pg_result($resaco, 0, 'e23_dtcalculo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2116,12179,'','" . AddSlashes(pg_result($resaco, 0, 'e23_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2116,12180,'','" . AddSlashes(pg_result($resaco, 0, 'e23_deducao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2116,12181,'','" . AddSlashes(pg_result($resaco, 0, 'e23_valorbase')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2116,12182,'','" . AddSlashes(pg_result($resaco, 0, 'e23_aliquota')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2116,12183,'','" . AddSlashes(pg_result($resaco, 0, 'e23_valorretencao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2116,12184,'','" . AddSlashes(pg_result($resaco, 0, 'e23_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2116,12200,'','" . AddSlashes(pg_result($resaco, 0, 'e23_recolhido')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2116,12176,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'e23_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2116,12177,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'e23_retencaotiporec')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2116,12178,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'e23_retencaopagordem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2116,12185,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'e23_dtcalculo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2116,12179,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'e23_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2116,12180,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'e23_deducao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2116,12181,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'e23_valorbase')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2116,12182,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'e23_aliquota')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2116,12183,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'e23_valorretencao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2116,12184,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'e23_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,2116,12200,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'e23_recolhido')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
         return true;
     }
@@ -321,10 +321,10 @@ class cl_retencaoreceitas
         $this->atualizacampos();
         $sql = " update retencaoreceitas set ";
         $virgula = "";
-        if (trim($this->e23_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_sequencial"])) {
+        if (trim((string) $this->e23_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_sequencial"])) {
             $sql .= $virgula . " e23_sequencial = $this->e23_sequencial ";
             $virgula = ",";
-            if (trim($this->e23_sequencial) == null) {
+            if (trim((string) $this->e23_sequencial) == null) {
                 $this->erro_sql = " Campo Código Sequencial nao Informado.";
                 $this->erro_campo = "e23_sequencial";
                 $this->erro_banco = "";
@@ -334,10 +334,10 @@ class cl_retencaoreceitas
                 return false;
             }
         }
-        if (trim($this->e23_retencaotiporec) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_retencaotiporec"])) {
+        if (trim((string) $this->e23_retencaotiporec) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_retencaotiporec"])) {
             $sql .= $virgula . " e23_retencaotiporec = $this->e23_retencaotiporec ";
             $virgula = ",";
-            if (trim($this->e23_retencaotiporec) == null) {
+            if (trim((string) $this->e23_retencaotiporec) == null) {
                 $this->erro_sql = " Campo Retenção nao Informado.";
                 $this->erro_campo = "e23_retencaotiporec";
                 $this->erro_banco = "";
@@ -347,10 +347,10 @@ class cl_retencaoreceitas
                 return false;
             }
         }
-        if (trim($this->e23_retencaopagordem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_retencaopagordem"])) {
+        if (trim((string) $this->e23_retencaopagordem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_retencaopagordem"])) {
             $sql .= $virgula . " e23_retencaopagordem = $this->e23_retencaopagordem ";
             $virgula = ",";
-            if (trim($this->e23_retencaopagordem) == null) {
+            if (trim((string) $this->e23_retencaopagordem) == null) {
                 $this->erro_sql = " Campo Código da Retenção nao Informado.";
                 $this->erro_campo = "e23_retencaopagordem";
                 $this->erro_banco = "";
@@ -360,10 +360,10 @@ class cl_retencaoreceitas
                 return false;
             }
         }
-        if (trim($this->e23_dtcalculo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_dtcalculo_dia"]) && ($GLOBALS["HTTP_POST_VARS"]["e23_dtcalculo_dia"] != "")) {
+        if (trim((string) $this->e23_dtcalculo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_dtcalculo_dia"]) && ($GLOBALS["HTTP_POST_VARS"]["e23_dtcalculo_dia"] != "")) {
             $sql .= $virgula . " e23_dtcalculo = '$this->e23_dtcalculo' ";
             $virgula = ",";
-            if (trim($this->e23_dtcalculo) == null) {
+            if (trim((string) $this->e23_dtcalculo) == null) {
                 $this->erro_sql = " Campo Data do Cálculo nao Informado.";
                 $this->erro_campo = "e23_dtcalculo_dia";
                 $this->erro_banco = "";
@@ -376,7 +376,7 @@ class cl_retencaoreceitas
             if (isset($GLOBALS["HTTP_POST_VARS"]["e23_dtcalculo_dia"])) {
                 $sql .= $virgula . " e23_dtcalculo = null ";
                 $virgula = ",";
-                if (trim($this->e23_dtcalculo) == null) {
+                if (trim((string) $this->e23_dtcalculo) == null) {
                     $this->erro_sql = " Campo Data do Cálculo nao Informado.";
                     $this->erro_campo = "e23_dtcalculo_dia";
                     $this->erro_banco = "";
@@ -387,10 +387,10 @@ class cl_retencaoreceitas
                 }
             }
         }
-        if (trim($this->e23_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_valor"])) {
+        if (trim((string) $this->e23_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_valor"])) {
             $sql .= $virgula . " e23_valor = $this->e23_valor ";
             $virgula = ",";
-            if (trim($this->e23_valor) == null) {
+            if (trim((string) $this->e23_valor) == null) {
                 $this->erro_sql = " Campo Valor da nota nao Informado.";
                 $this->erro_campo = "e23_valor";
                 $this->erro_banco = "";
@@ -400,10 +400,10 @@ class cl_retencaoreceitas
                 return false;
             }
         }
-        if (trim($this->e23_deducao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_deducao"])) {
+        if (trim((string) $this->e23_deducao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_deducao"])) {
             $sql .= $virgula . " e23_deducao = $this->e23_deducao ";
             $virgula = ",";
-            if (trim($this->e23_deducao) == null) {
+            if (trim((string) $this->e23_deducao) == null) {
                 $this->erro_sql = " Campo Valor da Dedução nao Informado.";
                 $this->erro_campo = "e23_deducao";
                 $this->erro_banco = "";
@@ -413,10 +413,10 @@ class cl_retencaoreceitas
                 return false;
             }
         }
-        if (trim($this->e23_valorbase) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_valorbase"])) {
+        if (trim((string) $this->e23_valorbase) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_valorbase"])) {
             $sql .= $virgula . " e23_valorbase = $this->e23_valorbase ";
             $virgula = ",";
-            if (trim($this->e23_valorbase) == null) {
+            if (trim((string) $this->e23_valorbase) == null) {
                 $this->erro_sql = " Campo Valor da Base de Cálculo nao Informado.";
                 $this->erro_campo = "e23_valorbase";
                 $this->erro_banco = "";
@@ -426,10 +426,10 @@ class cl_retencaoreceitas
                 return false;
             }
         }
-        if (trim($this->e23_aliquota) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_aliquota"])) {
+        if (trim((string) $this->e23_aliquota) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_aliquota"])) {
             $sql .= $virgula . " e23_aliquota = $this->e23_aliquota ";
             $virgula = ",";
-            if (trim($this->e23_aliquota) == null) {
+            if (trim((string) $this->e23_aliquota) == null) {
                 $this->erro_sql = " Campo Valor da Aliquota nao Informado.";
                 $this->erro_campo = "e23_aliquota";
                 $this->erro_banco = "";
@@ -439,10 +439,10 @@ class cl_retencaoreceitas
                 return false;
             }
         }
-        if (trim($this->e23_valorretencao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_valorretencao"])) {
+        if (trim((string) $this->e23_valorretencao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_valorretencao"])) {
             $sql .= $virgula . " e23_valorretencao = $this->e23_valorretencao ";
             $virgula = ",";
-            if (trim($this->e23_valorretencao) == null) {
+            if (trim((string) $this->e23_valorretencao) == null) {
                 $this->erro_sql = " Campo Valor final da Retenção nao Informado.";
                 $this->erro_campo = "e23_valorretencao";
                 $this->erro_banco = "";
@@ -452,10 +452,10 @@ class cl_retencaoreceitas
                 return false;
             }
         }
-        if (trim($this->e23_ativo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_ativo"])) {
+        if (trim((string) $this->e23_ativo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_ativo"])) {
             $sql .= $virgula . " e23_ativo = '$this->e23_ativo' ";
             $virgula = ",";
-            if (trim($this->e23_ativo) == null) {
+            if (trim((string) $this->e23_ativo) == null) {
                 $this->erro_sql = " Campo Registro ativo nao Informado.";
                 $this->erro_campo = "e23_ativo";
                 $this->erro_banco = "";
@@ -465,10 +465,10 @@ class cl_retencaoreceitas
                 return false;
             }
         }
-        if (trim($this->e23_recolhido) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_recolhido"])) {
+        if (trim((string) $this->e23_recolhido) != "" || isset($GLOBALS["HTTP_POST_VARS"]["e23_recolhido"])) {
             $sql .= $virgula . " e23_recolhido = '$this->e23_recolhido' ";
             $virgula = ",";
-            if (trim($this->e23_recolhido) == null) {
+            if (trim((string) $this->e23_recolhido) == null) {
                 $this->erro_sql = " Campo Recolhido nao Informado.";
                 $this->erro_campo = "e23_recolhido";
                 $this->erro_banco = "";
@@ -486,41 +486,41 @@ class cl_retencaoreceitas
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,12176,'$this->e23_sequencial','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["e23_sequencial"])) {
-                    $resac = db_query("insert into db_acount values($acount,2116,12176,'" . AddSlashes(pg_result($resaco, $conresaco, 'e23_sequencial')) . "','$this->e23_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,2116,12176,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'e23_sequencial')) . "','$this->e23_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["e23_retencaotiporec"])) {
-                    $resac = db_query("insert into db_acount values($acount,2116,12177,'" . AddSlashes(pg_result($resaco, $conresaco, 'e23_retencaotiporec')) . "','$this->e23_retencaotiporec'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,2116,12177,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'e23_retencaotiporec')) . "','$this->e23_retencaotiporec'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["e23_retencaopagordem"])) {
-                    $resac = db_query("insert into db_acount values($acount,2116,12178,'" . AddSlashes(pg_result($resaco, $conresaco, 'e23_retencaopagordem')) . "','$this->e23_retencaopagordem'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,2116,12178,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'e23_retencaopagordem')) . "','$this->e23_retencaopagordem'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["e23_dtcalculo"])) {
-                    $resac = db_query("insert into db_acount values($acount,2116,12185,'" . AddSlashes(pg_result($resaco, $conresaco, 'e23_dtcalculo')) . "','$this->e23_dtcalculo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,2116,12185,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'e23_dtcalculo')) . "','$this->e23_dtcalculo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["e23_valor"])) {
-                    $resac = db_query("insert into db_acount values($acount,2116,12179,'" . AddSlashes(pg_result($resaco, $conresaco, 'e23_valor')) . "','$this->e23_valor'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,2116,12179,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'e23_valor')) . "','$this->e23_valor'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["e23_deducao"])) {
-                    $resac = db_query("insert into db_acount values($acount,2116,12180,'" . AddSlashes(pg_result($resaco, $conresaco, 'e23_deducao')) . "','$this->e23_deducao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,2116,12180,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'e23_deducao')) . "','$this->e23_deducao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["e23_valorbase"])) {
-                    $resac = db_query("insert into db_acount values($acount,2116,12181,'" . AddSlashes(pg_result($resaco, $conresaco, 'e23_valorbase')) . "','$this->e23_valorbase'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,2116,12181,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'e23_valorbase')) . "','$this->e23_valorbase'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["e23_aliquota"])) {
-                    $resac = db_query("insert into db_acount values($acount,2116,12182,'" . AddSlashes(pg_result($resaco, $conresaco, 'e23_aliquota')) . "','$this->e23_aliquota'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,2116,12182,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'e23_aliquota')) . "','$this->e23_aliquota'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["e23_valorretencao"])) {
-                    $resac = db_query("insert into db_acount values($acount,2116,12183,'" . AddSlashes(pg_result($resaco, $conresaco, 'e23_valorretencao')) . "','$this->e23_valorretencao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,2116,12183,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'e23_valorretencao')) . "','$this->e23_valorretencao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["e23_ativo"])) {
-                    $resac = db_query("insert into db_acount values($acount,2116,12184,'" . AddSlashes(pg_result($resaco, $conresaco, 'e23_ativo')) . "','$this->e23_ativo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,2116,12184,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'e23_ativo')) . "','$this->e23_ativo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["e23_recolhido"])) {
-                    $resac = db_query("insert into db_acount values($acount,2116,12200,'" . AddSlashes(pg_result($resaco, $conresaco, 'e23_recolhido')) . "','$this->e23_recolhido'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,2116,12200,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'e23_recolhido')) . "','$this->e23_recolhido'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }
@@ -568,20 +568,20 @@ class cl_retencaoreceitas
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,12176,'$e23_sequencial','E')");
-                $resac = db_query("insert into db_acount values($acount,2116,12176,'','" . AddSlashes(pg_result($resaco, $iresaco, 'e23_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2116,12177,'','" . AddSlashes(pg_result($resaco, $iresaco, 'e23_retencaotiporec')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2116,12178,'','" . AddSlashes(pg_result($resaco, $iresaco, 'e23_retencaopagordem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2116,12185,'','" . AddSlashes(pg_result($resaco, $iresaco, 'e23_dtcalculo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2116,12179,'','" . AddSlashes(pg_result($resaco, $iresaco, 'e23_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2116,12180,'','" . AddSlashes(pg_result($resaco, $iresaco, 'e23_deducao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2116,12181,'','" . AddSlashes(pg_result($resaco, $iresaco, 'e23_valorbase')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2116,12182,'','" . AddSlashes(pg_result($resaco, $iresaco, 'e23_aliquota')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2116,12183,'','" . AddSlashes(pg_result($resaco, $iresaco, 'e23_valorretencao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2116,12184,'','" . AddSlashes(pg_result($resaco, $iresaco, 'e23_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2116,12200,'','" . AddSlashes(pg_result($resaco, $iresaco, 'e23_recolhido')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,2116,12176,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'e23_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,2116,12177,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'e23_retencaotiporec')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,2116,12178,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'e23_retencaopagordem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,2116,12185,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'e23_dtcalculo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,2116,12179,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'e23_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,2116,12180,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'e23_deducao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,2116,12181,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'e23_valorbase')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,2116,12182,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'e23_aliquota')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,2116,12183,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'e23_valorretencao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,2116,12184,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'e23_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,2116,12200,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'e23_recolhido')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
         }
         $sql = " delete from retencaoreceitas
@@ -643,7 +643,7 @@ class cl_retencaoreceitas
             $this->erro_status = "0";
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:retencaoreceitas";
@@ -685,7 +685,7 @@ class cl_retencaoreceitas
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -720,7 +720,7 @@ class cl_retencaoreceitas
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -829,7 +829,7 @@ class cl_retencaoreceitas
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -876,7 +876,7 @@ class cl_retencaoreceitas
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -886,7 +886,7 @@ class cl_retencaoreceitas
         return $sql;
     }
 
-    function sql_query_retencoes_cgm($campos1 = "*", $campos2 = "*", $withWhere = array(), $where = array(), $groupBy = null, $ordem = null)
+    function sql_query_retencoes_cgm($campos1 = "*", $campos2 = "*", $withWhere = [], $where = [], $groupBy = null, $ordem = null)
     {
 
         $with = "WITH pagordens_retencaoreceitas AS (
@@ -921,7 +921,7 @@ class cl_retencaoreceitas
         if ($groupBy != null) {
             $sql .= " group by ";
             $sql2 .= " group by ";
-            $campos_sql = explode("#", $groupBy);
+            $campos_sql = explode("#", (string) $groupBy);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -931,7 +931,7 @@ class cl_retencaoreceitas
         }
         if ($ordem != null) {
             $sql2 .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql2 .= $virgula . $campos_sql[$i];

@@ -58,7 +58,7 @@ switch ($oParam->exec) {
 
     $sDataDia = date("Y-m-d", db_getsession("DB_datausu"));
     if ($oParam->datadia != "") {
-      $sDataDia = implode("-", array_reverse(explode("/", $oParam->datadia)));
+      $sDataDia = implode("-", array_reverse(explode("/", (string) $oParam->datadia)));
     }
     $oRetorno->datadia       = db_formatar($sDataDia, "d");
     $oDaoRegenciaHorario     = db_utils::getDao("regenciahorario");
@@ -110,7 +110,7 @@ switch ($oParam->exec) {
                                                                        $sWhere.$sGroupBy
                                                                       );
                                                                                      
-    $aTurmas            = array();                                                                                     
+    $aTurmas            = [];                                                                                     
     $rsTurmasNoDia      = $oDaoRegenciaHorario->sql_record($sSqlTurma);
     $iTotalLinhas       = $oDaoRegenciaHorario->numrows;
     $oDaoControleAcesso = db_utils::getDao("controleacessoalunoregistrovalido");
@@ -120,7 +120,7 @@ switch ($oParam->exec) {
       $oTurma->comLeiuturaFalta    = "0";
       $oTurma->semLeiuturaPresente = "0";
       $oTurma->chamadafechada      = false;
-      $oTurma->horarios            = urldecode($oTurma->horarios);
+      $oTurma->horarios            = urldecode((string) $oTurma->horarios);
       $sWhereFaltas  =  "ed101_dataleitura = cast('{$sDataDia}' as date) ";
       $sWhereFaltas .=  " and ed60_i_turma = {$oTurma->ed57_i_codigo} "; 
       if ($oParam->mostrar == 'aluno') {
@@ -198,7 +198,7 @@ switch ($oParam->exec) {
   
   case 'getTurmas':
     
-    $oRetorno->aTurmas = array();
+    $oRetorno->aTurmas = [];
     $oDaoTurma         = db_utils::getDao("turma");
     $sWhereTurma       = "     turma.ed57_i_escola   = {$iEscola} ";
     $sWhereTurma      .= " and calendario.ed52_i_ano = ".db_getsession("DB_anousu");
@@ -215,7 +215,7 @@ switch ($oParam->exec) {
         $oDadosTurma          = db_utils::fieldsMemory($rsTurma, $iContadorTurma);
         $oTurma               = new stdClass();
         $oTurma->iCodigoTurma = $oDadosTurma->ed57_i_codigo;
-        $oTurma->sDescricao   = urlencode($oDadosTurma->ed57_c_descr);
+        $oTurma->sDescricao   = urlencode((string) $oDadosTurma->ed57_c_descr);
         $oRetorno->aTurmas[]  = $oTurma;
       }
     }
@@ -226,11 +226,11 @@ switch ($oParam->exec) {
     
     $sDataDia = date("Y-m-d", db_getsession("DB_datausu"));
     if ($oParam->dataDia != "") {
-      $sDataDia = implode("-", array_reverse(explode("/", $oParam->dataDia)));
+      $sDataDia = implode("-", array_reverse(explode("/", (string) $oParam->dataDia)));
     }
     $oRetorno->dataDia = db_formatar($sDataDia, "d");
     
-    $oRetorno->aAlunos          = array();
+    $oRetorno->aAlunos          = [];
     $oDaoMatricula              = db_utils::getDao("matricula");
     $oDaoDiarioClasseAlunoFalta = db_utils::getDao("diarioclassealunofalta");
     $oDadosConfiguracao         = ControleAcessoAluno::getMensagemNotificacao();
@@ -258,9 +258,9 @@ switch ($oParam->exec) {
         $oDadosAluno             = new stdClass();
         $oDadosAluno->lAmarelo   = false;
         $oMatricula              = new Matricula($oDadosMatricula->ed60_i_codigo);
-        $aTags                   = array("#aluno#", "#datafalta#");
+        $aTags                   = ["#aluno#", "#datafalta#"];
         $aPartesNomeAluno        = explode(" ", trim($oMatricula->getAluno()->getNome())); 
-        $aValores                = array($aPartesNomeAluno[0] , $oRetorno->dataDia); 
+        $aValores                = [$aPartesNomeAluno[0] , $oRetorno->dataDia]; 
         
         /**
          * Verificamos se o aluno possui leitura no RFID na data
@@ -323,12 +323,12 @@ switch ($oParam->exec) {
     $oDaoControleAcesso         = db_utils::getDao("controleacessoaluno");
     $oDaoRegenciaHorario        = db_utils::getDao("regenciahorario");
 
-    $oRetorno->aPeriodos    = array();
-    $oRetorno->aPeriodosDia = array();
+    $oRetorno->aPeriodos    = [];
+    $oRetorno->aPeriodosDia = [];
     
     $sDataDia = date("Y-m-d", db_getsession("DB_datausu"));
     if ($oParam->dtPesquisa != "") {
-      $sDataDia = implode("-", array_reverse(explode("/", $oParam->dtPesquisa)));
+      $sDataDia = implode("-", array_reverse(explode("/", (string) $oParam->dtPesquisa)));
     }
     
     /**
@@ -372,8 +372,8 @@ switch ($oParam->exec) {
           $oPeriodoDia                    = new stdClass();
           $oPeriodoDia->lFaltou           = false;
           $oPeriodoDia->iCodigo           = $oDadosPeriodo->sequencial;
-          $oPeriodoDia->sDescricao        = urlencode($oDadosPeriodo->descricao_periodo);
-          $oPeriodoDia->sDisciplina       = urlencode($oDadosPeriodo->disciplina);
+          $oPeriodoDia->sDescricao        = urlencode((string) $oDadosPeriodo->descricao_periodo);
+          $oPeriodoDia->sDisciplina       = urlencode((string) $oDadosPeriodo->disciplina);
           $oPeriodoDia->iCodigoFalta      = '';
           $oPeriodoDia->iOcorrencia       = '';
           $oPeriodoDia->sMensagemRetorno  = '';
@@ -401,13 +401,13 @@ switch ($oParam->exec) {
               $oDadosFaltas = db_utils::fieldsMemory($rsAlunoFaltas, $iContadorFaltas);
               if ($oDadosFaltas->periodo == $oDadosPeriodo->sequencial) {
                 
-                if ($oDadosFaltas->ed103_sequencial != "" && trim($oDadosFaltas->db134_mensagemretorno) == "") {
+                if ($oDadosFaltas->ed103_sequencial != "" && trim((string) $oDadosFaltas->db134_mensagemretorno) == "") {
                   $oDadosFaltas->db134_mensagemretorno = 'Notificação enviada';
                 }
                 $oPeriodoDia->lFaltou      = true;
                 $oPeriodoDia->iCodigoFalta     = $oDadosFaltas->ed301_sequencial;
                 $oPeriodoDia->iOcorrencia      = $oDadosFaltas->ed103_sequencial;
-                $oPeriodoDia->sMensagemRetorno = urlencode($oDadosFaltas->db134_mensagemretorno);
+                $oPeriodoDia->sMensagemRetorno = urlencode((string) $oDadosFaltas->db134_mensagemretorno);
               }
             }
           }
@@ -456,7 +456,7 @@ switch ($oParam->exec) {
         $rsEmailEscola   = $oDaoEscola->sql_record($sSqlEmailEscola);
         $oDadosEscola    = db_utils::fieldsMemory($rsEmailEscola, 0);
         
-        if (trim($oDadosEscola->ed18_c_email) != "") {
+        if (trim((string) $oDadosEscola->ed18_c_email) != "") {
           
           $oMensagem->setEmailOrigem($oDadosEscola->ed18_c_email);
         }
@@ -491,11 +491,7 @@ switch ($oParam->exec) {
       
       $oRetorno->status  = 2;
       $oRetorno->message = urlencode($eBusiness->getMessage()); 
-    } catch (ParameterException $eParameter) {
-
-      $oRetorno->status  = 2;
-      $oRetorno->message = urlencode($eParameter->getMessage());
-    } catch (Exception $eParameter) {
+    } catch (ParameterException|Exception $eParameter) {
 
       $oRetorno->status  = 2;
       $oRetorno->message = urlencode($eParameter->getMessage());
@@ -505,8 +501,8 @@ switch ($oParam->exec) {
   
   case 'getFaltasAluno':
     
-    $oRetorno->aFaltas              = array();
-    $aFaltasAluno                   = array();
+    $oRetorno->aFaltas              = [];
+    $aFaltasAluno                   = [];
     $oDaoDiarioClasseAlunoFalta     = db_utils::getDao("diarioclassealunofalta");
     $sCamposDiarioClasseAlunoFalta  = " count(*) as total_faltas, ed300_datalancamento";
     $sCamposDiarioClasseAlunoFalta .= ", array_to_string(array_accum(distinct ed232_c_descr), ', ') as disciplina";
@@ -529,7 +525,7 @@ switch ($oParam->exec) {
         $dtFaltaAluno              = new DBDate($oFalta->ed300_datalancamento);
         $oDadosFalta->dtFalta      = $dtFaltaAluno->getDate(DBDate::DATA_PTBR);
         $oDadosFalta->iTotalFaltas = $oFalta->total_faltas;
-        $oDadosFalta->sDisciplinas = urlencode($oFalta->disciplina);
+        $oDadosFalta->sDisciplinas = urlencode((string) $oFalta->disciplina);
         $oRetorno->aFaltas[]       = $oDadosFalta;
       }
       unset($oDadosFalta);

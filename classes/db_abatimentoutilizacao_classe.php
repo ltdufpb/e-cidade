@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: arrecadacao
 //CLASSE DA ENTIDADE abatimentoutilizacao
 class cl_abatimentoutilizacao { 
@@ -39,7 +39,7 @@ class cl_abatimentoutilizacao {
                  k157_observacao = text =  
                  ";
    //funcao construtor da classe 
-   function cl_abatimentoutilizacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimentoutilizacao"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

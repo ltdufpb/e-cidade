@@ -107,7 +107,7 @@ function js_mostra1(erro,chave){
   }
 }
 </script>
-<?
+<?php 
 
 if(isset($cgccpf)){
   db_msgbox('Atualize o CGCCPF do contribuinte no CGM');

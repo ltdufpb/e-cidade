@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orctiporec_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorctiporec = new cl_orctiporec;
 $clorctiporec->rotulo->label("o15_codigo");
 $clorctiporec->rotulo->label("o15_descr");
@@ -54,7 +55,7 @@ $clorctiporec->rotulo->label("o15_descr");
               <?=$Lo15_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o15_codigo",4,$Io15_codigo,true,"text",4,"","chave_o15_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clorctiporec->rotulo->label("o15_descr");
               <?=$Lo15_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o15_descr",30,$Io15_descr,true,"text",4,"","chave_o15_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clorctiporec->rotulo->label("o15_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if (!isset($pesquisa_chave)) {
         if (isset($campos)==false) {
            if (file_exists("funcoes/db_func_orctiporec.php")==true) {
@@ -125,12 +126,12 @@ $clorctiporec->rotulo->label("o15_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

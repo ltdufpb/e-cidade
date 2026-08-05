@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_condicionante_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcondicionante = new cl_condicionante;
 $clcondicionante->rotulo->label("am10_sequencial");
 $clcondicionante->rotulo->label("am10_descricao");
@@ -50,11 +51,11 @@ $clcondicionante->rotulo->label("am10_descricao");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lam10_sequencial?></label></td>
-          <td><? db_input("am10_sequencial",10,$Iam10_sequencial,true,"text",4,"","chave_am10_sequencial"); ?></td>
+          <td><?php  db_input("am10_sequencial",10,$Iam10_sequencial,true,"text",4,"","chave_am10_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lam10_descricao?></label></td>
-          <td><? db_input("am10_descricao",60,$Iam10_descricao,true,"text",4,"","chave_am10_descricao");?></td>
+          <td><?php  db_input("am10_descricao",60,$Iam10_descricao,true,"text",4,"","chave_am10_descricao");?></td>
         </tr>
       </table>
     </fieldset>
@@ -62,7 +63,7 @@ $clcondicionante->rotulo->label("am10_descricao");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_condicionante.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_condicionante.php")==true){
@@ -104,12 +105,12 @@ $clcondicionante->rotulo->label("am10_descricao");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

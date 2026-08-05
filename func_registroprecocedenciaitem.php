@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_registroprecocedenciaitem_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clregistroprecocedenciaitem = new cl_registroprecocedenciaitem;
 $clregistroprecocedenciaitem->rotulo->label("pc36_sequencial");
 $clregistroprecocedenciaitem->rotulo->label("pc36_registroprecocedencia");
@@ -54,7 +55,7 @@ $clregistroprecocedenciaitem->rotulo->label("pc36_registroprecocedencia");
               <?=$Lpc36_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc36_sequencial",10,$Ipc36_sequencial,true,"text",4,"","chave_pc36_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clregistroprecocedenciaitem->rotulo->label("pc36_registroprecocedencia");
               <?=$Lpc36_registroprecocedencia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("pc36_registroprecocedencia",10,$Ipc36_registroprecocedencia,true,"text",4,"","chave_pc36_registroprecocedencia");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clregistroprecocedenciaitem->rotulo->label("pc36_registroprecocedencia");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_registroprecocedenciaitem.php")==true){
@@ -122,12 +123,12 @@ $clregistroprecocedenciaitem->rotulo->label("pc36_registroprecocedencia");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

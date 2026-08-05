@@ -41,16 +41,10 @@ class SMSServiceFactory {
    */
   static function getOperadora($sServiceName) {
      
-    switch ($sServiceName) {
-      
-      case 'convect':
-         return new SMSServiceConvect();
-        break;
-        
-        default:
-          throw new ParameterException("Operadora {$sServiceName} não Homologada para envio de SMS");
-         break; 
-    }
+    return match ($sServiceName) {
+        'convect' => new SMSServiceConvect(),
+        default => throw new ParameterException("Operadora {$sServiceName} não Homologada para envio de SMS"),
+    };
     
   }
 }

@@ -36,7 +36,7 @@ class cl_rhreajustesalarialesocial
     public function __construct()
     {
         $this->rotulo = new rotulo("rhreajustesalarialesocial"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -109,10 +109,10 @@ class cl_rhreajustesalarialesocial
          $this->erro_status = "0";
          return false; 
        }
-       $this->eso39_sequencial = pg_result($result,0,0); 
+       $this->eso39_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rhreajustesalarialesocial_eso39_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $eso39_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $eso39_sequencial)){
          $this->erro_sql = " Campo eso39_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -148,7 +148,7 @@ class cl_rhreajustesalarialesocial
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Reajuste salarial eSocial ($this->eso39_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Reajuste salarial eSocial já Cadastrado";
@@ -177,14 +177,14 @@ class cl_rhreajustesalarialesocial
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1014464,'$this->eso39_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1010984,1014464,'','".AddSlashes(pg_result($resaco,0,'eso39_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010984,1014465,'','".AddSlashes(pg_result($resaco,0,'eso39_matricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010984,1014466,'','".AddSlashes(pg_result($resaco,0,'eso39_dataefeito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010984,1014467,'','".AddSlashes(pg_result($resaco,0,'eso39_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010984,1014468,'','".AddSlashes(pg_result($resaco,0,'eso39_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010984,1014464,'','".AddSlashes(pg_fetch_result($resaco,0,'eso39_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010984,1014465,'','".AddSlashes(pg_fetch_result($resaco,0,'eso39_matricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010984,1014466,'','".AddSlashes(pg_fetch_result($resaco,0,'eso39_dataefeito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010984,1014467,'','".AddSlashes(pg_fetch_result($resaco,0,'eso39_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010984,1014468,'','".AddSlashes(pg_fetch_result($resaco,0,'eso39_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -195,10 +195,10 @@ class cl_rhreajustesalarialesocial
       $this->atualizacampos();
      $sql = " update rhreajustesalarialesocial set ";
      $virgula = "";
-     if(trim($this->eso39_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso39_sequencial"])){ 
+     if(trim((string) $this->eso39_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso39_sequencial"])){ 
        $sql  .= $virgula." eso39_sequencial = $this->eso39_sequencial ";
        $virgula = ",";
-       if(trim($this->eso39_sequencial) == null ){ 
+       if(trim((string) $this->eso39_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial não informado.";
          $this->erro_campo = "eso39_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_rhreajustesalarialesocial
          return false;
        }
      }
-     if(trim($this->eso39_matricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso39_matricula"])){ 
+     if(trim((string) $this->eso39_matricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso39_matricula"])){ 
        $sql  .= $virgula." eso39_matricula = $this->eso39_matricula ";
        $virgula = ",";
-       if(trim($this->eso39_matricula) == null ){ 
+       if(trim((string) $this->eso39_matricula) == null ){ 
          $this->erro_sql = " Campo Matrícula não informado.";
          $this->erro_campo = "eso39_matricula";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_rhreajustesalarialesocial
          return false;
        }
      }
-     if(trim($this->eso39_dataefeito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso39_dataefeito_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["eso39_dataefeito_dia"] !="") ){ 
+     if(trim((string) $this->eso39_dataefeito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso39_dataefeito_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["eso39_dataefeito_dia"] !="") ){ 
        $sql  .= $virgula." eso39_dataefeito = '$this->eso39_dataefeito' ";
        $virgula = ",";
-       if(trim($this->eso39_dataefeito) == null ){ 
+       if(trim((string) $this->eso39_dataefeito) == null ){ 
          $this->erro_sql = " Campo Data Efetividade não informado.";
          $this->erro_campo = "eso39_dataefeito_dia";
          $this->erro_banco = "";
@@ -237,7 +237,7 @@ class cl_rhreajustesalarialesocial
        if(isset($GLOBALS["HTTP_POST_VARS"]["eso39_dataefeito_dia"])){ 
          $sql  .= $virgula." eso39_dataefeito = null ";
          $virgula = ",";
-         if(trim($this->eso39_dataefeito) == null ){ 
+         if(trim((string) $this->eso39_dataefeito) == null ){ 
            $this->erro_sql = " Campo Data Efetividade não informado.";
            $this->erro_campo = "eso39_dataefeito_dia";
            $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_rhreajustesalarialesocial
          }
        }
      }
-     if(trim($this->eso39_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso39_tipo"])){ 
+     if(trim((string) $this->eso39_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso39_tipo"])){ 
        $sql  .= $virgula." eso39_tipo = '$this->eso39_tipo' ";
        $virgula = ",";
-       if(trim($this->eso39_tipo) == null ){ 
+       if(trim((string) $this->eso39_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo do instrumento não informado.";
          $this->erro_campo = "eso39_tipo";
          $this->erro_banco = "";
@@ -261,7 +261,7 @@ class cl_rhreajustesalarialesocial
          return false;
        }
      }
-     if(trim($this->eso39_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso39_descricao"])){ 
+     if(trim((string) $this->eso39_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eso39_descricao"])){ 
        $sql  .= $virgula." eso39_descricao = '$this->eso39_descricao' ";
        $virgula = ",";
      }
@@ -279,19 +279,19 @@ class cl_rhreajustesalarialesocial
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1014464,'$this->eso39_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso39_sequencial"]) || $this->eso39_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010984,1014464,'".AddSlashes(pg_result($resaco,$conresaco,'eso39_sequencial'))."','$this->eso39_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010984,1014464,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso39_sequencial'))."','$this->eso39_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso39_matricula"]) || $this->eso39_matricula != "")
-             $resac = db_query("insert into db_acount values($acount,1010984,1014465,'".AddSlashes(pg_result($resaco,$conresaco,'eso39_matricula'))."','$this->eso39_matricula',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010984,1014465,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso39_matricula'))."','$this->eso39_matricula',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso39_dataefeito"]) || $this->eso39_dataefeito != "")
-             $resac = db_query("insert into db_acount values($acount,1010984,1014466,'".AddSlashes(pg_result($resaco,$conresaco,'eso39_dataefeito'))."','$this->eso39_dataefeito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010984,1014466,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso39_dataefeito'))."','$this->eso39_dataefeito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso39_tipo"]) || $this->eso39_tipo != "")
-             $resac = db_query("insert into db_acount values($acount,1010984,1014467,'".AddSlashes(pg_result($resaco,$conresaco,'eso39_tipo'))."','$this->eso39_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010984,1014467,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso39_tipo'))."','$this->eso39_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["eso39_descricao"]) || $this->eso39_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,1010984,1014468,'".AddSlashes(pg_result($resaco,$conresaco,'eso39_descricao'))."','$this->eso39_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010984,1014468,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eso39_descricao'))."','$this->eso39_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -345,14 +345,14 @@ class cl_rhreajustesalarialesocial
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1014464,'$eso39_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010984,1014464,'','".AddSlashes(pg_result($resaco,$iresaco,'eso39_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010984,1014465,'','".AddSlashes(pg_result($resaco,$iresaco,'eso39_matricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010984,1014466,'','".AddSlashes(pg_result($resaco,$iresaco,'eso39_dataefeito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010984,1014467,'','".AddSlashes(pg_result($resaco,$iresaco,'eso39_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010984,1014468,'','".AddSlashes(pg_result($resaco,$iresaco,'eso39_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010984,1014464,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso39_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010984,1014465,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso39_matricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010984,1014466,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso39_dataefeito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010984,1014467,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso39_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010984,1014468,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eso39_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

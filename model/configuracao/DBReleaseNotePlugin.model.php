@@ -2,16 +2,12 @@
 
 class DBReleaseNotePlugin extends DBReleaseNote {
 
-  private $oPlugin;
-
-  public function __construct($idUsuario, $sNomeArquivo = null, $sNomeArquivoAtual = null, $sVersao = null, Plugin $oPlugin = null) {
+  public function __construct($idUsuario, $sNomeArquivo = null, $sNomeArquivoAtual = null, $sVersao = null, private ?Plugin $oPlugin = null) {
     
     parent::__construct($idUsuario, $sNomeArquivo, $sNomeArquivoAtual, $sVersao);
 
-    $this->oPlugin = $oPlugin;
-
-    if ($oPlugin === null) {
-      $this->oPlugin = PluginService::getPluginAtual( current(explode('_', $sNomeArquivo)) , true);
+    if ($this->oPlugin === null) {
+      $this->oPlugin = PluginService::getPluginAtual( current(explode('_', (string) $sNomeArquivo)));
     }
 
     if (!$this->oPlugin) {
@@ -30,7 +26,7 @@ class DBReleaseNotePlugin extends DBReleaseNote {
 
     $aDadosReleaseNotes = static::getDados($this->oPlugin);
 
-    $aReleaseNotes = array();
+    $aReleaseNotes = [];
 
     if ($iSorting == self::SORT_ASC) {
       ksort($aDadosReleaseNotes);
@@ -42,7 +38,7 @@ class DBReleaseNotePlugin extends DBReleaseNote {
       
       foreach ($aDadosMenu as $sMenu => $aDadoUsuario) {
 
-        if ( strpos((string) $sMenu, (string) $this->sNomeArquivo) !== 0 ) {
+        if ( !str_starts_with((string) $sMenu, (string) $this->sNomeArquivo) ) {
           continue;
         }
 
@@ -52,11 +48,11 @@ class DBReleaseNotePlugin extends DBReleaseNote {
             continue;
           }
 
-          $aReleaseNotes[] = (object) array(
+          $aReleaseNotes[] = (object) [
             'iIdUsuario' => $iUsuario,
             'sNomeArquivo' => $sMenu,
             'sVersao' => $sVersao
-          );
+          ];
 
         }
       }
@@ -113,11 +109,11 @@ class DBReleaseNotePlugin extends DBReleaseNote {
     foreach ($aArquivosLidos as $oDadoArquivo) {
       
       if ( !isset($aDadosReleaseNotes[$oDadoArquivo->sVersao]) ) {
-        $aDadosReleaseNotes[$oDadoArquivo->sVersao] = array();
+        $aDadosReleaseNotes[$oDadoArquivo->sVersao] = [];
       }
 
       if ( !isset($aDadosReleaseNotes[$oDadoArquivo->sVersao][$oDadoArquivo->sNomeArquivo]) ) {
-        $aDadosReleaseNotes[$oDadoArquivo->sVersao][$oDadoArquivo->sNomeArquivo] = array();
+        $aDadosReleaseNotes[$oDadoArquivo->sVersao][$oDadoArquivo->sNomeArquivo] = [];
       }
 
       if ( !isset($aDadosReleaseNotes[$oDadoArquivo->sVersao][$oDadoArquivo->sNomeArquivo][$this->iUsuario]) ) {
@@ -147,7 +143,7 @@ class DBReleaseNotePlugin extends DBReleaseNote {
     $sCaminhoDadoReleaseNote = "release_notes/plugins/{$oPlugin->getNome()}/release_notes.json";
 
     if ( !file_exists($sCaminhoDadoReleaseNote) ) {
-      return array();
+      return [];
     }
 
     $sJson = file_get_contents($sCaminhoDadoReleaseNote);
@@ -155,7 +151,7 @@ class DBReleaseNotePlugin extends DBReleaseNote {
     $aRetorno = json_decode($sJson, true);
 
     if (empty($aRetorno)) {
-      return array();
+      return [];
     }
 
     return $aRetorno;

@@ -49,14 +49,14 @@ $oFiltroRelatorio->iOrdenacao = $oGet->ordenacao;
 $oFiltroRelatorio->iFrequencia = $oGet->frequencia;
 $oFiltroRelatorio->iCodigoTipoModelo = $oGet->tipovar;
 $oFiltroRelatorio->iTrocaTurma = $oGet->trocaTurma;
-$oFiltroRelatorio->aDiretor = array();
-$oFiltroRelatorio->aSecretario = array();
+$oFiltroRelatorio->aDiretor = [];
+$oFiltroRelatorio->aSecretario = [];
 $oFiltroRelatorio->lTemDiretor = false;
 $oFiltroRelatorio->lTemSecretario = false;
 $oFiltroRelatorio->lBrasao = false;
 $oFiltroRelatorio->lTransferencia = false;
 $oFiltroRelatorio->lAssinatura = false;
-$oFiltroRelatorio->aJustificativas = array();
+$oFiltroRelatorio->aJustificativas = [];
 $lObservacaoProgressaoParcial = false;
 $oFiltroRelatorio->iTipoModelo = 1;
 $oFiltroRelatorio->mCabecalho = '';
@@ -98,9 +98,9 @@ if (!empty($oGet->iAtividade)) {
     $oFiltroRelatorio->iAtividade = $oGet->iAtividade;
 }
 
-if (in_array($oFiltroRelatorio->iModelo, array(1, 2))) {
+if (in_array($oFiltroRelatorio->iModelo, [1, 2])) {
     require_once(modification("fpdf151/pdfwebseller.php"));
-} else if (in_array($oFiltroRelatorio->iModelo, array(3, 4))) {
+} else if (in_array($oFiltroRelatorio->iModelo, [3, 4])) {
     require_once(modification("fpdf151/scpdf.php"));
 }
 
@@ -168,7 +168,7 @@ switch ($oFiltroRelatorio->iModelo) {
 
             $oFiltroRelatorio->iTotalDisciplinasPorPagina = 7;
             $oFiltroRelatorio->iTotalAlunosPorPagina = 60;
-            $aAlunosComBaixaFrequencia = array();
+            $aAlunosComBaixaFrequencia = [];
             $oTurma = TurmaRepository::getTurmaByCodigo($aTurmas[$iContadorTurma]->turma);
 
             $iCodigoEtapa = $aTurmas[$iContadorTurma]->etapa;
@@ -255,7 +255,7 @@ switch ($oFiltroRelatorio->iModelo) {
             if ($oFiltroRelatorio->iCodigoTipoModelo == 3) {
                 $oFiltroRelatorio->iTotalAlunosPorPagina = 45;
             }
-            $aAlunosComBaixaFrequencia = array();
+            $aAlunosComBaixaFrequencia = [];
 
             $oTurma = TurmaRepository::getTurmaByCodigo($aTurmas[$iContadorTurma]->turma);
             $iCodigoEtapa = $aTurmas[$iContadorTurma]->etapa;
@@ -295,12 +295,12 @@ function corpoPdf(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $aAlunosComBaixa
     /**
      * Array para armazenas os nomes dos alunos
      */
-    $sNomeAluno = array();
+    $sNomeAluno = [];
 
     /**
      * Array da carga horaria da turma
      */
-    $aCargaHoraria = array();
+    $aCargaHoraria = [];
     $oEtapa = EtapaRepository::getEtapaByCodigo($iCodigoEtapa);
     $iAnoCalendario = $oTurma->getCalendario()->getAnoExecucao();
     $aDisciplinas = $oTurma->getDisciplinasPorEtapa($oEtapa);
@@ -348,14 +348,14 @@ function corpoPdf(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $aAlunosComBaixa
     /**
      * Array das disciplinas por paginas
      */
-    $aDisciplinasPorPagina = array();
+    $aDisciplinasPorPagina = [];
     $iContadorAux = 0;
     $iPagina = 0;
 
     /**
      * Lista dos alunos matriculados na turma
      */
-    $aListaDeAlunos = array();
+    $aListaDeAlunos = [];
     $lSequencialDiario = true;
 
     /**
@@ -399,7 +399,7 @@ function corpoPdf(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $aAlunosComBaixa
         case 2:
         case 3:
 
-            usort($aListaDeAlunos, "ordernarAlunosPorNome");
+            usort($aListaDeAlunos, ordernarAlunosPorNome(...));
             break;
     }
 
@@ -517,7 +517,7 @@ function corpoPdf(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $aAlunosComBaixa
                 }
 
                 $lPrimeiroLaco = false;
-                cabecalhoPadrao($oPdf, $oFiltroRelatorio, $aDisciplinasPagina, $oTurma, $iCodigoEtapa);
+                cabecalhoPadrao($oPdf, $oFiltroRelatorio);
             }
             if ($oFiltroRelatorio->iTrocaTurma == 1 && $aListaDeAlunos[$iContadorAluno]->getSituacao() == "TROCA DE TURMA") {
                 continue;
@@ -1016,7 +1016,7 @@ function cabecalhoPadrao($oPdf, $oFiltroRelatorio, $aDisciplinasPagina, Turma $o
             if ($oFiltroRelatorio->iModelo == 3 || $oFiltroRelatorio->iModelo == 4) {
                 cabecalhoScpf($oPdf, $oTurma, $oFiltroRelatorio, $iEtapa);
             }
-            cabecalhoPadrao($oPdf, $oFiltroRelatorio, $aDisciplinasPagina, $oTurma, $iEtapa);
+            cabecalhoPadrao($oPdf, $oFiltroRelatorio);
         }
 
         $oPdf->Cell($oFiltroRelatorio->iTamanhoColunaAbrevDisciplina, 4,
@@ -1158,20 +1158,20 @@ function footerPadrao(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $iCodigoEtap
     $iLimiteY = 257;
     $iLimiteX = 192;
 
-    $aTermos = array();
+    $aTermos = [];
     $iEnsino = $oTurma->getBaseCurricular()->getCurso()->getEnsino()->getCodigo();
     $iAno = $oTurma->getCalendario()->getAnoExecucao();
 
     $sObservacoesTurma = $oTurma->getObservacao();
 
-    $aObservacoesTurma = array();
+    $aObservacoesTurma = [];
     if (!empty($sObservacoesTurma)) {
         $aObservacoesTurma[] = $oTurma->getObservacao();
     }
 
 
     $lAprovadoRegimento = false;
-    $aAlunosReclaBaixaFrequencia = array();
+    $aAlunosReclaBaixaFrequencia = [];
 
     $oDaoAprovConselho = new cl_aprovconselho();
     $sCamposAprovCons = "distinct trim(ed47_v_nome) as ed47_v_nome, ed253_aprovconselhotipo, ed253_alterarnotafinal";
@@ -1202,7 +1202,7 @@ function footerPadrao(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $iCodigoEtap
                     $oDadosObservacao = new stdClass();
                     $oDadosObservacao->aParagrafos = $oDocumento->getDocParagrafos();
 
-                    if (trim($oDadosObservacao->aParagrafos[1]->oParag->db02_texto) != '') {
+                    if (trim((string) $oDadosObservacao->aParagrafos[1]->oParag->db02_texto) != '') {
                         $aObservacoesTurma[] = "¹ " . $oAprovConselho->ed47_v_nome . ": " . $oDadosObservacao->aParagrafos[1]->oParag->db02_texto;
                     }
                     break;
@@ -1284,7 +1284,7 @@ function footerPadrao(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $iCodigoEtap
     $iConvencoesImpressas = 1;
     $sConvencaoEsquerda = '';
     $sConvencaoDireita = '';
-    $aConvencoes = array();
+    $aConvencoes = [];
 
 
     /**
@@ -1323,7 +1323,7 @@ function footerPadrao(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $iCodigoEtap
         $sDataRodape = "{$oTurma->getEscola()->getMunicipio()}, " . date("d", db_getsession("DB_datausu")) . " de ";
         $sDataRodape .= db_mes(date("m", db_getsession("DB_datausu"))) . " de " . date("Y", db_getsession("DB_datausu"));
     } else {
-        $splitData = explode('/', $splitData);
+        $splitData = explode('/', (string) $splitData);
         $sDataRodape = "{$oTurma->getEscola()->getMunicipio()}, " . $splitData[0] . " de ";
         $sDataRodape .= db_mes($splitData[1]) . " de " . $splitData[2];
     }
@@ -1335,7 +1335,7 @@ function footerPadrao(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $iCodigoEtap
     if ($oFiltroRelatorio->lTemSecretario) {
 
         $sFuncaoSecretario = $oFiltroRelatorio->aSecretario[0]
-            . (trim($oFiltroRelatorio->aSecretario[2]) != "" ? " ({$oFiltroRelatorio->aSecretario[2]})" : "");
+            . (trim((string) $oFiltroRelatorio->aSecretario[2]) != "" ? " ({$oFiltroRelatorio->aSecretario[2]})" : "");
         $sNomeSecretario = $oFiltroRelatorio->aSecretario[1];
 
     } else if (!$oFiltroRelatorio->lTemSecretario && ($oFiltroRelatorio->iModelo == 1 || $oFiltroRelatorio->iModelo == 2)) {
@@ -1349,7 +1349,7 @@ function footerPadrao(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $iCodigoEtap
     if ($oFiltroRelatorio->lTemDiretor) {
 
         $sFuncaoDiretor = $oFiltroRelatorio->aDiretor[0]
-            . (trim($oFiltroRelatorio->aDiretor[2]) != "" ? " ({$oFiltroRelatorio->aDiretor[2]})" : "");
+            . (trim((string) $oFiltroRelatorio->aDiretor[2]) != "" ? " ({$oFiltroRelatorio->aDiretor[2]})" : "");
         $sNomeDiretor = $oFiltroRelatorio->aDiretor[1];
     } else if (!$oFiltroRelatorio->lTemDiretor && ($oFiltroRelatorio->iModelo == 1 || $oFiltroRelatorio->iModelo == 2)) {
 
@@ -1363,7 +1363,7 @@ function footerPadrao(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $iCodigoEtap
         $sObservacoesTurma = $sObservacoesTurma;
     }
 
-    $aLegenda = array();
+    $aLegenda = [];
     $aTermos = DBEducacaoTermo::getTermoEncerramentoDoEnsino($iEnsino, $iAno);
     /**
      * Pegando os termos para impressao da legenda
@@ -1515,7 +1515,7 @@ function footerPadrao(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $iCodigoEtap
 
         if (mb_detect_encoding($sObservacoesEscola . 'x', 'UTF-8', 'ISO-8859-1') == 'UTF-8') {
 
-            $sObservacoesEscola = utf8_decode($sObservacoesEscola);
+            $sObservacoesEscola = mb_convert_encoding($sObservacoesEscola, 'ISO-8859-1');
             $sObservacoesEscola = str_replace(",", ',', $sObservacoesEscola);
         } else {
 
@@ -1543,17 +1543,17 @@ function footerPadrao(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $iCodigoEtap
         if ($oPdf->GetY() > 240)
             $oPdf->AddPage();
 
-        $aAssinaturas = array();
+        $aAssinaturas = [];
 
         $oSecretario = (object)[
-            "linha" => str_repeat("_", strlen($sFuncaoSecretario) > strlen($sNomeSecretario) ? strlen($sFuncaoSecretario) : strlen($sNomeSecretario)),
+            "linha" => str_repeat("_", strlen($sFuncaoSecretario) > strlen((string) $sNomeSecretario) ? strlen($sFuncaoSecretario) : strlen((string) $sNomeSecretario)),
             "funcao" => $sFuncaoSecretario,
             "nome" => $sNomeSecretario
         ];
         array_push($aAssinaturas, $oSecretario);
 
         $oDiretor = (object)[
-            "linha" => str_repeat("_", strlen($sFuncaoDiretor) > strlen($sNomeDiretor) ? strlen($sFuncaoDiretor) : strlen($sNomeDiretor)),
+            "linha" => str_repeat("_", strlen($sFuncaoDiretor) > strlen((string) $sNomeDiretor) ? strlen($sFuncaoDiretor) : strlen((string) $sNomeDiretor)),
             "funcao" => $sFuncaoDiretor,
             "nome" => $sNomeDiretor
         ];
@@ -1562,7 +1562,7 @@ function footerPadrao(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $iCodigoEtap
 
         if (isset($oFiltroRelatorio->iRegente) && $oFiltroRelatorio->iRegente != '') {
             $oAdicional = (object)[
-                "linha" => str_repeat("_", strlen($sFuncaoDocente) > strlen($sNomeDocente) ? strlen($sFuncaoDocente) : strlen($sNomeDocente)),
+                "linha" => str_repeat("_", strlen((string) $sFuncaoDocente) > strlen($sNomeDocente) ? strlen((string) $sFuncaoDocente) : strlen($sNomeDocente)),
                 "funcao" => $sFuncaoDocente,
                 "nome" => $sNomeDocente
             ];
@@ -1736,7 +1736,7 @@ function ordernarAlunosPorNome(Matricula $oMatriculaAnterior, Matricula $oProxim
 
     $sNomeAnterior = TiraAcento($oMatriculaAnterior->getAluno()->getNome());
     $sProximoNome = TiraAcento($oProximaMatricula->getAluno()->getNome());
-    return strnatcasecmp($sNomeAnterior, $sProximoNome);
+    return strnatcasecmp((string) $sNomeAnterior, (string) $sProximoNome);
 }
 
 /**
@@ -1749,7 +1749,7 @@ function textoAtoCabecalho($oFiltroRelatorio, $oTurma)
 
     $oDocumento = new libdocumento(5012);
     $oDocumento->dia = $oTurma->oDadosEscola->iDia;
-    $oDocumento->mes_extenso = ucfirst($oTurma->oDadosEscola->iMes);
+    $oDocumento->mes_extenso = ucfirst((string) $oTurma->oDadosEscola->iMes);
     $oDocumento->ano = $oTurma->oDadosEscola->iAno;
 
     $oDadosCabecalho = new stdClass();

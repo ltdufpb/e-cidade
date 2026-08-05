@@ -47,10 +47,10 @@ db_app::import("exceptions.*");
 
 $oGet = db_utils::postMemory($_GET);
 
-$aRegencias = explode(",", $oGet->sRegencias);
+$aRegencias = explode(",", (string) $oGet->sRegencias);
 
 $oTurma            = TurmaRepository::getTurmaByCodigo($oGet->iTurma);
-$aAlunosVinculados = array();
+$aAlunosVinculados = [];
 
 /**
  * Buscamos todos os alunos vinculados a turma
@@ -176,7 +176,7 @@ foreach ($aRegencias as $iCodigoRegencia) {
     if (($oPdf->GetY() > $oPdf->h - 10) || $lPrimeiraVolta) {
       
       $lPrimeiraVolta = false;
-      imprimeHeader($oPdf, $iTamanhoColuna,  $oGet->iNumeroColunas);
+      imprimeHeader($oPdf, $iTamanhoColuna);
     }
     
     /**
@@ -184,7 +184,7 @@ foreach ($aRegencias as $iCodigoRegencia) {
      */
     $oPdf->SetFont("arial", "", 7);
     $oPdf->Cell(5,  $iHeigth, "{$iLinhasImpressa}",                   1, 0, "C");
-    $oPdf->Cell(70, $iHeigth, strtoupper(substr($oAluno->sNomeAluno, 0, 43)), 1, 0, "L");
+    $oPdf->Cell(70, $iHeigth, strtoupper(substr((string) $oAluno->sNomeAluno, 0, 43)), 1, 0, "L");
     $oPdf->Cell(5,  $iHeigth, $oAluno->iIdade           , 1, 0, "C");
     
     imprimeQuadroPresenca($oPdf, $oGet, $iTamanhoColuna, $iHeigth);
@@ -257,7 +257,7 @@ foreach ($aRegencias as $iCodigoRegencia) {
      */
     $oPdf->SetFont("arial", "", 7);
     $oPdf->Cell(5,  $iHeigth, "{$iLinhasImpressa}",                   1, 0, "C");
-    $oPdf->Cell(80, $iHeigth, strtoupper(substr($oAluno->sNomeAluno, 0, 48)), 1, 0, "L");
+    $oPdf->Cell(80, $iHeigth, strtoupper(substr((string) $oAluno->sNomeAluno, 0, 48)), 1, 0, "L");
   
     $iLarguraPagina = 195;
     $sLegenda       = "Legendas: ";

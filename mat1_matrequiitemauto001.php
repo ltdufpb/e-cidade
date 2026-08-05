@@ -72,7 +72,8 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clmatparam               = new cl_matparam;
 $cldb_departorg           = new  cl_db_departorg;
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmatrequiitem           = new cl_matrequiitem;
 $clmatrequi               = new cl_matrequi;
 $clatendrequiitem         = new cl_atendrequiitem;
@@ -237,13 +238,13 @@ if (isset($incluir)) {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
    <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmmatrequiitemauto.php"));
 	?>
     </center>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if($sqlerro==true){
     db_msgbox(str_replace("\n","\\n",$erro_msg));

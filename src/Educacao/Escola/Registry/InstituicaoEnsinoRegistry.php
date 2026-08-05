@@ -35,7 +35,7 @@ class InstituicaoEnsinoRegistry
     /**
      * @var InstituicaoEnsino[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param InstituicaoEnsino $instituicaoEnsino

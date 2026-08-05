@@ -29,7 +29,6 @@ namespace ECidade\Financeiro\Orcamento\Repository;
 
 use cl_orcfontes;
 use ECidade\Financeiro\Orcamento\Model\FonteReceita;
-use ECidade\Financeiro\Orcamento\Model\NaturezaDespesa;
 use Exception;
 
 /**

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,8 @@ require_once(modification("classes/db_tipoproc_classe.php"));
 require_once(modification("classes/db_tipoprocdepto_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $cltipoproc = new cl_tipoproc;
 $cltipoproc->rotulo->label("p51_codigo");
@@ -59,7 +60,7 @@ $oDaoTipoProcDpto = new cl_tipoprocdepto();
               <?=$Lp51_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p51_codigo",8,$Ip51_codigo,true,"text",4,"","chave_p51_codigo");
 		       ?>
             </td>
@@ -69,7 +70,7 @@ $oDaoTipoProcDpto = new cl_tipoprocdepto();
               <?=$Lp51_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p51_descr",60,$Ip51_descr,true,"text",4,"","chave_p51_descr");
 		       ?>
             </td>
@@ -87,7 +88,7 @@ $oDaoTipoProcDpto = new cl_tipoprocdepto();
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $where = " p51_instit=".db_getsession("DB_instit");
       if ((isset($grupo) && $grupo == 1) || (isset($grupo) && $grupo == 2)) {
       	$where .= " and p51_tipoprocgrupo = $grupo";
@@ -171,14 +172,14 @@ $oDaoTipoProcDpto = new cl_tipoprocdepto();
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_p51_descr.focus();
 document.form2.chave_p51_descr.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

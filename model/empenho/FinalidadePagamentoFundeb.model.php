@@ -44,7 +44,7 @@ class FinalidadePagamentoFundeb
     /**
      * @var array
      */
-    public static $FINALIDADE_DESCRICAO_CNAB = array(
+    public static $FINALIDADE_DESCRICAO_CNAB = [
         '01' => 'Remuneração Magistério',
         '02' => 'Obrigações Patronais Magistério',
         '03' => 'Remuneração Pessoal Técnico Administrativo',
@@ -59,13 +59,7 @@ class FinalidadePagamentoFundeb
         '95' => 'Pagamento Prestador Municipal',
         '96' => 'Pagamento Prestador Estadual',
         '98' => 'Transferência Tributos Retidos'
-    );
-
-    /**
-     * Código sequencial da finalidade
-     * @var integer
-     */
-    private $iCodigoSequencial;
+    ];
 
     /**
      * Código da finalidade de acordo com a portaria STN/FNDE
@@ -84,17 +78,19 @@ class FinalidadePagamentoFundeb
      * @param string $iCodigoSequencial
      * @throws BusinessException
      */
-    public function __construct($iCodigoSequencial = null)
+    public function __construct(/**
+     * Código sequencial da finalidade
+     */
+    private $iCodigoSequencial = null)
     {
 
-        $this->iCodigoSequencial = $iCodigoSequencial;
         if (!empty($this->iCodigoSequencial) || $this->iCodigoSequencial === "0") {
 
             $oDaoFinalidadePagamento = new cl_finalidadepagamentofundeb();
-            $sSqlBuscaFinalidade = $oDaoFinalidadePagamento->sql_query_file($iCodigoSequencial);
+            $sSqlBuscaFinalidade = $oDaoFinalidadePagamento->sql_query_file($this->iCodigoSequencial);
             $rsBuscaFinalidade = $oDaoFinalidadePagamento->sql_record($sSqlBuscaFinalidade);
             if ($oDaoFinalidadePagamento->erro_status == "0") {
-                throw new BusinessException("Não foi localizado a finalidade com sequencial {$iCodigoSequencial}.");
+                throw new BusinessException("Não foi localizado a finalidade com sequencial {$this->iCodigoSequencial}.");
             }
 
             $sStdFinalidade = db_utils::fieldsMemory($rsBuscaFinalidade, 0);

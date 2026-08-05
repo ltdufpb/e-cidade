@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conarquivospad_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clconarquivospad = new cl_conarquivospad;
 $clconarquivospad->rotulo->label("c54_codarq");
 $clconarquivospad->rotulo->label("c54_nomearq");
@@ -54,7 +55,7 @@ $clconarquivospad->rotulo->label("c54_nomearq");
               <?=$Lc54_codarq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c54_codarq",3,$Ic54_codarq,true,"text",4,"","chave_c54_codarq");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clconarquivospad->rotulo->label("c54_nomearq");
               <?=$Lc54_nomearq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c54_nomearq",20,$Ic54_nomearq,true,"text",4,"","chave_c54_nomearq");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clconarquivospad->rotulo->label("c54_nomearq");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_conarquivospad.php")==true){
@@ -122,12 +123,12 @@ $clconarquivospad->rotulo->label("c54_nomearq");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

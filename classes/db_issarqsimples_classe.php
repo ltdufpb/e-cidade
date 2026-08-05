@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -69,7 +69,7 @@ class cl_issarqsimples {
   q17_nomearq = varchar(100) = Nome Arquivo
   ";
   //funcao construtor da classe
-  function cl_issarqsimples() {
+  function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("issarqsimples");
     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -61,7 +61,7 @@ class cl_fandam {
                  y39_hora = varchar(5) = Hora
                  ";
    //funcao construtor da classe
-   function cl_fandam() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fandam");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

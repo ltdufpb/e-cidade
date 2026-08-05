@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE matestoqueinil
 class cl_matestoqueinil { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $m86_codigo = 0; 
-   var $m86_matestoqueini = 0; 
+   public $m86_codigo = 0; 
+   public $m86_matestoqueini = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  m86_codigo = float8 = Código da ligação 
                  m86_matestoqueini = int8 = Lançamento 
                  ";
    //funcao construtor da classe 
-   function cl_matestoqueinil() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matestoqueinil"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -95,10 +95,10 @@ class cl_matestoqueinil {
          $this->erro_status = "0";
          return false; 
        }
-       $this->m86_codigo = pg_result($result,0,0); 
+       $this->m86_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from matestoqueinil_m86_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m86_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m86_codigo)){
          $this->erro_sql = " Campo m86_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -128,7 +128,7 @@ class cl_matestoqueinil {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Ligação do matestoqueini ($this->m86_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Ligação do matestoqueini já Cadastrado";
@@ -152,11 +152,11 @@ class cl_matestoqueinil {
      $resaco = $this->sql_record($this->sql_query_file($this->m86_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6941,'$this->m86_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1145,6941,'','".AddSlashes(pg_result($resaco,0,'m86_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1145,6942,'','".AddSlashes(pg_result($resaco,0,'m86_matestoqueini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1145,6941,'','".AddSlashes(pg_fetch_result($resaco,0,'m86_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1145,6942,'','".AddSlashes(pg_fetch_result($resaco,0,'m86_matestoqueini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -165,10 +165,10 @@ class cl_matestoqueinil {
       $this->atualizacampos();
      $sql = " update matestoqueinil set ";
      $virgula = "";
-     if(trim($this->m86_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m86_codigo"])){ 
+     if(trim((string) $this->m86_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m86_codigo"])){ 
        $sql  .= $virgula." m86_codigo = $this->m86_codigo ";
        $virgula = ",";
-       if(trim($this->m86_codigo) == null ){ 
+       if(trim((string) $this->m86_codigo) == null ){ 
          $this->erro_sql = " Campo Código da ligação nao Informado.";
          $this->erro_campo = "m86_codigo";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_matestoqueinil {
          return false;
        }
      }
-     if(trim($this->m86_matestoqueini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m86_matestoqueini"])){ 
+     if(trim((string) $this->m86_matestoqueini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m86_matestoqueini"])){ 
        $sql  .= $virgula." m86_matestoqueini = $this->m86_matestoqueini ";
        $virgula = ",";
-       if(trim($this->m86_matestoqueini) == null ){ 
+       if(trim((string) $this->m86_matestoqueini) == null ){ 
          $this->erro_sql = " Campo Lançamento nao Informado.";
          $this->erro_campo = "m86_matestoqueini";
          $this->erro_banco = "";
@@ -199,13 +199,13 @@ class cl_matestoqueinil {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6941,'$this->m86_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m86_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1145,6941,'".AddSlashes(pg_result($resaco,$conresaco,'m86_codigo'))."','$this->m86_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1145,6941,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m86_codigo'))."','$this->m86_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m86_matestoqueini"]))
-           $resac = db_query("insert into db_acount values($acount,1145,6942,'".AddSlashes(pg_result($resaco,$conresaco,'m86_matestoqueini'))."','$this->m86_matestoqueini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1145,6942,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m86_matestoqueini'))."','$this->m86_matestoqueini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -250,11 +250,11 @@ class cl_matestoqueinil {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6941,'$m86_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1145,6941,'','".AddSlashes(pg_result($resaco,$iresaco,'m86_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1145,6942,'','".AddSlashes(pg_result($resaco,$iresaco,'m86_matestoqueini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1145,6941,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m86_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1145,6942,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m86_matestoqueini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from matestoqueinil
@@ -314,7 +314,7 @@ class cl_matestoqueinil {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:matestoqueinil";
@@ -328,7 +328,7 @@ class cl_matestoqueinil {
    function sql_query ( $m86_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -353,7 +353,7 @@ class cl_matestoqueinil {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -365,7 +365,7 @@ class cl_matestoqueinil {
    function sql_query_file ( $m86_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -386,7 +386,7 @@ class cl_matestoqueinil {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

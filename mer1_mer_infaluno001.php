@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -147,13 +147,13 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Informação do Aluno</b></legend>
-    <?include(modification("forms/db_frmmer_infaluno.php"));?>
+    <?php include(modification("forms/db_frmmer_infaluno.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit"));
@@ -163,7 +163,7 @@ if (isset($excluir)) {
 <script>
 js_tabulacaoforms("form1","me14_i_aluno",true,1,"me14_i_aluno",true);
 </script>
-<?
+<?php 
 if (isset($incluir) || isset($alterar) || isset($excluir)) {
     
  if ($clmer_infaluno->erro_status == "0") {
@@ -192,13 +192,13 @@ if (@$opcao == "alterar") {
   	document.getElementById('periodo').style.display          = '';
     document.getElementById('calendario2').style.display = '';
   	</script>
-  <?}
+  <?php }
 	if(isset($me14_i_ano) && $me14_i_ano!=""){?>
     <script> 
       
     document.getElementById('mes').style.display = '';
     document.getElementById('ano').style.display = '';  
     </script>
-  <?}
+  <?php }
 }
 ?>

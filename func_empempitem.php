@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empempitem_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clempempitem = new cl_empempitem;
 $clempempitem->rotulo->label("e62_numemp");
 $clempempitem->rotulo->label("e62_sequen");
@@ -55,7 +56,7 @@ $clempempitem->rotulo->label("e62_item");
               <?=$Le62_numemp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e62_numemp",8,$Ie62_numemp,true,"text",4,"","chave_e62_numemp");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clempempitem->rotulo->label("e62_item");
               <?=$Le62_sequen?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e62_sequen",6,$Ie62_sequen,true,"text",4,"","chave_e62_sequen");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clempempitem->rotulo->label("e62_item");
               <?=$Le62_item?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("e62_item",6,$Ie62_item,true,"text",4,"","chave_e62_item");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clempempitem->rotulo->label("e62_item");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_empempitem.php")==true){
@@ -129,12 +130,12 @@ $clempempitem->rotulo->label("e62_item");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

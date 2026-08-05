@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,8 +32,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 
 $clrechumano           = new cl_rechumano;
 $cldb_uf               = new cl_db_uf;
@@ -138,7 +138,7 @@ if( isset( $excluir ) ) {
    <br>
    <center>
    <fieldset align="left" style="width:95%"><legend><b>Exclusão de Recurso Humano</b></legend>
-    <?include(modification("forms/db_frmrechumano.php"));?>
+    <?php include(modification("forms/db_frmrechumano.php"));?>
    </fieldset>
    </center>
   </td>
@@ -146,7 +146,7 @@ if( isset( $excluir ) ) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if( isset( $excluir ) ) {
 
   if( !$lErroExclusao ) {

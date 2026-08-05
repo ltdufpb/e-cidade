@@ -2,6 +2,7 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
 use stdClass;
 
 /**
@@ -17,14 +18,14 @@ class EmpregadorFormatter extends Formatter
      */
     private $instituicao;
 
-    private $deParaTipoPoder = array(
+    private $deParaTipoPoder = [
         1 => 1,
         2 => 2,
         3 => 3,
         4 => 4,
         5 => 5,
         7 => 6,
-    );
+    ];
 
     public function setInstituicao($instituicao)
     {
@@ -42,6 +43,7 @@ class EmpregadorFormatter extends Formatter
      * @param array $dados
      * @return array|stdClass[]
      */
+    #[Override]
     public function formatar($dados)
     {
         // Pega os dados preenchidos em formulários
@@ -73,7 +75,7 @@ class EmpregadorFormatter extends Formatter
             if (empty($dadoEmpregador->infoCadastro->cnpjEFR)) {
                 unset($dadoEmpregador->infoCadastro->cnpjEFR);
             } else {
-                $cnpj = str_pad($dadoEmpregador->infoCadastro->cnpjEFR, 14, '0', STR_PAD_LEFT);
+                $cnpj = str_pad((string) $dadoEmpregador->infoCadastro->cnpjEFR, 14, '0', STR_PAD_LEFT);
                 $dadoEmpregador->infoCadastro->cnpjEFR = $cnpj;
             }
 
@@ -100,7 +102,7 @@ class EmpregadorFormatter extends Formatter
 
             unset($dadoEmpregador->infoOrgInternacional);
 
-            $dadoEmpregador->idePeriodo = new \stdClass();
+            $dadoEmpregador->idePeriodo = new stdClass();
             $dadoEmpregador->idePeriodo->iniValid = !empty($dadoEmpregador->infoCadastro->iniValid1000)
                 ? $dadoEmpregador->infoCadastro->iniValid1000 : null;
             $dadoEmpregador->idePeriodo->fimValid = !empty($dadoEmpregador->infoCadastro->fimValid1000)

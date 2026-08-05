@@ -128,7 +128,7 @@ try {
       $sJustificativa                = "";
 
       $oProgressaoParcial            = null;
-      $aEtapasConfiguradas           = array();
+      $aEtapasConfiguradas           = [];
       /* ATENCAO: PLUGIN ParametroProgressaoParcial - INICIALIZANDO PARAMETRO PROGRESSAO MESMA DISCIPLINA - INSTALADO AQUI - NAO REMOVER */
       if ($oDaoParamProgressao->numrows > 0) {
 
@@ -173,7 +173,7 @@ try {
       if ($iModulo == 1100747) {
         $sWhere = " ed71_i_escola = {$iDepartamentoLogado}";
       }
-      $aCursos    = array();
+      $aCursos    = [];
       $oDaoCurso  = new cl_curso();
       $sSqlCurso  = $oDaoCurso->sql_query_cursoescola(null, "distinct ed29_i_codigo, ed29_c_descr",
                                                       "ed29_c_descr", $sWhere);
@@ -190,7 +190,7 @@ try {
           $oCursoDados                  = new stdClass();
           $oCursoDados->iCodigoCurso    = $oCurso->getCodigo();
           $oCursoDados->sDescricaoCurso = urlencode($oCurso->getNome());
-          $oCursoDados->aEtapas         = array();
+          $oCursoDados->aEtapas         = [];
 
           foreach ($aEtapas as $oEtapa) {
 
@@ -198,7 +198,7 @@ try {
             $oEtapaDados->iCodigoEtapa      = $oEtapa->getCodigo();
             $oEtapaDados->iCodigoCurso      = $oCurso->getCodigo();
             $oEtapaDados->lConfigurada      = false;
-            $oEtapaDados->sDescricaoEtapa   = urlencode($oEtapa->getNome());
+            $oEtapaDados->sDescricaoEtapa   = urlencode((string) $oEtapa->getNome());
             $oEtapaDados->lBloqueiaTreeView = false;
 
             /**
@@ -254,7 +254,7 @@ try {
       }
 
 
-      $aEscolas = array();
+      $aEscolas = [];
       $oEscola  = new stdClass();
       $oEscola->ed18_i_codigo = $iDepartamentoLogado;
       $aEscolas[] = $oEscola;
@@ -311,22 +311,7 @@ try {
       }
       break;
   }
-} catch (BusinessException $eErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = $eErro->getMessage();
-} catch (ParameterException $eErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = $eErro->getMessage();
-} catch (DBException $eErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = $eErro->getMessage();
-} catch (Exception $eErro) {
+} catch (BusinessException|ParameterException|DBException|Exception $eErro) {
 
   db_fim_transacao(true);
   $oRetorno->status  = 2;

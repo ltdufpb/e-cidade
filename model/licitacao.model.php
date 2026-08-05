@@ -57,11 +57,11 @@ class licitacao
      * Sequencial da tabela
      */
     private $iCodLicitacao   = null;
-    private $aItensLicitacao = array();
+    private $aItensLicitacao = [];
     private $oDados = null;
     private $oDaoLicita = null;
     private $oDaoParametros = null;
-    protected $aFornecedores = array();
+    protected $aFornecedores = [];
 
     protected $iCodigoSituacao;
     protected $iNumeroEdital;
@@ -244,7 +244,7 @@ class licitacao
 
     public function getProcessoCompras()
     {
-        $aSolicitacoes = array();
+        $aSolicitacoes = [];
         if ($this->iCodLicitacao == null) {
             throw new exception("Código da licitacao nulo");
             return false;
@@ -314,7 +314,7 @@ class licitacao
             for ($i = 0; $i < pg_num_fields($rsItens); $i++) {
                 $sCampo = pg_field_name($rsItens, $i);
                 $sValorCampo = $oItemLicitacao->$sCampo;
-                $oItem->addChild("$sCampo", utf8_encode($sValorCampo));
+                $oItem->addChild("$sCampo", mb_convert_encoding($sValorCampo, 'UTF-8', 'ISO-8859-1'));
             }
             /*
              * Verificamos se o item possui lote
@@ -331,9 +331,9 @@ class licitacao
                 $aItensLote = db_utils::getCollectionByRecord($rsLote);
 
                 foreach ($aItensLote as $oLote) {
-                    $oItemLote->addAttribute("l04_codigo", utf8_encode($oLote->l04_codigo));
-                    $oItemLote->addAttribute("l04_liclicitem", utf8_encode($oLote->l04_liclicitem));
-                    $oItemLote->addAttribute("l04_descricao", utf8_encode($oLote->l04_descricao));
+                    $oItemLote->addAttribute("l04_codigo", mb_convert_encoding($oLote->l04_codigo, 'UTF-8', 'ISO-8859-1'));
+                    $oItemLote->addAttribute("l04_liclicitem", mb_convert_encoding($oLote->l04_liclicitem, 'UTF-8', 'ISO-8859-1'));
+                    $oItemLote->addAttribute("l04_descricao", mb_convert_encoding($oLote->l04_descricao, 'UTF-8', 'ISO-8859-1'));
                 }
             }
         }
@@ -351,7 +351,7 @@ class licitacao
         $oXmlSecretarias = $oXml->addChild("secretarias");
         $aSecretarias = db_utils::getCollectionByRecord($rsSecretarias);
         foreach ($aSecretarias as $oSecretaria) {
-            $oXmlSecretarias->addChild("secretaria", utf8_encode($oSecretaria->o40_descr));
+            $oXmlSecretarias->addChild("secretaria", mb_convert_encoding($oSecretaria->o40_descr, 'UTF-8', 'ISO-8859-1'));
         }
 
         /*
@@ -367,7 +367,7 @@ class licitacao
         $oXmlElementos = $oXml->addChild("elementos");
         $aElementos = db_utils::getCollectionByRecord($rsElementos);
         foreach ($aElementos as $oElemento) {
-            $oXmlElementos->addChild("elemento", utf8_encode($oElemento->estrutural));
+            $oXmlElementos->addChild("elemento", mb_convert_encoding($oElemento->estrutural, 'UTF-8', 'ISO-8859-1'));
         }
 
         return $oXml->asXML();
@@ -382,7 +382,7 @@ class licitacao
      * @throws BusinessException
      * @throws Exception
      */
-    public function alterarSituacao($iCodigoSituacao, $sObservacao = "", DBDate $oData = null)
+    public function alterarSituacao($iCodigoSituacao, $sObservacao = "", ?DBDate $oData = null)
     {
         if (!db_utils::inTransaction()) {
             throw new Exception('Sem transação Ativa');
@@ -404,7 +404,7 @@ class licitacao
                 break;
 
             case SituacaoLicitacao::SITUACAO_ANULADA:
-                if (in_array($this->iCodigoSituacao, array(2, 3, 4))) {
+                if (in_array($this->iCodigoSituacao, [2, 3, 4])) {
                     throw new Exception("Esta licitação não encontra-se nas situações Em andamento ou Julgada. Procedimento abortado.");
                 }
 
@@ -414,7 +414,7 @@ class licitacao
 
         if (!in_array(
             $iCodigoSituacao,
-            array(SituacaoLicitacao::SITUACAO_ADJUDICADA, SituacaoLicitacao::SITUACAO_HOMOLOGADA)
+            [SituacaoLicitacao::SITUACAO_ADJUDICADA, SituacaoLicitacao::SITUACAO_HOMOLOGADA]
         )) {
             $oDaoLiclicitem = new cl_liclicitem();
             $oDaoOrcreservaSol = new cl_orcreservasol();
@@ -475,7 +475,7 @@ class licitacao
 
         if (in_array(
             $iCodigoSituacao,
-            array(SituacaoLicitacao::SITUACAO_ADJUDICADA, SituacaoLicitacao::SITUACAO_HOMOLOGADA)
+            [SituacaoLicitacao::SITUACAO_ADJUDICADA, SituacaoLicitacao::SITUACAO_HOMOLOGADA]
         )) {
             $oDaolicSituacao->excluir(
                 null,
@@ -578,15 +578,15 @@ class licitacao
         $iFornecedor,
         $lValidaContrato = true,
         $lEncode = true,
-        $aOutrosFiltros = array(),
+        $aOutrosFiltros = [],
         $flagCredenciamento = false,
         $acordo = null
     ) {
         $oDaoLicilicitem = new cl_liclicitem;
 
-        $sLista = trim($aLicitacoes[0]);
+        $sLista = trim((string) $aLicitacoes[0]);
         if (empty($sLista)) {
-            return array();
+            return [];
         }
 
         $sCampos = "distinct l21_codigo as codigo, pc01_codmater as codigomaterial,";
@@ -597,7 +597,7 @@ class licitacao
         $sCampos .= "pc23_obs AS observacao";
 
         $sQuery = "sql_itens_fornecedores";
-        $aWhere = array(" pc21_numcgm= {$iFornecedor} ");
+        $aWhere = [" pc21_numcgm= {$iFornecedor} "];
         $aWhere[] = " l21_codliclicita in({$sLista})";
 
         if ($lValidaContrato) {
@@ -622,7 +622,7 @@ class licitacao
                 }
 
                 foreach ($aItens as $k => $item) {
-                    if (array_key_exists($item->codigo, $aAcordoItemQuantidade)) {
+                    if (array_key_exists((string) $item->codigo, $aAcordoItemQuantidade)) {
                         unset($aItens[$k]);
                     }
                 }
@@ -642,7 +642,7 @@ class licitacao
     {
         $oDaoLicilicitem = new cl_liclicitem();
 
-        $aWhere = array(" pc21_numcgm = {$iFornecedor} ");
+        $aWhere = [" pc21_numcgm = {$iFornecedor} "];
 
         /**
          * Regra -> Não deve trazer licitações quando:
@@ -707,7 +707,7 @@ class licitacao
      * @param integer $iCodigoDotacao
      * @param integer $iOrcTipoRec
      * @param integer $cgmFornecedor Filtra somente os valores associados ao fornecedor informado
-     * @return \stdClass $oDadoValorParcial
+     * @return stdClass $oDadoValorParcial
      * @throws \Exception
      */
     public function getValoresParciais($iCodigoItemProcesso, $iCodigoDotacao, $iOrcTipoRec = null, $cgmFornecedor = null)
@@ -730,7 +730,7 @@ class licitacao
 
         $sWhereFornecedor = '';
         if (!empty($cgmFornecedor)) {
-            $sWhereFornecedor = "AND e54_numcgm = '${cgmFornecedor}'";
+            $sWhereFornecedor = "AND e54_numcgm = '{$cgmFornecedor}'";
         }
 
         $oDaoEmpAutItem = db_utils::getDao("empautitem");
@@ -751,7 +751,7 @@ class licitacao
         $sWhere .= "      and e56_coddot     = {$iCodigoDotacao}      ";
         $sWhere .= "      and e54_anulad is null                      ";
         $sWhere .= "      {$sWhereContrapartida}                      ";
-        $sWhere .= "      ${sWhereFornecedor}                         ";
+        $sWhere .= "      {$sWhereFornecedor}                         ";
         $sWhere .= " group by e55_vltot,                              ";
         $sWhere .= "          e55_quant                               ";
         $sSqlAutorizacao = $oDaoEmpAutItem->sql_query_itemdot(null, null, $sCampos, null, $sWhere);
@@ -886,7 +886,7 @@ class licitacao
 
 
         $rsPeriodoParametro = $this->oDaoParametros->sql_record($sSqlPeriodoParametro);
-        $aItens = array();
+        $aItens = [];
         if ($iRowPcOrcamJulg > 0) {
             for ($i = 0; $i < $iRowPcOrcamJulg; $i++) {
                 $oDados = db_utils::fieldsMemory($rsPcOrcamJulg, $i, false, false, true);
@@ -1039,7 +1039,7 @@ class licitacao
         $oDaoEmpAutItem = db_utils::getDao("empautitem");
         $sSqlAutorizacao = $oDaoEmpAutItem->sql_query_itemdot(null, null, $sCampos, null, $sWhere);
         $rsAutorizacao = $oDaoEmpAutItem->sql_record($sSqlAutorizacao);
-        $aAutorizacoes = array();
+        $aAutorizacoes = [];
 
         for ($iRow = 0; $iRow < $oDaoEmpAutItem->numrows; $iRow++) {
             $oDadosAutorizacao = db_utils::fieldsMemory($rsAutorizacao, $iRow);
@@ -1056,7 +1056,7 @@ class licitacao
      */
     public function gerarAutorizacoes($aDadosAutorizacao)
     {
-        $aAutorizacoes = array();
+        $aAutorizacoes = [];
 
         /**
          * calcular reservas para a Solicitacao (quando parcial)
@@ -1086,12 +1086,12 @@ class licitacao
                  * verificamos se exite reserva de saldo para a solicitacao;
                  * caso exista, devemos calcular a diferença entre o que deve ser gerado para a autorizacao e a solictacao
                  */
-                $aReservas = itemSolicitacao::getReservasSaldoDotacao($oItem->pcdotac);
+                $aReservas = new itemSolicitacao()->getReservasSaldoDotacao($oItem->pcdotac);
                 $nNovoValorReserva = (float)str_replace(',', '.', $oItem->valortotal);
 
 
                 $iUnidade = db_getsession("DB_coddepto");
-                $numrows = pg_numrows(db_query("select coddepto from db_depart where descrdepto like '%SEDUC%' and coddepto = {$iUnidade};"));
+                $numrows = pg_num_rows(db_query("select coddepto from db_depart where descrdepto like '%SEDUC%' and coddepto = {$iUnidade};"));
                 $iInstit = db_getsession("DB_instit");
                 $clpcparam  = new cl_pcparam();
                 $rspcparam  = $clpcparam->sql_record($clpcparam->sql_query_file($iInstit, "pc30_bloqueiaautemp"));
@@ -1202,7 +1202,7 @@ class licitacao
             $oAutorizacao->setTipoEmpenho($oDados->tipoempenho);
             $oAutorizacao->setCaracteristicaPeculiar($oDados->concarpeculiar);
 
-            $aItemSolcitem = array();
+            $aItemSolcitem = [];
             foreach ($oDados->itens as $oItem) {
                 $oAutorizacao->addItem($oItem);
                 $aItemSolcitem[] = $oItem->solicitem;
@@ -1210,7 +1210,7 @@ class licitacao
 
             $oAutorizacao->setDestino($oDados->destino);
             $oAutorizacao->setContato($oDados->sContato);
-            $oAutorizacao->setResumo(addslashes($sResumo));
+            $oAutorizacao->setResumo(addslashes((string) $sResumo));
             $oAutorizacao->setTelefone($oDados->sTelefone);
             $oAutorizacao->setTipoCompra($oDados->tipocompra);
             $oAutorizacao->setPrazoEntrega($oDados->prazoentrega);
@@ -1302,7 +1302,7 @@ class licitacao
     public function getItensPorProcessoDeCompras($iProcesso)
     {
         $aItens = $this->getItens();
-        $aItensRetorno = array();
+        $aItensRetorno = [];
         foreach ($aItens as $oItem) {
             if ($oItem->getProcessoCompra() == $iProcesso) {
                 $aItensRetorno[] = $oItem;
@@ -1319,8 +1319,8 @@ class licitacao
     public function desvinculaProcessoDeCompras($iProcesso)
     {
         $aItensProcesso = $this->getItensPorProcessoDeCompras($iProcesso);
-        $aItensProcessoCompras = array();
-        $aCodLicLicitem = array();
+        $aItensProcessoCompras = [];
+        $aCodLicLicitem = [];
 
         //echo ("<pre>".print_r($aItensProcesso, 1)."</pre>");exit;
         foreach ($aItensProcesso as $oItemLicitacao) {
@@ -1368,7 +1368,7 @@ class licitacao
         $sSqlBuscaDotacao = $oDaoLicLicitem->sql_query_orc(null, $sCamposDotacao, null, $sWhereDotacao);
         $rsBuscaDotacao = $oDaoLicLicitem->sql_record($sSqlBuscaDotacao);
         $iRowDotacao = $oDaoLicLicitem->numrows;
-        $aSolicitacao = array();
+        $aSolicitacao = [];
 
         if ($iRowDotacao > 0) {
             for ($iRow = 0; $iRow < $iRowDotacao; $iRow++) {
@@ -1617,10 +1617,10 @@ class licitacao
      */
     private function getDataPorSituacao(SituacaoLicitacao $oSituacao)
     {
-        $aWhere = array(
+        $aWhere = [
             "l11_liclicita = {$this->iCodLicitacao}",
             "l11_licsituacao = {$oSituacao->getCodigo()}"
-        );
+        ];
 
         $oDaoSituacao = new cl_liclicitasituacao();
         $sSqlBuscaSituacao = $oDaoSituacao->sql_query_file(null, 'l11_data', null, implode(' and ', $aWhere));
@@ -1643,7 +1643,7 @@ class licitacao
     public function getEventos()
     {
         if ($this->aEventos === null) {
-            $aEventos = array();
+            $aEventos = [];
 
             if (empty($this->iCodLicitacao)) {
                 throw new ParameterException('Licitação não carregada.');
@@ -1676,7 +1676,7 @@ class licitacao
     {
         if (empty($this->iFaseLicitacon)) {
             $sSiglaTipoCompraTribunal = $this->getModalidade()->getSiglaTipoCompraTribunal();
-            if (in_array($sSiglaTipoCompraTribunal, array('PRD', 'PRI', 'RPO'))) {
+            if (in_array($sSiglaTipoCompraTribunal, ['PRD', 'PRI', 'RPO'])) {
                 if (EventoLicitacao::possuiFaseEvento($this, EventoLicitacao::FASE_PUBLICACAO, 10)) {
                     $this->iFaseLicitacon = EventoLicitacao::FASE_PUBLICACAO;
                     return $this->iFaseLicitacon;
@@ -1686,11 +1686,11 @@ class licitacao
                 return $this->iFaseLicitacon;
             }
 
-            $aWhere = array(
+            $aWhere = [
                 "l11_liclicita = {$this->iCodLicitacao}",
                 "l11_licsituacao in (" . SituacaoLicitacao::SITUACAO_ADJUDICADA . "," . SituacaoLicitacao::SITUACAO_HOMOLOGADA
                     . ")"
-            );
+            ];
 
             $oDaoSituacao = new cl_liclicitasituacao();
             $sSqlSituacao = $oDaoSituacao->sql_query_file(null, "1", null, implode(' and ', $aWhere));

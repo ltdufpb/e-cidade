@@ -43,10 +43,10 @@ require_once(modification('dbagata/functions/time/db_transcreve_data.fun'));
 $oJson            = new Services_JSON();
 $oGet             = db_utils::postMemory($_GET);
 
-$aEmissor         = explode("|", $oGet->sEmissor);
+$aEmissor         = explode("|", (string) $oGet->sEmissor);
 $aAlunos          = $oJson->decode(str_replace("\\", "", $oGet->aAlunos)); 
 
-$aAlunosFiltrados = array();
+$aAlunosFiltrados = [];
 
 foreach ($aAlunos as $oAluno) {
   $aAlunosFiltrados[] = $oAluno->iAluno;

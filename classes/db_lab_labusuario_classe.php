@@ -62,7 +62,7 @@ class cl_lab_labusuario {
                  la05_d_fim = date = Fim 
                  ";
    //funcao construtor da classe 
-   function cl_lab_labusuario() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_labusuario"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

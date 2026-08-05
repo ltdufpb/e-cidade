@@ -54,6 +54,7 @@ class RelatorioCertificadoEscolarRetrato extends RelatorioHistoricoEscolarRetrat
      * - Colocar na observação se os dados da trocou de série se houver
      * @throws Exception
      */
+    #[Override]
     public function montaQuadroObservacao()
     {
         $sObsParametros = $this->oParametros->observacao;
@@ -140,7 +141,7 @@ class RelatorioCertificadoEscolarRetrato extends RelatorioHistoricoEscolarRetrat
         $disciplinasAbreviadas = [];
         foreach ($this->aDadosOrganizados as $etapa) {
             foreach ($etapa->aDisicplinasEtapa as $disciplina) {
-                if (strlen($disciplina->sNomeCompleto) >= 65) {
+                if (strlen((string) $disciplina->sNomeCompleto) >= 65) {
                     $disciplinasAbreviadas[$disciplina->iCadDisciplina] = sprintf(
                         '<b>*%s: %s</b>',
                         $disciplina->sAbrevDisciplina,
@@ -188,7 +189,7 @@ class RelatorioCertificadoEscolarRetrato extends RelatorioHistoricoEscolarRetrat
     $iYAntes = $this->oPdf->GetY();
     $this->oPdf->SetFont("Arial", "", 8);
     $this->oPdf->Cell(195, self::ALTURA_LINHA, "Certificado de Conclusão:", 0, 1, "C");
-    $this->oPdf->setMulticellBreakPageFunction( array($this, "escreveCabecalho") );
+    $this->oPdf->setMulticellBreakPageFunction( $this->escreveCabecalho(...) );
     $this->oPdf->MultiCell(195, self::ALTURA_LINHA, $sMsg, 0, "J");
 
     $nLinhas = $this->oPdf->NbLines(195, $sMsg);

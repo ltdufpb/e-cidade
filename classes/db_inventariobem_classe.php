@@ -30,30 +30,30 @@
 class cl_inventariobem
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $t77_sequencial = 0;
-    var $t77_inventario = 0;
-    var $t77_bens = 0;
-    var $t77_db_depart = 0;
-    var $t77_departdiv = 0;
-    var $t77_situabens = 0;
-    var $t77_valordepreciavel = 0;
-    var $t77_valorresidual = 0;
-    var $t77_vidautil = 0;
+    public $t77_sequencial = 0;
+    public $t77_inventario = 0;
+    public $t77_bens = 0;
+    public $t77_db_depart = 0;
+    public $t77_departdiv = 0;
+    public $t77_situabens = 0;
+    public $t77_valordepreciavel = 0;
+    public $t77_valorresidual = 0;
+    public $t77_vidautil = 0;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  t77_sequencial = int4 = Squencia inventario bem
                  t77_inventario = int4 = Inventario
                  t77_bens = int4 = Bem
@@ -66,11 +66,11 @@ class cl_inventariobem
                  ";
 
     //funcao construtor da classe
-    function cl_inventariobem()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("inventariobem");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -158,10 +158,10 @@ class cl_inventariobem
 
                 return false;
             }
-            $this->t77_sequencial = pg_result($result, 0, 0);
+            $this->t77_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from inventariobem_t77_sequencial_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $t77_sequencial)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $t77_sequencial)) {
                 $this->erro_sql = " Campo t77_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -209,7 +209,7 @@ class cl_inventariobem
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Inventarios e bens ($this->t77_sequencial) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Inventarios e bens já Cadastrado";
@@ -237,26 +237,26 @@ class cl_inventariobem
         $resaco = $this->sql_record($this->sql_query_file($this->t77_sequencial));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,19383,'$this->t77_sequencial','I')");
-            $resac = db_query("insert into db_acount values($acount,3442,19383,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,3442,19383,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 't77_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,3442,19384,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,3442,19384,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 't77_inventario')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,3442,19385,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,3442,19385,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 't77_bens')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,3442,19386,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,3442,19386,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 't77_db_depart')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,3442,19387,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,3442,19387,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 't77_departdiv')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,3442,19388,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,3442,19388,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 't77_situabens')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,3442,19389,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,3442,19389,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 't77_valordepreciavel')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,3442,19390,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,3442,19390,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 't77_valorresidual')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,3442,19391,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,3442,19391,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 't77_vidautil')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
 
@@ -269,10 +269,10 @@ class cl_inventariobem
         $this->atualizacampos();
         $sql = " update inventariobem set ";
         $virgula = "";
-        if (trim($this->t77_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t77_sequencial"])) {
+        if (trim((string) $this->t77_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t77_sequencial"])) {
             $sql .= $virgula . " t77_sequencial = $this->t77_sequencial ";
             $virgula = ",";
-            if (trim($this->t77_sequencial) == null) {
+            if (trim((string) $this->t77_sequencial) == null) {
                 $this->erro_sql = " Campo Squencia inventario bem nao Informado.";
                 $this->erro_campo = "t77_sequencial";
                 $this->erro_banco = "";
@@ -284,10 +284,10 @@ class cl_inventariobem
                 return false;
             }
         }
-        if (trim($this->t77_inventario) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t77_inventario"])) {
+        if (trim((string) $this->t77_inventario) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t77_inventario"])) {
             $sql .= $virgula . " t77_inventario = $this->t77_inventario ";
             $virgula = ",";
-            if (trim($this->t77_inventario) == null) {
+            if (trim((string) $this->t77_inventario) == null) {
                 $this->erro_sql = " Campo Inventario nao Informado.";
                 $this->erro_campo = "t77_inventario";
                 $this->erro_banco = "";
@@ -299,10 +299,10 @@ class cl_inventariobem
                 return false;
             }
         }
-        if (trim($this->t77_bens) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t77_bens"])) {
+        if (trim((string) $this->t77_bens) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t77_bens"])) {
             $sql .= $virgula . " t77_bens = $this->t77_bens ";
             $virgula = ",";
-            if (trim($this->t77_bens) == null) {
+            if (trim((string) $this->t77_bens) == null) {
                 $this->erro_sql = " Campo Bem nao Informado.";
                 $this->erro_campo = "t77_bens";
                 $this->erro_banco = "";
@@ -314,37 +314,37 @@ class cl_inventariobem
                 return false;
             }
         }
-        if (trim($this->t77_db_depart) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t77_db_depart"])) {
-            if (trim($this->t77_db_depart) == "" && isset($GLOBALS["HTTP_POST_VARS"]["t77_db_depart"])) {
+        if (trim((string) $this->t77_db_depart) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t77_db_depart"])) {
+            if (trim((string) $this->t77_db_depart) == "" && isset($GLOBALS["HTTP_POST_VARS"]["t77_db_depart"])) {
                 $this->t77_db_depart = "0";
             }
             $sql .= $virgula . " t77_db_depart = $this->t77_db_depart ";
             $virgula = ",";
         }
-        if (trim($this->t77_departdiv) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t77_departdiv"])) {
-            if (trim($this->t77_departdiv) == "" && isset($GLOBALS["HTTP_POST_VARS"]["t77_departdiv"])) {
+        if (trim((string) $this->t77_departdiv) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t77_departdiv"])) {
+            if (trim((string) $this->t77_departdiv) == "" && isset($GLOBALS["HTTP_POST_VARS"]["t77_departdiv"])) {
                 $this->t77_departdiv = "0";
             }
             $sql .= $virgula . " t77_departdiv = $this->t77_departdiv ";
             $virgula = ",";
         }
-        if (trim($this->t77_situabens) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t77_situabens"])) {
-            if (trim($this->t77_situabens) == "" && isset($GLOBALS["HTTP_POST_VARS"]["t77_situabens"])) {
+        if (trim((string) $this->t77_situabens) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t77_situabens"])) {
+            if (trim((string) $this->t77_situabens) == "" && isset($GLOBALS["HTTP_POST_VARS"]["t77_situabens"])) {
                 $this->t77_situabens = "0";
             }
             $sql .= $virgula . " t77_situabens = $this->t77_situabens ";
             $virgula = ",";
         }
-        if (trim($this->t77_valordepreciavel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t77_valordepreciavel"])) {
+        if (trim((string) $this->t77_valordepreciavel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t77_valordepreciavel"])) {
             $sql .= $virgula . " t77_valordepreciavel = $this->t77_valordepreciavel ";
             $virgula = ",";
         }
-        if (trim($this->t77_valorresidual) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t77_valorresidual"])) {
+        if (trim((string) $this->t77_valorresidual) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t77_valorresidual"])) {
             $sql .= $virgula . " t77_valorresidual = $this->t77_valorresidual ";
             $virgula = ",";
         }
-        if (trim($this->t77_vidautil) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t77_vidautil"])) {
-            if (trim($this->t77_vidautil) == "" && isset($GLOBALS["HTTP_POST_VARS"]["t77_vidautil"])) {
+        if (trim((string) $this->t77_vidautil) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t77_vidautil"])) {
+            if (trim((string) $this->t77_vidautil) == "" && isset($GLOBALS["HTTP_POST_VARS"]["t77_vidautil"])) {
                 $this->t77_vidautil = "0";
             }
             $sql .= $virgula . " t77_vidautil = $this->t77_vidautil ";
@@ -358,51 +358,51 @@ class cl_inventariobem
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,19383,'$this->t77_sequencial','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["t77_sequencial"]) || $this->t77_sequencial != "") {
-                    $resac = db_query("insert into db_acount values($acount,3442,19383,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,3442,19383,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         't77_sequencial')) . "','$this->t77_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["t77_inventario"]) || $this->t77_inventario != "") {
-                    $resac = db_query("insert into db_acount values($acount,3442,19384,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,3442,19384,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         't77_inventario')) . "','$this->t77_inventario'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["t77_bens"]) || $this->t77_bens != "") {
-                    $resac = db_query("insert into db_acount values($acount,3442,19385,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,3442,19385,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         't77_bens')) . "','$this->t77_bens'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["t77_db_depart"]) || $this->t77_db_depart != "") {
-                    $resac = db_query("insert into db_acount values($acount,3442,19386,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,3442,19386,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         't77_db_depart')) . "','$this->t77_db_depart'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["t77_departdiv"]) || $this->t77_departdiv != "") {
-                    $resac = db_query("insert into db_acount values($acount,3442,19387,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,3442,19387,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         't77_departdiv')) . "','$this->t77_departdiv'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["t77_situabens"]) || $this->t77_situabens != "") {
-                    $resac = db_query("insert into db_acount values($acount,3442,19388,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,3442,19388,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         't77_situabens')) . "','$this->t77_situabens'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["t77_valordepreciavel"]) || $this->t77_valordepreciavel != "") {
-                    $resac = db_query("insert into db_acount values($acount,3442,19389,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,3442,19389,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         't77_valordepreciavel')) . "','$this->t77_valordepreciavel'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["t77_valorresidual"]) || $this->t77_valorresidual != "") {
-                    $resac = db_query("insert into db_acount values($acount,3442,19390,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,3442,19390,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         't77_valorresidual')) . "','$this->t77_valorresidual'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["t77_vidautil"]) || $this->t77_vidautil != "") {
-                    $resac = db_query("insert into db_acount values($acount,3442,19391,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,3442,19391,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         't77_vidautil')) . "','$this->t77_vidautil'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -458,34 +458,34 @@ class cl_inventariobem
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,19383,'$t77_sequencial','E')");
-                $resac = db_query("insert into db_acount values($acount,3442,19383,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,3442,19383,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     't77_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3442,19384,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,3442,19384,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     't77_inventario')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3442,19385,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,3442,19385,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     't77_bens')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3442,19386,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,3442,19386,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     't77_db_depart')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3442,19387,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,3442,19387,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     't77_departdiv')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3442,19388,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,3442,19388,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     't77_situabens')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3442,19389,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,3442,19389,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     't77_valordepreciavel')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3442,19390,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,3442,19390,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     't77_valorresidual')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3442,19391,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,3442,19391,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     't77_vidautil')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -557,7 +557,7 @@ class cl_inventariobem
 
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:inventariobem";
@@ -619,7 +619,7 @@ class cl_inventariobem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -658,7 +658,7 @@ class cl_inventariobem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -698,7 +698,7 @@ class cl_inventariobem
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

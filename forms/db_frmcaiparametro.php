@@ -154,12 +154,12 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
             </tr>
             <tr>
                 <td nowrap title="<?php echo  @$k29_contapadraoslip ?>">
-                    <?
+                    <?php 
                     db_ancora("<b>Conta padrão slip:</b>", "js_pesquisak29_contapadraoslip(true);", $db_opcao);
                     ?>
                 </td>
                 <td>
-                    <?
+                    <?php 
                     db_input('k29_contapadraoslip', 10, $Ik29_contapadraoslip, true, 'text', $db_opcao, " onchange='js_pesquisak29_contapadraoslip(false);'");
                     db_input('k13_descr', 40, $Ik13_descr, true, 'text', 3, '');
                     ?>
@@ -177,7 +177,7 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
                         Permitir cheques duplicados:
                     </td>
                     <td>
-                        <?
+                        <?php 
                         $x = array("f" => "NAO", "t" => "SIM");
                         db_select('k29_chqduplicado', $x, true, $db_opcao, "");
                         ?>

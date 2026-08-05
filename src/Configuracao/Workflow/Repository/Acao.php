@@ -2,6 +2,8 @@
 
 namespace ECidade\Configuracao\Workflow\Repository;
 
+use ECidade\Configuracao\Workflow\Collection\Acoes;
+use BusinessException;
 use ECidade\Lib\Database\DataBaseRepository;
 use \DBException;
 use \cl_transicaoacao;
@@ -11,10 +13,10 @@ class Acao extends DataBaseRepository
 {
 
     /**
-    * @param $atividadeDestino
-    * @return \ECidade\Configuracao\Workflow\Collection\Acoes
-    * @throws \BusinessException
-    */
+     * @param $atividadeDestino
+     * @return Acoes
+     * @throws BusinessException
+     */
     public function getAcoes($filtro)
     {
 
@@ -22,10 +24,10 @@ class Acao extends DataBaseRepository
         $atividadeDestino = $filtro->getAtividadeDestino();
 
         if (!empty($atividadeOrigem) && !empty($atividadeDestino)) {
-            $where = array(
+            $where = [
                  "db174_origem  = {$atividadeOrigem->getCodigo()}"
                 ,"db174_destino = {$atividadeDestino->getCodigo()}"
-            );
+            ];
             
             $dao             = new cl_transicaoacao();
             $sqlTransicao    = $dao->sql_query(null, " * ", "db176_sequencial", implode(' AND ', $where));
@@ -43,11 +45,9 @@ class Acao extends DataBaseRepository
 
             $totalAcoes = pg_num_rows($rsTransicao);
                 
-            return db_utils::makeCollectionFromRecord($rsTransicao, function ($retorno) {
-                return$retorno;
-            });
+            return db_utils::makeCollectionFromRecord($rsTransicao, fn($retorno) => $retorno);
         }
 
-        return array();
+        return [];
     }
 }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -36,7 +36,8 @@ require_once(modification("libs/db_liborcamento.php"));
 require_once(modification("classes/db_orcdotacao_classe.php"));
 require_once(modification("classes/db_orcparametro_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($_POST);
 $oGet = db_utils::postMemory($_GET);
 
@@ -194,7 +195,7 @@ db_app::load("prototype.js");
                   <?=$Lo58_coddot?>
                 </td>
                 <td nowrap>
-                  <?
+                  <?php 
                   db_input("o58_coddot",6,$Io58_coddot,true,"text",4,"","chave_o58_coddot");
                   ?>
                 </td>
@@ -217,7 +218,7 @@ db_app::load("prototype.js");
               <tr>
                 <td><strong>Secretaria:</strong></td>
                 <td>
-                  <?
+                  <?php 
                   if($clpermusuario_dotacao->sql!=""){
 //            echo "<br>";
 //            echo $clpermusuario_dotacao->orgaos;
@@ -240,7 +241,7 @@ db_app::load("prototype.js");
               <tr>
                 <td><strong>Departamentos:</strong></td>
                 <td>
-                  <?
+                  <?php 
                   if($clpermusuario_dotacao->sql!=""){
                     //echo "<br>";
                     //echo $clpermusuario_dotacao->depart;
@@ -280,7 +281,7 @@ db_app::load("prototype.js");
               </tr>
             </table>
           </form>
-          <?
+          <?php 
 
 
           // echo $elemento;
@@ -316,7 +317,7 @@ db_app::load("prototype.js");
       }
   </script>
   </html>
-<?
+<?php 
 if($erro!=""){
   db_msgbox($erro);
   echo "<script>document.form1.chave_o58_coddot.value = '';</script>";

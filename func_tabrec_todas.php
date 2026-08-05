@@ -34,7 +34,8 @@ require_once (modification("dbforms/db_funcoes.php"));
 require_once (modification("classes/db_tabrec_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
@@ -61,7 +62,7 @@ $cltabrec->rotulo->label("k02_descr");
               <?=$Lk02_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("k02_codigo",4,$Ik02_codigo,true,"text",4,"","chave_k02_codigo");
 		       ?>
             </td>
@@ -71,7 +72,7 @@ $cltabrec->rotulo->label("k02_descr");
               <?=$Lk02_descr?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("k02_descr",15,$Ik02_descr,true,"text",4,"","chave_k02_descr");
 		       ?>
             </td>
@@ -81,7 +82,7 @@ $cltabrec->rotulo->label("k02_descr");
               <b>Listar:</b>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 	      global $listar;
               $tipo=array("t"=>"Todas...","s"=>"Sem ligação com Orçamento/Plano de Contas");
 	      db_select("listar",$tipo,true,"text","onchange='document.form2.submit()';");
@@ -101,7 +102,7 @@ $cltabrec->rotulo->label("k02_descr");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
 
       $sAnd   = "";
       $sWhere = "";
@@ -184,14 +185,14 @@ $cltabrec->rotulo->label("k02_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
         document.form2.chave_k02_codigo.focus();
         document.form2.chave_k02_codigo.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

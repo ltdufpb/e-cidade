@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -52,7 +52,7 @@ if (isset($opcao) && $opcao=="alterar") {
       <tr>
         <td nowrap title="<?=@$Tme16_i_codigo?>"><b>Requisição: </b></td>
         <td> 
-             <?
+             <?php 
               db_input('me16_i_codigo',10,$Ime16_i_codigo,true,'text',3,"");
 	          $me17_i_codigo=@$me17_i_codigo;
               db_input('me17_i_codigo',10,$Ime17_i_codigo,true,'hidden',3,"");
@@ -62,10 +62,10 @@ if (isset($opcao) && $opcao=="alterar") {
       </tr>
       <tr>
         <td nowrap title="<?=@$Tme10_i_codigo?>">
-         <?db_ancora("Itens","js_pesquisame10_i_codigo(true);",$db_opcao);?>
+         <?php db_ancora("Itens","js_pesquisame10_i_codigo(true);",$db_opcao);?>
 	    </td>
         <td> 
-      <?
+      <?php 
       db_input('me17_i_item',10,$Ime17_i_item,true,'text',$db_opcao,"onchange='js_pesquisame10_i_codigo(false);'");
       db_input('me10_c_descr',40,$Ime10_c_descr,true,'text',3,"");
       ?>
@@ -76,10 +76,10 @@ if (isset($opcao) && $opcao=="alterar") {
 	<?=@$Lme17_f_quant?>
 	</td>
      <td>
-	  <?db_input('me17_f_quant',10,$Ime17_f_quant,true,'text',$db_opcao,"");?>
+	  <?php db_input('me17_f_quant',10,$Ime17_f_quant,true,'text',$db_opcao,"");?>
 	</td>
    </tr>
-	<?
+	<?php 
 	if (isset($m41_codmatmater) && $m41_codmatmater!="") {
 	  
 	  $codmater=$m41_codmatmater;
@@ -106,7 +106,7 @@ if (isset($opcao) && $opcao=="alterar") {
 	<tr>
         <td title='Quant. Disponível'><b>Quantidade Disponível:</b></td>
         <td>
-	<?
+	<?php 
 	 if (isset($quantot)&&($quantot!="")) {
 	   $quant_disp=$quantot;
 	 } else {
@@ -116,7 +116,7 @@ if (isset($opcao) && $opcao=="alterar") {
 	?>
 	</td>
    </tr>
- <?}?>
+ <?php }?>
 	<tr>
     </table>
     </fieldset>
@@ -124,7 +124,7 @@ if (isset($opcao) && $opcao=="alterar") {
   </tr>
   <tr>
     <td colspan=2 align=center>
-	  <?
+	  <?php 
          if (!isset($opcao) && isset($db_opcao) && $db_opcao==3) {
             $db_botao=false;	  
 	     }
@@ -137,7 +137,7 @@ if (isset($opcao) && $opcao=="alterar") {
 <table>
   <tr>
     <td valign="top"> 
-    <?
+    <?php 
      $chavepri= array( "m40_codigo"=>@$m40_codigo,
                        "m41_codigo"=>@$m41_codigo,
                        "m41_obs"=>@$m41_obs,

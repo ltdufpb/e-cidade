@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE matmaterunisai
 class cl_matmaterunisai { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $m62_codmater = 0; 
-   var $m62_codmatunid = 0; 
+   public $m62_codmater = 0; 
+   public $m62_codmatunid = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  m62_codmater = int8 = Código do material 
                  m62_codmatunid = int8 = Unidade de saída 
                  ";
    //funcao construtor da classe 
-   function cl_matmaterunisai() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matmaterunisai"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,7 +106,7 @@ class cl_matmaterunisai {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Unidades de saida dos materiais ($this->m62_codmater."-".$this->m62_codmatunid) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Unidades de saida dos materiais já Cadastrado";
@@ -130,12 +130,12 @@ class cl_matmaterunisai {
      $resaco = $this->sql_record($this->sql_query_file($this->m62_codmater,$this->m62_codmatunid));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6268,'$this->m62_codmater','I')");
        $resac = db_query("insert into db_acountkey values($acount,6267,'$this->m62_codmatunid','I')");
-       $resac = db_query("insert into db_acount values($acount,1018,6268,'','".AddSlashes(pg_result($resaco,0,'m62_codmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1018,6267,'','".AddSlashes(pg_result($resaco,0,'m62_codmatunid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1018,6268,'','".AddSlashes(pg_fetch_result($resaco,0,'m62_codmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1018,6267,'','".AddSlashes(pg_fetch_result($resaco,0,'m62_codmatunid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -144,10 +144,10 @@ class cl_matmaterunisai {
       $this->atualizacampos();
      $sql = " update matmaterunisai set ";
      $virgula = "";
-     if(trim($this->m62_codmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m62_codmater"])){ 
+     if(trim((string) $this->m62_codmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m62_codmater"])){ 
        $sql  .= $virgula." m62_codmater = $this->m62_codmater ";
        $virgula = ",";
-       if(trim($this->m62_codmater) == null ){ 
+       if(trim((string) $this->m62_codmater) == null ){ 
          $this->erro_sql = " Campo Código do material nao Informado.";
          $this->erro_campo = "m62_codmater";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_matmaterunisai {
          return false;
        }
      }
-     if(trim($this->m62_codmatunid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m62_codmatunid"])){ 
+     if(trim((string) $this->m62_codmatunid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m62_codmatunid"])){ 
        $sql  .= $virgula." m62_codmatunid = $this->m62_codmatunid ";
        $virgula = ",";
-       if(trim($this->m62_codmatunid) == null ){ 
+       if(trim((string) $this->m62_codmatunid) == null ){ 
          $this->erro_sql = " Campo Unidade de saída nao Informado.";
          $this->erro_campo = "m62_codmatunid";
          $this->erro_banco = "";
@@ -181,14 +181,14 @@ class cl_matmaterunisai {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6268,'$this->m62_codmater','A')");
          $resac = db_query("insert into db_acountkey values($acount,6267,'$this->m62_codmatunid','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m62_codmater"]))
-           $resac = db_query("insert into db_acount values($acount,1018,6268,'".AddSlashes(pg_result($resaco,$conresaco,'m62_codmater'))."','$this->m62_codmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1018,6268,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m62_codmater'))."','$this->m62_codmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m62_codmatunid"]))
-           $resac = db_query("insert into db_acount values($acount,1018,6267,'".AddSlashes(pg_result($resaco,$conresaco,'m62_codmatunid'))."','$this->m62_codmatunid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1018,6267,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m62_codmatunid'))."','$this->m62_codmatunid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -233,12 +233,12 @@ class cl_matmaterunisai {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6268,'$m62_codmater','E')");
          $resac = db_query("insert into db_acountkey values($acount,6267,'$m62_codmatunid','E')");
-         $resac = db_query("insert into db_acount values($acount,1018,6268,'','".AddSlashes(pg_result($resaco,$iresaco,'m62_codmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1018,6267,'','".AddSlashes(pg_result($resaco,$iresaco,'m62_codmatunid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1018,6268,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m62_codmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1018,6267,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m62_codmatunid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from matmaterunisai
@@ -304,7 +304,7 @@ class cl_matmaterunisai {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:matmaterunisai";
@@ -318,7 +318,7 @@ class cl_matmaterunisai {
    function sql_query ( $m62_codmater=null,$m62_codmatunid=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -350,7 +350,7 @@ class cl_matmaterunisai {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -362,7 +362,7 @@ class cl_matmaterunisai {
    function sql_query_file ( $m62_codmater=null,$m62_codmatunid=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -391,7 +391,7 @@ class cl_matmaterunisai {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

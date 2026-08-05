@@ -31,7 +31,7 @@ require_once(modification("std/DBDate.php"));
 require_once(modification("fpdf151/scpdf.php"));
 
 $oGet    = db_utils::postMemory( $_GET );
-$aTurmas = explode( ",", $oGet->turmas );
+$aTurmas = explode( ",", (string) $oGet->turmas );
 
 $oPdf = new scpdf("L");
 $oPdf->Open();
@@ -68,8 +68,8 @@ foreach( $aTurmas as $iTurma ) {
 
     $sDataCalculo = date("Y-m-d", db_getsession("DB_datausu"));
     $oIdadeAluno  = $oMatricula->getAluno()->getIdadeNaData(date($sDataCalculo, db_getsession("DB_datausu")));
-    $sIdade       = str_pad($oIdadeAluno->anos, 2, "0", STR_PAD_LEFT)."|";
-    $sIdade      .= str_pad($oIdadeAluno->meses, 2, "0", STR_PAD_LEFT);
+    $sIdade       = str_pad((string) $oIdadeAluno->anos, 2, "0", STR_PAD_LEFT)."|";
+    $sIdade      .= str_pad((string) $oIdadeAluno->meses, 2, "0", STR_PAD_LEFT);
 
     $oPdf->Cell( 12, $iAlturaLinha,  $oMatricula->getAluno()->getCodigoAluno(), 1, 0, "R" );
     $oPdf->Cell(  5, $iAlturaLinha,                                    $iAluno, 1, 0, "R" );

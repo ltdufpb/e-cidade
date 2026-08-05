@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_cardapiodata_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmer_cardapiodata = new cl_mer_cardapiodata;
 $clmer_cardapiodata->rotulo->label("me13_i_codigo");
 $clmer_cardapiodata->rotulo->label("me13_d_data");
@@ -54,7 +55,7 @@ $clmer_cardapiodata->rotulo->label("me13_d_data");
               <?=$Lme13_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("me13_i_codigo",5,$Ime13_i_codigo,true,"text",4,"","chave_me13_i_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clmer_cardapiodata->rotulo->label("me13_d_data");
               <?=$Lme13_d_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("me13_d_data",20,$Ime13_d_data,true,"text",4,"","chave_me13_d_data");
 		      ?>
             </td>
@@ -83,7 +84,7 @@ $clmer_cardapiodata->rotulo->label("me13_d_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos)==false) {
@@ -129,13 +130,13 @@ $clmer_cardapiodata->rotulo->label("me13_d_data");
 </table>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
 	
   ?>
   <script>
   </script>
-  <?
+  <?php 
   
 }
 ?>

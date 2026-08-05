@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -39,7 +39,7 @@ include(modification("classes/db_parecer_classe.php"));
 include(modification("classes/db_parecerturma_classe.php"));
 include(modification("classes/db_parecerlegenda_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $resultedu          = eduparametros(db_getsession("DB_coddepto"));
 $clpareceraval      = new cl_pareceraval;
 $clparecerlegenda   = new cl_parecerlegenda;
@@ -73,7 +73,7 @@ if (isset($alterar2)) {
   $cldiarioavaliacao->ed72_i_valornota     = $nota;
   $cldiarioavaliacao->ed72_c_valorconceito = $conceito;
   $cldiarioavaliacao->ed72_i_numfaltas     = $faltas;
-  $cldiarioavaliacao->ed72_t_parecer       = strtoupper($ed72_t_parecer);
+  $cldiarioavaliacao->ed72_t_parecer       = strtoupper((string) $ed72_t_parecer);
   $cldiarioavaliacao->ed72_i_codigo        = $ed93_i_diarioavaliacao;
   $cldiarioavaliacao->alterar($ed93_i_diarioavaliacao);
   
@@ -186,7 +186,7 @@ if (isset($alterar2)) {
       $cldiarioavaliacao->ed72_i_valornota     = $ed72_i_valornota;
       $cldiarioavaliacao->ed72_c_valorconceito = $ed72_c_valorconceito;
       $cldiarioavaliacao->ed72_i_numfaltas     = $ed72_i_numfaltas;
-      $cldiarioavaliacao->ed72_t_parecer       = strtoupper($ed72_t_parecer);
+      $cldiarioavaliacao->ed72_t_parecer       = strtoupper((string) $ed72_t_parecer);
       $cldiarioavaliacao->ed72_i_codigo        = $ed93_i_diarioavaliacao;
       $cldiarioavaliacao->alterar($ed93_i_diarioavaliacao);
       
@@ -287,7 +287,7 @@ if (isset($alterar2)) {
     <tr>
      <td colspan="2">
       <center>
-       <?include(modification("forms/db_frmpareceraval002.php"));?>
+       <?php include(modification("forms/db_frmpareceraval002.php"));?>
       </center>
      </td>
     </tr>
@@ -298,7 +298,7 @@ if (isset($alterar2)) {
 </center>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar2)) {
 	
   ?>
@@ -307,7 +307,7 @@ if (isset($alterar2)) {
     parent.db_iframe_parecerindiv.hide();
     alert("Alteração efetuada com Sucesso");
   </script>
-  <?
+  <?php 
   
 }
 ?>

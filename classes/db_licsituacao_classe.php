@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE licsituacao
 class cl_licsituacao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $l08_sequencial = 0; 
-   var $l08_descr = null; 
-   var $l08_altera = 'f'; 
+   public $l08_sequencial = 0; 
+   public $l08_descr = null; 
+   public $l08_altera = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  l08_sequencial = int4 = Sequencial 
                  l08_descr = varchar(20) = Descrição 
                  l08_altera = bool = Altera 
                  ";
    //funcao construtor da classe 
-   function cl_licsituacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("licsituacao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_licsituacao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->l08_sequencial = pg_result($result,0,0); 
+       $this->l08_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from licsituacao_l08_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $l08_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $l08_sequencial)){
          $this->erro_sql = " Campo l08_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_licsituacao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Situações da Licitação ($this->l08_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Situações da Licitação já Cadastrado";
@@ -166,12 +166,12 @@ class cl_licsituacao {
      $resaco = $this->sql_record($this->sql_query_file($this->l08_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10276,'$this->l08_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1776,10276,'','".AddSlashes(pg_result($resaco,0,'l08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1776,10277,'','".AddSlashes(pg_result($resaco,0,'l08_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1776,10278,'','".AddSlashes(pg_result($resaco,0,'l08_altera'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1776,10276,'','".AddSlashes(pg_fetch_result($resaco,0,'l08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1776,10277,'','".AddSlashes(pg_fetch_result($resaco,0,'l08_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1776,10278,'','".AddSlashes(pg_fetch_result($resaco,0,'l08_altera'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_licsituacao {
       $this->atualizacampos();
      $sql = " update licsituacao set ";
      $virgula = "";
-     if(trim($this->l08_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l08_sequencial"])){ 
+     if(trim((string) $this->l08_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l08_sequencial"])){ 
        $sql  .= $virgula." l08_sequencial = $this->l08_sequencial ";
        $virgula = ",";
-       if(trim($this->l08_sequencial) == null ){ 
+       if(trim((string) $this->l08_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "l08_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_licsituacao {
          return false;
        }
      }
-     if(trim($this->l08_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l08_descr"])){ 
+     if(trim((string) $this->l08_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l08_descr"])){ 
        $sql  .= $virgula." l08_descr = '$this->l08_descr' ";
        $virgula = ",";
-       if(trim($this->l08_descr) == null ){ 
+       if(trim((string) $this->l08_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "l08_descr";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_licsituacao {
          return false;
        }
      }
-     if(trim($this->l08_altera)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l08_altera"])){ 
+     if(trim((string) $this->l08_altera)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l08_altera"])){ 
        $sql  .= $virgula." l08_altera = '$this->l08_altera' ";
        $virgula = ",";
-       if(trim($this->l08_altera) == null ){ 
+       if(trim((string) $this->l08_altera) == null ){ 
          $this->erro_sql = " Campo Altera nao Informado.";
          $this->erro_campo = "l08_altera";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_licsituacao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10276,'$this->l08_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l08_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1776,10276,'".AddSlashes(pg_result($resaco,$conresaco,'l08_sequencial'))."','$this->l08_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1776,10276,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l08_sequencial'))."','$this->l08_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l08_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1776,10277,'".AddSlashes(pg_result($resaco,$conresaco,'l08_descr'))."','$this->l08_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1776,10277,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l08_descr'))."','$this->l08_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l08_altera"]))
-           $resac = db_query("insert into db_acount values($acount,1776,10278,'".AddSlashes(pg_result($resaco,$conresaco,'l08_altera'))."','$this->l08_altera',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1776,10278,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l08_altera'))."','$this->l08_altera',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_licsituacao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10276,'$l08_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1776,10276,'','".AddSlashes(pg_result($resaco,$iresaco,'l08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1776,10277,'','".AddSlashes(pg_result($resaco,$iresaco,'l08_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1776,10278,'','".AddSlashes(pg_result($resaco,$iresaco,'l08_altera'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1776,10276,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1776,10277,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l08_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1776,10278,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l08_altera'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from licsituacao
@@ -345,7 +345,7 @@ class cl_licsituacao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:licsituacao";
@@ -359,7 +359,7 @@ class cl_licsituacao {
    function sql_query ( $l08_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -380,7 +380,7 @@ class cl_licsituacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -392,7 +392,7 @@ class cl_licsituacao {
    function sql_query_file ( $l08_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -413,7 +413,7 @@ class cl_licsituacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

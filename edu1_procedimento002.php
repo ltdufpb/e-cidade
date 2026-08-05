@@ -35,7 +35,7 @@ require_once(modification("model/educacao/ArredondamentoNota.model.php"));
 require_once(modification("libs/db_utils.php"));
 
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($_POST);
 $oDaoProcedimento       = new cl_procedimento();
 $db_opcao               = 22;
@@ -75,7 +75,7 @@ if (isset($alterar)) {
     parent.document.formaba.a3.style.color = "black";
 
     var hrefAvaliacoes  = 'edu1_avaliacoes.php?procedimento=<?=$ed40_i_codigo?>&ed40_c_descr=<?=$ed40_c_descr?>';
-        hrefAvaliacoes += '&forma=<?=trim($ed37_c_tipo)?>&possuiTurmasEncerradas=<?=$possuiTurmasEncerradas;?>';
+        hrefAvaliacoes += '&forma=<?=trim((string) $ed37_c_tipo)?>&possuiTurmasEncerradas=<?=$possuiTurmasEncerradas;?>';
 
     var hrefProcescola  = 'edu1_procescola001.php?ed86_i_procedimento=<?=$ed40_i_codigo?>';
         hrefProcescola += '&ed40_c_descr=<?=$ed40_c_descr?>&possuiTurmasEncerradas=<?=$possuiTurmasEncerradas;?>';
@@ -152,7 +152,7 @@ if (isset($alterar)) {
      parent.document.formaba.a3.disabled = false;
 
      var hrefAvaliacoes  = 'edu1_avaliacoes.php?procedimento=<?=$ed40_i_codigo?>&ed40_c_descr=<?=$ed40_c_descr?>';
-         hrefAvaliacoes += '&forma=<?=trim($ed37_c_tipo)?>&possuiTurmasEncerradas=<?=$possuiTurmasEncerradas;?>';
+         hrefAvaliacoes += '&forma=<?=trim((string) $ed37_c_tipo)?>&possuiTurmasEncerradas=<?=$possuiTurmasEncerradas;?>';
 
      var hrefProcescola  = 'edu1_procescola001.php?ed86_i_procedimento=<?=$ed40_i_codigo?>';
          hrefProcescola += '&ed40_c_descr=<?=$ed40_c_descr?>&possuiTurmasEncerradas=<?=$possuiTurmasEncerradas;?>';

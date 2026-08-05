@@ -45,7 +45,7 @@ class TributoIRRFComplementar
     private $sequencialProcessoServidor;
 
     /**
-     * @var \DBDate | null
+     * @var DBDate|null
      */
     private $dataLaudo;
 
@@ -55,7 +55,7 @@ class TributoIRRFComplementar
     private $cpfDependente;
 
     /**
-     * @var \DBDate | null
+     * @var DBDate|null
      */
     private $dataNascimento;
 
@@ -123,7 +123,7 @@ class TributoIRRFComplementar
     /**
      * Get | null
      *
-     * @return  \DBDate
+     * @return DBDate
      */
     public function getDataLaudo()
     {
@@ -133,7 +133,7 @@ class TributoIRRFComplementar
     /**
      * Set | null
      *
-     * @param  \DBDate  $dataLaudo  | null
+     * @param DBDate $dataLaudo | null
      */
     public function setDataLaudo($dataLaudo)
     {
@@ -163,7 +163,7 @@ class TributoIRRFComplementar
     /**
      * Get | null
      *
-     * @return  \DBDate
+     * @return DBDate
      */
     public function getDataNascimento()
     {
@@ -173,7 +173,7 @@ class TributoIRRFComplementar
     /**
      * Set | null
      *
-     * @param  \DBDate  $dataNascimento  | null
+     * @param DBDate $dataNascimento | null
      */
     public function setDataNascimento($dataNascimento)
     {

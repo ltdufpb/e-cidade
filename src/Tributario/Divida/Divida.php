@@ -27,6 +27,7 @@
 
 namespace ECidade\Tributario\Divida;
 
+use DateTime;
 use ECidade\Tributario\Divida\Repository\ProcedenciaDividaRepository;
 
 /**
@@ -47,7 +48,7 @@ class Divida
     private $cgm;
 
     /**
-     * @var \DateTime dtinsc
+     * @var DateTime dtinsc
      */
     private $dataIncricao;
 
@@ -92,12 +93,12 @@ class Divida
     private $folha;
 
     /**
-     * @var \DateTime dtvenc
+     * @var DateTime dtvenc
      */
     private $dataVencimento;
 
     /**
-     * @var \DateTime dtoper
+     * @var DateTime dtoper
      */
     private $dataOperacao;
 
@@ -122,7 +123,7 @@ class Divida
     private $instituicao;
 
     /**
-     * @var \DateTime dtinclusao
+     * @var DateTime dtinclusao
      */
     private $dataInclusao;
 
@@ -132,7 +133,7 @@ class Divida
     private $processo;
 
     /**
-     * @var \DateTime dtprocesso
+     * @var DateTime dtprocesso
      */
     private $dataProcesso;
 
@@ -158,7 +159,7 @@ class Divida
             $divida->setCgm($state['v01_numcgm']);
         }
         if (array_key_exists('v01_dtinsc', $state) && !empty($state['v01_dtinsc'])) {
-            $divida->setDataInclusao(new \DateTime($state['v01_dtinsc']));
+            $divida->setDataInclusao(new DateTime($state['v01_dtinsc']));
         }
         if (array_key_exists('v01_exerc', $state)) {
             $divida->setExercicio($state['v01_exerc']);
@@ -187,10 +188,10 @@ class Divida
             $divida->setFolha($state['v01_folha']);
         }
         if (array_key_exists('v01_dtvenc', $state) && !empty($state['v01_dtvenc'])) {
-            $divida->setDataVencimento(new \DateTime($state['v01_dtvenc']));
+            $divida->setDataVencimento(new DateTime($state['v01_dtvenc']));
         }
         if (array_key_exists('v01_dtoper', $state) && !empty($state['v01_dtoper'])) {
-            $divida->setDataOperacao(new \DateTime($state['v01_dtoper']));
+            $divida->setDataOperacao(new DateTime($state['v01_dtoper']));
         }
         if (array_key_exists('v01_valor', $state)) {
             $divida->setValor($state['v01_valor']);
@@ -205,13 +206,13 @@ class Divida
             $divida->setInstituicao($state['v01_instit']);
         }
         if (array_key_exists('v01_dtinclusao', $state) && !empty($state['v01_dtinclusao'])) {
-            $divida->setDataInclusao(new \DateTime($state['v01_dtinclusao']));
+            $divida->setDataInclusao(new DateTime($state['v01_dtinclusao']));
         }
         if (array_key_exists('v01_processo', $state)) {
             $divida->setProcesso($state['v01_processo']);
         }
         if (array_key_exists('v01_dtprocesso', $state) && !empty($state['v01_dtprocesso'])) {
-            $divida->setDataProcesso(new \DateTime($state['v01_dtprocesso']));
+            $divida->setDataProcesso(new DateTime($state['v01_dtprocesso']));
         }
         if (array_key_exists('v01_titular', $state)) {
             $divida->setTitular($state['v01_titular']);
@@ -257,7 +258,7 @@ class Divida
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDataIncricao()
     {
@@ -265,7 +266,7 @@ class Divida
     }
 
     /**
-     * @param  \DateTime $dataIncricao
+     * @param DateTime $dataIncricao
      * @return Divida
      */
     public function setDataIncricao($dataIncricao)
@@ -419,7 +420,7 @@ class Divida
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDataVencimento()
     {
@@ -427,7 +428,7 @@ class Divida
     }
 
     /**
-     * @param  \DateTime $dataVencimento
+     * @param DateTime $dataVencimento
      * @return Divida
      */
     public function setDataVencimento($dataVencimento)
@@ -437,7 +438,7 @@ class Divida
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDataOperacao()
     {
@@ -445,7 +446,7 @@ class Divida
     }
 
     /**
-     * @param  \DateTime $dataOperacao
+     * @param DateTime $dataOperacao
      * @return Divida
      */
     public function setDataOperacao($dataOperacao)
@@ -527,7 +528,7 @@ class Divida
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDataInclusao()
     {
@@ -535,7 +536,7 @@ class Divida
     }
 
     /**
-     * @param  \DateTime $dataInclusao
+     * @param DateTime $dataInclusao
      * @return Divida
      */
     public function setDataInclusao($dataInclusao)
@@ -563,7 +564,7 @@ class Divida
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDataProcesso()
     {
@@ -571,7 +572,7 @@ class Divida
     }
 
     /**
-     * @param  \DateTime $dataProcesso
+     * @param DateTime $dataProcesso
      * @return Divida
      */
     public function setDataProcesso($dataProcesso)

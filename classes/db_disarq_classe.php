@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -76,7 +76,7 @@ class cl_disarq {
                  md5 = char(32) = Identificador do arquivo
                  ";
    //funcao construtor da classe
-   function cl_disarq() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("disarq");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

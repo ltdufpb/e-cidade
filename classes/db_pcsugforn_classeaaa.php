@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -50,7 +50,7 @@ class cl_pcsugforn {
                  pc40_numcgm = int4 = numero do cgm do fornecedor 
                  ";
    //funcao construtor da classe 
-   function cl_pcsugforn() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcsugforn"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

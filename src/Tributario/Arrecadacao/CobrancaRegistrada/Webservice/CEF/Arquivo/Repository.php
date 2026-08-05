@@ -27,6 +27,11 @@
 
 namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Webservice\CEF\Arquivo;
 
+use cl_recibopaga;
+use db_stdClass;
+use cl_recibo;
+use cl_db_config;
+use cl_parametroscobrancaregistrada;
 use _db_fields;
 use BusinessException;
 use db_utils;
@@ -55,7 +60,7 @@ class Repository
      */
     private function defineCgm($param, $iNumpre)
     {
-        $oDaoRecibopaga = new \cl_recibopaga();
+        $oDaoRecibopaga = new cl_recibopaga();
         $iCgm = 0;
         $tipo = key($param);
 
@@ -66,7 +71,7 @@ class Repository
                 break;
 
             case 'matricula':
-                $oInstit = \db_stdClass::getDadosInstit();
+                $oInstit = db_stdClass::getDadosInstit();
 
                 $sPrincipal = "false";
 
@@ -130,7 +135,7 @@ class Repository
      * @throws DBException
      * @throws BusinessException
      */
-    public function getDadosIncluiBoleto($iNumpre, $iConvenio, $nValor, $aEmitirPor = array())
+    public function getDadosIncluiBoleto($iNumpre, $iConvenio, $nValor, $aEmitirPor = [])
     {
         $oRegistro = new stdClass();
         $oRegistro->tipoEspecie        = "02";
@@ -165,7 +170,7 @@ class Repository
         /**
          * Dados do Recibo
          */
-        $oDaoRecibopaga = new \cl_recibopaga();
+        $oDaoRecibopaga = new cl_recibopaga();
         $sSqlRecibopaga = $oDaoRecibopaga->sql_query_dadosRecibo($iNumpre);
         $rsRecibo       = db_query($sSqlRecibopaga);
 
@@ -178,7 +183,7 @@ class Repository
             /**
              * Dados Recibo Avulso
              */
-            $oDaoReciboavulso =  new \cl_recibo();
+            $oDaoReciboavulso =  new cl_recibo();
             $sSqlReciboavulso =  $oDaoReciboavulso->sql_query_dadosReciboAvulso($iNumpre);
             $rsRecibo         =  $oDaoReciboavulso->sql_record($sSqlReciboavulso);
 
@@ -193,7 +198,7 @@ class Repository
         $oRegistro->nossoNumero        = $oRecibo->nosso_numero;
         $oRegistro->numeroDocumento    = $iNumpre . "000";
         $oRegistro->dataVencimento     = $oRecibo->data_vencimento;
-        $oRegistro->valor              = (string) db_formatar($nValor, 'p', ' ', strlen($nValor));
+        $oRegistro->valor              = (string) db_formatar($nValor, 'p', ' ', strlen((string) $nValor));
         $oRegistro->valor              = str_pad($oRegistro->valor, 16, '0', STR_PAD_LEFT);
         $oRegistro->valorJuros         = (string) db_formatar(0, 'p', ' ', strlen('0'));
         $oRegistro->valorJuros         = str_pad($oRegistro->valorJuros, 16, '0', STR_PAD_LEFT);
@@ -222,7 +227,7 @@ class Repository
         /**
          * Dados do CGM
          */
-        $oDaoDbConfig  = new \cl_db_config();
+        $oDaoDbConfig  = new cl_db_config();
         $oSqlDbConfig  = $oDaoDbConfig->sql_query(db_getsession("DB_instit"));
         $rsInstituicao = $oDaoDbConfig->sql_record($oSqlDbConfig);
 
@@ -257,7 +262,7 @@ class Repository
         /**
          * Usuário do webservice
          */
-        $oDaoParametro = new \cl_parametroscobrancaregistrada();
+        $oDaoParametro = new cl_parametroscobrancaregistrada();
         $sSqlParametro = $oDaoParametro->sql_query("*", "", "", "ar28_codban = '{$oBanco->db89_db_bancos}'");
         $rsParametro   = $oDaoParametro->sql_record($sSqlParametro);
 

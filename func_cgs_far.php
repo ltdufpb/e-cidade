@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -40,12 +40,13 @@ if(!isset($pesquisar))
 	// quando vinha um valor por get não mudava quando alterava o valor do nome
 	
 if(isset($alterar_cgs)){
-	parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+	parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+    extract($_parseStr, EXTR_SKIP);
 	?>
 	<script>
 		location.href ="sau1_cgs_und002.php?chavepesquisa=<?=$chave_z01_i_cgsund?>";
 	</script>
-	<?
+	<?php 
 }
 
 $clcgs_und = new cl_cgs_und_ext;
@@ -68,7 +69,7 @@ function js_novo_cgs(){
 }
 function js_altera_cgs(){
 //	location.href ="sau1_cgs_und000.php?+id=2+&db_menu=false&fechar=true&retornacgs=<?=@$retornacgs?>&retornanome=<?=@$retornanome?>&redireciona=<?=@$redireciona?>";
-  location.href ="sau1_cgs_und002.php?retornacgs=<?@$retornacgs?>&retornanome=<?=@$retornanome?>&redireciona=<?=@$redireciona?>";
+  location.href ="sau1_cgs_und002.php?retornacgs=<?php @$retornacgs?>&retornanome=<?=@$retornanome?>&redireciona=<?=@$redireciona?>";
 }
 </script>
 <html>
@@ -78,7 +79,7 @@ function js_altera_cgs(){
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <script>
  team = new Array(
- <?
+ <?php 
  	# Seleciona todos os calendários
  	$sql1 = "SELECT sd34_i_codigo,sd34_v_descricao
  				FROM microarea
@@ -144,18 +145,18 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
    if (itemArray[i][1] != null){
     selectCtrl.options[j].value = itemArray[i][1];
    }
-   <?if(isset($chave_z01_i_familiamicroarea)&&$chave_z01_i_familiamicroarea!=""){?>
+   <?php if(isset($chave_z01_i_familiamicroarea)&&$chave_z01_i_familiamicroarea!=""){?>
     if(<?=$chave_z01_i_familiamicroarea?>==itemArray[i][1]){
      indice = i;
     }
-   <?}?>
+   <?php }?>
    j++;
   }
-  <?if(isset($chave_z01_i_familiamicroarea)&&$chave_z01_i_familiamicroarea!=""){?>
+  <?php if(isset($chave_z01_i_familiamicroarea)&&$chave_z01_i_familiamicroarea!=""){?>
    selectCtrl.options[indice].selected = true;
-  <?}else{?>
+  <?php }else{?>
    selectCtrl.options[0].selected = true;
-  <?}?>
+  <?php }?>
  }
 }
 
@@ -169,19 +170,19 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
    <table width="100%" border="0" align="center" cellspacing="0">
     <tr>
      <td>
-      <b>CGS:</b>&nbsp;&nbsp; <?db_input('z01_i_cgsund',6,$Iz01_i_cgsund,true,'text',4,"","chave_z01_i_cgsund");?><br>
-      <b>Nasc:</b> <?db_inputdata('z01_d_nasc',@$z01_d_nasc_dia,@$z01_d_nasc_mes,@$z01_d_nasc_ano,true,'text',4,"",'chave_z01_d_nasc');?>
-      <b>Nome:</b> <?db_input('z01_v_nome',30,$Iz01_v_nome,true,'text',4,"onblur='js_nome(this)'",'chave_z01_v_nome');?>
+      <b>CGS:</b>&nbsp;&nbsp; <?php db_input('z01_i_cgsund',6,$Iz01_i_cgsund,true,'text',4,"","chave_z01_i_cgsund");?><br>
+      <b>Nasc:</b> <?php db_inputdata('z01_d_nasc',@$z01_d_nasc_dia,@$z01_d_nasc_mes,@$z01_d_nasc_ano,true,'text',4,"",'chave_z01_d_nasc');?>
+      <b>Nome:</b> <?php db_input('z01_v_nome',30,$Iz01_v_nome,true,'text',4,"onblur='js_nome(this)'",'chave_z01_v_nome');?>
      </td>
      <td>
-      <b>Identidade:</b>&nbsp;&nbsp; <?db_input('z01_v_ident',15,$Iz01_v_ident,true,'text',1,"","chave_z01_v_ident");?><br>
-      <b>Cartão SUS:</b> <?db_input('s115_c_cartaosus',15,@$Is115_c_cartaosus,true,'text',4,"",'chave_s115_c_cartaosus');?>
+      <b>Identidade:</b>&nbsp;&nbsp; <?php db_input('z01_v_ident',15,$Iz01_v_ident,true,'text',1,"","chave_z01_v_ident");?><br>
+      <b>Cartão SUS:</b> <?php db_input('s115_c_cartaosus',15,@$Is115_c_cartaosus,true,'text',4,"",'chave_s115_c_cartaosus');?>
      </td>
      <td>
       <b>Micro:</b>&nbsp;&nbsp;&nbsp;
       <select name="chave_z01_v_micro" onChange="fillSelectFromArray(this.form.chave_z01_i_familiamicroarea, ((this.selectedIndex == -1) ? null : team[this.selectedIndex-1]));" style="font-size:9px;width:200px;height:18px;">
        <option></option>
-       <?
+       <?php 
        $sql1 = "SELECT sd34_i_codigo,sd34_v_descricao
                FROM microarea
                ORDER BY sd34_v_descricao";
@@ -191,7 +192,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
         $desc_micro=$row["sd34_v_descricao"];
         ?>
         <option value="<?=$cod_micro;?>" <?=$cod_micro==@$chave_z01_v_micro?"selected":""?>><?=$desc_micro;?></option>
-        <?
+        <?php 
        }
        ?>
       </select><br>
@@ -199,9 +200,9 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
       <select name="chave_z01_i_familiamicroarea" style="font-size:9px;width:200px;height:18px;" onchange="if(this.value=='')document.form2.chave_z01_v_micro.value='';">
        <option value=""></option>
       </select>
-      <?if((isset($chave_z01_i_familiamicroarea)&&$chave_z01_i_familiamicroarea!="")||(isset($chave_z01_v_micro)&&$chave_z01_v_micro!="")){?>
+      <?php if((isset($chave_z01_i_familiamicroarea)&&$chave_z01_i_familiamicroarea!="")||(isset($chave_z01_v_micro)&&$chave_z01_v_micro!="")){?>
        <script>fillSelectFromArray(document.form2.chave_z01_i_familiamicroarea, team[document.form2.chave_z01_v_micro.selectedIndex-1]);</script>
-      <?}?>
+      <?php }?>
      </td>
     </tr>
     <tr>
@@ -209,7 +210,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
       <input name="pesquisar2" type="submit" id="pesquisar2" value="Pesquisar">
       <input name="limpar" type="button"  id="limpar" value="Limpar" onClick="js_limpar();">
       <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="js_fechar('<?=@$campoFoco?>');">
-      <?if(isset($retornacgs) || @$redireciona!=""){
+      <?php if(isset($retornacgs) || @$redireciona!=""){
          $disabled="";
         }else if(!isset($retornacgs) && @$redireciona==""){
          $disabled="";
@@ -227,7 +228,7 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
  </tr>
  <tr>
  	<td align="center" valign="top">
-	<?
+	<?php 
 	if(!isset($pesquisa_chave)){
 		if(isset($campos)==false){
 			if(file_exists("funcoes/db_func_cgs_und_ext.php")==true){

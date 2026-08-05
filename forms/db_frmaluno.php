@@ -40,7 +40,7 @@ if ($db_opcao != 1 && $chavepesquisa != "") {
 
   if ($linhas4 == 0) {
     $db_botao = true;
-  } elseif ($iEscola != pg_result($query,0,0)) {
+  } elseif ($iEscola != pg_fetch_result($query,0,0)) {
     $db_botao = false;
   } else {
     $db_botao = true;
@@ -59,11 +59,11 @@ if ($ed47_i_nacion == 3) {
   <table border="0" cellspacing="0" cellpadding="0" width="100%">
     <tr valign="top">
       <td align="center">
-        <?db_ancora(@$Led47_i_codigo, "", 3);?>
-        <?db_input('ed47_i_codigo', 20, $Ied47_i_codigo, true, 'text', 3, "")?>
-        <?db_input('ed47_v_nome', 40, $Ied47_v_nome, true, 'text', 3, '')?>
+        <?php db_ancora(@$Led47_i_codigo, "", 3);?>
+        <?php db_input('ed47_i_codigo', 20, $Ied47_i_codigo, true, 'text', 3, "")?>
+        <?php db_input('ed47_v_nome', 40, $Ied47_v_nome, true, 'text', 3, '')?>
         <?=@$Led47_c_codigoinep?>
-        <?db_input('ed47_c_codigoinep', 12, $Ied47_c_codigoinep, true, 'text', 3, '')?>
+        <?php db_input('ed47_c_codigoinep', 12, $Ied47_c_codigoinep, true, 'text', 3, '')?>
       </td>
     </tr>
     <tr>
@@ -125,7 +125,7 @@ if ($ed47_i_nacion == 3) {
               </td>
               <td>
                 <?php
-                  $x = array('' => '', 'N' => 'NASCIMENTO', 'C' => 'CASAMENTO');
+                  $x = ['' => '', 'N' => 'NASCIMENTO', 'C' => 'CASAMENTO'];
                   db_select('ed47_c_certidaotipo', $x, true, $db_opcao1, "");
 
                   echo @$Led47_c_certidaonum;
@@ -266,7 +266,7 @@ if ($ed47_i_nacion == 3) {
                 <?=@$Led47_i_censoorgemissrg?>
               </td>
               <td>
-                <?
+                <?php 
                   $sSqlCensoOrgEmissRg = $oDaoCensoOrgEmissRg->sql_query_file(
                                                                                "",
                                                                                "ed132_i_codigo, ed132_c_descr",
@@ -299,7 +299,7 @@ if ($ed47_i_nacion == 3) {
                   db_input('ed47_v_cnh', 15, $Ied47_v_cnh, true, 'text', $db_opcao1, "");
                   echo @$Led47_v_categoria;
 
-                  $y = array("" => "", "A" => "A", "B" => "B", "C" => "C", "D" => "D", "E" => "E");
+                  $y = ["" => "", "A" => "A", "B" => "B", "C" => "C", "D" => "D", "E" => "E"];
                   db_select('ed47_v_categoria', $y, true, $db_opcao1);
 
                   echo @$Led47_d_dtemissao;
@@ -416,12 +416,12 @@ if ($ed47_i_nacion == 3) {
           <tr>
             <td nowrap title="<?=@$Ted47_t_obs?>">
               <?=@$Led47_t_obs?><br>
-              <? db_textarea('ed47_t_obs', 4, 60, $Ied47_t_obs, true, 'text', $db_opcao, "") ?>
+              <?php  db_textarea('ed47_t_obs', 4, 60, $Ied47_t_obs, true, 'text', $db_opcao, "") ?>
             </td>
             <td width="10%"></td>
             <td>
               <?=@$Led47_v_contato?><br>
-              <? db_textarea('ed47_v_contato', 4, 60, $Ied47_v_contato, true, 'text', $db_opcao, "") ?>
+              <?php  db_textarea('ed47_v_contato', 4, 60, $Ied47_v_contato, true, 'text', $db_opcao, "") ?>
             </td>
           </tr>
         </table>

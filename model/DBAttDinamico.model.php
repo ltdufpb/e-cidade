@@ -30,7 +30,7 @@ class DBAttDinamico {
 
   protected $sDescricao;
 
-  protected $aAtributos = array();
+  protected $aAtributos = [];
 
   public function __construct($iCodigo = null) {
 
@@ -98,7 +98,7 @@ class DBAttDinamico {
 
     $aAtributos = $this->getAtributos();
 
-    $this->aAtributos = array();
+    $this->aAtributos = [];
 
     foreach ($aAtributos as $oAtributo) {
 
@@ -110,7 +110,7 @@ class DBAttDinamico {
   }
 
   /**
-   * @return \DBAttDinamicoAtributo[]
+   * @return DBAttDinamicoAtributo[]
    */
   public function getAtributos(){
     return $this->aAtributos;
@@ -118,11 +118,11 @@ class DBAttDinamico {
 
   /**
    * Retorna somente os atributos dinâmicos ATIVOS
-   * @return \DBAttDinamicoAtributo[]
+   * @return DBAttDinamicoAtributo[]
    */
   public function getAtributosAtivos() {
 
-    $atributosAtivos = array();
+    $atributosAtivos = [];
     foreach ($this->aAtributos as $oAtributo) {
 
       if ($oAtributo->ativo()) {
@@ -145,7 +145,7 @@ class DBAttDinamico {
     $oDaoCadAttDinamico->db118_sequencial = $this->getCodigo() ;
     $oDaoCadAttDinamico->db118_descricao  = $this->getDescricao();
 
-    if (trim($this->getCodigo()) == '') {
+    if (trim((string) $this->getCodigo()) == '') {
 
       $oDaoCadAttDinamico->incluir(null);
       $this->setCodigo($oDaoCadAttDinamico->db118_sequencial);

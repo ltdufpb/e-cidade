@@ -79,7 +79,7 @@ class NecessidadeEspecial
      * @param array $state
      * @return NecessidadeEspecial
      */
-    public static function fromState($state = array())
+    public static function fromState($state = [])
     {
         $self = new self();
         if (array_key_exists('ed48_i_codigo', $state)) {

@@ -110,9 +110,9 @@ $escola = db_getsession("DB_coddepto");
 </table>
 <?php
 if (isset($calendario)) {
-    $array_mes = array("1" => "JAN", "2" => "FEV", "3" => "MAR", "4" => "ABR", "5" => "MAI", "6" => "JUN", "7" => "JUL",
-        "8" => "AGO", "9" => "SET", "10" => "OUT", "11" => "NOV", "12" => "DEZ");
-    $array_cor = array("0" => "#FFE1C4", "1" => "#DFFFDF", "2" => "#D2FFFF", "3" => "#FFD7D7");
+    $array_mes = ["1" => "JAN", "2" => "FEV", "3" => "MAR", "4" => "ABR", "5" => "MAI", "6" => "JUN", "7" => "JUL",
+        "8" => "AGO", "9" => "SET", "10" => "OUT", "11" => "NOV", "12" => "DEZ"];
+    $array_cor = ["0" => "#FFE1C4", "1" => "#DFFFDF", "2" => "#D2FFFF", "3" => "#FFD7D7"];
     $result = $clcalendario->sql_record($clcalendario->sql_query(
         "",
         "extract(month from ed52_d_inicio) as minimo,extract(month from ed52_d_fim) as maximo,ed52_i_ano,
@@ -194,7 +194,7 @@ if (isset($calendario)) {
                 </td>
                 <?php
                 for ($z = 1; $z <= 31; $z++) {
-                    $data = $ano . "-" . str_pad($x, 2, "0", STR_PAD_LEFT) . "-" . str_pad($z, 2, "0", STR_PAD_LEFT);
+                    $data = $ano . "-" . str_pad((string) $x, 2, "0", STR_PAD_LEFT) . "-" . str_pad($z, 2, "0", STR_PAD_LEFT);
                     if (checkdate($x, $z, $ed52_i_ano) == true) {
                         $tem = false;
                         if ($data >= $ed52_d_inicio && $data <= $ed52_d_fim) {

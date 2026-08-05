@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -91,7 +91,7 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
                   <b>Usuário:</b>
                 </td>
                 <td>
-                 <?
+                 <?php 
                    $sql = "select nome from db_usuarios where id_usuario = ".db_getsession("DB_id_usuario");
                    echo pg_result(db_query($sql),0,"nome");
 
@@ -123,7 +123,7 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
                      <?=@$Lp62_codtran?>
                   </td>
                   <td>
-                    <?
+                    <?php 
                     db_input('p62_codtran',10,$Ip62_codtran,true,'text',3,"")
                     ?>
                   </td>
@@ -133,19 +133,19 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
                      <?=@$Lp62_dttran?>
                   </td>
                   <td>
-                    <?
+                    <?php 
                     db_inputdata('p62_dttran',@$p62_dttran_dia,@$p62_dttran_mes,@$p62_dttran_ano,true,'text',3,"")
                     ?>
                   </td>
                 </tr>
                 <tr>
                   <td nowrap align="right" title="<?=@$Tp62_coddeptorec?>">
-                     <?
+                     <?php 
                      db_ancora(@$Lp62_coddeptorec,"js_pesquisap62_coddeptorec(true);",$db_opcao);
                      ?>
                   </td>
                   <td nowrap>
-                    <?
+                    <?php 
                     db_input('p62_coddeptorec',10,$Ip62_coddeptorec,true,'text',$db_opcao," onchange='js_pesquisap62_coddeptorec(false);'");
                     db_input('descrdepto',60,$Idescrdepto,true,'text',3);
                      ?>
@@ -156,7 +156,7 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
                      <?=@$Lp62_id_usorec; ?>
                   </td>
                   <td nowrap>
-                  <?
+                  <?php 
                    $aUsuarios = array("0" => "Selecione o Usuário");
                    db_select("p62_id_usorec",$aUsuarios,true,$db_opcao);
                   ?>
@@ -192,7 +192,7 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
           <td colspan=5>
     <fieldset><legend><b>Processos No Departamento</b></legend>
        <table border="0" width="100%" cellspacing =0 class="tab_sem_cor">
-   <?
+   <?php 
 
     if(!isset($ordem) || $ordem == ''){
       $ordem = " p58_codproc";
@@ -314,7 +314,7 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
              </tr>
              <tbody style='height:300;overflow:scroll;' id="listaProcesso">
 
-             <?
+             <?php 
                 //<td align='center' bgcolor='#999999'><b>Depto padrão</b></td>
 
 

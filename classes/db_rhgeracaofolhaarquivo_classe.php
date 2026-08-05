@@ -67,7 +67,7 @@ class cl_rhgeracaofolhaarquivo {
                  rh105_instit = int4 = Instituição
                  ";
    //funcao construtor da classe
-   function cl_rhgeracaofolhaarquivo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhgeracaofolhaarquivo");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

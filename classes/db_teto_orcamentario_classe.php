@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: contabilidade
 //CLASSE DA ENTIDADE teto_orcamentario
 class cl_teto_orcamentario { 
@@ -42,7 +42,7 @@ class cl_teto_orcamentario {
                  c40_valor_disponivel = float8 = Valos Disponível 
                  ";
    //funcao construtor da classe 
-   function cl_teto_orcamentario() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("teto_orcamentario"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

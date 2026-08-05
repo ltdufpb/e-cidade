@@ -35,7 +35,7 @@ define( 'MENSAGEM_MATRICULA_REPOSITORY', 'educacao.escola.MatriculaRepository.' 
  */
 class MatriculaRepository {
 
-  private $aMatricula = array();
+  private $aMatricula = [];
   private static $oInstance;
 
   private function __construct() {}
@@ -70,12 +70,12 @@ class MatriculaRepository {
 
   /**
    * Busca o aluno pela matricula
-   * @deprecated
    *
    * @param $iMatricula
    * @return bool|Matricula
    * @throws DBException
    */
+  #[Deprecated]
   public static function getAlunoByMatricula($iMatricula) {
 
     $oDaoMatricula = db_utils::getDao('matricula');
@@ -120,7 +120,7 @@ class MatriculaRepository {
     }
 
     $iTotalLinhas     = pg_num_rows( $rsMatricula );
-    $aMatriculasTurma = array();
+    $aMatriculasTurma = [];
 
     if ($iTotalLinhas > 0) {
 
@@ -159,7 +159,7 @@ class MatriculaRepository {
     }
 
     $iTotalLinhas     = pg_num_rows( $rsMatricula );
-    $aMatriculasTurma = array();
+    $aMatriculasTurma = [];
 
     if ($iTotalLinhas > 0) {
 
@@ -203,7 +203,7 @@ class MatriculaRepository {
   public static function removeAll() {
 
     unset(MatriculaRepository::getInstance()->aMatricula);
-    MatriculaRepository::getInstance()->aMatricula = array();
+    MatriculaRepository::getInstance()->aMatricula = [];
     return true;
   }
 
@@ -281,7 +281,7 @@ class MatriculaRepository {
    */
   public static function getTodasMatriculasAluno( Aluno $oAluno, $lSomenteSituacaoMatriculado = true, $oTurma = null, $sOrdem = null ) {
 
-    $aMatriculas     = array();
+    $aMatriculas     = [];
     $oDaoMatricula   = new cl_matricula();
     $sWhereMatricula = "ed60_i_aluno = {$oAluno->getCodigoAluno()}";
 
@@ -329,7 +329,7 @@ class MatriculaRepository {
 
     $aMatriculas = MatriculaRepository::getTodasMatriculasAluno( $oAluno, true, $oTurma );
 
-    return isset( $aMatriculas[0] ) ? $aMatriculas[0] : null;
+    return $aMatriculas[0] ?? null;
   }
 
   /**
@@ -363,7 +363,7 @@ class MatriculaRepository {
       throw new DBException( _M(MENSAGEM_MATRICULA_REPOSITORY . "erro_buscar_matriculas_encerradas") );
     }
 
-    $aMatriculasEncerradas = array();
+    $aMatriculasEncerradas = [];
 
     $iLinhas = pg_num_rows($rsMatriculasEncerradas);
     for( $i = 0; $i < $iLinhas; $i++) {
@@ -381,7 +381,7 @@ class MatriculaRepository {
      * @throws DBException
      * @throws Exception
      */
-    public static function getMatriculaByFiltros($filtros = array())
+    public static function getMatriculaByFiltros($filtros = [])
     {
         if (empty($filtros)) {
             throw new Exception("Não foi informado nenhum filtro.");

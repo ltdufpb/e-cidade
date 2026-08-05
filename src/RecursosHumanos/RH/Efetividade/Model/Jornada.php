@@ -27,6 +27,9 @@
 
 namespace ECidade\RecursosHumanos\RH\Efetividade\Model;
 
+use DateInterval;
+use DateTime;
+use stdClass;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\BaseHora;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Marcacao\MarcacaoPonto;
 
@@ -50,11 +53,11 @@ class Jornada {
     const PERIODO_2 = 2;
     const PERIODO_3 = 3;
 
-    public static $aTiposJornada = array(
+    public static $aTiposJornada = [
       Jornada::TIPO_DIA_TRABALHO => 'Dia de Trabalho',
       Jornada::TIPO_FOLGA        => 'Folga',
       Jornada::TIPO_DSR          => 'DSR'
-    );
+    ];
 
     /**
      * Código da jornada
@@ -96,7 +99,7 @@ class Jornada {
      * Coleção com as horas configuradas para jornada
      * @var array
      */
-    private $aHoras = array();
+    private $aHoras = [];
 
     /**
      * @var string
@@ -126,7 +129,7 @@ class Jornada {
 
     /**
      * Retorna uma coleção de objetos com as informações das horas da jornada
-     * @return \stdClass[]
+     * @return stdClass[]
      */
     public function getHoras() {
         return $this->aHoras;
@@ -267,7 +270,7 @@ class Jornada {
   }
 
     /**
-     * @return \DateInterval
+     * @return DateInterval
      */
     public function getIntervalo() {
 
@@ -279,7 +282,7 @@ class Jornada {
         }
 
         if(empty($horaInicioIntervalo1) || empty($horaFimIntervalo1)) {
-            return new \DateInterval('PT0H0M0S');
+            return new DateInterval('PT0H0M0S');
         }
 
         $intervalo = $horaInicioIntervalo1->diff($horaFimIntervalo1);
@@ -339,7 +342,7 @@ class Jornada {
         }
 
 
-        $cargaHoraria = new \DateTime();
+        $cargaHoraria = new DateTime();
         $cargaHoraria->setTime(0, 0, 0);
         $cargaHoraria->setDate($momentoAtual->format("Y"), $momentoAtual->format("m"), $momentoAtual->format("d"));
 
@@ -389,7 +392,7 @@ class Jornada {
         return $cargaHoraria;
     }
 
-    protected function horaEstaNoIntervalo(\DateTime $oHoraVerificar, \DateTime $oHoraInicio, \DateTime $oHoraFim) {
+    protected function horaEstaNoIntervalo(DateTime $oHoraVerificar, DateTime $oHoraInicio, DateTime $oHoraFim) {
 
         if($oHoraVerificar->diff($oHoraInicio)->invert || ($oHoraVerificar->format('H:i') == $oHoraInicio->format('H:i'))) {
             if($oHoraFim->diff($oHoraVerificar)->invert || ($oHoraVerificar->format('H:i') == $oHoraFim->format('H:i'))) {
@@ -409,8 +412,8 @@ class Jornada {
         if (empty($data)) {
             $data = date('Y-m-d');
         }
-        $oInicioHorarioNoturno = new \DateTime("{$data} 22:00");
-        $oFimHorarioNoturno    = new \DateTime("{$data} 05:00");
+        $oInicioHorarioNoturno = new DateTime("{$data} 22:00");
+        $oFimHorarioNoturno    = new DateTime("{$data} 05:00");
         $oFimHorarioNoturno->modify('+1 day');
         $aHorasJornada = $this->getHoras();
         $temJornadaNoturna = false;
@@ -434,7 +437,7 @@ class Jornada {
     }
 
     /**
-     * @return \DateTime | null
+     * @return DateTime|null
      */
     public function getInicioJornada()
     {
@@ -442,7 +445,7 @@ class Jornada {
     }
 
     /**
-     * @return \DateTime | null
+     * @return DateTime|null
      */
     public function getFimJornada()
     {
@@ -456,13 +459,13 @@ class Jornada {
 
     public function toArray()
     {
-        $horas = array();
+        $horas = [];
 
         foreach ($this->aHoras as $oHora) {
 
             $h = null;
 
-            if($oHora->oHora instanceof \DateTime) {
+            if($oHora->oHora instanceof DateTime) {
                 $h = $oHora->oHora->format('H:i');
             }
 
@@ -491,10 +494,10 @@ class Jornada {
   /**
    * Retorna se a hora informada esta dentro da jornada
    *
-   * @param \DateTime $horaVerificar
+   * @param DateTime $horaVerificar
    * @return Boolean
    */
-  public function estaNaJornada(\DateTime $horaVerificar) {
+  public function estaNaJornada(DateTime $horaVerificar) {
 
     $horaInicio = $this->getHora(MarcacaoPonto::ENTRADA_1)->oHora;
     $horaFim    = $this->getHora(MarcacaoPonto::SAIDA_1)->oHora;
@@ -521,10 +524,10 @@ class Jornada {
    * Retorna se a hora informada está fora da jornada
    * e em algum intervalo, de almoço por exemplo
    *
-   * @param \DateTime $horaVerificar
+   * @param DateTime $horaVerificar
    * @return Boolean
    */
-  public function estaNoIntervalo(\DateTime $horaVerificar) {
+  public function estaNoIntervalo(DateTime $horaVerificar) {
 
     if(!$this->temIntervalo()) {
       return false;

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -126,16 +126,16 @@ function js_relatorio() {
             <tr> 
               <td align="right" nowrap><strong>Alteracoes Entre:</strong></td>
               <td align="left"  nowrap>&nbsp;&nbsp;
-                <?db_inputdata('datai',$dtoper_dia,$dtoper_mes,$dtoper_ano,true,'text',1);?>
+                <?php db_inputdata('datai',$dtoper_dia,$dtoper_mes,$dtoper_ano,true,'text',1);?>
               &nbsp;&nbsp;E&nbsp;&nbsp;
-                <?db_inputdata('dataf',$dtoper_dia,$dtoper_mes,$dtoper_ano,true,'text',1);?>
+                <?php db_inputdata('dataf',$dtoper_dia,$dtoper_mes,$dtoper_ano,true,'text',1);?>
               </td>
             </tr>
             <tr >
               <td align="right" ><strong>Ordem :</strong>
               </td>
               <td align="left"nowrap>&nbsp;&nbsp;
-                <?
+                <?php 
                   $arr_ordem = array("ra"=>"Rubrica/Alfabetica", "rn"=>"Rubrica/Numerica", "rh"=>"Rubrica/Data/Hora"  , "a"=>"Alfabetica","n"=>"Numerica","d"=>"Data/Hora");
                   db_select('ordem',$arr_ordem,true,4,"");
                       ?>
@@ -145,7 +145,7 @@ function js_relatorio() {
               <td align="right" ><strong>Ponto :</strong>
               </td>
               <td align="left"nowrap>&nbsp;&nbsp;
-                <?
+                <?php 
                   $arr_ponto = array("s"=>"Salario","f"=>"Fixo");
                   db_select('ponto',$arr_ponto,true,4,"");
                       ?>
@@ -155,7 +155,7 @@ function js_relatorio() {
               <td align="right" ><strong>Tipo :</strong>
               </td>
               <td align="left"nowrap>&nbsp;&nbsp;
-                <?
+                <?php 
                   $arr_tipo = array("t"=>"Tudo","a"=>"Alteracoes","i"=>"Inclusoes", "e"=>"Exclusoes");
                   db_select('tipo',$arr_tipo,true,4,"");
                       ?>
@@ -163,12 +163,12 @@ function js_relatorio() {
             </tr>
             <tr>
               <td align="right" nowrap title="Informar a rubrica a ser consultada ou deixar em branco para todas." >
-              <?
+              <?php 
                db_ancora("<b>Rubrica :</b>","js_pesquisarub(true)",1);
               ?>
               </td>
               <td>&nbsp;&nbsp;
-                <?
+                <?php 
                 db_input('rh27_rubric',10,'Rubrica 1',true,'text',2,'onchange="js_pesquisarub(false)"');
                 db_input('rh27_descr',40,'Rubrica 2',true,'text',3,'');
                 ?>
@@ -176,12 +176,12 @@ function js_relatorio() {
             </tr>
             <tr>
               <td align="right" nowrap title="Informar a matricula do funcionario ou deixar em branco para todos." >
-              <?
+              <?php 
                db_ancora("<b>Matricula :</b>","js_pesquisamat(true)",1);
               ?>
               </td>
               <td>&nbsp;&nbsp;
-                <?
+                <?php 
                 db_input('rh01_regist',10,'Matricula 1',true,'text',2,'onchange="js_pesquisamat(false)"');
                 db_input('z01_nome',40,'Matricula 2',true,'text',3,'');
                 ?>
@@ -197,7 +197,7 @@ function js_relatorio() {
                       <Legend align="left">
                         <b>Selecione os Usuarios</b>
                       </Legend>
-                      <?
+                      <?php 
                       db_input("valor", 3, 0, true, 'hidden', 3);
                       db_input("colunas_sselecionados", 3, 0, true, 'hidden', 3);
                       db_input("colunas_nselecionados", 3, 0, true, 'hidden', 3);
@@ -246,7 +246,7 @@ function js_relatorio() {
 	</td>
   </tr>
 </table>
-    <? 
+    <?php  
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
     ?>
 </body>

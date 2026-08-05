@@ -73,7 +73,7 @@ class MaterialEstoqueItem {
   /**
    * @type MaterialEstoqueMovimentacao[]
    */
-  private $aMovimentacoes = array();
+  private $aMovimentacoes = [];
 
   /**
    * @param null $iCodigo
@@ -159,7 +159,7 @@ class MaterialEstoqueItem {
    */
   public function getMovimentacoes() {
 
-    $this->aMovimentacoes  = array();
+    $this->aMovimentacoes  = [];
     $oDaoEstoqueIniMEI     = new cl_matestoqueinimei();
     $sSqlBuscaMovimentacao = $oDaoEstoqueIniMEI->sql_query_file(null, "m82_matestoqueini", "m82_codigo", "m82_matestoqueitem = {$this->iCodigo}");
     $rsBuscaMovimentacao   = $oDaoEstoqueIniMEI->sql_record($sSqlBuscaMovimentacao);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -57,7 +57,7 @@ if ( $cltermo->numrows > 0 ) {
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
   <tr> 
     <td align="center" valign="top"> 
-      <? 
+      <?php  
         $camposDetalhe = "";
         $camposDetalheDiversos = "";
         $funcao_js     = "js_mudaFiltro|DB_parametro";

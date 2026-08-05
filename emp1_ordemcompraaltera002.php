@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -182,15 +182,15 @@ for ($i=1;$i<sizeof($dados);$i++){
   <tr>
     <td height="430" valign="top" bgcolor="#CCCCCC">
       <center>
-       <?include(modification("forms/db_frmmatordemaltera.php"));?>
+       <?php include(modification("forms/db_frmmatordemaltera.php"));?>
       </center>
     </td>
   </tr>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
-<?
+<?php 
 if (isset($altera)){
     db_msgbox($erro_msg);
     if($clmatordem->erro_campo!=""){

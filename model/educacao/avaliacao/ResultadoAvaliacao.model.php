@@ -55,7 +55,7 @@ class ResultadoAvaliacao implements IElementoAvaliacao {
    * Elementos (periodo ou resultado) que compõem o resultado
    * @var array
    */
-  private $aElementosAvaliacao = array();
+  private $aElementosAvaliacao = [];
 
   /**
    * Ordem de apresentacao da Avaliacao
@@ -83,7 +83,7 @@ class ResultadoAvaliacao implements IElementoAvaliacao {
   /**
    * Elementos que são Utilizados para o calculo do % de frequencia
    */
-  private $aElementosFalta = array();
+  private $aElementosFalta = [];
 
 
   /**
@@ -108,7 +108,7 @@ class ResultadoAvaliacao implements IElementoAvaliacao {
    * Caso procedimento de avaliação seja soma, este pode ter configurado avaliações alternativas.
    * @var AvaliacaoAlternativa[]
    */
-  private $aAvaliacoesAlternativas = array();
+  private $aAvaliacoesAlternativas = [];
 
   /**
    * Método construtor
@@ -397,74 +397,18 @@ class ResultadoAvaliacao implements IElementoAvaliacao {
    */
     protected function getInstanciaFormaObtencao()
     {
-        switch ($this->getFormaDeObtencao()) {
-            /**
-             * AT - Atribuido
-             */
-            case 'AT':
-                $oForma = new FormaObtencaoAtribuida();
-                break;
-
-            /**
-             * ME - Media
-             */
-            case 'ME':
-                $oForma = new FormaObtencaoMediaAritmetica();
-                break;
-
-            /**
-             * MN - Maior Nota
-             */
-            case 'MN':
-                $oForma = new FormaObtencaoMaiorNota();
-                break;
-
-            /**
-             * MP - Media Ponderada
-             */
-            case 'MP':
-                $oForma = new FormaObtencaoMediaPonderada();
-                break;
-
-            /**
-             * SO - Soma
-             */
-            case 'SO':
-                $oForma = new FormaObtencaoSoma();
-                break;
-
-            /**
-             * UC - Ultima Nivel
-             */
-            case 'UC':
-                $oForma = new FormaObtencaoUltimoNivel();
-                break;
-
-            /**
-             * UC - Ultima Nivel
-             */
-            case 'MC':
-                $oForma = new FormaObtencaoMaiorNivel();
-                break;
-
-            /**
-             * UN - Ultima Nota
-             */
-            case 'UN':
-                $oForma = new FormaObtencaoUltimaNota();
-                break;
-
-            /**
-             * AP - Aprovação por Período
-             */
-            case 'AP':
-                $oForma = new FormaObtencaoAprovacaoPeriodo();
-                break;
-
-            default:
-                throw new BusinessException("Não foi possível identificar a forma de Obtenção para o resultado {$this->getCodigo()} - {$this->getFormaDeObtencao()}");
-                break;
-        }
+        $oForma = match ($this->getFormaDeObtencao()) {
+            'AT' => new FormaObtencaoAtribuida(),
+            'ME' => new FormaObtencaoMediaAritmetica(),
+            'MN' => new FormaObtencaoMaiorNota(),
+            'MP' => new FormaObtencaoMediaPonderada(),
+            'SO' => new FormaObtencaoSoma(),
+            'UC' => new FormaObtencaoUltimoNivel(),
+            'MC' => new FormaObtencaoMaiorNivel(),
+            'UN' => new FormaObtencaoUltimaNota(),
+            'AP' => new FormaObtencaoAprovacaoPeriodo(),
+            default => throw new BusinessException("Não foi possível identificar a forma de Obtenção para o resultado {$this->getCodigo()} - {$this->getFormaDeObtencao()}"),
+        };
         return $oForma;
     }
 

@@ -1,4 +1,4 @@
-<?
+<?php 
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -6,7 +6,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_turmaachorarioprofissional_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clturmaachorarioprofissional = new cl_turmaachorarioprofissional;
 $clturmaachorarioprofissional->rotulo->label("ed346_sequencial");
 $clturmaachorarioprofissional->rotulo->label("ed346_turmaac");
@@ -28,7 +29,7 @@ $clturmaachorarioprofissional->rotulo->label("ed346_turmaac");
               <?=$Led346_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ed346_sequencial",10,$Ied346_sequencial,true,"text",4,"","chave_ed346_sequencial");
 		       ?>
             </td>
@@ -38,7 +39,7 @@ $clturmaachorarioprofissional->rotulo->label("ed346_turmaac");
               <?=$Led346_turmaac?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ed346_turmaac",10,$Ied346_turmaac,true,"text",4,"","chave_ed346_turmaac");
 		       ?>
             </td>
@@ -56,7 +57,7 @@ $clturmaachorarioprofissional->rotulo->label("ed346_turmaac");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_turmaachorarioprofissional.php")==true){
@@ -96,12 +97,12 @@ $clturmaachorarioprofissional->rotulo->label("ed346_turmaac");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

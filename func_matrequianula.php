@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matrequi_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmatrequi = new cl_matrequi;
 $clmatrequi->rotulo->label("m40_codigo");
 $clmatrequi->rotulo->label("m40_codigo");
@@ -54,7 +55,7 @@ $clmatrequi->rotulo->label("m40_codigo");
                 <?=$Lm40_codigo?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php 
                 db_input("m40_codigo",10,$Im40_codigo,true,"text",4,"","chave_m40_codigo");
                 ?>
               </td>
@@ -64,7 +65,7 @@ $clmatrequi->rotulo->label("m40_codigo");
                 <b>Exibir Requisições de Exercícios Anteriores:</b>
               </td>
               <td>
-                <?
+                <?php 
                 db_select("trazoutrozexercicios", array('n'=>'Não','s'=>'Sim'), true,1);
                 ?>
               </td>
@@ -82,7 +83,7 @@ $clmatrequi->rotulo->label("m40_codigo");
     </tr>
     <tr>
       <td align="center" valign="top">
-        <?
+        <?php 
 
         // filtro para trazer requisição não automáticas
         $where  = "";
@@ -173,12 +174,12 @@ $clmatrequi->rotulo->label("m40_codigo");
   </table>
   </body>
   </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

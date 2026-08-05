@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -28,7 +28,7 @@
 //MODULO: Escola
 //CLASSE DA ENTIDADE cursoedu
 require_once("db_cursoedu_classe.php");
-class cl_cursoedu_ext extends class cl_curso {
+class cl_cursoedu_ext extends cl_curso {
    function sql_query_cursodiario ( $ed31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){

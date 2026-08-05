@@ -27,10 +27,11 @@
 
 namespace ECidade\Patrimonial\Licitacao\Licitacon\Regra\Emissao;
 
+use LicitacaoAtributosDinamicos;
+use cl_pcorcamitemproc;
 use cl_liclicita;
 use cl_pcorcamjulg;
 use db_utils;
-use DBDate;
 use DBException;
 use ECidade\Patrimonial\Licitacao\Licitacon\Julgamento;
 use ECidade\Patrimonial\Licitacao\Licitacon\Resultado;
@@ -82,15 +83,11 @@ class Licitacao extends BaseAbstract
     public function getCodigoLayout()
     {
         $iCodigoLayout = self::CODIGO_LAYOUT_V12;
-        switch ($this->oConfiguracao->getVersao()) {
-            case '1.3':
-                $iCodigoLayout = self::CODIGO_LAYOUT_V13;
-                break;
-            case '1.4':
-                $iCodigoLayout = self::CODIGO_LAYOUT_V14_1;
-
-                break;
-        }
+        $iCodigoLayout = match ($this->oConfiguracao->getVersao()) {
+            '1.3' => self::CODIGO_LAYOUT_V13,
+            '1.4' => self::CODIGO_LAYOUT_V14_1,
+            default => $iCodigoLayout,
+        };
         return $iCodigoLayout;
     }
 
@@ -181,7 +178,7 @@ class Licitacao extends BaseAbstract
 
         $sCamposFornecedores = " cgm.z01_numcgm ";
         $sWhereFornecedores = " l21_codliclicita = {$this->oLicitacao->getCodigo()} ";
-        $lModalidadesDispensa = in_array($sSiglaModalidade, array('PRD', 'PRI', 'RPO'));
+        $lModalidadesDispensa = in_array($sSiglaModalidade, ['PRD', 'PRI', 'RPO']);
         if ($lModalidadesDispensa) {
             $sWhereFornecedores2 = " {$sWhereFornecedores} and pc24_pontuacao = 1 ";
             $sSqlFonecedores = $oDaoPcOrcamItemLic->sql_query_licitantes(
@@ -233,7 +230,7 @@ class Licitacao extends BaseAbstract
             throw new ParameterException("Licitação não informada.");
         }
 
-        $aModalidadesDispensadas = array('PRD', 'PRI', 'RPO', 'CPC', 'MAI', 'CPP');
+        $aModalidadesDispensadas = ['PRD', 'PRI', 'RPO', 'CPC', 'MAI', 'CPP'];
         $nVersao = floatval($this->oConfiguracao->getVersao());
         $sModalidade = $this->oLicitacao->getModalidade()->getCodigoTipoCompraTribunal();
 
@@ -264,7 +261,7 @@ class Licitacao extends BaseAbstract
      */
     public function getPcTaxaRisco($valor, $modalidade, stdClass $dados)
     {
-        $naoEhRegime = !in_array($modalidade, array('RDC', 'RDE'));
+        $naoEhRegime = !in_array($modalidade, ['RDC', 'RDE']);
         $naoEhObrasServicosEngenharia = $dados->TP_OBJETO != 'OSE';
         $naoEhContratacaoIntegrada = $dados->TP_REGIME_EXECUCAO != 'C';
 
@@ -283,7 +280,7 @@ class Licitacao extends BaseAbstract
      */
     public function getTpDisputa($valor, $modalidade)
     {
-        $ehObrigatorio = in_array($modalidade, array('EST', 'ESE', 'RDC', 'RDE'));
+        $ehObrigatorio = in_array($modalidade, ['EST', 'ESE', 'RDC', 'RDE']);
 
         return $ehObrigatorio ? $valor : '';
     }
@@ -295,7 +292,7 @@ class Licitacao extends BaseAbstract
      */
     public function getTpPreQualificacao($valor, $modalidade)
     {
-        $ehObrigatorio = in_array($modalidade, array('EST', 'ESE', 'RDC', 'RDE'));
+        $ehObrigatorio = in_array($modalidade, ['EST', 'ESE', 'RDC', 'RDE']);
 
         return $ehObrigatorio ? $valor : '';
     }
@@ -308,11 +305,11 @@ class Licitacao extends BaseAbstract
     {
         $primeiraCondicao = in_array(
             $oDados->CD_TIPO_MODALIDADE,
-            array('RDC', 'RDE', 'EST', 'ESE')
-        ) && in_array($oDados->TP_CRITERIO_JULGAMENTO, array('MPR', 'TPR', 'MOP'));
-        $segundaCondicao = in_array($oDados->CD_TIPO_MODALIDADE, array('PRP', 'PRE')) && in_array(
+            ['RDC', 'RDE', 'EST', 'ESE']
+        ) && in_array($oDados->TP_CRITERIO_JULGAMENTO, ['MPR', 'TPR', 'MOP']);
+        $segundaCondicao = in_array($oDados->CD_TIPO_MODALIDADE, ['PRP', 'PRE']) && in_array(
             $oDados->TP_CRITERIO_JULGAMENTO,
-            array('MPR')
+            ['MPR']
         );
 
         return $primeiraCondicao || $segundaCondicao ? 'N' : '';
@@ -327,14 +324,14 @@ class Licitacao extends BaseAbstract
         $sModalidade = $oLicitacao->getModalidade()->getSiglaTipoCompraTribunal();
 
 
-        $modalidadesRegistroDePreco = array('CNC', 'PRE', 'PRP', 'RDC', 'RDE', 'EST', 'ESE');
-        $modalidadesNormal = array('CNV', 'TMP', 'LEI', 'LEE', 'CNS', 'PRD', 'PRI');
-        $modalidadesOutro = array('CHP', 'CPC', 'RIN', 'MAI', 'CPP');
+        $modalidadesRegistroDePreco = ['CNC', 'PRE', 'PRP', 'RDC', 'RDE', 'EST', 'ESE'];
+        $modalidadesNormal = ['CNV', 'TMP', 'LEI', 'LEE', 'CNS', 'PRD', 'PRI'];
+        $modalidadesOutro = ['CHP', 'CPC', 'RIN', 'MAI', 'CPP'];
 
         if (($oLicitacao->usaRegistroDePreco() && in_array(
             $sModalidade,
             $modalidadesRegistroDePreco
-        )) || in_array($sModalidade, array('RPO'))) {
+        )) || in_array($sModalidade, ['RPO'])) {
             return 'R';
         }
 
@@ -374,16 +371,16 @@ class Licitacao extends BaseAbstract
 
     private function getPercentualTaxa($campoTaxa)
     {
-        $atributosLicitacao = new \LicitacaoAtributosDinamicos($this->oLicitacao->getCodigo());
+        $atributosLicitacao = new LicitacaoAtributosDinamicos($this->oLicitacao->getCodigo());
         $siglaTipoLicitacao = $atributosLicitacao->getAtributo('tipolicitacao');
 
-        if ((int)$this->oLicitacao->getTipoJulgamento() === \licitacao::TIPO_JULGAMENTO_GLOBAL
+        if ((int)$this->oLicitacao->getTipoJulgamento() === oLicitacao::TIPO_JULGAMENTO_GLOBAL
             && $siglaTipoLicitacao === "MTX"
         ) {
             $itensLicitacao = $this->oLicitacao->getItens();
             $primeiroItem = $itensLicitacao[0];
 
-            $daoOrcamentoItemProcesso = new \cl_pcorcamitemproc();
+            $daoOrcamentoItemProcesso = new cl_pcorcamitemproc();
             $buscaTaxa = $daoOrcamentoItemProcesso->sql_query_orcamento_item(
                 "coalesce({$campoTaxa}, 0) as taxa",
                 "pc31_pcprocitem = {$primeiroItem->getItemProcessoCompras()} order by pc31_orcamitem limit 1"

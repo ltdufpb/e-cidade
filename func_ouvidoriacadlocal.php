@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -36,7 +36,8 @@ require_once(modification("classes/db_ouvidoriacadlocalender_classe.php"));
 require_once(modification("classes/db_ouvidoriacadlocaldepart_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clouvidoriacadlocal = new cl_ouvidoriacadlocal;
 $clouvidoriacadlocal->rotulo->label("ov25_sequencial");
@@ -65,7 +66,7 @@ $oDaoOuvDepart = new cl_ouvidoriacadlocaldepart();
               <?=$Lov25_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ov25_sequencial",10,$Iov25_sequencial,true,"text",4,"","chave_ov25_sequencial");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $oDaoOuvDepart = new cl_ouvidoriacadlocaldepart();
               <?=$Lov25_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ov25_descricao",100,$Iov25_descricao,true,"text",4,"","chave_ov25_descricao");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $oDaoOuvDepart = new cl_ouvidoriacadlocaldepart();
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_ouvidoriacadlocal.php")==true){
@@ -194,12 +195,12 @@ $oDaoOuvDepart = new cl_ouvidoriacadlocaldepart();
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

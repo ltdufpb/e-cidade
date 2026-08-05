@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_modulos_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_modulos = new cl_db_modulos;
 $cldb_modulos->rotulo->label("id_item");
 $cldb_modulos->rotulo->label("nome_modulo");
@@ -54,7 +55,7 @@ $cldb_modulos->rotulo->label("nome_modulo");
               <?=$Lid_item?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("id_item",5,$Iid_item,true,"text",4,"","chave_id_item");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_modulos->rotulo->label("nome_modulo");
               <?=$Lnome_modulo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("nome_modulo",20,$Inome_modulo,true,"text",4,"","chave_nome_modulo");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_modulos->rotulo->label("nome_modulo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_modulos.php")==true){
@@ -118,12 +119,12 @@ $cldb_modulos->rotulo->label("nome_modulo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

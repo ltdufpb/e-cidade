@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: cadastro
 //CLASSE DA ENTIDADE iptutaxacalvold
 class cl_iptutaxacalvold { 
@@ -35,7 +35,7 @@ class cl_iptutaxacalvold {
                  j158_iptucalclog = int4 = Código de vínculo com a iptucalclog 
                  ";
    //funcao construtor da classe 
-   function cl_iptutaxacalvold() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptutaxacalvold"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

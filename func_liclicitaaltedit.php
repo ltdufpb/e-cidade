@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_liclicita_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clliclicita = new cl_liclicita;
 $clliclicita->rotulo->label("l20_codigo");
 $clliclicita->rotulo->label("l20_numero");
@@ -56,7 +57,7 @@ $clrotulo->label("l03_descr");
               <?=$Ll20_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("l20_codigo",10,$Il20_codigo,true,"text",4,"","chave_l20_codigo");
 		       ?>
             </td>
@@ -66,7 +67,7 @@ $clrotulo->label("l03_descr");
               <?=$Ll20_numero?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("l20_numero",10,$Il20_numero,true,"text",4,"","chave_l20_numero");
 		       ?>
             </td>
@@ -76,7 +77,7 @@ $clrotulo->label("l03_descr");
               <?=$Ll03_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("l03_descr",60,$Il03_descr,true,"text",4,"","chave_l03_descr");
 		       ?>
             </td>
@@ -94,7 +95,7 @@ $clrotulo->label("l03_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $where="";
       if (isset($cnpj)&&$cnpj!=""){
       	$where = " l28_cnpj='$cnpj' ";
@@ -149,12 +150,12 @@ $clrotulo->label("l03_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_leitor_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 
 $clleitor  = new cl_leitor;
@@ -73,7 +74,7 @@ if (isset($excluir)) {
    <br>
    <center>
    <fieldset style="width:90%"><legend><b>Exclusão de Leitor</b></legend>
-     <?require_once(modification("forms/db_frmleitor.php"));?>
+     <?php require_once(modification("forms/db_frmleitor.php"));?>
    </fieldset>
    </center>
   </td>
@@ -81,7 +82,7 @@ if (isset($excluir)) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if (isset($excluir)) {
 
   if ($clleitor->erro_status=="0") {

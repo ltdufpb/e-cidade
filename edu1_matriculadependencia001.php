@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,7 @@ require_once(modification("libs/db_jsplibwebseller.php"));
 
 function getData($dData) {
 
-  $aTemp = explode("/", $dData);
+  $aTemp = explode("/", (string) $dData);
   return $aTemp[2]."-".$aTemp[1]."-".$aTemp[0];
 
 }
@@ -50,7 +50,7 @@ if (!isset($ed297_data_dia)) {
  
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoMatricula            = db_utils::getdao('matricula');
 $oDaoTurma                = db_utils::getdao('turma');
 $oDaoTurmaSerieRegimeMat  = db_utils::getdao('turmaserieregimemat');
@@ -97,7 +97,7 @@ if ($iLinhasParamDep > 0) {
       <h4>Não foi possível encontrar os parâmetros de dependência da escola.</h4>
     </fieldset>
   </center>
-<?
+<?php 
 }
 
 if (isset($iMatricula) && isset($iTurma)) {
@@ -254,20 +254,20 @@ if (isset($oPost->incluir)) {
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-          <?
+          <?php 
             MsgAviso(db_getsession("DB_coddepto"),"escola");
           ?>
           <br>
           <center>
             <br><br>
             <fieldset style="width:95%"><legend><b>Vinculo Turma/Aluno</b></legend>
-              <?include(modification("forms/db_frmmatriculadependencia.php"));?>
+              <?php include(modification("forms/db_frmmatriculadependencia.php"));?>
             </fieldset>
           </center>
         </td>
       </tr>
     </table>
-    <?
+    <?php 
       db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),
               db_getsession("DB_anousu"),db_getsession("DB_instit")
              );
@@ -279,7 +279,7 @@ if (isset($oPost->incluir)) {
   js_tabulacaoforms("form1","ed60_i_turma",true,1,"ed60_i_turma",true);
 </script>
 
-<?
+<?php 
 
   if (isset($oPost->incluir) || isset($oPost->alterar)) {
   	
@@ -303,7 +303,7 @@ if (isset($oPost->incluir)) {
         alert("Aluno matriculado com sucesso na turma.");
         location.href = "edu1_matriculadependencia001.php?chavepesquisa=<?=$oPost->ed60_i_turma?>";
       </script>
-      <?
+      <?php 
     }
    
   }

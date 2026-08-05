@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_graficas_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clgraficas = new cl_graficas;
 $clgraficas->rotulo->label("y20_grafica");
 $clgraficas->rotulo->label("y20_id_usuario");
@@ -51,11 +52,11 @@ $clgraficas->rotulo->label("y20_id_usuario");
     <form name="form2" method="post" action="" >
       <tr> 
         <td width="4%" align="right" nowrap title="<?=$Ty20_grafica?>"><?=$Ly20_grafica?></td>
-        <td width="96%" align="left" nowrap><? db_input("y20_grafica",6,$Iy20_grafica,true,"text",4,"","chave_y20_grafica");?></td>
+        <td width="96%" align="left" nowrap><?php  db_input("y20_grafica",6,$Iy20_grafica,true,"text",4,"","chave_y20_grafica");?></td>
       </tr>
       <tr> 
         <td width="4%" align="right" nowrap title="<?=$Ty20_id_usuario?>"><?=$Ly20_id_usuario?></td>
-        <td width="96%" align="left" nowrap><? db_input("y20_id_usuario",8,$Iy20_id_usuario,true,"text",4,"","chave_y20_id_usuario");?></td>
+        <td width="96%" align="left" nowrap><?php  db_input("y20_id_usuario",8,$Iy20_id_usuario,true,"text",4,"","chave_y20_id_usuario");?></td>
       </tr>
       <tr> 
         <td colspan="2" align="center"> 
@@ -141,14 +142,14 @@ $clgraficas->rotulo->label("y20_id_usuario");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 		document.form2.chave_y20_grafica.focus();
 		document.form2.chave_y20_grafica.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

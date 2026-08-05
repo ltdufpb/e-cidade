@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -79,11 +79,11 @@ input {
         <tr>
           <td nowrap title="Data de inclusão da Massa Falida" colspan="4">
 	    <b>Data de inclusão:</b>
-<?
+<?php 
 db_inputdata('dtini',"","","",true,'text',$db_opcao,"")
 ?>
 	  <b> À </b>
-<?
+<?php 
 db_inputdata('dtfim',"","","",true,'text',$db_opcao,"")
 ?>
 
@@ -140,7 +140,7 @@ function js_testacamp(){
   </td>
   </tr>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

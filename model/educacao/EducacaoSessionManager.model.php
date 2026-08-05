@@ -121,7 +121,7 @@ class EducacaoSessionManager {
      * Se utilizado e-Cidade 3, adiciona na SESSION GLOBAL, para ser clonado em todas janelas
      */
     if (Registry::get('app.container')->get('ECIDADE_DESKTOP')) {
-      Session::update(Session::MAIN_NAME, array(self::DIAS_MANUTENCAO_HISTORICO => $iDias));
+      Session::update(Session::MAIN_NAME, [self::DIAS_MANUTENCAO_HISTORICO => $iDias]);
     }
 
     $_SESSION[self::DIAS_MANUTENCAO_HISTORICO] = $iDias;

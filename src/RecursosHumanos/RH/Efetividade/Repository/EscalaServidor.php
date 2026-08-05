@@ -27,6 +27,12 @@
 
 namespace ECidade\RecursosHumanos\RH\Efetividade\Repository;
 
+use Servidor;
+use cl_escalaservidor;
+use DBException;
+use DBDate;
+use db_utils;
+use ServidorRepository;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\EscalaServidor as EscalaServidorModel;
 
 /**
@@ -41,14 +47,14 @@ class EscalaServidor {
   /**
    * Retorna uma coleção de EscalaServidor ou um item de escal de servidor se informado uma data no parâmetro
    *
-   * @param \Servidor $oServidor
-   * @param \DBDate   $oDataPonto
+   * @param Servidor $oServidor
+   * @param DBDate $oDataPonto
    * @return mixed
-   * @throws \DBException
+   * @throws DBException
    */
-  public static function getEscalas(\Servidor $oServidor, $oDataPonto = null) {
+  public static function getEscalas(Servidor $oServidor, $oDataPonto = null) {
 
-    $oDaoEscalaServidor     = new \cl_escalaservidor();
+    $oDaoEscalaServidor     = new cl_escalaservidor();
     $sCaseEscalaPosterior   = "case when";
     $sCaseEscalaPosterior  .= " exists(select 1";
     $sCaseEscalaPosterior  .= "          from escalaservidor es";
@@ -58,7 +64,7 @@ class EscalaServidor {
     $sCaseEscalaPosterior  .= "     else false";
     $sCaseEscalaPosterior  .= " end as tem_escala_posterior";
     $sCamposEscalaServidor  = "escalaservidor.*, {$sCaseEscalaPosterior}";
-    $aWhereEscalaServidor   = array();
+    $aWhereEscalaServidor   = [];
     
     $aWhereEscalaServidor[] = "rh192_regist = {$oServidor->getMatricula()}";
     $aWhereEscalaServidor[] = "rh192_instit = " . db_getsession("DB_instit");
@@ -80,7 +86,7 @@ class EscalaServidor {
     $rsEscalaServidor   = db_query($sSqlEscalaServidor);
 
     if(!$rsEscalaServidor) {
-      throw new \DBException("Erro ao buscar a escala do servidor.");
+      throw new DBException("Erro ao buscar a escala do servidor.");
     }
 
     if(pg_num_rows($rsEscalaServidor) == 0) {
@@ -93,7 +99,7 @@ class EscalaServidor {
       $oEscalaServidor->setCodigo($oRetorno->rh192_sequencial);
       $oEscalaServidor->setServidor($oServidor);
       $oEscalaServidor->setEscalaTrabalho(EscalaTrabalho::getInstanciaPorCodigo($oRetorno->rh192_gradeshorarios));
-      $oEscalaServidor->setDataEscala(new \DBDate($oRetorno->rh192_dataescala));
+      $oEscalaServidor->setDataEscala(new DBDate($oRetorno->rh192_dataescala));
 
       if($oRetorno->tem_escala_posterior) {
 
@@ -107,21 +113,21 @@ class EscalaServidor {
     };
     
     if(!empty($oDataPonto)) {
-      return \db_utils::makeFromRecord($rsEscalaServidor, $oClosureTrataRetorno, 0);
+      return db_utils::makeFromRecord($rsEscalaServidor, $oClosureTrataRetorno, 0);
     }
 
-    return \db_utils::makeCollectionFromRecord($rsEscalaServidor, $oClosureTrataRetorno);
+    return db_utils::makeCollectionFromRecord($rsEscalaServidor, $oClosureTrataRetorno);
   }
 
   /**
    * Retorna uma instância de EscalaServidor de uma escala cadastrada com data posterior a escala atual
    * @param EscalaServidorModel $oEscalaServidor
    * @return EscalaServidorModel|null
-   * @throws \DBException
+   * @throws DBException
    */
   public static function getEscalaPosterior(EscalaServidorModel $oEscalaServidor) {
 
-    $oDaoEscalaServidor    = new \cl_escalaservidor();
+    $oDaoEscalaServidor    = new cl_escalaservidor();
     $sWhereEscalaServidor  = "     rh192_regist     = {$oEscalaServidor->getServidor()->getMatricula()}";
     $sWhereEscalaServidor .= " AND rh192_dataescala > '{$oEscalaServidor->getDataEscala()->getDate()}'";
     $sWhereEscalaServidor .= " AND rh192_sequencial <> {$oEscalaServidor->getCodigo()}";
@@ -129,20 +135,20 @@ class EscalaServidor {
     $rsEscalaServidor      = db_query($sSqlEscalaServidor);
 
     if(!$rsEscalaServidor) {
-      throw new \DBException('Erro ao verificar se o servidor possui mais escalas.');
+      throw new DBException('Erro ao verificar se o servidor possui mais escalas.');
     }
 
     if(pg_num_rows($rsEscalaServidor) == 0) {
       return null;
     }
 
-    return \db_utils::makeFromRecord($rsEscalaServidor, function($oRetorno) {
+    return db_utils::makeFromRecord($rsEscalaServidor, function($oRetorno) {
 
       $oEscalaServidor = new EscalaServidorModel();
       $oEscalaServidor->setCodigo($oRetorno->rh192_sequencial);
-      $oEscalaServidor->setServidor(\ServidorRepository::getInstanciaByCodigo($oRetorno->rh192_regist));
+      $oEscalaServidor->setServidor(ServidorRepository::getInstanciaByCodigo($oRetorno->rh192_regist));
       $oEscalaServidor->setEscalaTrabalho(EscalaTrabalho::getInstanciaPorCodigo($oRetorno->rh192_gradeshorarios));
-      $oEscalaServidor->setDataEscala(new \DBDate($oRetorno->rh192_dataescala));
+      $oEscalaServidor->setDataEscala(new DBDate($oRetorno->rh192_dataescala));
 
       return $oEscalaServidor;
     });

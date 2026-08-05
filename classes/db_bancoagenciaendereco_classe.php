@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: configuracoes
 //CLASSE DA ENTIDADE bancoagenciaendereco
 class cl_bancoagenciaendereco { 
@@ -26,7 +26,7 @@ class cl_bancoagenciaendereco {
                  db92_endereco = int4 = Endereço da Agencia 
                  ";
    //funcao construtor da classe 
-   function cl_bancoagenciaendereco() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bancoagenciaendereco"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

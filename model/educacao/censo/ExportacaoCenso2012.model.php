@@ -38,18 +38,6 @@ class ExportacaoCenso2012 {
   protected $iCodigoLayout = 184 ;
 
   /**
-   * Código da escola
-   * @var integer
-   */
-  protected $iCodigoEscola;
-
-  /**
-   * Ano do Censo
-   * @var integer
-   */
-  protected $iAnoCenso;
-
-  /**
    * Data do Censo
    * @var date
    */
@@ -71,13 +59,13 @@ class ExportacaoCenso2012 {
    * Array com as turmas
    * @var Array
    */
-  protected $aDadosCensoTurma = array();
+  protected $aDadosCensoTurma = [];
 
   /**
    * Array com os dados dos docentes
    * @var Array
    */
-  protected $aDadosCensoDocente = array();
+  protected $aDadosCensoDocente = [];
 
   protected $rsArquivoLog;
 
@@ -90,16 +78,25 @@ class ExportacaoCenso2012 {
    * Array com os dados dos aluno
    * @var array
    */
-  protected $aAlunos = array();
+  protected $aAlunos = [];
 
   /**
    * Método construtor
    *
+   * @param int $iCodigoEscola
+   * @param int $iAnoCenso
    */
-  public function __construct($iCodigoEscola, $iAnoCenso) {
-
-    $this->iCodigoEscola     = $iCodigoEscola;
-    $this->iAnoCenso         = $iAnoCenso;
+  public function __construct(
+      /**
+       * Código da escola
+       */
+      protected $iCodigoEscola,
+      /**
+       * Ano do Censo
+       */
+      protected $iAnoCenso
+  )
+  {
   }
 
   /**

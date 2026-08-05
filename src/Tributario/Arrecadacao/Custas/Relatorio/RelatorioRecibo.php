@@ -2,6 +2,7 @@
 
 namespace ECidade\Tributario\Arrecadacao\Custas\Relatorio;
 
+use cl_db_bancos;
 use ECidade\Tributario\Arrecadacao\ModeloImpressao\Repository\CobrancaRegistrada;
 use Exception;
 use Instituicao;
@@ -217,12 +218,12 @@ class RelatorioRecibo
             $msgBanco = $result['k03_msgbanco'];
         }
 
-        $pdfEmissao->descr16_1 = substr($msgBanco, 0, 50);
-        $pdfEmissao->descr16_2 = substr($msgBanco, 50, 50);
-        $pdfEmissao->descr16_3 = substr($msgBanco, 100, 50);
-        $pdfEmissao->predescr16_1 = substr($msgBanco, 0, 50);
-        $pdfEmissao->predescr16_2 = substr($msgBanco, 50, 50);
-        $pdfEmissao->predescr16_3 = substr($msgBanco, 100, 50);
+        $pdfEmissao->descr16_1 = substr((string) $msgBanco, 0, 50);
+        $pdfEmissao->descr16_2 = substr((string) $msgBanco, 50, 50);
+        $pdfEmissao->descr16_3 = substr((string) $msgBanco, 100, 50);
+        $pdfEmissao->predescr16_1 = substr((string) $msgBanco, 0, 50);
+        $pdfEmissao->predescr16_2 = substr((string) $msgBanco, 50, 50);
+        $pdfEmissao->predescr16_3 = substr((string) $msgBanco, 100, 50);
 
         $pdfEmissao->descr11_1 = $cgmExibido->getCodigo() . "-" . $cgmExibido->getNome();
         $pdfEmissao->descr11_2 = "";
@@ -247,9 +248,7 @@ class RelatorioRecibo
                          where k99_numpre_n = {$oRecibo->getNumpreRecibo()}";
 
         $resultmensagemdesconto = db_query($sqlmensagemdesconto);
-        $mensagens = db_utils::makeCollectionFromRecord($resultmensagemdesconto, function ($registro) {
-            return explode('#', $registro->k40_descr)[0];
-        });
+        $mensagens = db_utils::makeCollectionFromRecord($resultmensagemdesconto, fn($registro) => explode('#', (string) $registro->k40_descr)[0]);
         // Valida se existe mensagem de desconto
         if (empty($mensagens)) {
             $msgDesconto = "";
@@ -271,11 +270,11 @@ class RelatorioRecibo
 
         // verifica se é ficha e busca o codigo do banco
         if ($oRegraEmissao->isCobranca()) {
-            $cldb_bancos = new \cl_db_bancos;
+            $cldb_bancos = new cl_db_bancos;
             $rsConsultaBanco = $cldb_bancos->sql_record(
                 $cldb_bancos->sql_query_file($oRecibo->getConvenio()->getCodBanco())
             );
-            $oBanco = \db_utils::fieldsMemory($rsConsultaBanco, 0);
+            $oBanco = db_utils::fieldsMemory($rsConsultaBanco, 0);
             $pdfEmissao->numbanco = $oBanco->db90_codban . "-" . $oBanco->db90_digban;
             $pdfEmissao->banco = $oBanco->db90_abrev;
 
@@ -285,7 +284,7 @@ class RelatorioRecibo
                 db_redireciona("db_erros.php?fechar=true&db_erro=[15] - " . $eExeption->getMessage());
             }
 
-            if (in_array($oRecibo->getArretipo()->getTipo(), array(18, 12, 13))) {
+            if (in_array($oRecibo->getArretipo()->getTipo(), [18, 12, 13])) {
                 $pdfEmissao->aExercValor = CobrancaRegistrada::getDebitosRecibo(
                     $oRecibo->getNumpreRecibo(),
                     db_getsession("DB_instit")
@@ -323,7 +322,7 @@ class RelatorioRecibo
             // Mostrar o endereço da empresa
             $pdfEmissao->ender = "{$empresa->getLogradouro()}, {$empresa->getNumero()}"
             . "{$empresa->getComplemento()}"
-            . (strlen($empresa->getBairro()) > 0 ? "/" : "") . $empresa->getBairro();
+            . (strlen((string) $empresa->getBairro()) > 0 ? "/" : "") . $empresa->getBairro();
             $pdfEmissao->nomepri = $empresa->getLogradouro();
             $pdfEmissao->nomepriimo = $empresa->getLogradouro();
             $pdfEmissao->prenomepri = $empresa->getLogradouro();
@@ -421,8 +420,8 @@ class RelatorioRecibo
             limit 1";
         $rs   = db_query($sql);
 
-        if (pg_numrows($rs) > 0) {
-            $dados =  \db_utils::fieldsMemory($rs, 0);
+        if (pg_num_rows($rs) > 0) {
+            $dados =  db_utils::fieldsMemory($rs, 0);
             $pdf->nomepri = $dados->z01_ender;
             $pdf->prenomepri = $dados->j43_ender;
             $pdf->nrpri = $dados->j39_numero;

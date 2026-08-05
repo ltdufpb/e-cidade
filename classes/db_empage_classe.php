@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,41 +29,41 @@
 //CLASSE DA ENTIDADE empage
 class cl_empage {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $e80_codage = 0;
-   var $e80_data_dia = null;
-   var $e80_data_mes = null;
-   var $e80_data_ano = null;
-   var $e80_data = null;
-   var $e80_cancelado_dia = null;
-   var $e80_cancelado_mes = null;
-   var $e80_cancelado_ano = null;
-   var $e80_cancelado = null;
-   var $e80_instit = 0;
+   public $e80_codage = 0;
+   public $e80_data_dia = null;
+   public $e80_data_mes = null;
+   public $e80_data_ano = null;
+   public $e80_data = null;
+   public $e80_cancelado_dia = null;
+   public $e80_cancelado_mes = null;
+   public $e80_cancelado_ano = null;
+   public $e80_cancelado = null;
+   public $e80_instit = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  e80_codage = int4 = Agenda
                  e80_data = date = Data
                  e80_cancelado = date = Data cancelamento
                  e80_instit = int4 = Cod. Instituição
                  ";
    //funcao construtor da classe
-   function cl_empage() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empage");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -133,10 +133,10 @@ class cl_empage {
          $this->erro_status = "0";
          return false;
        }
-       $this->e80_codage = pg_result($result,0,0);
+       $this->e80_codage = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from empage_e80_codage_seq");
-       if(($result != false) && (pg_result($result,0,0) < $e80_codage)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $e80_codage)){
          $this->erro_sql = " Campo e80_codage maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_empage {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Agenda ($this->e80_codage) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Agenda já Cadastrado";
@@ -194,13 +194,13 @@ class cl_empage {
      $resaco = $this->sql_record($this->sql_query_file($this->e80_codage));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6169,'$this->e80_codage','I')");
-       $resac = db_query("insert into db_acount values($acount,994,6169,'','".AddSlashes(pg_result($resaco,0,'e80_codage'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,994,6170,'','".AddSlashes(pg_result($resaco,0,'e80_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,994,6171,'','".AddSlashes(pg_result($resaco,0,'e80_cancelado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,994,10139,'','".AddSlashes(pg_result($resaco,0,'e80_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,994,6169,'','".AddSlashes(pg_fetch_result($resaco,0,'e80_codage'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,994,6170,'','".AddSlashes(pg_fetch_result($resaco,0,'e80_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,994,6171,'','".AddSlashes(pg_fetch_result($resaco,0,'e80_cancelado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,994,10139,'','".AddSlashes(pg_fetch_result($resaco,0,'e80_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -209,10 +209,10 @@ class cl_empage {
       $this->atualizacampos();
      $sql = " update empage set ";
      $virgula = "";
-     if(trim($this->e80_codage)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e80_codage"])){
+     if(trim((string) $this->e80_codage)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e80_codage"])){
        $sql  .= $virgula." e80_codage = $this->e80_codage ";
        $virgula = ",";
-       if(trim($this->e80_codage) == null ){
+       if(trim((string) $this->e80_codage) == null ){
          $this->erro_sql = " Campo Agenda nao Informado.";
          $this->erro_campo = "e80_codage";
          $this->erro_banco = "";
@@ -222,10 +222,10 @@ class cl_empage {
          return false;
        }
      }
-     if(trim($this->e80_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e80_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["e80_data_dia"] !="") ){
+     if(trim((string) $this->e80_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e80_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["e80_data_dia"] !="") ){
        $sql  .= $virgula." e80_data = '$this->e80_data' ";
        $virgula = ",";
-       if(trim($this->e80_data) == null ){
+       if(trim((string) $this->e80_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "e80_data_dia";
          $this->erro_banco = "";
@@ -238,7 +238,7 @@ class cl_empage {
        if(isset($GLOBALS["HTTP_POST_VARS"]["e80_data_dia"])){
          $sql  .= $virgula." e80_data = null ";
          $virgula = ",";
-         if(trim($this->e80_data) == null ){
+         if(trim((string) $this->e80_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "e80_data_dia";
            $this->erro_banco = "";
@@ -249,7 +249,7 @@ class cl_empage {
          }
        }
      }
-     if(trim($this->e80_cancelado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e80_cancelado_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["e80_cancelado_dia"] !="") ){
+     if(trim((string) $this->e80_cancelado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e80_cancelado_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["e80_cancelado_dia"] !="") ){
        $sql  .= $virgula." e80_cancelado = '$this->e80_cancelado' ";
        $virgula = ",";
      }     else{
@@ -258,10 +258,10 @@ class cl_empage {
          $virgula = ",";
        }
      }
-     if(trim($this->e80_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e80_instit"])){
+     if(trim((string) $this->e80_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e80_instit"])){
        $sql  .= $virgula." e80_instit = $this->e80_instit ";
        $virgula = ",";
-       if(trim($this->e80_instit) == null ){
+       if(trim((string) $this->e80_instit) == null ){
          $this->erro_sql = " Campo Cod. Instituição nao Informado.";
          $this->erro_campo = "e80_instit";
          $this->erro_banco = "";
@@ -279,17 +279,17 @@ class cl_empage {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6169,'$this->e80_codage','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e80_codage"]))
-           $resac = db_query("insert into db_acount values($acount,994,6169,'".AddSlashes(pg_result($resaco,$conresaco,'e80_codage'))."','$this->e80_codage',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,994,6169,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e80_codage'))."','$this->e80_codage',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e80_data"]))
-           $resac = db_query("insert into db_acount values($acount,994,6170,'".AddSlashes(pg_result($resaco,$conresaco,'e80_data'))."','$this->e80_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,994,6170,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e80_data'))."','$this->e80_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e80_cancelado"]))
-           $resac = db_query("insert into db_acount values($acount,994,6171,'".AddSlashes(pg_result($resaco,$conresaco,'e80_cancelado'))."','$this->e80_cancelado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,994,6171,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e80_cancelado'))."','$this->e80_cancelado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e80_instit"]))
-           $resac = db_query("insert into db_acount values($acount,994,10139,'".AddSlashes(pg_result($resaco,$conresaco,'e80_instit'))."','$this->e80_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,994,10139,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e80_instit'))."','$this->e80_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -334,13 +334,13 @@ class cl_empage {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6169,'$e80_codage','E')");
-         $resac = db_query("insert into db_acount values($acount,994,6169,'','".AddSlashes(pg_result($resaco,$iresaco,'e80_codage'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,994,6170,'','".AddSlashes(pg_result($resaco,$iresaco,'e80_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,994,6171,'','".AddSlashes(pg_result($resaco,$iresaco,'e80_cancelado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,994,10139,'','".AddSlashes(pg_result($resaco,$iresaco,'e80_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,994,6169,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e80_codage'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,994,6170,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e80_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,994,6171,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e80_cancelado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,994,10139,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e80_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from empage
@@ -400,7 +400,7 @@ class cl_empage {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:empage";
@@ -437,7 +437,7 @@ class cl_empage {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -493,7 +493,7 @@ class cl_empage {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -526,7 +526,7 @@ class cl_empage {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -586,7 +586,7 @@ class cl_empage {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -644,7 +644,7 @@ class cl_empage {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -699,7 +699,7 @@ class cl_empage {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

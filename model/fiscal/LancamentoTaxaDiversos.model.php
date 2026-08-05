@@ -296,7 +296,7 @@ class LancamentoTaxaDiversos
     $valor = db_utils::fieldsMemory($rsFormula, 0)->valor;
 
     if ($valor <= 0) {
-      throw new \BusinessException(
+      throw new BusinessException(
         "O valor calculado está inválido: ". number_format($valor, 2, ',', '.') . PHP_EOL .
         "Revise os dados informados no lançamento ou revise o cadastro da fórmula: {$this->getNaturezaTaxa()->getFormulaBase()}"
       );
@@ -312,7 +312,7 @@ class LancamentoTaxaDiversos
    */
   public static function getDescricaoUnidade($iIndice = null) {
 
-    $aUnidades = array(
+    $aUnidades = [
       '-------',
       'm',
       'm²',
@@ -326,7 +326,7 @@ class LancamentoTaxaDiversos
       'Milheiro',
       'Veículo',
       'Unidade'
-    );
+    ];
 
     if(!empty($iIndice) || $iIndice === 0 || $iIndice === '0') {
       return $aUnidades[$iIndice];
@@ -353,10 +353,10 @@ class LancamentoTaxaDiversos
     }
 
     if(pg_num_rows($rsDiversos) == 0) {
-      return array();
+      return [];
     }
 
-    return \db_utils::makeCollectionFromRecord($rsDiversos, function($oDebitos) {
+    return db_utils::makeCollectionFromRecord($rsDiversos, function($oDebitos) {
 
       $oDadosDebito               = new stdClass();
       $oDadosDebito->sValor       = $oDebitos->dv05_valor;

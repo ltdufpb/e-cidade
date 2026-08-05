@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_obrastec_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clobrastec = new cl_obrastec;
 $clobrastec->rotulo->label("ob15_numcgm");
 $clobrastec->rotulo->label("ob15_crea");
@@ -54,7 +55,7 @@ $clobrastec->rotulo->label("ob15_crea");
               <?=$Lob15_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ob15_numcgm",10,$Iob15_numcgm,true,"text",4,"","chave_ob15_numcgm");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clobrastec->rotulo->label("ob15_crea");
               <?=$Lob15_crea?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ob15_crea",20,$Iob15_crea,true,"text",4,"","chave_ob15_crea");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clobrastec->rotulo->label("ob15_crea");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         
 				$campos  = " cgm.z01_nome,													     ";
@@ -134,12 +135,12 @@ $clobrastec->rotulo->label("ob15_crea");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

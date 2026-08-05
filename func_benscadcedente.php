@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_benscadcedente_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbenscadcedente = new cl_benscadcedente;
 $clbenscadcedente->rotulo->label("t04_sequencial");
 $clbenscadcedente->rotulo->label("t04_numcgm");
@@ -54,7 +55,7 @@ $clbenscadcedente->rotulo->label("t04_numcgm");
               <?=$Lt04_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t04_sequencial",4,$It04_sequencial,true,"text",4,"","chave_t04_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clbenscadcedente->rotulo->label("t04_numcgm");
               <?=$Lt04_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("t04_numcgm",4,$It04_numcgm,true,"text",4,"","chave_t04_numcgm");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clbenscadcedente->rotulo->label("t04_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_benscadcedente.php")==true){
@@ -123,12 +124,12 @@ $clbenscadcedente->rotulo->label("t04_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -64,7 +64,7 @@ class cl_sqlmatriculas {
 				  left outer join testpri on j34_idbql = j49_idbql
 				  left outer join ruas on j14_codigo = j49_codigo";
 	 if($pesquisasetor != ""){
-       $sql .= " where j34_setor = '".strtoupper($pesquisasetor)."' and j34_quadra = '".strtoupper($pesquisaquadra)."'";
+       $sql .= " where j34_setor = '".strtoupper((string) $pesquisasetor)."' and j34_quadra = '".strtoupper((string) $pesquisaquadra)."'";
      }
 	 return $sql;
    }
@@ -140,10 +140,10 @@ class cl_sqlmatriculas {
 }
 
 class cl_ruas {
-  var $rotulo = null;
-  var $db_erro = null;
+  public $rotulo = null;
+  public $db_erro = null;
 
-  function cl_ruas() {
+  function __construct() {
     $this->rotulo = new rotulo("ruas");
   }
   function cldb_erro($uri){
@@ -153,7 +153,7 @@ class cl_ruas {
   }
   function dadosCodigo($filtro = "") {
     $result = db_query("select * from ruas ".($filtro != ""?"where j14_codigo = $filtro":"")." order by j14_codigo");
-    if(pg_numrows($result) > 0)
+    if(pg_num_rows($result) > 0)
 	  return $result;
 	else
 	  $db_erro = 'Nenhum Registro Selecionado';
@@ -167,7 +167,7 @@ class cl_ruas {
   }
   function dadosNome($filtro = "") {
     $result = db_query("select * from ruas ".($filtro != ""?"where j14_nome like '$filtro%'":"")." order by j14_nome");
-    if(pg_numrows($result) > 0)
+    if(pg_num_rows($result) > 0)
 	  return $result;
 	else
 	  $db_erro = 'Nenhum Registro Selecionado';
@@ -186,7 +186,7 @@ class cl_ruas {
     if($result == false){
 	   $this->$db_erro = 'Contate Administrador.';
     }
-	if(@pg_cmdtuples($result) > 0)
+	if(@pg_affected_rows($result) > 0)
 	  return true;
 	else{
       $this->$db_erro = 'Rua/Avenida nao Incluida. Verifique.';
@@ -201,7 +201,7 @@ class cl_ruas {
     $result = @db_query("update ruas set j14_nome = '$nome',
 	                                   j14_tipo = '$tipo'
 							 where j14_codigo = $codigo");
-	if(@pg_cmdtuples($result) > 0)
+	if(@pg_affected_rows($result) > 0)
 	  return true;
 	else{
       $this->$db_erro = 'Rua/Avenida nao Alterada. Verifique.';
@@ -214,7 +214,7 @@ class cl_ruas {
 	   return false;
 	}
     $result = @db_query("delete from ruas where j14_codigo = $codigo");
-	if(@pg_cmdtuples($result) > 0)
+	if(@pg_affected_rows($result) > 0)
 	  return true;
 	else{
       $this->$db_erro = 'Rua/Avenida nao Excluida. Verifique.';
@@ -223,20 +223,20 @@ class cl_ruas {
   }
 }
 class cl_bairro {
-  var $rotulo = null;
-  function cl_bairro() {
+  public $rotulo = null;
+  function __construct() {
     $this->rotulo = new rotulo("bairro");
   }
   function dadosCodigo($filtro = "") {
     $result = db_query("select * from bairro ".($filtro != ""?"where j13_codi = $filtro":"")." order by j13_codi");
-    if(pg_numrows($result) > 0)
+    if(pg_num_rows($result) > 0)
 	  return $result;
 	else
 	  return false;
   }
   function dadosNome($filtro = "") {
     $result = db_query("select * from bairro ".($filtro != ""?"where j13_descr like '$filtro%'":"")." order by j13_descr ");
-    if(pg_numrows($result) > 0)
+    if(pg_num_rows($result) > 0)
 	  return $result;
 	else
 	  return false;
@@ -251,7 +251,7 @@ class cl_bairro {
     if($codigo=="")
 	   return false;
     $result = db_query("insert into bairro(j13_codi,j13_descr,j13_codant) values($codigo,'$descr','$codant')");
-	if(pg_cmdtuples($result) > 0)
+	if(pg_affected_rows($result) > 0)
 	  return true;
 	else
 	  return false;
@@ -262,7 +262,7 @@ class cl_bairro {
     $result = db_query("update bairro set j13_descr = '$descr',
 	                                     j13_coant = '$coant'
 							 where j13_codi = $codigo");
-	if(pg_cmdtuples($result) > 0)
+	if(pg_affected_rows($result) > 0)
 	  return true;
 	else
 	  return false;
@@ -271,27 +271,27 @@ class cl_bairro {
     if($codigo=="")
 	   return false;
     $result = db_query("delete from bairro where j13_codi = $codigo");
-	if(pg_cmdtuples($result) > 0)
+	if(pg_affected_rows($result) > 0)
 	  return true;
 	else
 	  return false;
   }
 }
 class cl_setor {
-  var $rotulo = null;
-  function cl_setor() {
+  public $rotulo = null;
+  function __construct() {
     $this->rotulo = new rotulo("setor");
   }
   function dadosCodigo($filtro = "") {
     $result = db_query("select * from setor ".($filtro != ""?"where j30_codi = $filtro":"")." order by j30_codi");
-    if(pg_numrows($result) > 0)
+    if(pg_num_rows($result) > 0)
 	  return $result;
 	else
 	  return false;
   }
   function dadosNome($filtro = "") {
     $result = db_query("select * from setor ".($filtro != ""?"where j30_descr like '$filtro%'":"")." order by j30_descr ");
-    if(pg_numrows($result) > 0)
+    if(pg_num_rows($result) > 0)
 	  return $result;
 	else
 	  return false;
@@ -300,7 +300,7 @@ class cl_setor {
     if($codigo=="")
 	   return false;
     $result = db_query("insert into setor(j30_codi,j30_descr,j30_alipre,j30_aliter) values($codigo,'$descr',$alipre,$aliter)");
-	if(pg_cmdtuples($result) > 0)
+	if(pg_affected_rows($result) > 0)
 	  return true;
 	else
 	  return false;
@@ -312,7 +312,7 @@ class cl_setor {
 	                                    j30_alipre = $alipre,
 										j30_aliter = $aliter
 							 where j30_codi = $codigo");
-	if(pg_cmdtuples($result) > 0)
+	if(pg_affected_rows($result) > 0)
 	  return true;
 	else
 	  return false;
@@ -321,7 +321,7 @@ class cl_setor {
     if($codigo=="")
 	   return false;
     $result = db_query("delete from setor where j30_codi = $codigo");
-	if(pg_cmdtuples($result) > 0)
+	if(pg_affected_rows($result) > 0)
 	  return true;
 	else
 	  return false;

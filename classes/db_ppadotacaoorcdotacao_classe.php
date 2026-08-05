@@ -54,7 +54,7 @@ class cl_ppadotacaoorcdotacao {
                  o19_anousu = int4 = Ano do Exercicio
                  ";
    //funcao construtor da classe
-   function cl_ppadotacaoorcdotacao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ppadotacaoorcdotacao");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

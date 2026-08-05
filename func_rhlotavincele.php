@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhlotavincele_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhlotavincele = new cl_rhlotavincele;
 $clrhlotavincele->rotulo->label("rh28_codlotavinc");
 $clrhlotavincele->rotulo->label("rh28_codeledef");
@@ -55,7 +56,7 @@ $clrhlotavincele->rotulo->label("rh28_codelenov");
               <?=$Lrh28_codlotavinc?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh28_codlotavinc",6,$Irh28_codlotavinc,true,"text",4,"","chave_rh28_codlotavinc");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clrhlotavincele->rotulo->label("rh28_codelenov");
               <?=$Lrh28_codeledef?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh28_codeledef",6,$Irh28_codeledef,true,"text",4,"","chave_rh28_codeledef");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clrhlotavincele->rotulo->label("rh28_codelenov");
               <?=$Lrh28_codelenov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh28_codelenov",6,$Irh28_codelenov,true,"text",4,"","chave_rh28_codelenov");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clrhlotavincele->rotulo->label("rh28_codelenov");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhlotavincele.php")==true){
@@ -129,12 +130,12 @@ $clrhlotavincele->rotulo->label("rh28_codelenov");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

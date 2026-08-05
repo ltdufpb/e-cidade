@@ -68,7 +68,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
               <label id="lbl_h12_assent" for="h12_assent"><?=@$Lh12_assent?></label>
             </td>
             <td>
-              <?
+              <?php 
               db_input('h12_codigo',5,$Ih12_codigo,true,'hidden',3,"");
               db_input('h12_assent',5,$Ih12_assent,true,'text',$db_opcao,"");
               ?>
@@ -79,7 +79,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
               <label id="lbl_h12_descr" for="h12_descr"><?=@$Lh12_descr?></label>
             </td>
             <td colspan="3">
-              <?
+              <?php 
               db_input('h12_descr',40,$Ih12_descr,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -89,7 +89,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
               <label id="lbl_h12_dias" for="h12_dias"><?=@$Lh12_dias?></label>
             </td>
             <td>
-              <?
+              <?php 
               db_input('h12_dias',6,$Ih12_dias,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -99,7 +99,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
               <label id="lbl_h12_reltot" for="h12_reltot"><?=@$Lh12_reltot?></label>
             </td>
             <td>
-              <?
+              <?php 
               $x = array(
                 0=>"0 - Nao Soma",
                 1=>"1 - Tempo Municipal",
@@ -117,7 +117,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
               <label id="lbl_h12_relgra" for="h12_relgra"><?=@$Lh12_relgra?></label>
             </td>
             <td>
-              <?
+              <?php 
               $x = array("f"=>"Não","t"=>"Sim");
               db_select('h12_relgra',$x,true,$db_opcao,"");
               ?>
@@ -128,7 +128,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
               <label id="lbl_h12_tipo" for="h12_tipo"><?=@$Lh12_tipo?></label>
             </td>
             <td>
-              <?
+              <?php 
               $x = array(
                 "A"=>"A - Afastamento",
                 "S"=>"S - Assentamento"
@@ -140,7 +140,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
               <label id="lbl_h12_graefe" for="h12_graefe"><?=@$Lh12_graefe?></label>
             </td>
             <td>
-              <?
+              <?php 
               $x = array("f"=>"Não","t"=>"Sim");
               db_select('h12_graefe',$x,true,$db_opcao,"");
               ?>
@@ -151,7 +151,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
               <label id="lbl_h12_efetiv" for="h12_efetiv"><?=@$Lh12_efetiv?></label>
             </td>
             <td>
-              <?
+              <?php 
               $x = array(
                 "I"=>"I - Inicio",
                 "F"=>"F - Fim",
@@ -168,7 +168,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
               <label id="lbl_h12_tipefe" for="h12_tipefe"><?=@$Lh12_tipefe?></label>
             </td>
             <td>
-              <?
+              <?php 
               $x = array(
                 "I"=>"INSS",
                 "P"=>"Instituição",
@@ -183,7 +183,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
               <label id="lbl_h12_regenc" for="h12_regenc"><?=@$Lh12_regenc?></label>
             </td>
             <td>
-              <?
+              <?php 
               $x = array("f"=>"Não","t"=>"Sim");
               db_select('h12_regenc',$x,true,$db_opcao,"");
               ?>
@@ -192,7 +192,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
               <label id="lbl_h12_vinculaperiodoaquisitivo" for="h12_vinculaperiodoaquisitivo"><?=@$Lh12_vinculaperiodoaquisitivo?></label>
             </td>
             <td>
-              <?
+              <?php 
               $x = array("f"=>"Não","t"=>"Sim");
               db_select('h12_vinculaperiodoaquisitivo',$x,true,$db_opcao,"");
               ?>
@@ -246,7 +246,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
               <label id="lbl_h12_gerafaltas" for="h12_gerafaltas"><strong>Ponto Eletrônico </strong><?php echo $Lh12_gerafaltas; ?></label>
             </td>
             <td>
-              <? db_select('h12_gerafaltas', $opcoesGeraFaltas, true, $db_opcao) ?>
+              <?php  db_select('h12_gerafaltas', $opcoesGeraFaltas, true, $db_opcao) ?>
             </td>
           </tr>
 
@@ -256,7 +256,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
                         <?php echo $Lh12_permiteduplicar; ?></label>
                 </td>
                 <td>
-                    <? db_select('h12_permiteduplicar', $opcoesGeraFaltas, true, $db_opcao) ?>
+                    <?php  db_select('h12_permiteduplicar', $opcoesGeraFaltas, true, $db_opcao) ?>
                 </td>
             </tr>
         </table>
@@ -285,12 +285,12 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
         <table border="0">
           <tr>
             <td nowrap colspan="3" title="<?=@$Th30_portariaenvolv?>"><strong>
-                <?
+                <?php 
                 db_ancora(@$Lh30_portariaenvolv,"js_pesquisa_h30_portariaenvolv(true)",$db_opcao);
                 ?>
               </strong></td>
             <td nowrap>
-              <?
+              <?php 
               db_input("h30_portariaenvolv",10,@$Ih30_portariaenvolv,true,"text",$db_opcao,"onchange='js_pesquisa_h30_portariaenvolv(false);'");
               db_input("h42_descr",40,@$Ih42_descr,true,"text",3);
               ?>
@@ -298,12 +298,12 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
           </tr>
           <tr>
             <td nowrap colspan="3">
-              <?
+              <?php 
               db_ancora(@$Lh37_modportariaindividual,"js_pesquisaModIndividual(true)",$db_opcao);
               ?>
             </td>
             <td>
-              <?
+              <?php 
               db_input("h37_modportariaindividual",10,@$Ih37_modportariaindividual,true,"text",$db_opcao,"onchange='js_pesquisaModIndividual(false);'");
               db_input("descrModIndividual",40,"",true,"text",3);
               ?>
@@ -311,12 +311,12 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
           </tr>
           <tr>
             <td nowrap colspan="3">
-              <?
+              <?php 
               db_ancora($Lh38_modportariacoletiva,"js_pesquisaModColetiva(true)",$db_opcao);
               ?>
             </td>
             <td>
-              <?
+              <?php 
               db_input("h38_modportariacoletiva",10,@$Ih38_modportariacoletiva,true,"text",$db_opcao,"onchange='js_pesquisaModColetiva(false);'");
               db_input("descrModColetiva",40,"",true,"text",3);
               ?>
@@ -325,7 +325,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
           <tr>
             <td nowrap colspan="3" title="<?=@$Th30_portariatipoato?>"><?=@$Lh30_portariatipoato?></td>
             <td nowrap>
-              <?
+              <?php 
               $res_portariatipoato = $clportariatipoato->sql_record($clportariatipoato->sql_query_file(null,"h41_sequencial,h41_descr"));
               db_selectrecord("h30_portariatipoato",$res_portariatipoato,true,$db_opcao);
               ?>
@@ -334,7 +334,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
           <tr>
             <td nowrap colspan="3" title="<?=@$Th30_portariaproced?>"><?=@$Lh30_portariaproced?></td>
             <td nowrap>
-              <?
+              <?php 
               $res_portariaproced = $clportariaproced->sql_record($clportariaproced->sql_query_file(null,"h40_sequencial,h40_descr"));
               db_selectrecord("h30_portariaproced",$res_portariaproced,true,$db_opcao);
               ?>
@@ -343,7 +343,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
           <tr>
             <td nowrap colspan="3" title="<?=@$Th30_amparolegal?>"><?=@$Lh30_amparolegal?></td>
             <td nowrap>
-              <?
+              <?php 
               db_textarea('h30_amparolegal',5,40,@$Ih30_amparolegal,true,'text',$db_opcao,"")
               ?>
             </td>
@@ -399,7 +399,7 @@ $opcoesGeraFaltas = array('t'=>'Sim', 'f'=>'Não');
   }
   function js_preenchepesquisa(chave){
     db_iframe_tipoasse.hide();
-    <?
+    <?php 
     if($db_opcao!=1){
       echo " location.href = '".basename($_SERVER["PHP_SELF"])."?chavepesquisa='+chave;";
     }

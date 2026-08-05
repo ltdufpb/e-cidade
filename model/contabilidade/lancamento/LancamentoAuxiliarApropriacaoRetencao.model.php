@@ -203,8 +203,8 @@ class LancamentoAuxiliarApropriacaoRetencao extends LancamentoAuxiliarBase imple
             throw new BusinessException("Não foi possível encontrar conta débito e credito do lancamento.");
         }
 
-        $aCreditos = array();
-        $aDebitos = array();
+        $aCreditos = [];
+        $aDebitos = [];
 
         // prepara os dados necessario para conlancamrecurso
         for ($i = 0; $i < $oDaoConlancamval->numrows; $i++) {
@@ -351,6 +351,7 @@ class LancamentoAuxiliarApropriacaoRetencao extends LancamentoAuxiliarBase imple
     /**
      * Retorna a observação do histórico da operação
      */
+    #[Override]
     public function getObservacaoHistorico()
     {
         return $this->sObservacaoHistorico;
@@ -360,6 +361,7 @@ class LancamentoAuxiliarApropriacaoRetencao extends LancamentoAuxiliarBase imple
      * Seta a observação do histórico da operação
      * @param string $sObservacaoHistorico
      */
+    #[Override]
     public function setObservacaoHistorico($sObservacaoHistorico)
     {
         $this->sObservacaoHistorico = $sObservacaoHistorico;
@@ -424,6 +426,7 @@ class LancamentoAuxiliarApropriacaoRetencao extends LancamentoAuxiliarBase imple
      * Retorna o $iEmpenho
      * @return integer $iEmpenho
      */
+    #[Override]
     public function getEmpenho()
     {
         return $this->iEmpenho;

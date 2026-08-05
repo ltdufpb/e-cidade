@@ -24,12 +24,11 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
+use ECidade\Financeiro\Contabilidade\LancamentoContabil\PosProcessamento;
+use ECidade\Financeiro\Contabilidade\LancamentoContabil\Recurso;
+use ECidade\Financeiro\Contabilidade\LancamentoContabil\ComplementoRecurso;
 use ECidade\Financeiro\Contabilidade\ContaCorrente\Services\Processamento;
 use ECidade\Financeiro\Contabilidade\LancamentoContabil\Documento;
-use ECidade\Financeiro\Contabilidade\LancamentoContabil;
-use ECidade\Financeiro\Contabilidade\MatrizSaldoContabil\ProcessamentoMatriz;
-use ECidade\Financeiro\Orcamento\Recurso\Origem as OrigemRecurso;
 use ECidade\Financeiro\Contabilidade\LancamentoContabil\Service\ComplementoLancamentoService;
 
 define("URL_MENSAGEM_EVENTOCONTABIL", "financeiro.contabilidade.EventoContabil.");
@@ -78,7 +77,7 @@ class EventoContabil
      * Coleção de Lançamentos de um EventoContabil
      * @var EventoContabilLancamento[]
      */
-    protected $aEventoContabilLancamento = array();
+    protected $aEventoContabilLancamento = [];
 
     /**
      * Código do Lancamento Executado
@@ -484,7 +483,7 @@ class EventoContabil
     public function executaLancamento(
         ILancamentoAuxiliar $oLancamentoAuxiliar,
         $sDataLancamento = null,
-        array $options = null
+        ?array $options = null
     )
     {
         $dtDataUsu = date("Y-m-d", db_getsession('DB_datausu'));
@@ -567,18 +566,18 @@ class EventoContabil
 
         if (empty($options['ignorar_conta_corrente'])) {
             $instituicao = InstituicaoRepository::getInstituicaoByCodigo($this->getInstituicao());
-            $data = new \DBDate($dtDataUsu);
+            $data = new DBDate($dtDataUsu);
             $competencia = new DBCompetencia($data->getAno(), $data->getMes());
             $oProcessamento = new Processamento($instituicao, $competencia);
-            $oProcessamento->processar(array($oDaoLancamento->c70_codlan));
+            $oProcessamento->processar([$oDaoLancamento->c70_codlan]);
         }
 
         // transferencia de cobertura financeira
-        $itensParaIgnorar = array();
+        $itensParaIgnorar = [];
         if (!empty($options['itens_ignorar_pos']) && is_array($options['itens_ignorar_pos'])) {
             $itensParaIgnorar = $options['itens_ignorar_pos'];
         }
-        LancamentoContabil\PosProcessamento::processar($oDaoLancamento->c70_codlan, $itensParaIgnorar);
+        PosProcessamento::processar($oDaoLancamento->c70_codlan, $itensParaIgnorar);
 
         /**
          * Quando executar uma Transferência de Cobertura Financeiro tem que ajustar a tabela conlancamrecurso
@@ -642,7 +641,7 @@ class EventoContabil
         try {
             return EventoContabilRepository::getEventoContabilByCodigo($iEventoRetorno, $this->iAnoUso,
                 $this->getInstituicao());
-        } catch (Exception $oErro) {
+        } catch (Exception) {
             return false;
         }
     }
@@ -838,10 +837,10 @@ class EventoContabil
      */
     protected function lancarRecurso($lancamentoAuxiliar)
     {
-        $dadosRecurso = new \ECidade\Financeiro\Contabilidade\LancamentoContabil\Recurso();
+        $dadosRecurso = new Recurso();
         $dadosRecurso->processar($this->getCodigoLancamento(), $lancamentoAuxiliar);
 
-        $complementoRecurso = new LancamentoContabil\ComplementoRecurso();
+        $complementoRecurso = new ComplementoRecurso();
         $complementoRecurso->processar($this->getCodigoLancamento(), $this->getAnoUso());
     }
 

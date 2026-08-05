@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_abatimentodisbanco_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clabatimentodisbanco = new cl_abatimentodisbanco;
 $clabatimentodisbanco->rotulo->label("k132_sequencial");
 $clabatimentodisbanco->rotulo->label("k132_abatimento");
@@ -54,7 +55,7 @@ $clabatimentodisbanco->rotulo->label("k132_abatimento");
               <?=$Lk132_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k132_sequencial",10,$Ik132_sequencial,true,"text",4,"","chave_k132_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clabatimentodisbanco->rotulo->label("k132_abatimento");
               <?=$Lk132_abatimento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k132_abatimento",10,$Ik132_abatimento,true,"text",4,"","chave_k132_abatimento");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clabatimentodisbanco->rotulo->label("k132_abatimento");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_abatimentodisbanco.php")==true){
@@ -122,12 +123,12 @@ $clabatimentodisbanco->rotulo->label("k132_abatimento");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

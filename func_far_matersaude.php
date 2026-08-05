@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_matersaude_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clfar_matersaude = new cl_far_matersaude;
 $clmatmater       = new cl_matmater ( );
 $clfar_matersaude->rotulo->label("fa01_i_codigo");
@@ -52,7 +53,7 @@ $clmatmater->rotulo->label("m60_descr");
       <table width="45%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lfa01_i_codigo?></label></td>
-          <td><? db_input("fa01_i_codigo",5,$Ifa01_i_codigo,true,"text",4,"","chave_fa01_i_codigo"); ?></td>
+          <td><?php  db_input("fa01_i_codigo",5,$Ifa01_i_codigo,true,"text",4,"","chave_fa01_i_codigo"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lm60_descr?></label></td>
@@ -64,7 +65,7 @@ $clmatmater->rotulo->label("m60_descr");
         </tr>
         <tr>
           <td><label><?=$Lfa01_codigobarras?></label></td>
-          <td><? db_input("fa01_codigobarras",20,$Ifa01_codigobarras,true,"text",4,"","chave_fa01_codigobarras");?></td>
+          <td><?php  db_input("fa01_codigobarras",20,$Ifa01_codigobarras,true,"text",4,"","chave_fa01_codigobarras");?></td>
         </tr>
       </table>
     </fieldset>
@@ -168,12 +169,12 @@ $clmatmater->rotulo->label("m60_descr");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

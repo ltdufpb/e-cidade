@@ -32,16 +32,16 @@ class LocalTrabalhoRepository extends BaseClassRepository
      */
     protected static $oInstance;
 
-    private $locaisTrabalhoServidor = array();
+    private $locaisTrabalhoServidor = [];
 
-    public function getLocalTrabalhoPorServidor( \Servidor $servidor, $ano = null, $mes = null) {
+    public function getLocalTrabalhoPorServidor( Servidor $servidor, $ano = null, $mes = null) {
 
         if (empty($ano)) {
-            $ano = \DBPessoal::getAnoFolha();
+            $ano = DBPessoal::getAnoFolha();
         }
 
         if (empty($mes)) {
-            $mes = \DBPessoal::getMesFolha();
+            $mes = DBPessoal::getMesFolha();
         }
 
         $instituicaoServidor = $servidor->getCodigoInstituicao();
@@ -61,11 +61,11 @@ class LocalTrabalhoRepository extends BaseClassRepository
         $rs = \db_query($sql);
 
         if (!$rs) {
-            throw new \DBException('Erro ao buscar o local de trabalho do servidor: ' . $servidor->getCgm()->getNome());
+            throw new DBException('Erro ao buscar o local de trabalho do servidor: ' . $servidor->getCgm()->getNome());
         }
 
         $linhas = pg_num_rows($rs);
-        $this->locaisTrabalhoServidor[$matricula][$instituicaoServidor][$ano][$mes] = array();
+        $this->locaisTrabalhoServidor[$matricula][$instituicaoServidor][$ano][$mes] = [];
 
         for($i = 0; $i < $linhas; $i++) {
             $dados = db_utils::fieldsMemory($rs, $i);

@@ -2,11 +2,12 @@
 
 class DBHelpInlineModificacao extends DBHelpInline {
 
+  #[Override]
   public function load() {
 
     parent::load();
 
-    $aFields = $this->getData() ?: array();
+    $aFields = $this->getData() ?: [];
     $fnMergeData = function($oGroup) use ( & $aFields) {
       if (!empty($oGroup->fields)) {
         $aFields = array_merge($aFields, $oGroup->fields);
@@ -61,7 +62,7 @@ class DBHelpInlineModificacao extends DBHelpInline {
    */
   private function getPlugins() {
 
-    $aPlugins = array();
+    $aPlugins = [];
 
     foreach (static::getPluginsMenu($this->getIdItemMenu()) as $sNomePlugin) {
       

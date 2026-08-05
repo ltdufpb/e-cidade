@@ -45,7 +45,7 @@ class cl_rhpessoalprocessodesligamento
     public function __construct()
     {
         $this->rotulo = new rotulo("rhpessoalprocessodesligamento"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -125,10 +125,10 @@ class cl_rhpessoalprocessodesligamento
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh279_sequencial = pg_result($result,0,0); 
+       $this->rh279_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from recursoshumanos.rhpessoalprocessodesligamento_rh279_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh279_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh279_sequencial)){
          $this->erro_sql = " Campo rh279_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_rhpessoalprocessodesligamento
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Informações do desligamento. ($this->rh279_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Informações do desligamento. já Cadastrado";
@@ -199,10 +199,10 @@ class cl_rhpessoalprocessodesligamento
       $this->atualizacampos();
      $sql = " update rhpessoalprocessodesligamento set ";
      $virgula = "";
-     if(trim($this->rh279_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh279_sequencial"])){ 
+     if(trim((string) $this->rh279_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh279_sequencial"])){ 
        $sql  .= $virgula." rh279_sequencial = $this->rh279_sequencial ";
        $virgula = ",";
-       if(trim($this->rh279_sequencial) == null ){ 
+       if(trim((string) $this->rh279_sequencial) == null ){ 
          $this->erro_sql = " Campo Número Sequencial não informado.";
          $this->erro_campo = "rh279_sequencial";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_rhpessoalprocessodesligamento
          return false;
        }
      }
-     if(trim($this->rh279_sequencialprocessovinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh279_sequencialprocessovinculo"])){ 
+     if(trim((string) $this->rh279_sequencialprocessovinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh279_sequencialprocessovinculo"])){ 
        $sql  .= $virgula." rh279_sequencialprocessovinculo = $this->rh279_sequencialprocessovinculo ";
        $virgula = ",";
-       if(trim($this->rh279_sequencialprocessovinculo) == null ){ 
+       if(trim((string) $this->rh279_sequencialprocessovinculo) == null ){ 
          $this->erro_sql = " Campo Processo vínculo não informado.";
          $this->erro_campo = "rh279_sequencialprocessovinculo";
          $this->erro_banco = "";
@@ -225,7 +225,7 @@ class cl_rhpessoalprocessodesligamento
          return false;
        }
      }
-     if(trim($this->rh279_dtdeslig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh279_dtdeslig_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh279_dtdeslig_dia"] !="") ){ 
+     if(trim((string) $this->rh279_dtdeslig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh279_dtdeslig_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh279_dtdeslig_dia"] !="") ){ 
        $sql  .= $virgula." rh279_dtdeslig = '$this->rh279_dtdeslig' ";
        $virgula = ",";
      }     else{ 
@@ -234,11 +234,11 @@ class cl_rhpessoalprocessodesligamento
          $virgula = ",";
        }
      }
-     if(trim($this->rh279_mtvdeslig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh279_mtvdeslig"])){ 
+     if(trim((string) $this->rh279_mtvdeslig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh279_mtvdeslig"])){ 
        $sql  .= $virgula." rh279_mtvdeslig = '$this->rh279_mtvdeslig' ";
        $virgula = ",";
      }
-     if(trim($this->rh279_dtprojfimapi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh279_dtprojfimapi_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh279_dtprojfimapi_dia"] !="") ){ 
+     if(trim((string) $this->rh279_dtprojfimapi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh279_dtprojfimapi_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh279_dtprojfimapi_dia"] !="") ){ 
        $sql  .= $virgula." rh279_dtprojfimapi = '$this->rh279_dtprojfimapi' ";
        $virgula = ",";
      }     else{ 
@@ -247,22 +247,22 @@ class cl_rhpessoalprocessodesligamento
          $virgula = ",";
        }
      }
-     if(trim($this->rh279_pensalim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh279_pensalim"])){ 
-        if(trim($this->rh279_pensalim)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh279_pensalim"])){ 
+     if(trim((string) $this->rh279_pensalim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh279_pensalim"])){ 
+        if(trim((string) $this->rh279_pensalim)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh279_pensalim"])){ 
            $this->rh279_pensalim = "0" ; 
         } 
        $sql  .= $virgula." rh279_pensalim = $this->rh279_pensalim ";
        $virgula = ",";
      }
-     if(trim($this->rh279_percaliment)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh279_percaliment"])){ 
-        if(trim($this->rh279_percaliment)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh279_percaliment"])){ 
+     if(trim((string) $this->rh279_percaliment)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh279_percaliment"])){ 
+        if(trim((string) $this->rh279_percaliment)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh279_percaliment"])){ 
            $this->rh279_percaliment = "0" ; 
         } 
        $sql  .= $virgula." rh279_percaliment = $this->rh279_percaliment ";
        $virgula = ",";
      }
-     if(trim($this->rh279_vlralim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh279_vlralim"])){ 
-        if(trim($this->rh279_vlralim)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh279_vlralim"])){ 
+     if(trim((string) $this->rh279_vlralim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh279_vlralim"])){ 
+        if(trim((string) $this->rh279_vlralim)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh279_vlralim"])){ 
            $this->rh279_vlralim = "0" ; 
         } 
        $sql  .= $virgula." rh279_vlralim = $this->rh279_vlralim ";

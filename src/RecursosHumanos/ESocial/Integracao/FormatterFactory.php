@@ -2,6 +2,8 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao;
 
+use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\FechamentoEventosPeriodicos;
+use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\EFDServicosPrestados;
 use ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\AdmissaoPreliminarFormatter;
 use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\AfastamentoTemporarioFormatter;
@@ -128,7 +130,7 @@ class FormatterFactory
                 $formatter = new ReaberturaEventosPeriodicosFormatter();
                 break;
             case Tipo::S1299:
-                $formatter = new Formatter\FechamentoEventosPeriodicos();
+                $formatter = new FechamentoEventosPeriodicos();
                 $formatter->setDePara(require($path . DS . 'templateFechamentoEventosPeriodicos.php'));
                 break;
             case Tipo::S2190:
@@ -230,7 +232,7 @@ class FormatterFactory
                 $formatter->setDePara(require($path . DS . 'templateEfdExclusaoEventos.php'));
                 break;
             case Tipo::R2020:
-                $formatter = new Formatter\EFDServicosPrestados();
+                $formatter = new EFDServicosPrestados();
                 $formatter->setDePara(require($path . DS . 'templateEfdServicosPrestados.php'));
                 break;
             case Tipo::R2099:

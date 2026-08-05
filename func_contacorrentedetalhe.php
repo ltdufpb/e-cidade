@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_contacorrentedetalhe_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcontacorrentedetalhe = new cl_contacorrentedetalhe;
 $clcontacorrentedetalhe->rotulo->label("c19_sequencial");
 $clcontacorrentedetalhe->rotulo->label("c19_sequencial");
@@ -59,7 +60,7 @@ $campos  = "distinct c19_sequencial, cast(cast(c61_reduz as varchar ) || ' - ' |
               <?=$Lc19_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("c19_sequencial",10,$Ic19_sequencial,true,"text",4,"","chave_c19_sequencial");
 		       ?>
             </td>
@@ -77,7 +78,7 @@ $campos  = "distinct c19_sequencial, cast(cast(c61_reduz as varchar ) || ' - ' |
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       
       $sWhere  = " c19_contacorrente = {$c17_sequencial} ";
       
@@ -141,12 +142,12 @@ $campos  = "distinct c19_sequencial, cast(cast(c61_reduz as varchar ) || ' - ' |
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

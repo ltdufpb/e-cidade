@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -32,7 +32,7 @@ require_once(modification('libs/db_usuariosonline.php'));
 require_once(modification('libs/db_utils.php'));
 require_once(modification('dbforms/db_funcoes.php'));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoRegenciaHorario   = new cl_regenciahorario();
 $oDaoTurmaACHorario    = new cl_turmaachorario();
@@ -91,7 +91,7 @@ function js_horario(sQuadro, lRegenteSelecionado, lHorarioDisponivel, lHorarioMa
 }
 </script>
 
-<?
+<?php 
 if (isset($chavepesquisa)) {
   
   try {
@@ -112,7 +112,7 @@ if (isset($chavepesquisa)) {
     }
 
     $oDadosPeriodo = db_utils::fieldsmemory( $rs, 0 );
-  
+
     /* Obtenho o CGM do regente */
     $sSql = $oDaoRechumano->sql_query_rechumano(
                                                  null,
@@ -127,7 +127,7 @@ if (isset($chavepesquisa)) {
     } else {
       $iNumCgmRecHumano = 0;
     }
-  
+
     /* Obtenho o ano do calendário */
     $sSql = $oDaoCalendario->sql_query_file(
                                              null,
@@ -144,19 +144,19 @@ if (isset($chavepesquisa)) {
     }
 
     $iAnoCalendario = db_utils::fieldsmemory($rs, 0)->anocalendario;
-    
+
     if (!empty($maisturmas)) {
       $sCondTurmas = " and ed59_i_turma not in ($maisturmas)";
     } else {
       $sCondTurmas = '';
     }
-  
+
     $sCampos     = 'ed08_c_descr, ed17_h_inicio, ed17_h_fim, ed17_i_escola, ed20_i_codigo as codmatricula, ';
     $sCampos    .= 'ed18_c_nome, reccgm.z01_nome as professor, ed57_c_descr as turma, ';
     $sCampos    .= 'ed15_c_nome as turno,ed52_c_descr as calendario';
     $sWhere      = " ed58_i_diasemana = $diasemana and reccgm.z01_numcgm = $iNumCgmRecHumano ";
     $sWhere     .= " and ed52_i_ano = $iAnoCalendario and ed58_ativo is true  ";
-  
+
     $sIntervalo  = " and (((periodoescola.ed17_h_inicio > '".$oDadosPeriodo->horafim."' "; // inicio
     $sIntervalo .= "           and periodoescola.ed17_h_inicio < '".$oDadosPeriodo->horafim."') ";
     $sIntervalo .= "       or (periodoescola.ed17_h_fim  > '".$oDadosPeriodo->horainicio."' ";
@@ -177,13 +177,13 @@ if (isset($chavepesquisa)) {
     $sMsgErro    = '';
 
     if ($oDaoRegenciaHorario->numrows > 0) {
-  
+
       $sMsgErro       = $oDadosPeriodo->descrturno.' '.$oDadosPeriodo->descrperiodo;
       $sMsgErro      .= ' Período ('.$oDadosPeriodo->horafim.' às '.$oDadosPeriodo->horafim.') ';
       $sMsgErro      .= 'está em conflito com período(s):\n\n';
 
       for ($iCont = 0; $iCont < $oDaoRegenciaHorario->numrows; $iCont++) {
-  
+
         $oDadosConflito = db_utils::fieldsmemory($rs, $iCont);
         $sMsgErro .= ' -> '.$oDadosConflito->ed08_c_descr;
         $sMsgErro .= ' ('.$oDadosConflito->ed17_h_inicio.' às '.$oDadosConflito->ed17_h_fim.')';
@@ -192,9 +192,9 @@ if (isset($chavepesquisa)) {
         $sMsgErro .= ' (Matrícula: '.$oDadosConflito->codmatricula.')\n';
       }
     }
-  
+
     if (empty($sMsgErro)) {
-  
+
       /* Verifico caso o regente já possua horário em turmaac */
       $sWhere           = " turmaachorario.ed270_i_diasemana = $diasemana ";
       $sWhere          .= " and reccgm.z01_numcgm = $iNumCgmRecHumano ";
@@ -203,13 +203,13 @@ if (isset($chavepesquisa)) {
       $rs               = $oDaoTurmaACHorario->sql_record($sSql); // $result_sala
 
       if ($oDaoTurmaACHorario->numrows > 0) {
-  
+
         $sMsgErro       = $oDadosPeriodo->descrturno.' '.$oDadosPeriodo->descrperiodo;
         $sMsgErro      .= ' Período ('.$oDadosPeriodo->horafim.' às '.$oDadosPeriodo->horafim.') ';
         $sMsgErro      .= 'está em conflito com período(s):\n\n';
 
         for ($iCont = 0; $iCont < $oDaoTurmaACHorario->numrows; $iCont++) {
-        
+
           $oDadosConflito = db_utils::fieldsmemory($rs, $iCont);
           $sMsgErro .= ' -> '.$oDadosConflito->ed08_c_descr;
           $sMsgErro .= ' ('.$oDadosConflito->ed17_h_inicio.' às '.$oDadosConflito->ed17_h_fim.')';
@@ -219,7 +219,7 @@ if (isset($chavepesquisa)) {
         }
       }
     }
-  
+
     if (!empty($sMsgErro)) {
       throw new Exception($sMsgErro);
     } else {
@@ -243,7 +243,7 @@ if (isset($chavepesquisa)) {
        parent.document.getElementById("rh<?=$quadro?>").innerHTML = "<font color='#FF0000'>"+parent.document.form1.z01_nome.value+"</font>";
        parent.document.getElementById("codrh<?=$quadro?>").innerHTML = <?=$rechumano?>;
       </script>
-      <?
+      <?php 
     } // Fecha else não tem mensagem de erro
   } catch (Exception $oExcecao) {
     echo "<script>alert('".str_replace("'", "\'", $oExcecao->getMessage())."');</script>";
@@ -253,9 +253,9 @@ if (isset($chavepesquisa)) {
 if (isset($disponibilidade)) {
 
   try {
-	
+
     if (isset($excluir) && !empty($excluir)) {
-  
+
       $oDaoTurmaACHorario->excluir($excluir);
       if ($oDaoTurmaACHorario->erro_status == '0') {
 
@@ -263,14 +263,14 @@ if (isset($disponibilidade)) {
         throw new Exception( $sMensagem );
       }
     }
-    
+
     if ($rechumano != 0) {
-  
+
       /* Obtenho o CGM do rechumano */
       $sSql    = $oDaoRechumano->sql_query_rechumano($rechumano, 'reccgm.z01_numcgm');
       $rs      = $oDaoRechumano->sql_record($sSql);
       $sTabela = '';
-    
+
       if ($oDaoRechumano->numrows <= 0) {
 
         $sMensagem = 'Não foi possível obter o CGM do regente. Erro da classe: ' . $oDaoCalendario->erro_msg;
@@ -278,7 +278,7 @@ if (isset($disponibilidade)) {
       }
 
       $iNumCgmRecHumano = db_utils::fieldsmemory($rs, 0)->z01_numcgm;
-  
+
       /* Obtenho o ano do calendário */
       $sSql =  $oDaoCalendario->sql_query_file(
                                                 null,
@@ -296,7 +296,7 @@ if (isset($disponibilidade)) {
       }
 
       $iAnoCalendario = db_utils::fieldsmemory($rs, 0)->anocalendario;
-  
+
       /* Obtenho os períodos de aula da escola de acordo com o turno */
       $sCampos   = 'periodoescola.ed17_i_codigo, periodoescola.ed17_h_inicio as horainicio, ';
       $sCampos  .= 'periodoescola.ed17_h_fim as horafim';
@@ -304,12 +304,12 @@ if (isset($disponibilidade)) {
       $sWhere    = " ed17_i_escola = $iEscola and ed17_i_turno in ($ed17_i_turno)";
       $sSql      = $oDaoPeriodoEscola->sql_query(null, $sCampos, $sOrder, $sWhere);
       $rsPeriodo = $oDaoPeriodoEscola->sql_record($sSql);
-    
+
       // Percorro todos os períodos de aula em todos os dias letivos
       for ($iCont = 0;$iCont < $oDaoPeriodoEscola->numrows; $iCont++) {
-    
+
         $oDadosPeriodo = db_utils::fieldsmemory($rsPeriodo, $iCont);
-        
+
         /* Obtenho os dias da semana que são letivos na escola */
         $sSql = $oDaoDiaSemana->sql_query_rh(
                                               null,
@@ -320,10 +320,10 @@ if (isset($disponibilidade)) {
         $rsDiasLetivos = $oDaoDiaSemana->sql_record($sSql);
 
         for ($iCont2 = 0; $iCont2 < $oDaoDiaSemana->numrows; $iCont2++) {
-  
+
           $iCodDia = db_utils::fieldsmemory($rsDiasLetivos, $iCont2)->ed32_i_codigo;
           $sQuadro = 'Q'.$iCont.$iCont2;
-  
+
           /* Verifico se o regente possui algum horário disponível na escola */
           $sWhere             = " rechumanohoradisp.ed33_i_diasemana = $iCodDia ";
           $sWhere            .= ' and rechumanohoradisp.ed33_i_periodo = '.$oDadosPeriodo->ed17_i_codigo;
@@ -334,13 +334,13 @@ if (isset($disponibilidade)) {
           $sSql               = $oDaoRecHumanoHoraDisp->sql_query_disponibilidade(null, 'ed17_i_codigo', '', $sWhere);
           $rs                 = $oDaoRecHumanoHoraDisp->sql_record($sSql);
           $lPossuiHorarioDisp = $oDaoRecHumanoHoraDisp->numrows <= 0 ? false : true;
-  
+
           if (!empty($maisturmas)) {
             $sCondTurmas = " and ed59_i_turma not in ($maisturmas)";
           } else {
             $sCondTurmas = '';
           }
-          
+
           /* Obtenho os dados da turma e disciplina onde o regente já possua horário em conflito com o horário atual */
           $sCampos     = ' ed57_c_descr as nometurma, ed232_c_abrev as abrevdisc ';
           $sWhere      = " ed58_i_diasemana = $iCodDia and reccgm.z01_numcgm = $iNumCgmRecHumano ";
@@ -366,11 +366,11 @@ if (isset($disponibilidade)) {
           $sAbrevDisc  = '';
 
           if ($oDaoRegenciaHorario->numrows > 0) {
-    
+
             $sNomeTurma = db_utils::fieldsmemory($rs, 0)->nometurma;
             $sAbrevDisc = db_utils::fieldsmemory($rs, 0)->abrevdisc;
           }
-         
+
           /* Verifico caso o regente já possua horário em turmaac */
           $sCampos          = " turmaac.ed268_c_descr as nometurma ";
           $sWhere           = " turmaachorario.ed270_i_diasemana = $iCodDia ";
@@ -381,7 +381,7 @@ if (isset($disponibilidade)) {
           if ($oDaoTurmaACHorario->numrows > 0) {
             $sNomeTurma = db_utils::fieldsmemory($rs, 0)->nometurma;
           }
-         
+
           /* Verifico se o regente faz atendimento simultâneo */
           $sWhereRecHumanoAtiv = "rechumano.ed20_i_codigo = {$rechumano} and rechumanoescola.ed75_i_escola = {$iEscola}";
           $sSql                = $oDaoRechumanoAtiv->sql_query(
@@ -396,10 +396,10 @@ if (isset($disponibilidade)) {
           if ($oDaoRechumanoAtiv->numrows > 0) {
             $sAtendimentoSimultaneo = db_utils::fieldsmemory($rs, 0)->ed75_c_simultaneo == 'S' ? 'true' : 'false';	
           }
-    
+
           echo '<script>';
           if ($lPossuiHorarioDisp) { // Não possui horário disponível ou nenhum regente informado
-  
+
             if ($rechumano != 0) {
               $sRec = 'true';
             } else {

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -78,7 +78,7 @@ class cl_arrecantpgtoparcial {
                  k00_abatimento = int4 = Abatimento
                  ";
    //funcao construtor da classe
-   function cl_arrecantpgtoparcial() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arrecantpgtoparcial");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

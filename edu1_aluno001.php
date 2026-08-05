@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_aluno_classe.php"));
 include(modification("classes/db_alunocurso_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $claluno = new cl_aluno;
 $clalunocurso = new cl_alunocurso;
 $db_opcao = 1;
@@ -85,7 +85,7 @@ if(isset($incluir)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Inclusão de Aluno</b></legend>
-    <?include(modification("forms/db_frmaluno.php"));?>
+    <?php include(modification("forms/db_frmaluno.php"));?>
    </fieldset>
    </center>
   </td>
@@ -93,7 +93,7 @@ if(isset($incluir)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)){
  if($claluno->erro_status=="0"){
   $claluno->erro(true,false);
@@ -109,7 +109,7 @@ if(isset($incluir)){
   <script>
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a1.location.href='edu1_aluno002.php?chavepesquisa=<?=$ed47_i_codigo?>';
   </script>
-  <?
+  <?php 
  };
 };
 ?>

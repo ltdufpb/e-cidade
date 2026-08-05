@@ -164,7 +164,7 @@ class Servidor
      * Array com coleção de objetos Dependente
      * Referente ao servidor
      */
-    private $aDependentes = array();
+    private $aDependentes = [];
 
     /**
      * Objeto DBDate com a data de nascimento do servidor
@@ -265,18 +265,18 @@ class Servidor
     const VARIAVEL_SALARIO_BASE_PROGRESSAO = 'F010';
 
     /**
-     * @var \stdClass
+     * @var stdClass
      */
     private $documentos;
 
     /**
-     * @var \LocalTrabalho[]
+     * @var LocalTrabalho[]
      */
-    private $locaisTrabalho = array();
+    private $locaisTrabalho = [];
 
     /**
      * Data da rescisao do servidor
-     * @var \DateTime
+     * @var DateTime
      */
     private $dataRescisao = null;
 
@@ -287,14 +287,14 @@ class Servidor
 
     /**
      * Dados da rescisao
-     * @var \stdClass
+     * @var stdClass
      */
     private $dadosRescisao;
 
     /**
      * @var Rubrica[]
      */
-    private $rubricasPonto = array();
+    private $rubricasPonto = [];
     /**
      * Controle da pesquisa rescisao - cache
      * @var bool
@@ -318,7 +318,7 @@ class Servidor
     private $grauInstrucao;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $dataOptanteFgts;
 
@@ -633,7 +633,7 @@ class Servidor
      * Define o código do cgm do servidor
      * @param object $oCgm
      */
-    public function setCgm(CgmBase $oCgm = null)
+    public function setCgm(?CgmBase $oCgm = null)
     {
         $this->oCgm = $oCgm;
     }
@@ -748,8 +748,8 @@ class Servidor
     /**
      * Define o código da instituição da matrícula do servidor
      * @param integer $iCodigoInstituicao
-     * @deprecated - Utilizar Servidor::getInstituicao();
      */
+    #[Deprecated(message: '- Utilizar Servidor::getInstituicao();')]
     public function setCodigoInstituicao($iCodigoInstituicao)
     {
         $this->iCodigoInstituicao = $iCodigoInstituicao;
@@ -1142,8 +1142,8 @@ class Servidor
      * Retorna o Ponto pelo tipo de ponto
      *
      * @param string $sPonto - tabela de ponto
-     * @return \Ponto
-     * @throws \BusinessException
+     * @return Ponto
+     * @throws BusinessException
      * @access public
      */
     public function getPonto($sPonto)
@@ -1228,12 +1228,12 @@ class Servidor
         $rsDependentes = $oDaoRhDepend->sql_record($sSqlDependentes);
 
         if (!$rsDependentes || pg_num_rows($rsDependentes) == 0) {
-            return array();
+            return [];
         }
 
         $aDependentes = db_utils::getCollectionByRecord($rsDependentes);
         foreach ($aDependentes as $oDependente) {
-            $this->aDependentes[$oDependente->rh31_codigo] =  \Dependente::find($oDependente->rh31_codigo);
+            $this->aDependentes[$oDependente->rh31_codigo] =  Dependente::find($oDependente->rh31_codigo);
         }
 
         return $this->aDependentes;
@@ -1260,15 +1260,10 @@ class Servidor
             return;
         }
 
-        switch ($sVariavel) {
-            case Servidor::VARIAVEL_SALARIO_BASE_PROGRESSAO:
-                return db_utils::fieldsMemory($rsValorVariaveisCalculo, 0)->variavel_salario_base_progressao;
-                break;
-
-            default:
-                return 0;
-                break;
-        }
+        return match ($sVariavel) {
+            Servidor::VARIAVEL_SALARIO_BASE_PROGRESSAO => db_utils::fieldsMemory($rsValorVariaveisCalculo, 0)->variavel_salario_base_progressao,
+            default => 0,
+        };
     }
 
     /**
@@ -1354,7 +1349,7 @@ class Servidor
     /**
      * Retorna se o servidor esta ativo nesta competencia
      * @return bool
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     public function isAtivo($ignoraException = null)
     {
@@ -1385,7 +1380,7 @@ class Servidor
     /**
      * Retorna se o servidor é pensionista
      * @return bool
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     public function isPensionista($ignoraException = null)
     {
@@ -1417,7 +1412,7 @@ class Servidor
     /**
      * Retorna se o servidor esta rescindido nesta competencia
      * @return bool
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     public function isRescindido()
     {
@@ -1431,7 +1426,7 @@ class Servidor
     /**
      * Retorna se o servidor esta rescindido na competencia informada
      * @return bool
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     public function isRescindidoCompetencia()
     {
@@ -1445,7 +1440,7 @@ class Servidor
     /**
      * Retorna se o Servidor está afastado na competencia
      * @return bool
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     public function isAfastado()
     {
@@ -1475,10 +1470,10 @@ class Servidor
 
     /**
      * Retorna se o servidor está afastado no RH
-     * @param  \DBDate $dataAfastamento
+     * @param DBDate $dataAfastamento
      * @return bool
      */
-    public function isAfastadoNoRH(\DBDate $dataAfastamento)
+    public function isAfastadoNoRH(DBDate $dataAfastamento)
     {
 
         $assentamentos = AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($this, 'A', $dataAfastamento);
@@ -1493,8 +1488,8 @@ class Servidor
      * getContaBancaria
      *
      * @access public
-     * @return \ContaBancaria
-     * @throws \DBException
+     * @return ContaBancaria
+     * @throws DBException
      */
     public function getContaBancaria()
     {
@@ -1547,12 +1542,10 @@ class Servidor
         $tipoPrevidencia = $this->getTipoPrevidencia();
         // 2 -> RGPS
         // outros -> RPPS
-        switch ($tipoPrevidencia) {
-            case 2:
-                return true;
-            default:
-                return false;
-        }
+        return match ($tipoPrevidencia) {
+            2 => true,
+            default => false,
+        };
         return false;
     }
 
@@ -1651,8 +1644,8 @@ class Servidor
     /**
      * Retorna a Instancia de Servidor vinculada ao CGM do Servidor Atual
      * @return \Servidor
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public function getServidorVinculado()
     {
@@ -1743,13 +1736,13 @@ class Servidor
 
     /**
      * Retorna uma lista de assentamentos de substituicao do servidor
-     * @return \AssentamentoSubstituicao[]
-     * @throws \BusinessException
+     * @return AssentamentoSubstituicao[]
+     * @throws BusinessException
      */
     public function getAssentamentosSubstituicao()
     {
 
-        $aListaAssentamentos = array();
+        $aListaAssentamentos = [];
         $oDaoAssentamento = new cl_assenta();
         $sCamposAssentamento = "h16_codigo as assentamento,
                               assentaloteregistroponto.*,
@@ -1841,7 +1834,7 @@ class Servidor
      * Verifica se o servidor possui remuneracao no periodo *
      * Para os ervidor possuir remuneracao, ele nao deve ter seu pagamento suspenso nem estar afastado sem remuneracao
      * @return bool
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     public function temRemuneracaoNoPeriodo()
     {
@@ -1870,16 +1863,16 @@ class Servidor
     /**
      * @param \DBCompetencia $oCompetencia
      * @return array
-     * @throws \BusinessException
+     * @throws BusinessException
      */
-    public function getAfastamentosNoPeriodo(DBCompetencia $oCompetencia = null)
+    public function getAfastamentosNoPeriodo(?DBCompetencia $oCompetencia = null)
     {
 
         if (empty($oCompetencia)) {
             $oCompetencia = new DBCompetencia($this->getAnoCompetencia(), $this->getMesCompetencia());
         }
 
-        $aAfastamentos = array();
+        $aAfastamentos = [];
         $oDaoAfastamento = new cl_afasta();
         $iUltimoDiaCompetencia = cal_days_in_month(CAL_GREGORIAN, $oCompetencia->getMes(), $oCompetencia->getAno());
 
@@ -2025,9 +2018,7 @@ class Servidor
             throw new DBException('Erro ao buscar os dados do Cargo do Servidor.');
         }
 
-        return db_utils::makeFromRecord($rsRHPessoal, function ($oRetorno) {
-            return $oRetorno;
-        }, 0);
+        return db_utils::makeFromRecord($rsRHPessoal, fn($oRetorno) => $oRetorno, 0);
     }
 
     /**
@@ -2037,12 +2028,12 @@ class Servidor
     public function getPadrao()
     {
 
-        $aWhere = array(
+        $aWhere = [
             'rh02_anousu =' . $this->getAnoCompetencia(),
             'rh02_mesusu =' . $this->getMesCompetencia(),
             'rh02_instit =' . $this->getInstituicao()->getSequencial(),
             'rh02_regist =' . $this->getMatricula()
-        );
+        ];
 
         $aWhere = array_filter($aWhere);
 
@@ -2084,7 +2075,7 @@ class Servidor
     public function getLocaisTrabalho($mes = null, $ano = null)
     {
         if (empty($this->locaisTrabalho)) {
-            $locaisTrabalhoRepository = \LocalTrabalhoRepository::getInstance();
+            $locaisTrabalhoRepository = LocalTrabalhoRepository::getInstance();
             $this->locaisTrabalho = $locaisTrabalhoRepository->getLocalTrabalhoPorServidor($this, $ano, $mes);
         }
 
@@ -2100,7 +2091,7 @@ class Servidor
     public function getLocalTrabalhoPrincial($mes = null, $ano = null)
     {
         if (empty($this->locaisTrabalho)) {
-            $locaisTrabalhoRepository = \LocalTrabalhoRepository::getInstance();
+            $locaisTrabalhoRepository = LocalTrabalhoRepository::getInstance();
             $this->locaisTrabalho = $locaisTrabalhoRepository->getLocalTrabalhoPorServidor($this, $ano, $mes);
         }
 
@@ -2120,7 +2111,7 @@ class Servidor
 
         $dadosRescisao = $this->getRescisao();
         if (!empty($dadosRescisao) && $dadosRescisao->rh05_recis != '') {
-            $this->dataRescisao = new \DateTime($dadosRescisao->rh05_recis);
+            $this->dataRescisao = new DateTime($dadosRescisao->rh05_recis);
             return $this->dataRescisao;
         }
 
@@ -2218,10 +2209,10 @@ class Servidor
      */
     public function toArray()
     {
-        return array(
+        return [
             'matricula' => $this->getMatricula(),
             'cgm' => $this->getCgm() instanceof CgmBase ? $this->getCgm()->toArray() : null
-        );
+        ];
     }
 
     /**
@@ -2232,7 +2223,7 @@ class Servidor
     {
         $dadosRescisao = $this->getRescisao();
         if (!empty($dadosRescisao) && $dadosRescisao->rh05_datapagamento != '') {
-            $this->dataPagamentoRescisao = new \DateTime($dadosRescisao->rh05_datapagamento);
+            $this->dataPagamentoRescisao = new DateTime($dadosRescisao->rh05_datapagamento);
             return $this->dataPagamentoRescisao;
         }
 
@@ -2382,7 +2373,7 @@ class Servidor
         $rs = db_query($sql);
         if (!$rs) {
             $msg = "Erro ao buscar informações do regime da matrícula: {$this->getMatricula()}";
-            throw new \DBException($msg);
+            throw new DBException($msg);
         }
         // Caso tenha registro é estagiario
         if (pg_num_rows($rs) > 0) {
@@ -2446,7 +2437,7 @@ class Servidor
             throw new Exception("nenhuma transação encontrada no cadastro de servidor!");
         }
 
-        $rhpessoal = new  \cl_rhpessoal();
+        $rhpessoal = new  cl_rhpessoal();
         $rhpessoal->rh01_raca = $this->getRacaCor();
         $rhpessoal->rh01_sexo = $this->getSexo();
         $rhpessoal->rh01_instru = $this->getGrauInstrucao();
@@ -2456,13 +2447,13 @@ class Servidor
         if (empty($this->getMatricula())) {
             $rhpessoal->incluir(null);
             if ($rhpessoal->erro_status != "1") {
-                throw new \Exception($rhpessoal->erro_msg);
+                throw new Exception($rhpessoal->erro_msg);
             }
         } else {
             $rhpessoal->rh01_regist = $this->getMatricula();
             $rhpessoal->alterar($this->getMatricula());
             if ($rhpessoal->erro_status != "1") {
-                throw new \Exception($rhpessoal->erro_msg);
+                throw new Exception($rhpessoal->erro_msg);
             }
         }
         return true;
@@ -2617,7 +2608,7 @@ class Servidor
         $rs = db_query($sql);
         if (!$rs) {
             $msg = "Erro ao buscar informações do regime da matrícula: {$this->getMatricula()}";
-            throw new \DBException($msg);
+            throw new DBException($msg);
         }
         // Caso tenha registro é CLT
         if (pg_num_rows($rs) > 0) {
@@ -2645,7 +2636,7 @@ class Servidor
         $rs = db_query($sql);
         if (!$rs) {
             $msg = "Erro ao buscar informações do tipo de regime de contratação da matrícula: {$this->getMatricula()}";
-            throw new \DBException($msg);
+            throw new DBException($msg);
         }
         if (pg_num_rows($rs) > 0) {
             return true;
@@ -2803,9 +2794,7 @@ class Servidor
         if (!$rs) {
             throw new DBException("Erro ao buscar informações de pagamentos de rescisões.");
         }
-        return \db_utils::makeCollectionFromRecord($rs, function ($retorno) {
-            return $retorno;
-        });
+        return db_utils::makeCollectionFromRecord($rs, fn($retorno) => $retorno);
     }
 
     /**
@@ -2903,7 +2892,7 @@ class Servidor
             return $this->getLocalTrabalhoPrincial()
                 ->getLotacaoTributaria();
         } else {
-            $daoLotacaoTributaria = new \cl_rhlotacaotributaria();
+            $daoLotacaoTributaria = new cl_rhlotacaotributaria();
             $whereLotacaoTributaria = " db_config.codigo = {$this->iCodigoInstituicao}";
             $sqlLotacaoTributaria = $daoLotacaoTributaria->sql_query(null, "rh268_codigolotacao", null, $whereLotacaoTributaria);
             $rsLotacaoTributaria = db_query($sqlLotacaoTributaria);

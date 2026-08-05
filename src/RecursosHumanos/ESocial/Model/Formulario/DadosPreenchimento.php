@@ -1,6 +1,8 @@
 <?php
 namespace ECidade\RecursosHumanos\ESocial\Model\Formulario;
 
+use stdClass;
+
 /**
  * Essa classe é VO para armazenas os dados do preenchimento de um formulário
  *
@@ -26,7 +28,7 @@ class DadosPreenchimento
     /**
      * Array com as respostas
      *
-     * @var \stdClass
+     * @var stdClass
      */
-    public $respostas = array();
+    public $respostas = [];
 }

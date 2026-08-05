@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -61,7 +61,7 @@ class cl_orcsuplem {
                  o46_obs = text = Origem do Recurso
                  ";
    //funcao construtor da classe
-   function cl_orcsuplem() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcsuplem");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

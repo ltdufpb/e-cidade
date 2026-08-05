@@ -1,13 +1,12 @@
 <?php
 namespace ECidade\RecursosHumanos\ESocial\Repository;
 
-use cl_rhpesrescisao;
-use DBCompetencia;
+use BaseClassRepository;
+use InstituicaoRepository;
 use DBException;
-use db_utils;
 use Servidor;
 
-class ServidorMatriculas extends \BaseClassRepository
+class ServidorMatriculas extends BaseClassRepository
 {
 
     /**
@@ -20,13 +19,13 @@ class ServidorMatriculas extends \BaseClassRepository
     {
         $this->numCGM = $numCGM;
         $this->instituicao = (int)$instituicao ? $instituicao
-        : \InstituicaoRepository::getInstituicaoSessao()->getCodigo();
+        : InstituicaoRepository::getInstituicaoSessao()->getCodigo();
     }
 
     /**
      * Retorno das matriculas por codigo do cmg para consulta do esocial
      * @param $codigoRescisao
-     * @throws \DBException
+     * @throws DBException
      */
     public function getMatriculasByMovimentacao($mes, $ano, $tipoPagamento)
     {
@@ -59,7 +58,7 @@ class ServidorMatriculas extends \BaseClassRepository
             $result = pg_fetch_all($result);
             $matriculas = '';
             foreach ($result as $value) {
-                $servidor = new \Servidor($value['rh01_regist']);
+                $servidor = new Servidor($value['rh01_regist']);
 
                 if ($servidor->isRgps()) {
                     $matriculas .= $value['rh01_regist']." , ";
@@ -73,7 +72,7 @@ class ServidorMatriculas extends \BaseClassRepository
 
     /**
      * Retorno das matriculas em qualquer contexto
-     * @throws \DBException
+     * @throws DBException
      */
     public function getMatriculas()
     {

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009 DBSeller Servicos de Informatica             
@@ -49,7 +49,7 @@ $clrotulo->label("db03_descr");
        <?=@$Lk40_codigo?>
     </td>
     <td> 
-<?
+<?php 
 db_input('k40_codigo',10,$Ik40_codigo,true,'text',3,"")
 ?>
     </td>
@@ -59,7 +59,7 @@ db_input('k40_codigo',10,$Ik40_codigo,true,'text',3,"")
        <?=@$Lk40_descr?>
     </td>
     <td> 
-<?
+<?php 
 db_input('k40_descr',40,$Ik40_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -69,7 +69,7 @@ db_input('k40_descr',40,$Ik40_descr,true,'text',$db_opcao,"")
        <?=@$Lk40_datalanc?>
     </td>
     <td> 
-<?
+<?php 
 if (!isset($k40_datalanc_ano)&&!isset($k40_datalanc_dia)&&!isset($k40_datalanc_mes)){
 	$k40_datalanc_ano=date("Y",db_getsession("DB_datausu"));
 	$k40_datalanc_dia=date("d",db_getsession("DB_datausu"));
@@ -84,7 +84,7 @@ db_inputdata('k40_datalanc',@$k40_datalanc_dia,@$k40_datalanc_mes,@$k40_datalanc
        <?=@$Lk40_dtini?>
     </td>
     <td> 
-<?
+<?php 
 db_inputdata('k40_dtini',@$k40_dtini_dia,@$k40_dtini_mes,@$k40_dtini_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -94,7 +94,7 @@ db_inputdata('k40_dtini',@$k40_dtini_dia,@$k40_dtini_mes,@$k40_dtini_ano,true,'t
        <?=@$Lk40_dtfim?>
     </td>
     <td> 
-<?
+<?php 
 db_inputdata('k40_dtfim',@$k40_dtfim_dia,@$k40_dtfim_mes,@$k40_dtfim_ano,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -104,7 +104,7 @@ db_inputdata('k40_dtfim',@$k40_dtfim_dia,@$k40_dtfim_mes,@$k40_dtfim_ano,true,'t
        <?=@$Lk40_todasmarc?>
     </td>
     <td> 
-<?
+<?php 
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('k40_todasmarc',$x,true,$db_opcao,"");
 ?>
@@ -115,7 +115,7 @@ db_select('k40_todasmarc',$x,true,$db_opcao,"");
        <?=@$Lk40_permvalparc?>
     </td>
     <td> 
-<?
+<?php 
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('k40_permvalparc',$x,true,$db_opcao,"");
 ?>
@@ -123,7 +123,7 @@ db_select('k40_permvalparc',$x,true,$db_opcao,"");
   </tr>
   
   
-<?
+<?php 
 if (!isset($k40_vctopadrao)) {
 	$k40_vctopadrao = 0;
 }
@@ -133,12 +133,12 @@ if (!isset($k40_vctopadrao)) {
        <?=@$Lk40_vctopadrao?>
     </td>
     <td> 
-<?
+<?php 
 db_input('k40_vctopadrao',10,$Ik40_vctopadrao,true,'text',$db_opcao,"")
 ?>
     </td>
   </tr>
-<?
+<?php 
 if (!isset($k40_diapulames)) {
 	$k40_diapulames = 0;
 }
@@ -148,7 +148,7 @@ if (!isset($k40_diapulames)) {
        <?=@$Lk40_diapulames?>
     </td>
     <td> 
-<?
+<?php 
 db_input('k40_diapulames',10,$Ik40_diapulames,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -158,7 +158,7 @@ db_input('k40_diapulames',10,$Ik40_diapulames,true,'text',$db_opcao,"")
        <?=@$Lk40_permvalcadparc?>
     </td>
     <td> 
-<?
+<?php 
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('k40_permvalcadparc',$x,true,$db_opcao,"");
 ?>
@@ -169,7 +169,7 @@ db_select('k40_permvalcadparc',$x,true,$db_opcao,"");
        <?=@$Lk40_permdataparc?>
     </td>
     <td> 
-<?
+<?php 
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('k40_permdataparc',$x,true,$db_opcao,"");
 ?>
@@ -180,7 +180,7 @@ db_select('k40_permdataparc',$x,true,$db_opcao,"");
        <?=@$Lk40_controlavencimento?>
     </td>
     <td> 
-<?
+<?php 
 $x = array("f"=>"NAO","t"=>"SIM");
 db_select('k40_controlavencimento',$x,true,$db_opcao,"");
 ?>
@@ -195,7 +195,7 @@ db_select('k40_controlavencimento',$x,true,$db_opcao,"");
        			<?=@$Lk40_dtreparc?>
     			</td>
     			<td width="50%">&nbsp; 
-						<?
+						<?php 
 						if(!isset($k40_dtreparc_dia)){
 							$k40_dtreparc_mes = "";
 							$k40_dtreparc_ano = "";
@@ -210,7 +210,7 @@ db_select('k40_controlavencimento',$x,true,$db_opcao,"");
        			<?=@$Lk40_qtdreparc?>
     			</td>
     			<td width="50%">&nbsp; 
-						<?
+						<?php 
 						db_input('k40_qtdreparc',10,$Ik40_qtdreparc,true,'text',$db_opcao,"")
 						?>
     			</td>
@@ -224,7 +224,7 @@ db_select('k40_controlavencimento',$x,true,$db_opcao,"");
        <?=@$Lk40_permanula?>
     </td>
     <td> 
-			<?
+			<?php 
 			$x = array('1'=>'Sempre','2'=>'Nunca', '3'=>'Somente sem Pagamentos/Cancelamentos');
 			db_select('k40_permanula',$x,true,$db_opcao,"");
 			?>
@@ -235,7 +235,7 @@ db_select('k40_controlavencimento',$x,true,$db_opcao,"");
        <?=@$Lk40_tipoanulacao?>
     </td>
     <td> 
-      <?
+      <?php 
         $x = getValoresPadroesCampo('k40_tipoanulacao');
         db_select('k40_tipoanulacao',$x,true,$db_opcao,"");
       ?>
@@ -246,7 +246,7 @@ db_select('k40_controlavencimento',$x,true,$db_opcao,"");
        <?=@$Lk40_forma?>
     </td>
     <td> 
-			<?
+			<?php 
 			$x = array('1'=>'Normal','2'=>'Juros e Multa na ultima', '3'=>'Loteamento');
 			db_select('k40_forma',$x,true,$db_opcao,"");
 			?>
@@ -257,7 +257,7 @@ db_select('k40_controlavencimento',$x,true,$db_opcao,"");
        <?=$Lk40_aplicacao?>
     </td>
     <td> 
-<?
+<?php 
 $aplic = array('1'=>'Antes do Lançamento do Débito','2'=>'Após o Lançamento do Débito');
 db_select('k40_aplicacao',$aplic,true,$db_opcao,"");
        ?>
@@ -268,16 +268,16 @@ db_select('k40_aplicacao',$aplic,true,$db_opcao,"");
   <tr>
     <td nowrap title="<?=@$Tdb03_docum?>">
        <b>
-       <?
+       <?php 
        db_ancora("Documento:","js_pesquisadb03_docum(true);",$db_opcao);
        ?>
        </b>
     </td>
     <td> 
-<?
+<?php 
 db_input('db03_docum',10,$Idb03_docum,true,'text',$db_opcao," onchange='js_pesquisadb03_docum(false);'")
 ?>
-       <?
+       <?php 
 db_input('db03_descr',40,$Idb03_descr,true,'text',3,'')
        ?>
     </td>
@@ -291,13 +291,13 @@ db_input('db03_descr',40,$Idb03_descr,true,'text',3,'')
 			       <?=@$Lk40_regraunif?>
 			    </td>
 			    <td> 
-						<?
+						<?php 
 						$x = array('1'=>'Permite agrupar origens','2'=>'Permite apenas individual por origem');
 						db_select('k40_regraunif',$x,true,$db_opcao,"onchange=js_ddl_regraunif()");
 						?>
 			    </td>
 			  </tr>
-			  <? 
+			  <?php  
 			  	$display_id_k40_bloqueio = '';
 			  	if(isset($k40_regraunif) && $k40_regraunif == 1){
 							$k40_bloqueio = 'false';
@@ -312,7 +312,7 @@ db_input('db03_descr',40,$Idb03_descr,true,'text',3,'')
     			</td>
     			<td width="50%"> 
 						  
-       			<?
+       			<?php 
        			$k40_bloqueio = (isset($k40_bloqueio)&& $k40_bloqueio == 't') ? 'true' : 'false';
 						$x = array('false'=>'Não','true'=>'Sim');
 						db_select('k40_bloqueio',$x,true,$db_opcao,"");
@@ -347,7 +347,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cadtipoparc.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

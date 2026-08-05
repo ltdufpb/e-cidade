@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_avalfreqres_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clavalfreqres = new cl_avalfreqres;
 $clavalfreqres->rotulo->label("ed67_i_codigo");
 $clavalfreqres->rotulo->label("ed67_i_codigo");
@@ -54,7 +55,7 @@ $clavalfreqres->rotulo->label("ed67_i_codigo");
               <?=$Led67_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
               db_input("ed67_i_codigo",10,$Ied67_i_codigo,true,"text",4,"","chave_ed67_i_codigo");
               ?>
             </td>
@@ -64,7 +65,7 @@ $clavalfreqres->rotulo->label("ed67_i_codigo");
               <?=$Led67_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
               db_input("ed67_i_codigo",10,$Ied67_i_codigo,true,"text",4,"","chave_ed67_i_codigo");
               ?>
             </td>
@@ -82,7 +83,7 @@ $clavalfreqres->rotulo->label("ed67_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_avalfreqres.php")==true){
@@ -118,12 +119,12 @@ $clavalfreqres->rotulo->label("ed67_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

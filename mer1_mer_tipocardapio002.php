@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -34,7 +34,7 @@ include(modification("classes/db_mer_cardapio_classe.php"));
 include(modification("classes/db_mer_cardapiodata_classe.php"));
 include(modification("classes/db_mer_cardapiodia_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clmer_tipocardapio = new cl_mer_tipocardapio;
 $clmer_cardapio = new cl_mer_cardapio;
@@ -102,7 +102,7 @@ if (isset($alterar)) {
     (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href      = 'mer1_mer_tpcardapioturma001.php?me32_i_tipocardapio=<?=$chavepesquisa?>'+
                                              '&me27_c_nome=<?=$me27_c_nome?>';  
   </script>
-  <?
+  <?php 
 
 }
 ?>
@@ -121,7 +121,7 @@ if (isset($alterar)) {
       <br>
       <center>
       <fieldset style="width:95%"><legend><b>Alteração de Cardápio</b></legend>
-        <?include(modification("forms/db_frmmer_tipocardapio.php"));?>
+        <?php include(modification("forms/db_frmmer_tipocardapio.php"));?>
       </fieldset>
       </center>
     </td>
@@ -129,7 +129,7 @@ if (isset($alterar)) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 	
   if ($clmer_tipocardapio->erro_status=="0") {
@@ -158,7 +158,7 @@ if (isset($alterar)) {
                                                '&me27_c_nome=<?=$me27_c_nome?>';  
       parent.mo_camada('a2');   
     </script>
-    <?
+    <?php 
     db_redireciona("mer1_mer_tipocardapio002.php?chavepesquisa=$me27_i_codigo");
     
   }
@@ -205,7 +205,7 @@ function js_removeMsg(idObj) {
   document.body.removeChild(obj);
   
 }
-<?if ($naopode == true) {?>
+<?php if ($naopode == true) {?>
  js_msg_nao_altera("<?=$msg_error?>","MsgBox");
-<?}?>
+<?php }?>
 </script>

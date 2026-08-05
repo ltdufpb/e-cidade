@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -67,7 +67,7 @@ if ($linhas==0) {?>
     </td>
    </tr>
   </table>
- <?
+ <?php 
  exit;
 }     
 ?>
@@ -113,7 +113,7 @@ if ($linhas==0) {?>
             <td><b>Turno</b></td>
             <td><b>Quantidade de Alunos</b></td></tr>    
                   
-           <? if ($linhas>0) { 
+           <?php  if ($linhas>0) { 
            	
            	$cor1 = "#dbdbdb";
             $cor2 = "#f3f3f3";
@@ -127,7 +127,7 @@ if ($linhas==0) {?>
             <td>Turno: <?=$ed15_c_nome?></td>
              <td>xxxx </td>
             </tr>
-            <?}
+            <?php }
            }else{?>
            
            <table border='1px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px">
@@ -135,7 +135,7 @@ if ($linhas==0) {?>
             <td class='aluno'>NENHUMA TURMA NESTE CALENDÁRIO.</td>
            </tr>
           </table>
-           <?}?>           
+           <?php }?>           
           </table>
          </td>  
          </tr>              

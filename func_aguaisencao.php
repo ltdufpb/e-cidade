@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_aguaisencao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $claguaisencao = new cl_aguaisencao;
 $claguaisencao->rotulo->label("x10_codisencao");
 $claguaisencao->rotulo->label("x10_matric");
@@ -54,7 +55,7 @@ $claguaisencao->rotulo->label("x10_matric");
               <?=$Lx10_codisencao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x10_codisencao",5,$Ix10_codisencao,true,"text",4,"","chave_x10_codisencao");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $claguaisencao->rotulo->label("x10_matric");
               <?=$Lx10_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x10_matric",10,$Ix10_matric,true,"text",4,"","chave_x10_matric");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $claguaisencao->rotulo->label("x10_matric");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_aguaisencao.php")==true){
@@ -118,12 +119,12 @@ $claguaisencao->rotulo->label("x10_matric");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

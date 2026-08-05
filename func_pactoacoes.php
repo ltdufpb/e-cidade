@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pactoacoes_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpactoacoes = new cl_pactoacoes;
 $clpactoacoes->rotulo->label("o79_sequencial");
 $clpactoacoes->rotulo->label("o79_descricao");
@@ -54,7 +55,7 @@ $clpactoacoes->rotulo->label("o79_descricao");
               <?=$Lo79_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o79_sequencial",10,$Io79_sequencial,true,"text",4,"","chave_o79_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clpactoacoes->rotulo->label("o79_descricao");
               <?=$Lo79_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o79_descricao",50,$Io79_descricao,true,"text",4,"","chave_o79_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clpactoacoes->rotulo->label("o79_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       
       $sWhere = "";
         
@@ -131,12 +132,12 @@ $clpactoacoes->rotulo->label("o79_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

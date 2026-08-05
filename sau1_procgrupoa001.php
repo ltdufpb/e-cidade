@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -59,7 +59,7 @@ if(isset($processar) and $sd17_i_procedimento != "")
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
-<?if(@$tp <> 1){?>
+<?php if(@$tp <> 1){?>
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
   <tr>
     <td width="360" height="18">&nbsp;</td>
@@ -68,26 +68,26 @@ if(isset($processar) and $sd17_i_procedimento != "")
     <td width="140">&nbsp;</td>
   </tr>
 </table>
-<?}?>
+<?php }?>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmprocgrupoa.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php 
 if($tp <> 1){
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 }
 ?>
 </body>
 </html>
-<?
+<?php 
 if(isset($salvar)){
  db_msgbox($msg);
 }

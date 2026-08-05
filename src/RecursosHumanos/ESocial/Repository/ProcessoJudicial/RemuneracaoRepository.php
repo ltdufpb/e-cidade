@@ -30,7 +30,6 @@ namespace ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial;
 use BusinessException;
 use cl_rhpessoalprocessoremuneracao;
 use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\Remuneracao;
-use DBDate;
 
 class RemuneracaoRepository
 {
@@ -96,7 +95,7 @@ class RemuneracaoRepository
      * @param Remuneracao|null $remuneracao
      * @throws BusinessException
      */
-    public function delete(Remuneracao $remuneracao = null)
+    public function delete(?Remuneracao $remuneracao = null)
     {
         $id = $remuneracao instanceof Remuneracao ? $remuneracao->getSequencial() : null;
 
@@ -114,7 +113,7 @@ class RemuneracaoRepository
      * @return bool|Remuneracao
      * @throws BusinessException
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhpessoalprocessoremuneracao;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cargrup_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcargrup = new cl_cargrup;
 $clcargrup->rotulo->label("j32_grupo");
 $clcargrup->rotulo->label("j32_descr");
@@ -54,7 +55,7 @@ $clcargrup->rotulo->label("j32_descr");
               <?=$Lj32_grupo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j32_grupo",4,$Ij32_grupo,true,"text",4,"","chave_j32_grupo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcargrup->rotulo->label("j32_descr");
               <?=$Lj32_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j32_descr",40,$Ij32_descr,true,"text",4,"","chave_j32_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clcargrup->rotulo->label("j32_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "cargrup.*";
@@ -110,14 +111,14 @@ $clcargrup->rotulo->label("j32_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_j32_grupo.focus();
 document.form2.chave_j32_grupo.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -237,6 +237,7 @@ class LancamentoAuxiliarArrecadacaoReceitaExtraOrcamentaria extends LancamentoAu
      *
      * @see LancamentoAuxiliarBase::setObservacaoHistorico()
      */
+    #[Override]
     public function setObservacaoHistorico($sObservacaoHistorico)
     {
         $this->sComplemento = $sObservacaoHistorico;
@@ -247,6 +248,7 @@ class LancamentoAuxiliarArrecadacaoReceitaExtraOrcamentaria extends LancamentoAu
      *
      * @see LancamentoAuxiliarBase::getObservacaoHistorico()
      */
+    #[Override]
     public function getObservacaoHistorico()
     {
         return $this->sComplemento;

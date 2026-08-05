@@ -1,4 +1,4 @@
-<?PHP
+<?php PHP
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -124,7 +124,7 @@ $matriz = array("1" => "Processos iniciados no departamento",
         <strong>Período:</strong>
       </td>
       <td>     
-        <?PHP
+        <?php PHP
   	       db_inputdata('data1',@$dia,@$mes,@$ano,true,'text',1,"");   		          
            echo " <strong> à </strong> ";
            db_inputdata('data2',@$dia2,@$mes2,@$ano2,true,'text',1,"");
@@ -150,7 +150,7 @@ $matriz = array("1" => "Processos iniciados no departamento",
 </center>
 
 
-<? db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 
 </body>
 </html>

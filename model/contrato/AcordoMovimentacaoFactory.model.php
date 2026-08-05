@@ -40,7 +40,7 @@ class AcordoMovimentacaoFactory {
   public static function getTipos() {
 
 
-    $aTipos = array(
+    $aTipos = [
                     2  => "AcordoAssinatura",
                     13 => "AcordoAssinatura",
                     8  => "AcordoAnulacao",
@@ -53,7 +53,7 @@ class AcordoMovimentacaoFactory {
                     17 => "AcordoMovimentacaoParalisacao",
                     18 => "AcordoMovimentacaoReativacao",
                     19 => "AcordoMovimentacaoReativacao"
-                   );
+                   ];
 
     return $aTipos;
   }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -85,7 +85,7 @@ class cl_meiimportalinhacontador {
                  q109_email = varchar(115) = Email 
                  ";
    //funcao construtor da classe 
-   function cl_meiimportalinhacontador() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("meiimportalinhacontador"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

@@ -26,6 +26,8 @@
  */
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model;
 
+use DateTime;
+use DateInterval;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\BaseHora;
 
 /**
@@ -40,52 +42,43 @@ class HoraExtraArtefato {
    * @var int
    */
   private $iniciaEm = Extra::TIPO_DIURNA;
-
   /**
-   * @var \DateTime
-   */
-  private $oValor;
-  /**
-   * @var \DateTime
-   */
-  private $oInicio;
-  /**
-   * @var \DateTime
+   * @var DateTime
    */
   private $oFinal;
   /**
-   * @var \DateTime
+   * @var DateTime
    */
   private $oInicioHorarioNoturno;
   /**
-   * @var \DateTime
+   * @var DateTime
    */
   private $oFinalHorarioNoturno;
 
   /**
    * Hora final do horario noturno no dia.
-   * @var \DateTime
+   * @var DateTime
    */
   private $oFinalHorarioNoturnoNoDia;
   /**
-   * @var \DateTime
+   * @var DateTime
    */
   private $oValorNoturno;
 
   /**
-   * @var \DateTime
+   * @var DateTime
    */
   private $oValorDiurno;
 
   /**
    * Total de horas extras diurnas
-   * @var \DateInterval
+   * @var DateInterval
    */
   private $oTotalHorasDiurnas;
 
   /**
    * Total de horas extras noturnas
-   * @var \DateInterval
+   * @var DateInterval
    */
   private $oTotalHorasNoturnas;
 
@@ -102,7 +95,7 @@ class HoraExtraArtefato {
   private $iMinutosNoturnos;
 
   /**
-   * @var \DateTime
+   * @var DateTime
    */
   private $oHoraZerada;
 
@@ -124,7 +117,7 @@ class HoraExtraArtefato {
 
 
   /**
-   * @return \DateTime
+   * @return DateTime
    */
   public function getHoraZerada()
   {
@@ -132,7 +125,7 @@ class HoraExtraArtefato {
   }
 
   /**
-   * @param \DateTime $oHoraZerada
+   * @param DateTime $oHoraZerada
    */
   public function setHoraZerada($oHoraZerada)
   {
@@ -141,7 +134,7 @@ class HoraExtraArtefato {
 
 
   /**
-   * @return \DateTime
+   * @return DateTime
    */
   public function getValorNoturno()
   {
@@ -149,7 +142,7 @@ class HoraExtraArtefato {
   }
 
   /**
-   * @param \DateTime $oValorNoturno
+   * @param DateTime $oValorNoturno
    */
   public function setValorNoturno($oValorNoturno)
   {
@@ -157,7 +150,7 @@ class HoraExtraArtefato {
   }
 
   /**
-   * @return \DateTime
+   * @return DateTime
    */
   public function getValorDiurno()
   {
@@ -165,7 +158,7 @@ class HoraExtraArtefato {
   }
 
   /**
-   * @param \DateTime $oValorDiurno
+   * @param DateTime $oValorDiurno
    */
   public function setValorDiurno($oValorDiurno)
   {
@@ -173,7 +166,7 @@ class HoraExtraArtefato {
   }
 
   /**
-   * @return \DateInterval
+   * @return DateInterval
    */
   public function getTotalHorasDiurnas()
   {
@@ -181,7 +174,7 @@ class HoraExtraArtefato {
   }
 
   /**
-   * @param \DateInterval $oTotalHorasDiurnas
+   * @param DateInterval $oTotalHorasDiurnas
    */
   public function setTotalHorasDiurnas($oTotalHorasDiurnas)
   {
@@ -189,7 +182,7 @@ class HoraExtraArtefato {
   }
 
   /**
-   * @return \DateInterval
+   * @return DateInterval
    */
   public function getTotalHorasNoturnas()
   {
@@ -197,7 +190,7 @@ class HoraExtraArtefato {
   }
 
   /**
-   * @param \DateInterval $oTotalHorasNoturnas
+   * @param DateInterval $oTotalHorasNoturnas
    */
   public function setTotalHorasNoturnas($oTotalHorasNoturnas)
   {
@@ -205,7 +198,7 @@ class HoraExtraArtefato {
   }
 
   /**
-   * @return \DateTime
+   * @return DateTime
    */
   public function getInicioHorarioNoturno()
   {
@@ -213,7 +206,7 @@ class HoraExtraArtefato {
   }
 
   /**
-   * @param \DateTime $oInicioHorarioNoturno
+   * @param DateTime $oInicioHorarioNoturno
    */
   public function setInicioHorarioNoturno($oInicioHorarioNoturno)
   {
@@ -221,7 +214,7 @@ class HoraExtraArtefato {
   }
 
   /**
-   * @return \DateTime
+   * @return DateTime
    */
   public function getFinalHorarioNoturno()
   {
@@ -229,7 +222,7 @@ class HoraExtraArtefato {
   }
 
   /**
-   * @param \DateTime $oFinalHorarioNoturno
+   * @param DateTime $oFinalHorarioNoturno
    */
   public function setFinalHorarioNoturno($oFinalHorarioNoturno)
   {
@@ -238,7 +231,7 @@ class HoraExtraArtefato {
 
 
   /**
-   * @return \DateTime
+   * @return DateTime
    */
   public function getValor()
   {
@@ -246,7 +239,7 @@ class HoraExtraArtefato {
   }
 
   /**
-   * @param \DateTime $oValor
+   * @param DateTime $oValor
    */
   public function setValor($oValor)
   {
@@ -254,7 +247,7 @@ class HoraExtraArtefato {
   }
 
   /**
-   * @return \DateTime
+   * @return DateTime
    */
   public function getInicio()
   {
@@ -262,7 +255,7 @@ class HoraExtraArtefato {
   }
 
   /**
-   * @param \DateTime $oInicio
+   * @param DateTime $oInicio
    */
   public function setInicio($oInicio)
   {
@@ -270,7 +263,7 @@ class HoraExtraArtefato {
   }
 
   /**
-   * @return \DateTime
+   * @return DateTime
    */
   public function getFinal()
   {
@@ -278,7 +271,7 @@ class HoraExtraArtefato {
   }
 
   /**
-   * @param \DateTime $oFinal
+   * @param DateTime $oFinal
    */
   public function setFinal($oFinal)
   {
@@ -321,27 +314,24 @@ class HoraExtraArtefato {
 
   /**
    * HoraExtraArtefato constructor.
-   * @param \DateTime $oInicioHorarioNoturno
-   * @param \DateTime $oFinalHorarioNoturno
-   * @param \DateTime $oValor
-   * @param \DateTime $oInicio
+   * @param DateTime $oInicioHorarioNoturno
+   * @param DateTime $oFinalHorarioNoturno
+   * @param DateTime $oValor
+   * @param DateTime $oInicio
    */
-  public function __construct($oInicioHorarioNoturno, $oFinalHorarioNoturno, $oInicio, $oValor)
+  public function __construct($oInicioHorarioNoturno, $oFinalHorarioNoturno, private $oInicio, private $oValor)
   {
 
-    $this->setHoraZerada(new \DateTime($oInicioHorarioNoturno->format('Y-m-d 00:00')));
+    $this->setHoraZerada(new DateTime($oInicioHorarioNoturno->format('Y-m-d 00:00')));
 
     $this->setInicioHorarioNoturno($oInicioHorarioNoturno);
     $this->setFinalHorarioNoturno($oFinalHorarioNoturno);
-
-    $this->oValor = $oValor;
-    $this->oInicio = $oInicio;
-    $this->setFinal($this->somaHoras($oInicio, $oValor));
+    $this->setFinal($this->somaHoras($this->oInicio, $this->oValor));
 
     $this->setValorDiurno($this->getHoraZerada());
     $this->setValorNoturno($this->getHoraZerada());
 
-    if ($oInicio->getTimestamp() > $this->getFinalHorarioNoturno()->getTimestamp()){
+    if ($this->oInicio->getTimestamp() > $this->getFinalHorarioNoturno()->getTimestamp()){
       $this->getInicioHorarioNoturno()->modify('+1 day');
     }
     $this->oFinalHorarioNoturnoNoDia = clone $oFinalHorarioNoturno;
@@ -353,27 +343,27 @@ class HoraExtraArtefato {
 
   /**
    * Soma as horas de 2 DateTime
-   * @param \DateTime $oHora1 - DateTime que receberá o valor somado
-   * @param \DateTime $oHora2 - DateTime com o valor a ser somado
-   * @return \DateTime
+   * @param DateTime $oHora1 - DateTime que receberá o valor somado
+   * @param DateTime $oHora2 - DateTime com o valor a ser somado
+   * @return DateTime
    */
-  protected function somaHoras(\DateTime $oHora1, \DateTime $oHora2) {
+  protected function somaHoras(DateTime $oHora1, DateTime $oHora2) {
 
     $iHora   = $oHora2->format('H');
     $iMinuto = $oHora2->format('i');
 
-    $oDateInterval   = new \DateInterval("PT{$iHora}H{$iMinuto}M");
-    $oHoraExtraTotal = new \DateTime($oHora1->format('Y-m-d H:i'));
+    $oDateInterval   = new DateInterval("PT{$iHora}H{$iMinuto}M");
+    $oHoraExtraTotal = new DateTime($oHora1->format('Y-m-d H:i'));
 
     return $oHoraExtraTotal->add($oDateInterval);
   }
 
   /**
-   * @param \DateTime $oHora1
-   * @param \DateTime $oHora2
-   * @return bool|\DateInterval
+   * @param DateTime $oHora1
+   * @param DateTime $oHora2
+   * @return bool|DateInterval
    */
-  public function getDiferencaHoras(\DateTime $oHora1, \DateTime $oHora2) {
+  public function getDiferencaHoras(DateTime $oHora1, DateTime $oHora2) {
     return $oHora1->diff($oHora2);
   }
 
@@ -454,13 +444,13 @@ class HoraExtraArtefato {
    */
   protected function converteHorasParaIntervalo() {
 
-    $intervalorDiurno = new \DateInterval("PT".$this->getValorDiurno()->format("H")."H".$this->getValorDiurno()->format("i")."M");
+    $intervalorDiurno = new DateInterval("PT".$this->getValorDiurno()->format("H")."H".$this->getValorDiurno()->format("i")."M");
     $this->setTotalHorasDiurnas($intervalorDiurno);
 
     $iMinutosDiurnos= BaseHora::converterIntervaloEmMinutos($intervalorDiurno);
     $this->setMinutosDiurnos($iMinutosDiurnos);
 
-    $intervaloNoturno = new \DateInterval("PT".$this->getValorNoturno()->format("H")."H".$this->getValorNoturno()->format("i")."M");
+    $intervaloNoturno = new DateInterval("PT".$this->getValorNoturno()->format("H")."H".$this->getValorNoturno()->format("i")."M");
     $this->setTotalHorasDiurnas($intervaloNoturno);
 
     $iMinutosNoturnos = BaseHora::converterIntervaloEmMinutos($intervaloNoturno);

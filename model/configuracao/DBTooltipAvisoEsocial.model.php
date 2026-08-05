@@ -18,7 +18,7 @@ class DBTooltipAvisoEsocial extends DBTooltipAviso
     public function render($disable = false)
     {
         $configuracaoRepository = new ConfiguracaoRepository();
-        $configuracao = $configuracaoRepository->getByInstituicao(new \Instituicao(db_getsession('DB_instit')));
+        $configuracao = $configuracaoRepository->getByInstituicao(new Instituicao(db_getsession('DB_instit')));
 
         if (!$configuracao->exibirBotaoESocialParaOsUsuarios || $this->isUsuarioAtualizado()) {
             return null;

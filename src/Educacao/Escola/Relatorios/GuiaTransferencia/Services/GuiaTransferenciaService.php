@@ -21,21 +21,13 @@ use ProgressaoParcialAluno;
  */
 class GuiaTransFerenciaService
 {
-    public $tipoTransferencia;
-    public $alunos;
-    public $obs;
-    public $bolsa;
     /**
      * GuiaTransFerenciaService constructor.
      * @param $tipoTransferencia
      * @param $alunos
      */
-    public function __construct($tipoTransferencia, $alunos, $obs, $bolsa)
+    public function __construct(public $tipoTransferencia, public $alunos, public $obs, public $bolsa)
     {
-        $this->tipoTransferencia = $tipoTransferencia;
-        $this->alunos = $alunos;
-        $this->obs = $obs;
-        $this->bolsa = $bolsa;
     }
 
     public function buscaDadosImpressao()
@@ -100,7 +92,7 @@ class GuiaTransFerenciaService
         foreach ($arrAlunos as $alunos) {
             foreach ($alunos as $aluno) {
                 $aluno->matricula = $this->buscaDadosMatricula($aluno->codigomatricula);
-                $aFiliacao = array();
+                $aFiliacao = [];
                 if ($aluno->ed47_v_mae != '') {
                         $aFiliacao[] = trim($aluno->ed47_v_mae);
                 }
@@ -172,7 +164,7 @@ class GuiaTransFerenciaService
                 $oParagrafo->ano_transferencia = $ano_transf;
                 $oParagrafo->etapa = $sEtapa;
                 $oParagrafo->ensino = $sEnsino;
-                $oParagrafo->ano_matricula = isset($aluno->ed52_i_ano) ? $aluno->ed52_i_ano : "";
+                $oParagrafo->ano_matricula = $aluno->ed52_i_ano ?? "";
              
                 $paragrafo = $oParagrafo->getDocParagrafos();
                 $aluno->atestado = $paragrafo[1]->oParag->db02_texto;

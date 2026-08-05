@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,7 +39,7 @@ $clrotulo->label("vc01_i_unidade");
           <table border="0">
             <tr>
               <td colspan="3">
-                <?
+                <?php 
                   db_ancora($Ls163_i_upsprestadora, "js_pesquisas163_i_upsprestadora(true);", $db_opcao);
                   $sWhere     = " EXISTS (select * from sau_cotasagendamento where s163_i_upsprestadora = "; 
                   $sWhere    .= " sd02_i_codigo)";
@@ -73,7 +73,7 @@ $clrotulo->label("vc01_i_unidade");
                       <?=$Ls163_i_mescomp?>
                     </td>
                     <td>
-                      <?
+                      <?php 
                         $aOptions = array();
                         for ($iMes=1; $iMes <= 12; $iMes++) {
 
@@ -88,7 +88,7 @@ $clrotulo->label("vc01_i_unidade");
                       <?=$Ls163_i_anocomp?>
                     </td>
                     <td>
-                      <?db_input('s163_i_anocomp',4,$Is163_i_anocomp,true,'text',$db_opcao,'');?>
+                      <?php db_input('s163_i_anocomp',4,$Is163_i_anocomp,true,'text',$db_opcao,'');?>
                     </td>
                   <tr>
                 </table>
@@ -103,7 +103,7 @@ $clrotulo->label("vc01_i_unidade");
                       <?=$Ls163_i_mescomp?>
                     </td>
                     <td>
-                      <?
+                      <?php 
                         if ($s163_i_mescomp == 12) {
 
                           $s163_i_mescomp2 = 1;
@@ -122,7 +122,7 @@ $clrotulo->label("vc01_i_unidade");
                       <?=$Ls163_i_anocomp?>
                     </td>
                     <td>
-                      <?db_input('s163_i_anocomp2',4,$Is163_i_anocomp,true,'text',$db_opcao,'');?>
+                      <?php db_input('s163_i_anocomp2',4,$Is163_i_anocomp,true,'text',$db_opcao,'');?>
                     </td>
                   <tr>
                 </table>

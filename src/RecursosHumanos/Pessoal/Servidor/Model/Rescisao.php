@@ -1,12 +1,16 @@
 <?php
 namespace ECidade\RecursosHumanos\Pessoal\Servidor\Model;
 
+use Servidor;
+use DBCompetencia;
+use DateTime;
+
 class Rescisao
 {
 
     /**
      * Servidort rescindido
-     * @var \Servidor
+     * @var Servidor
      */
     private $servidor;
 
@@ -18,7 +22,7 @@ class Rescisao
 
     /**
      * Data da rescisao
-     * @var \DateTime
+     * @var DateTime
      */
     private $data;
 
@@ -29,7 +33,7 @@ class Rescisao
     private $codigo;
 
     /**
-     * @return \Servidor
+     * @return Servidor
      */
     public function getServidor()
     {
@@ -38,9 +42,9 @@ class Rescisao
 
     /**
      * Servdor rescindido
-     * @param \Servidor $servidor
+     * @param Servidor $servidor
      */
-    public function setServidor(\Servidor $servidor)
+    public function setServidor(Servidor $servidor)
     {
         $this->servidor = $servidor;
     }
@@ -56,13 +60,13 @@ class Rescisao
     /**
      * @param \DBCompetencia $competencia
      */
-    public function setCompetencia(\DBCompetencia $competencia)
+    public function setCompetencia(DBCompetencia $competencia)
     {
         $this->competencia = $competencia;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getData()
     {
@@ -70,9 +74,9 @@ class Rescisao
     }
 
     /**
-     * @param \DateTime $data
+     * @param DateTime $data
      */
-    public function setData(\DateTime $data)
+    public function setData(DateTime $data)
     {
         $this->data = $data;
     }

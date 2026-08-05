@@ -56,7 +56,7 @@ class Recurso
      * @param \EventoContabil $eventoContabil
      * @throws \ReflectionException
      */
-    public function processar($codigoLancamnento, ILancamentoAuxiliar $lancamentoAuxiliar = null)
+    public function processar($codigoLancamnento, ?ILancamentoAuxiliar $lancamentoAuxiliar = null)
     {
 
         $tipoRecurso = new RecursoContaPagadora();

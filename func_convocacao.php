@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_convocacao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clconvocacao = new cl_convocacao;
 $clconvocacao->rotulo->label("ed111_i_codigo");
 $clconvocacao->rotulo->label("ed111_c_titulo");
@@ -55,7 +56,7 @@ $clconvocacao->rotulo->label("ed111_i_ano");
       <?=$Led111_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed111_i_codigo",10,$Ied111_i_codigo,true,"text",4,"","chave_ed111_i_codigo");?>
+      <?php db_input("ed111_i_codigo",10,$Ied111_i_codigo,true,"text",4,"","chave_ed111_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -63,9 +64,9 @@ $clconvocacao->rotulo->label("ed111_i_ano");
       <?=$Led111_c_titulo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed111_c_titulo",40,$Ied111_c_titulo,true,"text",4,"","chave_ed111_c_titulo");?>
+      <?php db_input("ed111_c_titulo",40,$Ied111_c_titulo,true,"text",4,"","chave_ed111_c_titulo");?>
       <?=$Led111_i_ano?>
-      <?db_input("ed111_i_ano",4,$Ied111_i_ano,true,"text",4,"","chave_ed111_i_ano");?>
+      <?php db_input("ed111_i_ano",4,$Ied111_i_ano,true,"text",4,"","chave_ed111_i_ano");?>
      </td>
     </tr>
     <tr>
@@ -81,7 +82,7 @@ $clconvocacao->rotulo->label("ed111_i_ano");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_convocacao.php")==true){

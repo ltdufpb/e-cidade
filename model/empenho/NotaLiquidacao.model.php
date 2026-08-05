@@ -103,7 +103,7 @@ class NotaLiquidacao
      * Itens da nota
      * @var NotaLiquidacaoItem[]
      */
-    private $aItens = array();
+    private $aItens = [];
 
     /**
      * @type DBDate
@@ -169,7 +169,7 @@ class NotaLiquidacao
     public function getRetencoes($iTipo = "E")
     {
 
-        $aRetencoes = array();
+        $aRetencoes = [];
         $oDao = new cl_retencaoreceitas;
         $sWhere = "  e69_codnota = {$this->getCodigoNota()} ";
         $sWhere .= " and e23_ativo is true ";
@@ -433,7 +433,7 @@ class NotaLiquidacao
         $sSqlNotas = $oDaoNota->sql_query(null, null, "empnota.*, empnotaele.*", null, $sWhere);
         $rsNotas   = $oDaoNota->sql_record($sSqlNotas);
 
-        $aNotas = array();
+        $aNotas = [];
 
         for ($iRowNota = 0; $iRowNota < $oDaoNota->numrows; $iRowNota++) {
             $oDadosNota      = db_utils::fieldsMemory($rsNotas, $iRowNota);
@@ -464,9 +464,9 @@ class NotaLiquidacao
     public function getProgramacaoFinanceiraParcelas()
     {
 
-        $aCampos = array('distinct k118_sequencial', 'k118_ano', 'k118_mes');
-        $aWnere  = array("c66_codnota = {$this->iCodigoNota}");
-        $aOrder  = array('k118_ano desc', 'k118_mes desc');
+        $aCampos = ['distinct k118_sequencial', 'k118_ano', 'k118_mes'];
+        $aWnere  = ["c66_codnota = {$this->iCodigoNota}"];
+        $aOrder  = ['k118_ano desc', 'k118_mes desc'];
 
         $oDaoConlancamnota = new cl_conlancamnota();
         $sSqlConlancamnota = $oDaoConlancamnota->sqlProgramacaoFinanceiraParcela($aCampos, $aWnere, $aOrder);
@@ -477,7 +477,7 @@ class NotaLiquidacao
         }
 
         $iTotalRegistros        = pg_num_rows($rsConlancamnota);
-        $aProgramacaoFinanceira = array();
+        $aProgramacaoFinanceira = [];
 
         for ($iContador = 0; $iContador < $iTotalRegistros; $iContador++) {
             $aProgramacaoFinanceira[] = pg_fetch_assoc($rsConlancamnota, $iContador);

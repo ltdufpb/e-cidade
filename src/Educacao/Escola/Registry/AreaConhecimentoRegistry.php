@@ -16,7 +16,7 @@ class AreaConhecimentoRegistry
     /**
      * @var AreaConhecimento[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param AreaConhecimento $areaConhecimento
@@ -33,7 +33,7 @@ class AreaConhecimentoRegistry
      */
     public static function get($key)
     {
-        if (!array_key_exists($key, self::$storage)) {
+        if (!array_key_exists((string) $key, self::$storage)) {
             $areaConhecimento = AreaConhecimentoRepository::find($key);
             if (is_null($areaConhecimento)) {
                 return null;

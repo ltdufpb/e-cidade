@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -39,7 +39,7 @@ include(modification("classes/db_parecer_classe.php"));
 include(modification("classes/db_parecerturma_classe.php"));
 include(modification("classes/db_parecerlegenda_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $resultedu          = eduparametros(db_getsession("DB_coddepto"));
 $clpareceraval      = new cl_pareceraval;
 $clparecerlegenda   = new cl_parecerlegenda;
@@ -252,7 +252,7 @@ if (isset($alterar2)) {
     <tr>
      <td colspan="2">
       <center>
-      <?include(modification("forms/db_frmpareceraval001.php"));?>
+      <?php include(modification("forms/db_frmpareceraval001.php"));?>
       </center>
      </td>
     </tr>
@@ -262,16 +262,16 @@ if (isset($alterar2)) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar2) && $ed72_t_parecer !="") {
   ?>
   <script>
     parent.db_iframe_parecer.hide();
     alert("Alteração efetuada com Sucesso");
 
-    parent.document.form1.<?=$campo?>.value = "<?=str_replace("\r", "", str_replace("\n", "", addslashes($ed72_t_parecer)))?>";
+    parent.document.form1.<?=$campo?>.value = "<?=str_replace("\r", "", str_replace("\n", "", addslashes((string) $ed72_t_parecer)))?>";
   </script>
- <?
+ <?php 
 
 }
 ?>

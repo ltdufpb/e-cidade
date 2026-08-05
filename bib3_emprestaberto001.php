@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -63,14 +63,14 @@ if ($linhas != 0) {
   <td width="140">&nbsp;</td>
  </tr>
 </table>
-<?MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"biblioteca",""," bi17_coddepto = ".db_getsession("DB_coddepto")."");?>
 <table width="790" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <br>
       <center>
         <fieldset style="width:90%"><legend><b>Consulta de Empréstimos em Aberto</b></legend>
-          <?
+          <?php 
           $hoje = date("Y-m-d");
           $sSql = "SELECT bi23_codigo, bi06_titulo, bi18_retirada, bi18_devolucao, bi18_carteira, bi16_leitor, ov02_nome
                      FROM emprestimoacervo
@@ -104,7 +104,7 @@ if ($linhas != 0) {
                   <td><b>Leitor</b></td>
                   <td>&nbsp;</td>
                 </tr>
-                <?
+                <?php 
                 for ($x = 0; $x < $cldevolucaoacervo->numrows; $x++) {
 
                   db_fieldsmemory($result, $x);
@@ -126,21 +126,21 @@ if ($linhas != 0) {
                              onclick="location.href='bib1_devolucao001.php?bi18_carteira=<?=$bi18_carteira?>&ov02_nome=<?=$ov02_nome?>'">
                     </td>
                   </tr>
-              <?}?>
+              <?php }?>
               </table>
             </form>
-        <?} else {?>
+        <?php } else {?>
             <table border="0" width="100%">
               <tr>
                 <td>Nenhum empréstimo em aberto.</td>
               </tr>
             </table>
-        <?}?>
+        <?php }?>
         </fieldset>
       </center>
     </td>
   </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>

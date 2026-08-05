@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -186,7 +186,7 @@ function js_submit_form(){
 
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?$cor="#999999"?>
+<?php $cor="#999999"?>
 .bordas{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -194,7 +194,7 @@ function js_submit_form(){
          border-bottom-color: <?=$cor?>;
          background-color: #999999;
 }
-<?$cor="999999"?>
+<?php $cor="999999"?>
 .bordas_corp{
          border: 1px solid #cccccc;
 border-right-color: <?=$cor?>;
@@ -209,7 +209,7 @@ border-right-color: <?=$cor?>;
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-    <?
+    <?php 
     
     if (isset ($codsol) && $codsol != "") {
     	
@@ -383,7 +383,7 @@ db_input('valores', 10, '', true, 'hidden', 3);
 
 
 </html>
-<?
+<?php 
 
 if (isset($tipo) && $tipo == "P") {
 	echo " <script>																 ";

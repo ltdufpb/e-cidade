@@ -27,12 +27,19 @@
 
 namespace ECidade\RecursosHumanos\RH\Assentamento;
 
+use Assentamento;
+use cl_assentamentojustificativaperiodo;
+use DBException;
+use BusinessException;
+use db_utils;
+use DBDate;
+use AssentamentoRepository;
+use Override;
+use ParameterException;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\BaseHora;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
-use ECidade\RecursosHumanos\RH\PontoEletronico\Manutencao\EspelhoPonto;
-use ECidade\RecursosHumanos\RH\PontoEletronico\Manutencao\Repository\EspelhoPontoCache;
 
-class AssentamentoJustificativa extends \Assentamento {
+class AssentamentoJustificativa extends Assentamento {
 
   /**
    * Código da natureza do assentamento
@@ -68,8 +75,8 @@ class AssentamentoJustificativa extends \Assentamento {
    * Instância um assentamento de RRA
    *
    * @param int|null $iCodigo Código do assentamento
-   * @throws \BusinessException
-   * @throws \DBException
+   * @throws BusinessException
+   * @throws DBException
    */
   function __construct($iCodigo = null) {
     
@@ -79,22 +86,22 @@ class AssentamentoJustificativa extends \Assentamento {
     
     parent::__construct($iCodigo);
     
-    $oDaoAssentamentoJustificativa = new \cl_assentamentojustificativaperiodo();
+    $oDaoAssentamentoJustificativa = new cl_assentamentojustificativaperiodo();
     $sSqlJustificativa             = $oDaoAssentamentoJustificativa->sql_query_file(null, null, "*", null, " rh206_codigo = {$iCodigo}");
     $rsJustificativa               = db_query($sSqlJustificativa);
     if (!$rsJustificativa) {
-      throw new \DBException("Erro ao consultar dados do Justificativa {$iCodigo}.");
+      throw new DBException("Erro ao consultar dados do Justificativa {$iCodigo}.");
     }
     
     if (pg_num_rows($rsJustificativa) == 0) {
-      throw new \BusinessException("Assentamento de Justificativa {$iCodigo} não encontrada no sistema.");
+      throw new BusinessException("Assentamento de Justificativa {$iCodigo} não encontrada no sistema.");
     }
 
     $periodo1 = null;
     $periodo2 = null;
     $periodo3 = null;
 
-    \db_utils::makeCollectionFromRecord($rsJustificativa, function($oRetorno) use (&$periodo1, &$periodo2, &$periodo3) {
+    db_utils::makeCollectionFromRecord($rsJustificativa, function($oRetorno) use (&$periodo1, &$periodo2, &$periodo3) {
 
       switch ($oRetorno->rh206_periodo) {
         
@@ -191,14 +198,14 @@ class AssentamentoJustificativa extends \Assentamento {
 
   /**
    * Valida se existe já alguma justificativa no período para o servidor
-   * @param  \DBDate $dataJustificativa
+   * @param DBDate $dataJustificativa
    * @return Boolean
-     * @throws \DBException
-     * @throws \ParameterException
+   * @throws DBException
+   * @throws ParameterException
    */
-  public function validarExistenciaJustificativaNoPeriodo(\DBDate $dataJustificativa) {
+  public function validarExistenciaJustificativaNoPeriodo(DBDate $dataJustificativa) {
 
-    $assentamentos = \AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($this->getServidor(), 'S', $dataJustificativa, 5);
+    $assentamentos = AssentamentoRepository::getAssentamentosServidorPorTipoENatureza($this->getServidor(), 'S', $dataJustificativa, 5);
 
     if(empty($assentamentos)){
       return false;
@@ -222,18 +229,19 @@ class AssentamentoJustificativa extends \Assentamento {
 
   /**
    * Persiste na base de dados um assentamento de justificativa
-     *
-     * @throws \DBException
+   *
+   * @throws DBException
    */
+  #[Override]
   public function persist() {
 
     parent::persist();
 
-    $DAOassentamentojustificativaperiodo = new \cl_assentamentojustificativaperiodo();
+    $DAOassentamentojustificativaperiodo = new cl_assentamentojustificativaperiodo();
     $DAOassentamentojustificativaperiodo->excluir($this->getCodigo());
 
     if($DAOassentamentojustificativaperiodo->erro_status == '0') {
-      throw new \DBException($DAOassentamentojustificativaperiodo->erro_msg);
+      throw new DBException($DAOassentamentojustificativaperiodo->erro_msg);
     }
 
     for ($periodo = 1; $periodo <= 3; $periodo++) {
@@ -245,7 +253,7 @@ class AssentamentoJustificativa extends \Assentamento {
         $DAOassentamentojustificativaperiodo->incluir(null);
 
         if($DAOassentamentojustificativaperiodo->erro_status == '0') {
-          throw new \DBException($DAOassentamentojustificativaperiodo->erro_msg);
+          throw new DBException($DAOassentamentojustificativaperiodo->erro_msg);
         }
       }
     }
@@ -262,6 +270,7 @@ class AssentamentoJustificativa extends \Assentamento {
      * @param DiaTrabalho $diaTrabalho
      * @return String
      */
+    #[Override]
     public function calcularHorasDiurnasNoturnasNoDia(DiaTrabalho $diaTrabalho)
     {
         $baseHora = new BaseHora($diaTrabalho);
@@ -271,7 +280,7 @@ class AssentamentoJustificativa extends \Assentamento {
         $periodo = 0;
 
 
-        $horasTotais = array();
+        $horasTotais = [];
         $quantidadeHorasJornada = 4;
         for ($i = 0; $i < $quantidadeHorasJornada; $i = $i + 2) {
             $indiceEntrada = $i;

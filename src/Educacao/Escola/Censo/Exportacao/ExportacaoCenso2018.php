@@ -2,6 +2,7 @@
 
 namespace ECidade\Educacao\Escola\Censo\Exportacao;
 
+use Override;
 use ECidade\Educacao\Escola\Censo\Validacao\DadosAluno2018;
 use ECidade\Educacao\Escola\Censo\Validacao\DadosDocente2018;
 use ECidade\Educacao\Escola\Censo\Validacao\DadosEscola2018;
@@ -29,6 +30,7 @@ class ExportacaoCenso2018 extends ExportacaoCenso2017
     /**
      * @return bool
      */
+    #[Override]
     protected function validarDadosEscola()
     {
         return DadosEscola2018::validarDados($this);
@@ -37,6 +39,7 @@ class ExportacaoCenso2018 extends ExportacaoCenso2017
     /**
      * @return bool
      */
+    #[Override]
     protected function validarDadosAluno()
     {
         return DadosAluno2018::validarDados($this);
@@ -45,6 +48,7 @@ class ExportacaoCenso2018 extends ExportacaoCenso2017
     /**
      * @return bool
      */
+    #[Override]
     protected function validarDadosDocente()
     {
         return DadosDocente2018::validarDados($this);
@@ -53,6 +57,7 @@ class ExportacaoCenso2018 extends ExportacaoCenso2017
     /**
      * @return bool
      */
+    #[Override]
     protected function validarDadosTurma()
     {
         return DadosTurma2018::validarDados($this);

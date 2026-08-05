@@ -26,8 +26,10 @@
  */
 namespace ECidade\RecursosHumanos\Pessoal\Servidor\Model;
 
-use ECidade\Configuracao\Instituicao\Model\Instituicao;
-
+use DBException;
+use BusinessException;
+use db_utils;
+use DBDate;
 class Funcao
 {
     /**
@@ -46,12 +48,12 @@ class Funcao
     private $descricao;
 
     /**
-     * @var \DBDate|null
+     * @var DBDate|null
      */
     private $dataInicio;
 
     /**
-     * @var \DBDate|null
+     * @var DBDate|null
      */
     private $dataFim;
 
@@ -68,22 +70,22 @@ class Funcao
             $sql = "select * from pessoal.rhcargo where rh04_codigo = {$codigo} and rh04_instit = {$instituicao}";
             $rs = \db_query($sql);
             if (!$rs) {
-                throw new \DBException("Houve um erro ao buscar a função código {$codigo}.");
+                throw new DBException("Houve um erro ao buscar a função código {$codigo}.");
             }
 
             if (pg_num_rows($rs) == 0) {
-                throw new \BusinessException("Função código {$codigo} não encontrada.");
+                throw new BusinessException("Função código {$codigo} não encontrada.");
             }
 
-            $cargo = \db_utils::fieldsMemory($rs, 0);
+            $cargo = db_utils::fieldsMemory($rs, 0);
             $this->setCodigo($cargo->rh04_codigo);
             $this->setCodigoInstituicao($cargo->rh04_instit);
             $this->setDescricao($cargo->rh04_descr);
             if (!empty($cargo->rh04_datainicial)) {
-                $this->setDataInicio(new \DBDate($cargo->rh04_datainicial));
+                $this->setDataInicio(new DBDate($cargo->rh04_datainicial));
             }
             if (!empty($cargo->rh04_datafinal)) {
-                $this->setDataFim(new \DBDate($cargo->rh04_datafinal));
+                $this->setDataFim(new DBDate($cargo->rh04_datafinal));
             }
             $this->setDescricaoAtividade($cargo->rh04_descricaoatividades);
         }
@@ -138,7 +140,7 @@ class Funcao
     }
 
     /**
-     * @return \DBDate|null
+     * @return DBDate|null
      */
     public function getDataInicio()
     {
@@ -146,7 +148,7 @@ class Funcao
     }
 
     /**
-     * @param \DBDate|null $dataInicio
+     * @param DBDate|null $dataInicio
      */
     public function setDataInicio($dataInicio)
     {
@@ -154,7 +156,7 @@ class Funcao
     }
 
     /**
-     * @return \DBDate|null
+     * @return DBDate|null
      */
     public function getDataFim()
     {
@@ -162,7 +164,7 @@ class Funcao
     }
 
     /**
-     * @param \DBDate|null $dataFim
+     * @param DBDate|null $dataFim
      */
     public function setDataFim($dataFim)
     {

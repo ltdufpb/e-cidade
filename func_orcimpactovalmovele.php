@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcimpactovalmovele_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcimpactovalmovele = new cl_orcimpactovalmovele;
 $clorcimpactovalmovele->rotulo->label("o66_codseqimpmov");
 $clorcimpactovalmovele->rotulo->label("o66_codele");
@@ -55,7 +56,7 @@ $clorcimpactovalmovele->rotulo->label("o66_codele");
               <?=$Lo66_codseqimpmov?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o66_codseqimpmov",5,$Io66_codseqimpmov,true,"text",4,"","chave_o66_codseqimpmov");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clorcimpactovalmovele->rotulo->label("o66_codele");
               <?=$Lo66_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o66_codele",6,$Io66_codele,true,"text",4,"","chave_o66_codele");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clorcimpactovalmovele->rotulo->label("o66_codele");
               <?=$Lo66_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o66_codele",6,$Io66_codele,true,"text",4,"","chave_o66_codele");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clorcimpactovalmovele->rotulo->label("o66_codele");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcimpactovalmovele.php")==true){
@@ -129,12 +130,12 @@ $clorcimpactovalmovele->rotulo->label("o66_codele");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ossoario_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clossoario = new cl_ossoario;
 $clossoario->rotulo->label("cm06_i_codigo");
 $clossoario->rotulo->label("cm06_i_sepultamento");
@@ -54,7 +55,7 @@ $clossoario->rotulo->label("cm06_i_sepultamento");
               <?=$Lcm06_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("cm06_i_codigo",10,$Icm06_i_codigo,true,"text",4,"","chave_cm06_i_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clossoario->rotulo->label("cm06_i_sepultamento");
               <?=$Lcm06_i_sepultamento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("cm06_i_sepultamento",10,$Icm06_i_sepultamento,true,"text",4,"","chave_cm06_i_sepultamento");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clossoario->rotulo->label("cm06_i_sepultamento");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_ossoario.php")==true){
@@ -118,12 +119,12 @@ $clossoario->rotulo->label("cm06_i_sepultamento");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

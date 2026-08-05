@@ -43,7 +43,7 @@ class LancamentoAuxiliarEmpenhoEmLiquidacaoMaterialAlmoxarifado
    * Colecao dos itens de um empenho
    * @var EmpenhoFinanceiroItem
    */
-  protected $aItens = array();
+  protected $aItens = [];
 
   /**
    * Grupo do material do estoque

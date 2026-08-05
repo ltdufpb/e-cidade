@@ -2,10 +2,8 @@
 
 class DDFkXML {
   
-  private $oFkXml = null;
-
-  public function __construct(DOMNode $oDomNode){
-    $this->oFkXml = $oDomNode;
+  public function __construct(private readonly DOMNode $oFkXml)
+  {
   }
 
   public function __get($sName){
@@ -13,7 +11,7 @@ class DDFkXML {
   }
 
   public function getFields() {  	
-  	$aFields = array();
+  	$aFields = [];
   	foreach ( $this->oFkXml->getElementsByTagName("fieldfk") as $oFieldFk ) {
   	  $aFields[] = new DDFieldFkXML($oFieldFk);
   	}

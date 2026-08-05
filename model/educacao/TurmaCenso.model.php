@@ -61,7 +61,7 @@ class TurmaCenso {
    * Coleção de objetos TurmaCensoTurma contendo as turmas e qual é a principal
    * @var array
    */
-  private $aTurmaCensoTurma = array();
+  private $aTurmaCensoTurma = [];
 
   /**
    * Verifica se foi passado o código como parâmetro e retorna os dados conforme o código passado

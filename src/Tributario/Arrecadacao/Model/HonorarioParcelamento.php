@@ -27,6 +27,7 @@
 
 namespace ECidade\Tributario\Arrecadacao\Model;
 
+use Exception;
 use BusinessException;
 use ECidade\Tributario\Juridico\Inicial\Inicial;
 use ECidade\Tributario\Juridico\ProcessoForo\ProcessoForo;
@@ -69,7 +70,7 @@ final class HonorarioParcelamento extends Model
     /**
      * @param array $state
      * @return HonorarioParcelamento
-     * @throws \Exception
+     * @throws Exception
      */
     public static function fromState(array $state)
     {

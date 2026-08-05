@@ -1,4 +1,4 @@
-<?
+<?php
 //MODULO: pessoal
 //CLASSE DA ENTIDADE rhdirfgeracaopessoalpensionistavalor
 class cl_rhdirfgeracaopessoalpensionistavalor { 
@@ -26,7 +26,7 @@ class cl_rhdirfgeracaopessoalpensionistavalor {
                  rh203_rhdirfgeracaodadospessoalvalor = int4 = Valor processado 
                  ";
    //funcao construtor da classe 
-   function cl_rhdirfgeracaopessoalpensionistavalor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhdirfgeracaopessoalpensionistavalor"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

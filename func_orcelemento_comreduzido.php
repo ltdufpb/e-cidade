@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcelemento_classe.php"));
 include(modification("classes/db_orcparametro_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcelemento = new cl_orcelemento;
 $clorcparametro = new cl_orcparametro;
 $clorcelemento->rotulo->label("o56_codele");
@@ -61,7 +62,7 @@ if($clorcparametro->numrows > 0){
               <?=$Lo56_codele?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 	      db_input("o56_codele",6,$Io56_codele,true,"text",4,"","chave_o56_codele");
 	      ?>
             </td>
@@ -71,7 +72,7 @@ if($clorcparametro->numrows > 0){
               <?=$Lo56_elemento?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
               db_input("o56_elemento",15,$Io56_elemento,true,"text",4,"","chave_o56_elemento");
 	      ?>
             </td>
@@ -81,7 +82,7 @@ if($clorcparametro->numrows > 0){
               <?=$Lo56_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
               db_input("o56_descr",15,$Io56_descr,true,"text",4,"","chave_o56_descr");
 	      ?>
             </td>
@@ -100,7 +101,7 @@ if($clorcparametro->numrows > 0){
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $dbwhere='';
       if(isset($o50_subelem) and ($o50_subelem=='f')){
         $dbwhere=" and  substr(o56_elemento,8,6)='000000' ";
@@ -150,12 +151,12 @@ if($clorcparametro->numrows > 0){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

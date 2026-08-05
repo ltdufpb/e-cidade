@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -115,10 +115,10 @@ if ($clturma->numrows == 0) {
      </td>
     </tr>
    </table>
-<?
+<?php 
    exit ();
 }
-$ano_calendario    = pg_result($result, 0, 'ed52_i_ano');
+$ano_calendario    = pg_fetch_result($result, 0, 'ed52_i_ano');
 $result_parametros = $cledu_parametros->sql_record($cledu_parametros->sql_query("", 
                                                                                 "ed233_c_database,ed233_c_limitemov", 
                                                                                 "", 
@@ -128,7 +128,7 @@ $result_parametros = $cledu_parametros->sql_record($cledu_parametros->sql_query(
 if ($cledu_parametros->numrows > 0) {
 	
   db_fieldsmemory($result_parametros, 0);
-  if (!strstr($ed233_c_database, "/") || !strstr($ed233_c_limitemov, "/")) {
+  if (!strstr((string) $ed233_c_database, "/") || !strstr((string) $ed233_c_limitemov, "/")) {
   	
   ?>
     <table width='100%'>
@@ -138,20 +138,20 @@ if ($cledu_parametros->numrows > 0) {
          (Procedimentos->Parâmetros)<br>
          devem estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2)<br><br>
          Valor atual do parâmetro Dia/Mês Limite da Movimentação: 
-         <?=trim($ed233_c_limitemov) == "" ? "Não informado" : $ed233_c_limitemov?><br>
+         <?=trim((string) $ed233_c_limitemov) == "" ? "Não informado" : $ed233_c_limitemov?><br>
          Valor atual do parâmetro Data Base para Cálculo da Idade: 
-         <?=trim($ed233_c_database) == "" ? "Não informado" : $ed233_c_database?><br>
+         <?=trim((string) $ed233_c_database) == "" ? "Não informado" : $ed233_c_database?><br>
         <br></b> 
         <input type='button' value='Fechar' onclick='window.close()'> </font>
        </td>
       </tr>
      </table>
-<?
+<?php 
      exit ();
      
   }
-  $database = explode("/", $ed233_c_database);
-  $limitemov = explode("/", $ed233_c_limitemov);
+  $database = explode("/", (string) $ed233_c_database);
+  $limitemov = explode("/", (string) $ed233_c_limitemov);
   $dia_database = $database [0];
   $mes_database = $database [1];
   $dia_limitemov = $limitemov [0];
@@ -169,9 +169,9 @@ if ($cledu_parametros->numrows > 0) {
         devem estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2) e devem
         ser uma data válida.<br><br>
          Valor atual do parâmetro Dia/Mês Limite da Movimentação: 
-         <?=trim($ed233_c_limitemov) == "" ? "Não informado" : $ed233_c_limitemov?><br>
+         <?=trim((string) $ed233_c_limitemov) == "" ? "Não informado" : $ed233_c_limitemov?><br>
          Valor atual do parâmetro Data Base para Cálculo da Idade: 
-         <?=trim($ed233_c_database) == "" ? "Não informado" : $ed233_c_database?><br>
+         <?=trim((string) $ed233_c_database) == "" ? "Não informado" : $ed233_c_database?><br>
         <br>
          Data Limite da Movimentação: <?=$dia_limitemov . "/" . $mes_limitemov . "/" . $ano_calendario?> 
          <?=@!checkdate($mes_limitemov, $dia_limitemov, $ano_calendario) ? "(Data Inválida)" : "(Data Válida)"?><br>
@@ -182,7 +182,7 @@ if ($cledu_parametros->numrows > 0) {
        </td>
       </tr>
      </table>
-<?
+<?php 
      exit ();
      
   }
@@ -199,7 +199,7 @@ if ($cledu_parametros->numrows > 0) {
 
 if ($diretor != "") {
     
-  $arr_diretor   = explode("|",$diretor);
+  $arr_diretor   = explode("|",(string) $diretor);
   $nomediretor   = $arr_diretor[1];
   $funcaodiretor =(trim($arr_diretor[2]) != ""?" ($arr_diretor[2])":"");
   
@@ -212,7 +212,7 @@ if ($diretor != "") {
 
 if ($secretario != "") {
     
-  $arr_secretario   = explode("|",$secretario);
+  $arr_secretario   = explode("|",(string) $secretario);
   $nomesecretario   = $arr_secretario[1];
   $funcaosecretario = (trim($arr_secretario[2]) != ""?" ($arr_secretario[2])":"");
   
@@ -229,7 +229,7 @@ function Entrada($situacao, $matricula) {
   $sql    .= "      FROM matricula ";
   $sql    .= "      WHERE ed60_i_codigo = $matricula ";
   $result = db_query($sql);
-  $tipo   = pg_result($result, 0, 0);
+  $tipo   = pg_fetch_result($result, 0, 0);
   if ($tipo == "N") {
     $retorno = "M";
   } else {
@@ -267,19 +267,19 @@ for ($s = 0; $s < $linhas; $s ++) {
     
   }
   $fpdf->setfillcolor(223);
-  $dia      = substr($ed52_d_resultfinal, 8, 2);
-  $mes      = db_mes(substr ( $ed52_d_resultfinal, 5, 2));
-  $ano      = substr($ed52_d_resultfinal, 0, 4);
+  $dia      = substr((string) $ed52_d_resultfinal, 8, 2);
+  $mes      = db_mes(substr ( (string) $ed52_d_resultfinal, 5, 2));
+  $ano      = substr((string) $ed52_d_resultfinal, 0, 4);
   $result11 = $clEscola->sql_record($clEscola->sql_query("", "ed261_c_nome", "", " ed18_i_codigo = $escola"));
   db_fieldsmemory($result11, 0);
   $fpdf->addpage('P');
   $fpdf->ln(5);
   $dados = db_query($conn,"select nomeinst,trim(ender)||','||trim(numero) as ender,munic,uf,telef,email,url,logo from 
                           db_config where codigo = ".db_getsession("DB_instit"));
-  $url = @pg_result($dados,0,"url");
+  $url = @pg_fetch_result($dados,0,"url");
   $fpdf->setXY(120,4);
   if ($brasao == "b1") {
-  	$fpdf->Image('imagens/files/'.pg_result($dados,0,"logo"),5,3,20);
+  	$fpdf->Image('imagens/files/'.pg_fetch_result($dados,0,"logo"),5,3,20);
   } else {
     $fpdf->Image('',5,3,20);
   }
@@ -288,7 +288,7 @@ for ($s = 0; $s < $linhas; $s ++) {
   $fpdf->multicell(77,4,$sCabecalho,0,"C",0,0);
   $fpdf->setXY(115,5);
   $result_mant     = db_query($conn,"select nomeinst from db_config where codigo = ".db_getsession("DB_instit"));
-  $mantenedora     = pg_result($result_mant,0,'nomeinst');
+  $mantenedora     = pg_fetch_result($result_mant,0,'nomeinst');
   $sCampos         = "ed05_c_finalidade,ed05_c_numero,ed05_d_vigora,ed05_d_publicado";
   $sWhere          = " ed29_i_codigo in ($ed29_i_codigo) AND ed18_i_codigo = $escola";
   $result_cursoato = $clcursoato->sql_record($clcursoato->sql_query("",
@@ -313,7 +313,7 @@ for ($s = 0; $s < $linhas; $s ++) {
     $ato_escola = "";
   }
 
-  if ( trim($iCodigoReferencia) != null ) {
+  if ( trim((string) $iCodigoReferencia) != null ) {
     $nome_escola = "{$iCodigoReferencia} - {$nome_escola}";
   }
 
@@ -470,7 +470,7 @@ for ($s = 0; $s < $linhas; $s ++) {
     db_fieldsmemory($result4, $z);
     if ($datasaida != "") {
     	
-      $comp_datasaida = explode("/", $datasaida);
+      $comp_datasaida = explode("/", (string) $datasaida);
       $comp_datasaida = $comp_datasaida [2] . $comp_datasaida [1] . $comp_datasaida [0];
       
     } else {
@@ -519,9 +519,9 @@ for ($s = 0; $s < $linhas; $s ++) {
         $naomatric = false;
         if ($datasaida == "" or ($datasaida != "" and $comp_datasaida > $comp_datalimitemov)) {
         	
-          if (trim($ed60_c_situacao) != "MATRICULADO") {
+          if (trim((string) $ed60_c_situacao) != "MATRICULADO") {
           	
-            $aproveitamento = trim(Situacao($ed60_c_situacao, $ed60_i_codigo))." em ".db_formatar($ed60_d_datasaida,'d');
+            $aproveitamento = trim((string) Situacao($ed60_c_situacao, $ed60_i_codigo))." em ".db_formatar($ed60_d_datasaida,'d');
             $naomatric      = true;
             $fpdf->cell(55, 4, $aproveitamento, "LR", 0, "L", $cor);
             $fpdf->cell(11, 4, "", "LR", 0, "L", $cor);
@@ -533,7 +533,7 @@ for ($s = 0; $s < $linhas; $s ++) {
             
           } else {
           	
-            if (trim($ed81_c_todoperiodo) == "S") {
+            if (trim((string) $ed81_c_todoperiodo) == "S") {
             	
               if ($ed81_i_justificativa) {
                 $aproveitamento = "AMPARO";
@@ -543,7 +543,7 @@ for ($s = 0; $s < $linhas; $s ++) {
               
             } else {
             	
-              if (trim($ed37_c_tipo) == "NOTA") {
+              if (trim((string) $ed37_c_tipo) == "NOTA") {
               	
                 if ($resultedu == 'S') {
                   $aproveitamento = number_format($ed74_c_valoraprov, 2, ".", ".");
@@ -551,14 +551,14 @@ for ($s = 0; $s < $linhas; $s ++) {
                   $aproveitamento = number_format($ed74_c_valoraprov, 0, ".", ".");
                 }
                 
-              } elseif (trim($ed37_c_tipo) == "PARECER") {
+              } elseif (trim((string) $ed37_c_tipo) == "PARECER") {
                 $aproveitamento = "Parec";
               } else {
                 $aproveitamento = $ed74_c_valoraprov;
               }
               
             }
-            if (trim($ed59_c_freqglob) == "F") {
+            if (trim((string) $ed59_c_freqglob) == "F") {
               $aproveitamento = $ed74_i_percfreq . "%";
             }
             $fpdf->cell(11, 4, $aproveitamento, "LR", 0, "C", $cor);
@@ -569,7 +569,7 @@ for ($s = 0; $s < $linhas; $s ++) {
       }
     } else {
     	
-      $fpdf->cell(11, 4, substr(trim(Situacao($ed60_c_situacao, $ed60_i_codigo)), 0, 5), "LR", 0, "C", $cor);
+      $fpdf->cell(11, 4, substr(trim((string) Situacao($ed60_c_situacao, $ed60_i_codigo)), 0, 5), "LR", 0, "C", $cor);
       $cont3 ++;
       
     }
@@ -595,7 +595,7 @@ for ($s = 0; $s < $linhas; $s ++) {
     $sql6   .= "      AND ed74_c_resultadofinal != 'A' ";        
     $result6 = db_query($sql6);
     $linhas6 = pg_num_rows($result6);
-    if (trim($ed60_c_situacao) != "MATRICULADO") {
+    if (trim((string) $ed60_c_situacao) != "MATRICULADO") {
       $rf = "";
     } else {
     	

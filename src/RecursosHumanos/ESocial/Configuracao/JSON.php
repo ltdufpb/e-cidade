@@ -26,6 +26,8 @@
  */
 namespace ECidade\RecursosHumanos\ESocial\Configuracao;
 
+use stdClass;
+
 /**
  * Class JSON
  * @package ECidade\RecursosHumanos\ESocial\Configuracao
@@ -41,7 +43,7 @@ abstract class JSON
 
     /**
      * StdClass representando o arquivo JSON
-     * @var \stdClass
+     * @var stdClass
      */
     protected $arquivoConfiguracao;
 
@@ -52,7 +54,7 @@ abstract class JSON
     protected $codigoArquivo;
 
     /**
-     * @return \stdClass
+     * @return stdClass
      */
     private function getArquivoConfiguracao()
     {
@@ -61,9 +63,9 @@ abstract class JSON
     }
 
     /**
-     * @param \stdClass $data
+     * @param stdClass $data
      */
-    protected function escrever(\stdClass $data)
+    protected function escrever(stdClass $data)
     {
 
         $this->getArquivoConfiguracao();
@@ -95,7 +97,7 @@ abstract class JSON
     /**
      * Retorna o objeto referente ao arquivo desejado
      * @param $arquivo
-     * @return \stdClass|bool
+     * @return stdClass|bool
      */
     protected function getPropriedadeArquivo($arquivo) {
 

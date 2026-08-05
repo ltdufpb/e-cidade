@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -65,11 +65,11 @@ $clrotulo->label("j67_naogeracarne");
 <table  align="center"  border="0">
 	
   <tr>
-    <td nowrap title="<?//=@$Tj67_naogeracarne?>">
-       <b>       <?//=@$Lj67_naogeracarne?></b>
+    <td nowrap title="<?php //=@$Tj67_naogeracarne?>">
+       <b>       <?php //=@$Lj67_naogeracarne?></b>
     </td>
     <td> 
-<?
+<?php 
 db_input('j67_naogeracarne',10,$Ij67_naogeracarne,true,'hidden',3,"")
 ?>
     </td>

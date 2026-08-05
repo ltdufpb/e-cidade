@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_relrub_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrelrub = new cl_relrub;
 $clrelrub->rotulo->label("rh45_codigo");
 $clrelrub->rotulo->label("rh45_descr");
@@ -54,7 +55,7 @@ $clrelrub->rotulo->label("rh45_descr");
               <?=$Lrh45_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh45_codigo",6,$Irh45_codigo,true,"text",4,"","chave_rh45_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clrelrub->rotulo->label("rh45_descr");
               <?=$Lrh45_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh45_descr",40,$Irh45_descr,true,"text",4,"","chave_rh45_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clrelrub->rotulo->label("rh45_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_relrub.php")==true){
@@ -118,12 +119,12 @@ $clrelrub->rotulo->label("rh45_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

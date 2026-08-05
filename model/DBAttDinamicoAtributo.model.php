@@ -233,7 +233,7 @@ class DBAttDinamicoAtributo
     public function setCampo($iCodCampo)
     {
 
-        if (trim($iCodCampo) != '') {
+        if (trim((string) $iCodCampo) != '') {
 
             $oDaoDBSysArqCamp = new cl_db_sysarqcamp();
             $sCampos = " db_syscampo.codcam,    ";
@@ -290,7 +290,7 @@ class DBAttDinamicoAtributo
 
         if (is_null($this->aOpcoes)) {
 
-            $this->aOpcoes = array();
+            $this->aOpcoes = [];
 
             if ($this->getCodigo()) {
 
@@ -372,7 +372,7 @@ class DBAttDinamicoAtributo
         }
 
 
-        if (trim($this->getCodigo()) == '') {
+        if (trim((string) $this->getCodigo()) == '') {
 
             $oDaoCadAttDinamicoAtributo->incluir(null);
             $this->setCodigo($oDaoCadAttDinamicoAtributo->db109_sequencial);
@@ -412,7 +412,7 @@ class DBAttDinamicoAtributo
             throw new Exception("Nenhuma transação com o banco de dados aberta!\\n\\nOperação cancelada.");
         }
 
-        if (trim($this->getCodigo()) == '') {
+        if (trim((string) $this->getCodigo()) == '') {
             throw new Exception("Código do atributo não informado!");
         }
 
@@ -459,13 +459,13 @@ class DBAttDinamicoAtributo
 
             case \DBAttDinamicoAtributo::TIPO_NUMERIC:
 
-                $valor = trim(db_formatar($valor, 'f'));
+                $valor = trim((string) db_formatar($valor, 'f'));
                 break;
 
             case \DBAttDinamicoAtributo::TIPO_DATE:
 
-                $data = new \DBDate($valor);
-                $valor = $data->getDate(\DBDate::DATA_PTBR);
+                $data = new DBDate($valor);
+                $valor = $data->getDate(DBDate::DATA_PTBR);
                 break;
 
             case \DBAttDinamicoAtributo::TIPO_BOOLEAN:
@@ -485,7 +485,7 @@ class DBAttDinamicoAtributo
     public function  getNomeFormula()
     {
 
-        $oDaoFormula = new \cl_db_formulas();
+        $oDaoFormula = new cl_db_formulas();
 
         $sSql = $oDaoFormula->sql_query($this->getFormula());
 

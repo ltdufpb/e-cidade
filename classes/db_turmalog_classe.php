@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE turmalog
 class cl_turmalog { 
    // cria variaveis de erro 
-   var $rotulo          = null; 
-   var $query_sql       = null; 
-   var $numrows         = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status     = null; 
-   var $erro_sql        = null; 
-   var $erro_banco      = null;  
-   var $erro_msg        = null;  
-   var $erro_campo      = null;  
-   var $pagina_retorno  = null; 
+   public $rotulo          = null; 
+   public $query_sql       = null; 
+   public $numrows         = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status     = null; 
+   public $erro_sql        = null; 
+   public $erro_banco      = null;  
+   public $erro_msg        = null;  
+   public $erro_campo      = null;  
+   public $pagina_retorno  = null; 
    // cria variaveis do arquivo 
-   var $ed287_i_codigo        = 0; 
-   var $ed287_i_turma        = 0; 
-   var $ed287_i_usuario        = 0; 
-   var $ed287_d_data_dia    = null; 
-   var $ed287_d_data_mes    = null; 
-   var $ed287_d_data_ano    = null; 
-   var $ed287_d_data        = null; 
-   var $ed287_c_hora        = null; 
-   var $ed287_i_escola        = 0; 
-   var $ed287_i_tipoturma        = 0; 
-   var $ed287_i_codigoant        = 0; 
+   public $ed287_i_codigo        = 0; 
+   public $ed287_i_turma        = 0; 
+   public $ed287_i_usuario        = 0; 
+   public $ed287_d_data_dia    = null; 
+   public $ed287_d_data_mes    = null; 
+   public $ed287_d_data_ano    = null; 
+   public $ed287_d_data        = null; 
+   public $ed287_c_hora        = null; 
+   public $ed287_i_escola        = 0; 
+   public $ed287_i_tipoturma        = 0; 
+   public $ed287_i_codigoant        = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed287_i_codigo = int4 = Código 
                  ed287_i_turma = int4 = Turma 
                  ed287_i_usuario = int4 = Usuário 
@@ -65,10 +65,10 @@ class cl_turmalog {
                  ed287_i_codigoant = int4 = Código Anterior 
                  ";
    //funcao construtor da classe 
-   function cl_turmalog() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("turmalog"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -177,10 +177,10 @@ class cl_turmalog {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed287_i_codigo = pg_result($result,0,0); 
+       $this->ed287_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from turmalog_ed287_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed287_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed287_i_codigo)){
          $this->erro_sql = " Campo ed287_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -223,7 +223,7 @@ class cl_turmalog {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "turmalog ($this->ed287_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "turmalog já Cadastrado";
@@ -247,17 +247,17 @@ class cl_turmalog {
      $resaco = $this->sql_record($this->sql_query_file($this->ed287_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17580,'$this->ed287_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,3106,17580,'','".AddSlashes(pg_result($resaco,0,'ed287_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3106,17581,'','".AddSlashes(pg_result($resaco,0,'ed287_i_turma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3106,17582,'','".AddSlashes(pg_result($resaco,0,'ed287_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3106,17583,'','".AddSlashes(pg_result($resaco,0,'ed287_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3106,17584,'','".AddSlashes(pg_result($resaco,0,'ed287_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3106,17585,'','".AddSlashes(pg_result($resaco,0,'ed287_i_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3106,17604,'','".AddSlashes(pg_result($resaco,0,'ed287_i_tipoturma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3106,17654,'','".AddSlashes(pg_result($resaco,0,'ed287_i_codigoant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3106,17580,'','".AddSlashes(pg_fetch_result($resaco,0,'ed287_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3106,17581,'','".AddSlashes(pg_fetch_result($resaco,0,'ed287_i_turma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3106,17582,'','".AddSlashes(pg_fetch_result($resaco,0,'ed287_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3106,17583,'','".AddSlashes(pg_fetch_result($resaco,0,'ed287_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3106,17584,'','".AddSlashes(pg_fetch_result($resaco,0,'ed287_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3106,17585,'','".AddSlashes(pg_fetch_result($resaco,0,'ed287_i_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3106,17604,'','".AddSlashes(pg_fetch_result($resaco,0,'ed287_i_tipoturma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3106,17654,'','".AddSlashes(pg_fetch_result($resaco,0,'ed287_i_codigoant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -266,10 +266,10 @@ class cl_turmalog {
       $this->atualizacampos();
      $sql = " update turmalog set ";
      $virgula = "";
-     if(trim($this->ed287_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed287_i_codigo"])){ 
+     if(trim((string) $this->ed287_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed287_i_codigo"])){ 
        $sql  .= $virgula." ed287_i_codigo = $this->ed287_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed287_i_codigo) == null ){ 
+       if(trim((string) $this->ed287_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed287_i_codigo";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_turmalog {
          return false;
        }
      }
-     if(trim($this->ed287_i_turma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed287_i_turma"])){ 
+     if(trim((string) $this->ed287_i_turma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed287_i_turma"])){ 
        $sql  .= $virgula." ed287_i_turma = $this->ed287_i_turma ";
        $virgula = ",";
-       if(trim($this->ed287_i_turma) == null ){ 
+       if(trim((string) $this->ed287_i_turma) == null ){ 
          $this->erro_sql = " Campo Turma nao Informado.";
          $this->erro_campo = "ed287_i_turma";
          $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_turmalog {
          return false;
        }
      }
-     if(trim($this->ed287_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed287_i_usuario"])){ 
+     if(trim((string) $this->ed287_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed287_i_usuario"])){ 
        $sql  .= $virgula." ed287_i_usuario = $this->ed287_i_usuario ";
        $virgula = ",";
-       if(trim($this->ed287_i_usuario) == null ){ 
+       if(trim((string) $this->ed287_i_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "ed287_i_usuario";
          $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_turmalog {
          return false;
        }
      }
-     if(trim($this->ed287_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed287_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ed287_d_data_dia"] !="") ){ 
+     if(trim((string) $this->ed287_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed287_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ed287_d_data_dia"] !="") ){ 
        $sql  .= $virgula." ed287_d_data = '$this->ed287_d_data' ";
        $virgula = ",";
-       if(trim($this->ed287_d_data) == null ){ 
+       if(trim((string) $this->ed287_d_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "ed287_d_data_dia";
          $this->erro_banco = "";
@@ -321,7 +321,7 @@ class cl_turmalog {
        if(isset($GLOBALS["HTTP_POST_VARS"]["ed287_d_data_dia"])){ 
          $sql  .= $virgula." ed287_d_data = null ";
          $virgula = ",";
-         if(trim($this->ed287_d_data) == null ){ 
+         if(trim((string) $this->ed287_d_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "ed287_d_data_dia";
            $this->erro_banco = "";
@@ -332,10 +332,10 @@ class cl_turmalog {
          }
        }
      }
-     if(trim($this->ed287_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed287_c_hora"])){ 
+     if(trim((string) $this->ed287_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed287_c_hora"])){ 
        $sql  .= $virgula." ed287_c_hora = '$this->ed287_c_hora' ";
        $virgula = ",";
-       if(trim($this->ed287_c_hora) == null ){ 
+       if(trim((string) $this->ed287_c_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "ed287_c_hora";
          $this->erro_banco = "";
@@ -345,10 +345,10 @@ class cl_turmalog {
          return false;
        }
      }
-     if(trim($this->ed287_i_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed287_i_escola"])){ 
+     if(trim((string) $this->ed287_i_escola)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed287_i_escola"])){ 
        $sql  .= $virgula." ed287_i_escola = $this->ed287_i_escola ";
        $virgula = ",";
-       if(trim($this->ed287_i_escola) == null ){ 
+       if(trim((string) $this->ed287_i_escola) == null ){ 
          $this->erro_sql = " Campo Escola nao Informado.";
          $this->erro_campo = "ed287_i_escola";
          $this->erro_banco = "";
@@ -358,10 +358,10 @@ class cl_turmalog {
          return false;
        }
      }
-     if(trim($this->ed287_i_tipoturma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed287_i_tipoturma"])){ 
+     if(trim((string) $this->ed287_i_tipoturma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed287_i_tipoturma"])){ 
        $sql  .= $virgula." ed287_i_tipoturma = $this->ed287_i_tipoturma ";
        $virgula = ",";
-       if(trim($this->ed287_i_tipoturma) == null ){ 
+       if(trim((string) $this->ed287_i_tipoturma) == null ){ 
          $this->erro_sql = " Campo Tipo turma nao Informado.";
          $this->erro_campo = "ed287_i_tipoturma";
          $this->erro_banco = "";
@@ -371,10 +371,10 @@ class cl_turmalog {
          return false;
        }
      }
-     if(trim($this->ed287_i_codigoant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed287_i_codigoant"])){ 
+     if(trim((string) $this->ed287_i_codigoant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed287_i_codigoant"])){ 
        $sql  .= $virgula." ed287_i_codigoant = $this->ed287_i_codigoant ";
        $virgula = ",";
-       if(trim($this->ed287_i_codigoant) == null ){ 
+       if(trim((string) $this->ed287_i_codigoant) == null ){ 
          $this->erro_sql = " Campo Código Anterior nao Informado.";
          $this->erro_campo = "ed287_i_codigoant";
          $this->erro_banco = "";
@@ -392,25 +392,25 @@ class cl_turmalog {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17580,'$this->ed287_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed287_i_codigo"]) || $this->ed287_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,3106,17580,'".AddSlashes(pg_result($resaco,$conresaco,'ed287_i_codigo'))."','$this->ed287_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3106,17580,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed287_i_codigo'))."','$this->ed287_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed287_i_turma"]) || $this->ed287_i_turma != "")
-           $resac = db_query("insert into db_acount values($acount,3106,17581,'".AddSlashes(pg_result($resaco,$conresaco,'ed287_i_turma'))."','$this->ed287_i_turma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3106,17581,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed287_i_turma'))."','$this->ed287_i_turma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed287_i_usuario"]) || $this->ed287_i_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,3106,17582,'".AddSlashes(pg_result($resaco,$conresaco,'ed287_i_usuario'))."','$this->ed287_i_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3106,17582,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed287_i_usuario'))."','$this->ed287_i_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed287_d_data"]) || $this->ed287_d_data != "")
-           $resac = db_query("insert into db_acount values($acount,3106,17583,'".AddSlashes(pg_result($resaco,$conresaco,'ed287_d_data'))."','$this->ed287_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3106,17583,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed287_d_data'))."','$this->ed287_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed287_c_hora"]) || $this->ed287_c_hora != "")
-           $resac = db_query("insert into db_acount values($acount,3106,17584,'".AddSlashes(pg_result($resaco,$conresaco,'ed287_c_hora'))."','$this->ed287_c_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3106,17584,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed287_c_hora'))."','$this->ed287_c_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed287_i_escola"]) || $this->ed287_i_escola != "")
-           $resac = db_query("insert into db_acount values($acount,3106,17585,'".AddSlashes(pg_result($resaco,$conresaco,'ed287_i_escola'))."','$this->ed287_i_escola',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3106,17585,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed287_i_escola'))."','$this->ed287_i_escola',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed287_i_tipoturma"]) || $this->ed287_i_tipoturma != "")
-           $resac = db_query("insert into db_acount values($acount,3106,17604,'".AddSlashes(pg_result($resaco,$conresaco,'ed287_i_tipoturma'))."','$this->ed287_i_tipoturma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3106,17604,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed287_i_tipoturma'))."','$this->ed287_i_tipoturma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed287_i_codigoant"]) || $this->ed287_i_codigoant != "")
-           $resac = db_query("insert into db_acount values($acount,3106,17654,'".AddSlashes(pg_result($resaco,$conresaco,'ed287_i_codigoant'))."','$this->ed287_i_codigoant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3106,17654,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed287_i_codigoant'))."','$this->ed287_i_codigoant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -455,17 +455,17 @@ class cl_turmalog {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17580,'$ed287_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,3106,17580,'','".AddSlashes(pg_result($resaco,$iresaco,'ed287_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3106,17581,'','".AddSlashes(pg_result($resaco,$iresaco,'ed287_i_turma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3106,17582,'','".AddSlashes(pg_result($resaco,$iresaco,'ed287_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3106,17583,'','".AddSlashes(pg_result($resaco,$iresaco,'ed287_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3106,17584,'','".AddSlashes(pg_result($resaco,$iresaco,'ed287_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3106,17585,'','".AddSlashes(pg_result($resaco,$iresaco,'ed287_i_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3106,17604,'','".AddSlashes(pg_result($resaco,$iresaco,'ed287_i_tipoturma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3106,17654,'','".AddSlashes(pg_result($resaco,$iresaco,'ed287_i_codigoant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3106,17580,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed287_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3106,17581,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed287_i_turma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3106,17582,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed287_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3106,17583,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed287_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3106,17584,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed287_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3106,17585,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed287_i_escola'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3106,17604,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed287_i_tipoturma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3106,17654,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed287_i_codigoant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from turmalog
@@ -525,7 +525,7 @@ class cl_turmalog {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:turmalog";
@@ -540,7 +540,7 @@ class cl_turmalog {
    function sql_query ( $ed287_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -565,7 +565,7 @@ class cl_turmalog {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -578,7 +578,7 @@ class cl_turmalog {
    function sql_query_file ( $ed287_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -599,7 +599,7 @@ class cl_turmalog {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

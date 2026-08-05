@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procandamintusu_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clprocandamintusu = new cl_procandamintusu;
 $clprocandamintusu->rotulo->label("p79_codandamint");
 $clprocandamintusu->rotulo->label("p79_codandamint");
@@ -54,7 +55,7 @@ $clprocandamintusu->rotulo->label("p79_codandamint");
               <?=$Lp79_codandamint?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p79_codandamint",10,$Ip79_codandamint,true,"text",4,"","chave_p79_codandamint");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clprocandamintusu->rotulo->label("p79_codandamint");
               <?=$Lp79_codandamint?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p79_codandamint",10,$Ip79_codandamint,true,"text",4,"","chave_p79_codandamint");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clprocandamintusu->rotulo->label("p79_codandamint");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_procandamintusu.php")==true){
@@ -118,12 +119,12 @@ $clprocandamintusu->rotulo->label("p79_codandamint");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

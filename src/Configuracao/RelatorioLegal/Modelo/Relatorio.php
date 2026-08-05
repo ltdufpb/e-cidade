@@ -35,7 +35,7 @@ class Relatorio
     /**
      * @var InformacaoComplementarLancamento[]
      */
-    private $informacoesComplementaresLancamentos = array();
+    private $informacoesComplementaresLancamentos = [];
 
     public static function fromState(array $state)
     {
@@ -67,22 +67,18 @@ class Relatorio
      */
     public function toArray()
     {
-        $dados = array(
+        $dados = [
             'sequencial' => $this->getSequencial(),
             'descricao' => $this->getDescricao(),
             'grupo' => $this->getGrupo(),
             'notaPadrao' => $this->getNotaPadrao(),
-            'linhas' => array(),
-            'periodos' => array(),
-            'informacoesComplementaresLancamentos' => array()
-        );
+            'linhas' => [],
+            'periodos' => [],
+            'informacoesComplementaresLancamentos' => []
+        ];
 
         if ($this->informacoesComplementaresLancamentos) {
-            $dados['informacoesComplementaresLancamentos'] = array_map(function (
-                InformacaoComplementarLancamento $informacaoComplementarLancamento
-            ) {
-                return $informacaoComplementarLancamento->toArray();
-            }, $this->informacoesComplementaresLancamentos);
+            $dados['informacoesComplementaresLancamentos'] = array_map(fn(InformacaoComplementarLancamento $informacaoComplementarLancamento) => $informacaoComplementarLancamento->toArray(), $this->informacoesComplementaresLancamentos);
         }
 
         if ($this->linhas) {

@@ -2,8 +2,6 @@
 
 namespace ECidade\V3\Modification\Parse\Operation;
 
-use \ECidade\V3\Extension\Encode;
-
 class Ignore
 {
     private $content;
@@ -17,7 +15,7 @@ class Ignore
             return $this->regex;
         }
 
-        $this->regex = (boolean) $regex;
+        $this->regex = (bool) $regex;
         return $this;
     }
 
@@ -55,8 +53,8 @@ class Ignore
     {
         return (bool) (
             $this->regex
-            ? preg_match("/$this->content/$this->flag", $needle)
-            : strpos($needle, $this->content) !== false
+            ? preg_match("/$this->content/$this->flag", (string) $needle)
+            : str_contains((string) $needle, (string) $this->content)
         );
     }
 }

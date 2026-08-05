@@ -2,6 +2,8 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Service;
 
+use DBException;
+use BusinessException;
 use Avaliacao;
 use CgmJuridico;
 use CgmRepository;
@@ -134,8 +136,8 @@ class ReintegracaoService
     }
 
     /**
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function validarSeServidorExiste()
     {
@@ -144,11 +146,11 @@ class ReintegracaoService
         $rs = db_query($sql);
 
         if (!$rs) {
-            throw new \DBException("Erro ao buscar o servidor.");
+            throw new DBException("Erro ao buscar o servidor.");
         }
 
         if (pg_num_rows($rs) == 0) {
-            throw new \BusinessException("Não foi possível salvar o formulário. Nenhum servidor encontrado para a matrícula informada.");
+            throw new BusinessException("Não foi possível salvar o formulário. Nenhum servidor encontrado para a matrícula informada.");
         }
     }
 }

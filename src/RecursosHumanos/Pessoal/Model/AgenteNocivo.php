@@ -26,7 +26,10 @@
  */
 namespace ECidade\RecursosHumanos\Pessoal\Model;
 
-use ECidade\Configuracao\Instituicao\Model\Instituicao;
+use DBException;
+use BusinessException;
+use db_utils;
+use JSON;
 use ECidade\RecursosHumanos\Pessoal\Model\EquipamentoProtecao;
 
 class AgenteNocivo
@@ -98,14 +101,14 @@ class AgenteNocivo
             $rs = \db_query($sql);
 
             if (!$rs) {
-                throw new \DBException("Houve um erro ao buscar o agente nocivo código {$codigo}.");
+                throw new DBException("Houve um erro ao buscar o agente nocivo código {$codigo}.");
             }
 
             if (pg_num_rows($rs) == 0) {
-                throw new \BusinessException("Agente Nocivo código {$codigo} não encontrado.");
+                throw new BusinessException("Agente Nocivo código {$codigo} não encontrado.");
             }
 
-            $agente = \db_utils::fieldsMemory($rs, 0);
+            $agente = db_utils::fieldsMemory($rs, 0);
 
             $this->setCodigo($agente->rh256_sequencial);
             $this->setCodigoLocalTrabalho($agente->rh256_rhlocaltrab);
@@ -283,16 +286,16 @@ class AgenteNocivo
             $rs = \db_query($sql);
             if (!$rs) {
                 $msg = "Houve um erro ao buscar o local de trabalho código {$codigoLocalTrabalho}.";
-                throw new \DBException($msg);
+                throw new DBException($msg);
             }
 
             $totalAgente = pg_num_rows($rs);
             for ($i = 0; $i < $totalAgente; $i++) {
-                $agente = \db_utils::fieldsMemory($rs, $i);
+                $agente = db_utils::fieldsMemory($rs, $i);
                 $agentes[] = new AgenteNocivo($agente->rh256_sequencial);
             }
         } else {
-            throw new \BusinessException("Código do local de trabalho não informado.");
+            throw new BusinessException("Código do local de trabalho não informado.");
         }
 
         return $agentes;
@@ -301,7 +304,7 @@ class AgenteNocivo
     public static function getDescricaoByCodigo($codigoAgente)
     {
         $arquivo = file_get_contents(ECIDADE_PATH_TABELA_ESOCIAL . "eventoS2240_tabela24.json");
-        $dados = \JSON::create()->parse(str_replace('\\', '', $arquivo));
+        $dados = JSON::create()->parse(str_replace('\\', '', $arquivo));
 
         foreach ($dados as $dado) {
             if ($dado->value == $codigoAgente) {

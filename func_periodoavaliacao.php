@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,7 +34,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory( $HTTP_POST_VARS );
-parse_str( $HTTP_SERVER_VARS["QUERY_STRING"] );
+parse_str( $HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr );
+extract($_parseStr, EXTR_SKIP);
 
 $clperiodoavaliacao  = new cl_periodoavaliacao;
 $clperiodocalendario = new cl_periodocalendario;
@@ -60,7 +61,7 @@ $clperiodoavaliacao->rotulo->label("ed09_c_descr");
                   <?=$Led09_i_codigo?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?db_input( "ed09_i_codigo", 10, $Ied09_i_codigo, true, "text", 4, "", "chave_ed09_i_codigo" );?>
+                  <?php db_input( "ed09_i_codigo", 10, $Ied09_i_codigo, true, "text", 4, "", "chave_ed09_i_codigo" );?>
                 </td>
               </tr>
               <tr>
@@ -68,7 +69,7 @@ $clperiodoavaliacao->rotulo->label("ed09_c_descr");
                   <?=$Led09_c_descr?>
                 </td>
                 <td width="96%" align="left" nowrap>
-                  <?db_input( "ed09_c_descr", 40, $Ied09_c_descr, true, "text", 4, "", "chave_ed09_c_descr" );?>
+                  <?php db_input( "ed09_c_descr", 40, $Ied09_c_descr, true, "text", 4, "", "chave_ed09_c_descr" );?>
                 </td>
               </tr>
               <tr>
@@ -85,7 +86,7 @@ $clperiodoavaliacao->rotulo->label("ed09_c_descr");
       </tr>
       <tr>
         <td align="center" valign="top">
-         <?
+         <?php 
          $max = '0';
          if ( isset( $calendario ) && $calendario != "" ) {
 

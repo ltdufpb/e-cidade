@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -74,7 +74,7 @@ $escola              = db_getsession("DB_coddepto");
         <tr>
          <td>
            <b>Cardápio:</b>          
-           <?
+           <?php 
            $hoje = date("Y-m-d",db_getsession("DB_datausu"));
            $result_tipocardapio = $clmer_tipocardapio->sql_record(
                                    $clmer_tipocardapio->sql_query("",
@@ -97,13 +97,13 @@ $escola              = db_getsession("DB_coddepto");
            <select name="cardapio" id="cardapio" onChange="js_cardapio(this.value);"
                   style="height:18px;font-size:10px;">
            <option value="0"></option>
-           <?for ($t=0;$t<$clmer_tipocardapio->numrows;$t++) {
+           <?php for ($t=0;$t<$clmer_tipocardapio->numrows;$t++) {
         
               db_fieldsmemory($result_tipocardapio,$t);
               ?>
               <option value="<?=$me27_i_codigo?>"><?=$me27_c_nome?> - Versão: <?=$me27_f_versao?></option>
       
-           <?}?>
+           <?php }?>
           </select>
          </td>
         </tr>
@@ -241,7 +241,7 @@ $escola              = db_getsession("DB_coddepto");
         <tr>
         <td nowrap title="<?=@$Tme40_i_repeticao?>">
           <?=@$Lme40_i_repeticao?>   
-          <?db_input('me40_i_repeticao',10,@$Ime40_i_repeticao,true,'text',$db_opcao,"onchange ='js_verifica();'")?>
+          <?php db_input('me40_i_repeticao',10,@$Ime40_i_repeticao,true,'text',$db_opcao,"onchange ='js_verifica();'")?>
         </td>
         </tr>
         <tr>
@@ -260,7 +260,7 @@ $escola              = db_getsession("DB_coddepto");
  </tr>
 </table>
 </center>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")

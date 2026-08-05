@@ -2,6 +2,8 @@
 
 namespace ECidade\Tributario\Arrecadacao\CobrancaRegistrada\Service;
 
+use BusinessException;
+use DBException;
 use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\CobrancaRegistrada;
 use ECidade\Tributario\Caixa\Entity\Recibo;
 use ECidade\Tributario\Caixa\Entity\RegraEmissao;
@@ -15,22 +17,19 @@ use \Recibo as ReciboLegacy;
  */
 final class CobrancaRegistradaService extends Service
 {
-    private $reciboValorTotalStrategy;
-
     /**
      * CobrancaRegistradaService constructor.
-     * @param ReciboValorTotal $reciboValorTotal
+     * @param ReciboValorTotal $reciboValorTotalStrategy
      */
-    public function __construct(ReciboValorTotal $reciboValorTotal)
+    public function __construct(private readonly ReciboValorTotal $reciboValorTotalStrategy)
     {
-        $this->reciboValorTotalStrategy = $reciboValorTotal;
     }
 
     /**
      * @param Recibo $recibo
      * @param RegraEmissao $regraEmissao
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public function execute(Recibo $recibo, RegraEmissao $regraEmissao)
     {

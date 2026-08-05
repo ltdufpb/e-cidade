@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_caractpreparo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmer_caractpreparo = new cl_mer_caractpreparo;
 $clmer_caractpreparo->rotulo->label("me06_i_codigo");
 $clmer_caractpreparo->rotulo->label("me06_i_codigo");
@@ -54,7 +55,7 @@ $clmer_caractpreparo->rotulo->label("me06_i_codigo");
               <?=$Lme06_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("me06_i_codigo",5,$Ime06_i_codigo,true,"text",4,"","chave_me06_i_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clmer_caractpreparo->rotulo->label("me06_i_codigo");
               <?=$Lme06_c_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("me06_c_descr",5,$Ime06_c_descr,true,"text",4,"","chave_me06_c_descr");
 		       ?>
             </td>
@@ -83,7 +84,7 @@ $clmer_caractpreparo->rotulo->label("me06_i_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if (!isset($pesquisa_chave)) {
       	
         if (isset($campos)==false) {
@@ -130,13 +131,13 @@ $clmer_caractpreparo->rotulo->label("me06_i_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if (!isset($pesquisa_chave)) {
 	
   ?>
   <script>
   </script>
-  <?
+  <?php 
   
 }
 ?>

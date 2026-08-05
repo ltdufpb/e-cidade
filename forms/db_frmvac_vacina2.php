@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -40,7 +40,7 @@ $clrotulo->label("vc04_i_codigo");
        <?=@$Lvc06_i_codigo?>
     </td>
     <td> 
-     <?
+     <?php 
        db_input('vc06_i_codigo',10,$Ivc06_i_codigo,true,'text',3,"");
        db_input('vc06_c_descr',40,$Ivc06_c_descr,true,'text',3,"");
      ?>
@@ -51,7 +51,7 @@ $clrotulo->label("vc04_i_codigo");
        <?=@$Lvc06_t_administacao?>
     </td>
     <td> 
-     <?db_textarea('vc06_t_administacao',3,50,$Ivc06_t_administacao,true,'text',$db_opcao,"")?>
+     <?php db_textarea('vc06_t_administacao',3,50,$Ivc06_t_administacao,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -59,7 +59,7 @@ $clrotulo->label("vc04_i_codigo");
        <?=@$Lvc06_t_material?>
     </td>
     <td> 
-     <?db_textarea('vc06_t_material',3,50,$Ivc06_t_material,true,'text',$db_opcao,"")?>
+     <?php db_textarea('vc06_t_material',3,50,$Ivc06_t_material,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -67,7 +67,7 @@ $clrotulo->label("vc04_i_codigo");
        <?=@$Lvc06_c_prazo?>
     </td>
     <td> 
-     <?db_input('vc06_c_prazo',20,$Ivc06_c_prazo,true,'text',$db_opcao,"")?>
+     <?php db_input('vc06_c_prazo',20,$Ivc06_c_prazo,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
@@ -79,13 +79,13 @@ $clrotulo->label("vc04_i_codigo");
             <?=@$Lvc06_n_quant?>
           </td>
           <td> 
-           <?db_input('vc06_n_quant',10,$Ivc06_n_quant,true,'text',$db_opcao,"")?>
+           <?php db_input('vc06_n_quant',10,$Ivc06_n_quant,true,'text',$db_opcao,"")?>
           </td>
           <td nowrap title="<?=@$Tvc06_i_tipo?>">
             <?=@$Lvc06_i_tipo?>
           </td>
           <td> 
-           <?
+           <?php 
              $x = array('1'=>'HORAS','2'=>'DIAS');
              db_select('vc06_i_tipo',$x,true,$db_opcao,"");
            ?>
@@ -100,7 +100,7 @@ $clrotulo->label("vc04_i_codigo");
        <?=@$Lvc06_t_obs?>
     </td>
     <td> 
-    <?db_textarea('vc06_t_obs',3,50,$Ivc06_t_obs,true,'text',$db_opcao,"")?>
+    <?php db_textarea('vc06_t_obs',3,50,$Ivc06_t_obs,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   </table>

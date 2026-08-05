@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -49,7 +49,7 @@ $escola = db_getsession("DB_coddepto");
 </table>
 <form name="form1" method="post" action="">
 <center>
-<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <br>
 <fieldset style="width:95%"><legend><b>Atestado de Vaga</b></legend>
 <table border="0" align="left">
@@ -59,7 +59,7 @@ $escola = db_getsession("DB_coddepto");
     </tr>
      <td>
       <b>Selecione o Ano:</b><br>
-      <?
+      <?php 
       $sql = "SELECT DISTINCT extract(year from ed102_d_data) as anoatest
               FROM atestvaga
               WHERE ed102_i_escola = $escola
@@ -72,12 +72,12 @@ $escola = db_getsession("DB_coddepto");
       ?>
       <select name="ano"  style="font-size:9px;width:200px;height:18px;">
        <option></option>
-       <?
+       <?php 
        for($x=0;$x<$linhas;$x++){
         db_fieldsmemory($result,$x);
         ?>
         <option value="<?=$anoatest?>" <?=$anoatest==@$ano?"selected":""?>><?=$anoatest?></option>
-        <?
+        <?php 
        }
        ?>
       </select>
@@ -89,10 +89,10 @@ $escola = db_getsession("DB_coddepto");
    </table>
   </td>
  </tr>
- <?if(isset($ano)){?>
+ <?php if(isset($ano)){?>
  <tr>
   <td valign="top">
-   <?
+   <?php 
    $sql = "SELECT ed102_i_codigo,ed47_v_nome,ed47_i_codigo
            FROM atestvaga
             inner join aluno on ed47_i_codigo = ed102_i_aluno
@@ -108,7 +108,7 @@ $escola = db_getsession("DB_coddepto");
    ?>
    <b>Alunos:</b><br>
    <select name="alunosdiario" id="alunosdiario" size="10" onclick="js_desabinc()" style="font-size:9px;width:330px;height:120px" multiple>
-    <?
+    <?php 
     for($i=0;$i<$linhas;$i++) {
      db_fieldsmemory($result,$i);
      echo "<option value='$ed102_i_codigo'>$ed47_i_codigo-$ed47_v_nome</option>\n";
@@ -165,12 +165,12 @@ $escola = db_getsession("DB_coddepto");
    </fieldset>
   </td>
  </tr>
- <?}?>
+ <?php }?>
 </table>
 </fieldset>
 </center>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -283,8 +283,8 @@ function js_pesquisa(){
  jan = window.open('edu2_atestvaga002.php?l&alunos='+alunos,'','width='+(screen.availWidth-5)+',height='+(screen.availHeight-40)+',scrollbars=1,location=0 ');
  jan.moveTo(0,0);
 }
-<?if(pg_num_rows($result)>0){?>
+<?php if(pg_num_rows($result)>0){?>
  document.form1.ano.options[1].selected = true;
-<?}?>
+<?php }?>
 
 </script>

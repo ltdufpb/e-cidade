@@ -56,7 +56,7 @@ class cl_pctipocompra
     public function __construct()
     {
         $this->rotulo = new rotulo("pctipocompra");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -131,7 +131,7 @@ class cl_pctipocompra
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Tipos de Compras ($this->pc50_codcom) não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Tipos de Compras já Cadastrado";
@@ -160,13 +160,13 @@ class cl_pctipocompra
             if (($resaco != false) || ($this->numrows != 0)) {
 
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,5526,'$this->pc50_codcom','I')");
-                $resac = db_query("insert into db_acount values($acount,866,5526,'','" . AddSlashes(pg_result($resaco, 0, 'pc50_codcom')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,866,5527,'','" . AddSlashes(pg_result($resaco, 0, 'pc50_descr')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,866,17817,'','" . AddSlashes(pg_result($resaco, 0, 'pc50_pctipocompratribunal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,866,1011942,'','" . AddSlashes(pg_result($resaco, 0, 'pc50_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,866,5526,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'pc50_codcom')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,866,5527,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'pc50_descr')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,866,17817,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'pc50_pctipocompratribunal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,866,1011942,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'pc50_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
         }
         return true;
@@ -177,10 +177,10 @@ class cl_pctipocompra
         $this->atualizacampos();
         $sql = " update pctipocompra set ";
         $virgula = "";
-        if (trim($this->pc50_codcom) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc50_codcom"])) {
+        if (trim((string) $this->pc50_codcom) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc50_codcom"])) {
             $sql .= $virgula . " pc50_codcom = $this->pc50_codcom ";
             $virgula = ",";
-            if (trim($this->pc50_codcom) == null) {
+            if (trim((string) $this->pc50_codcom) == null) {
                 $this->erro_sql = " Campo Tipo de Compra não informado.";
                 $this->erro_campo = "pc50_codcom";
                 $this->erro_banco = "";
@@ -190,10 +190,10 @@ class cl_pctipocompra
                 return false;
             }
         }
-        if (trim($this->pc50_descr) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc50_descr"])) {
+        if (trim((string) $this->pc50_descr) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc50_descr"])) {
             $sql .= $virgula . " pc50_descr = '$this->pc50_descr' ";
             $virgula = ",";
-            if (trim($this->pc50_descr) == null) {
+            if (trim((string) $this->pc50_descr) == null) {
                 $this->erro_sql = " Campo Descrição do Tipo de Compra não informado.";
                 $this->erro_campo = "pc50_descr";
                 $this->erro_banco = "";
@@ -203,10 +203,10 @@ class cl_pctipocompra
                 return false;
             }
         }
-        if (trim($this->pc50_pctipocompratribunal) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc50_pctipocompratribunal"])) {
+        if (trim((string) $this->pc50_pctipocompratribunal) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc50_pctipocompratribunal"])) {
             $sql .= $virgula . " pc50_pctipocompratribunal = $this->pc50_pctipocompratribunal ";
             $virgula = ",";
-            if (trim($this->pc50_pctipocompratribunal) == null) {
+            if (trim((string) $this->pc50_pctipocompratribunal) == null) {
                 $this->erro_sql = " Campo Código Tribunal não informado.";
                 $this->erro_campo = "pc50_pctipocompratribunal";
                 $this->erro_banco = "";
@@ -216,10 +216,10 @@ class cl_pctipocompra
                 return false;
             }
         }
-        if (trim($this->pc50_ativo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc50_ativo"])) {
+        if (trim((string) $this->pc50_ativo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["pc50_ativo"])) {
             $sql .= $virgula . " pc50_ativo = '$this->pc50_ativo' ";
             $virgula = ",";
-            if (trim($this->pc50_ativo) == null) {
+            if (trim((string) $this->pc50_ativo) == null) {
                 $this->erro_sql = " Campo Ativo não informado.";
                 $this->erro_campo = "pc50_ativo";
                 $this->erro_banco = "";
@@ -243,17 +243,17 @@ class cl_pctipocompra
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,5526,'$this->pc50_codcom','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["pc50_codcom"]) || $this->pc50_codcom != "")
-                        $resac = db_query("insert into db_acount values($acount,866,5526,'" . AddSlashes(pg_result($resaco, $conresaco, 'pc50_codcom')) . "','$this->pc50_codcom'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,866,5526,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'pc50_codcom')) . "','$this->pc50_codcom'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["pc50_descr"]) || $this->pc50_descr != "")
-                        $resac = db_query("insert into db_acount values($acount,866,5527,'" . AddSlashes(pg_result($resaco, $conresaco, 'pc50_descr')) . "','$this->pc50_descr'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,866,5527,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'pc50_descr')) . "','$this->pc50_descr'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["pc50_pctipocompratribunal"]) || $this->pc50_pctipocompratribunal != "")
-                        $resac = db_query("insert into db_acount values($acount,866,17817,'" . AddSlashes(pg_result($resaco, $conresaco, 'pc50_pctipocompratribunal')) . "','$this->pc50_pctipocompratribunal'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,866,17817,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'pc50_pctipocompratribunal')) . "','$this->pc50_pctipocompratribunal'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["pc50_ativo"]) || $this->pc50_ativo != "")
-                        $resac = db_query("insert into db_acount values($acount,866,1011942,'" . AddSlashes(pg_result($resaco, $conresaco, 'pc50_ativo')) . "','$this->pc50_ativo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,866,1011942,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'pc50_ativo')) . "','$this->pc50_ativo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }
@@ -307,13 +307,13 @@ class cl_pctipocompra
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,5526,'$pc50_codcom','E')");
-                    $resac = db_query("insert into db_acount values($acount,866,5526,'','" . AddSlashes(pg_result($resaco, $iresaco, 'pc50_codcom')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,866,5527,'','" . AddSlashes(pg_result($resaco, $iresaco, 'pc50_descr')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,866,17817,'','" . AddSlashes(pg_result($resaco, $iresaco, 'pc50_pctipocompratribunal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,866,1011942,'','" . AddSlashes(pg_result($resaco, $iresaco, 'pc50_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,866,5526,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'pc50_codcom')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,866,5527,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'pc50_descr')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,866,17817,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'pc50_pctipocompratribunal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,866,1011942,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'pc50_ativo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }

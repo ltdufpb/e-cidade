@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -31,7 +31,7 @@ class receita
 {
     var $arq = null;
 
-    function receita($header)
+    function __construct($header)
     {
         umask(74);
         $this->arq = fopen("tmp/RECEITA.TXT", 'w+');

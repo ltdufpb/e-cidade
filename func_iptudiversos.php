@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptudiversos_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cliptudiversos = new cl_iptudiversos;
 $cliptudiversos->rotulo->label("j80_matric");
 $cliptudiversos->rotulo->label("j80_areatrib");
@@ -54,7 +55,7 @@ $cliptudiversos->rotulo->label("j80_areatrib");
               <?=$Lj80_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j80_matric",10,$Ij80_matric,true,"text",4,"","chave_j80_matric");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cliptudiversos->rotulo->label("j80_areatrib");
               <?=$Lj80_areatrib?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j80_areatrib",15,$Ij80_areatrib,true,"text",4,"","chave_j80_areatrib");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cliptudiversos->rotulo->label("j80_areatrib");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_iptudiversos.php")==true){
@@ -122,12 +123,12 @@ $cliptudiversos->rotulo->label("j80_areatrib");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

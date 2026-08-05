@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBselller Servicos de Informatica
@@ -37,7 +37,7 @@
                <b>Data Inicial:</b>
             </td>
             <td>
-              <?
+              <?php 
                 db_inputdata("datainicial",null,null,null,true,"text", 1);
               ?>
             </td>
@@ -45,7 +45,7 @@
               <b>Data Final:</b>
             </td>
             <td>
-              <?
+              <?php 
                 db_inputdata("datafinal",null,null,null,true,"text", 1);
               ?>
             </td>
@@ -55,7 +55,7 @@
                <b>Agrupar Por:</b>
             </td>
             <td>
-              <?
+              <?php 
                $aAgrupar = array(
                                  1 => 'Débito/Crédito',
                                  2 => 'Ordem Pagamento'
@@ -69,7 +69,7 @@
                <b>Ordem de Pagamento:</b>
             </td>
             <td>
-              <?
+              <?php 
                 db_input("e50_codord",10,null,null,"text", 1, "onchange='js_mudaOrdem();'");
               ?>
             </td>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_transfmarca_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cltransfmarca = new cl_transfmarca;
 $clcgm = new cl_cgm;
 $cltransfmarca->rotulo->label("ma02_i_marca");
@@ -56,7 +57,7 @@ $clcgm->rotulo->label("z01_nome");
       <?=$Lma02_i_marca?>
      </td>
      <td width="50%" align="left" nowrap>
-      <?db_input("ma02_i_marca",10,$Ima02_i_marca,true,"text",4,"","chave_ma02_i_marca");?>
+      <?php db_input("ma02_i_marca",10,$Ima02_i_marca,true,"text",4,"","chave_ma02_i_marca");?>
      </td>
     </tr>
     <!--
@@ -65,7 +66,7 @@ $clcgm->rotulo->label("z01_nome");
       <b>Proprietário Novo:</b>
      </td>
      <td width="50%" align="left" nowrap>
-      <?db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
+      <?php db_input("z01_nome",40,$Iz01_nome,true,"text",4,"","chave_z01_nome");?>
      </td>
     </tr>
     -->
@@ -84,7 +85,7 @@ $clcgm->rotulo->label("z01_nome");
 <table width="100%">
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    if(!isset($pesquisa_chave)){
     if(isset($campos)==false){
      if(file_exists("funcoes/db_func_transfmarca.php")==true){

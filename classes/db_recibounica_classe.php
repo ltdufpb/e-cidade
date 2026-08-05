@@ -66,7 +66,7 @@ class cl_recibounica {
                  k00_sequencial = int4 = Código da arrecadação suspensa
                  ";
    //funcao construtor da classe
-   function cl_recibounica() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("recibounica");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

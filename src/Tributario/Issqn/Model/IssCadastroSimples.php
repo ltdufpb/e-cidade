@@ -96,12 +96,12 @@ class IssCadastroSimples
      */
     public function toArray()
     {
-        return array(
+        return [
             'sequencial' => $this->getSequencial(),
             'inscricao' => $this->getInscricao(),
             'data_inicial' => $this->getDataInicial(),
             'categoria' => $this->getCategoria()
-        );
+        ];
     }
 
     /**

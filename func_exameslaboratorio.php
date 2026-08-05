@@ -33,7 +33,8 @@ require_once (modification("dbforms/db_funcoes.php"));
 require_once (modification("classes/db_lab_exame_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $oRotulo = new rotulocampo();
 $oRotulo->label("la09_i_codigo");
@@ -61,11 +62,11 @@ if ( !empty( $_GET['iLaboratorio'] ) ) {
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lla09_i_exame?></label></td>
-          <td><? db_input("la09_i_exame",10,$Ila09_i_exame,true,"text",4,"","chave_la09_i_exame"); ?></td>
+          <td><?php  db_input("la09_i_exame",10,$Ila09_i_exame,true,"text",4,"","chave_la09_i_exame"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lla08_c_descr?></label></td>
-          <td><? db_input("la08_c_descr",30,$Ila08_c_descr,true,"text",4,"","chave_la08_c_descr");?></td>
+          <td><?php  db_input("la08_c_descr",30,$Ila08_c_descr,true,"text",4,"","chave_la08_c_descr");?></td>
         </tr>
       </table>
     </fieldset>

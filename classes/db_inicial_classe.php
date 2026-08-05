@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -30,32 +30,32 @@
 class cl_inicial
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $v50_inicial = 0;
-    var $v50_advog = 0;
-    var $v50_data_dia = null;
-    var $v50_data_mes = null;
-    var $v50_data_ano = null;
-    var $v50_data = null;
-    var $v50_id_login = 0;
-    var $v50_codlocal = 0;
-    var $v50_codmov = 0;
-    var $v50_instit = 0;
-    var $v50_situacao = 0;
+    public $v50_inicial = 0;
+    public $v50_advog = 0;
+    public $v50_data_dia = null;
+    public $v50_data_mes = null;
+    public $v50_data_ano = null;
+    public $v50_data = null;
+    public $v50_id_login = 0;
+    public $v50_codlocal = 0;
+    public $v50_codmov = 0;
+    public $v50_instit = 0;
+    public $v50_situacao = 0;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  v50_inicial = int4 = Inicial Numero 
                  v50_advog = int4 = Advogado 
                  v50_data = date = Data Inicial 
@@ -67,11 +67,11 @@ class cl_inicial
                  ";
 
     //funcao construtor da classe
-    function cl_inicial()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("inicial");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -194,10 +194,10 @@ class cl_inicial
                 $this->erro_status = "0";
                 return false;
             }
-            $this->v50_inicial = pg_result($result, 0, 0);
+            $this->v50_inicial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("SELECT last_value FROM inicial_v50_inicial_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $v50_inicial)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $v50_inicial)) {
                 $this->erro_sql = " Campo v50_inicial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -241,7 +241,7 @@ class cl_inicial
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = " ($this->v50_inicial) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = " já Cadastrado";
@@ -268,24 +268,24 @@ class cl_inicial
         $resaco = $this->sql_record($this->sql_query_file($this->v50_inicial));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,564,'$this->v50_inicial','I')");
-            $resac = db_query("insert into db_acount values($acount,108,564,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,108,564,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'v50_inicial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,108,2559,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,108,2559,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'v50_advog')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,108,2561,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,108,2561,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'v50_data')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,108,2562,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,108,2562,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'v50_id_login')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,108,2563,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,108,2563,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'v50_codlocal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,108,2566,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,108,2566,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'v50_codmov')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,108,10651,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,108,10651,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'v50_instit')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,108,11063,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,108,11063,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                     'v50_situacao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
         return true;
@@ -297,10 +297,10 @@ class cl_inicial
         $this->atualizacampos();
         $sql = " UPDATE inicial SET ";
         $virgula = "";
-        if (trim($this->v50_inicial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v50_inicial"])) {
+        if (trim((string) $this->v50_inicial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v50_inicial"])) {
             $sql .= $virgula . " v50_inicial = $this->v50_inicial ";
             $virgula = ",";
-            if (trim($this->v50_inicial) == null) {
+            if (trim((string) $this->v50_inicial) == null) {
                 $this->erro_sql = " Campo Inicial Numero nao Informado.";
                 $this->erro_campo = "v50_inicial";
                 $this->erro_banco = "";
@@ -311,10 +311,10 @@ class cl_inicial
                 return false;
             }
         }
-        if (trim($this->v50_advog) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v50_advog"])) {
+        if (trim((string) $this->v50_advog) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v50_advog"])) {
             $sql .= $virgula . " v50_advog = $this->v50_advog ";
             $virgula = ",";
-            if (trim($this->v50_advog) == null) {
+            if (trim((string) $this->v50_advog) == null) {
                 $this->erro_sql = " Campo Advogado nao Informado.";
                 $this->erro_campo = "v50_advog";
                 $this->erro_banco = "";
@@ -325,10 +325,10 @@ class cl_inicial
                 return false;
             }
         }
-        if (trim($this->v50_data) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v50_data_dia"]) && ($GLOBALS["HTTP_POST_VARS"]["v50_data_dia"] != "")) {
+        if (trim((string) $this->v50_data) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v50_data_dia"]) && ($GLOBALS["HTTP_POST_VARS"]["v50_data_dia"] != "")) {
             $sql .= $virgula . " v50_data = '$this->v50_data' ";
             $virgula = ",";
-            if (trim($this->v50_data) == null) {
+            if (trim((string) $this->v50_data) == null) {
                 $this->erro_sql = " Campo Data Inicial nao Informado.";
                 $this->erro_campo = "v50_data_dia";
                 $this->erro_banco = "";
@@ -342,7 +342,7 @@ class cl_inicial
             if (isset($GLOBALS["HTTP_POST_VARS"]["v50_data_dia"])) {
                 $sql .= $virgula . " v50_data = null ";
                 $virgula = ",";
-                if (trim($this->v50_data) == null) {
+                if (trim((string) $this->v50_data) == null) {
                     $this->erro_sql = " Campo Data Inicial nao Informado.";
                     $this->erro_campo = "v50_data_dia";
                     $this->erro_banco = "";
@@ -354,10 +354,10 @@ class cl_inicial
                 }
             }
         }
-        if (trim($this->v50_id_login) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v50_id_login"])) {
+        if (trim((string) $this->v50_id_login) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v50_id_login"])) {
             $sql .= $virgula . " v50_id_login = $this->v50_id_login ";
             $virgula = ",";
-            if (trim($this->v50_id_login) == null) {
+            if (trim((string) $this->v50_id_login) == null) {
                 $this->erro_sql = " Campo Código Usuário nao Informado.";
                 $this->erro_campo = "v50_id_login";
                 $this->erro_banco = "";
@@ -368,10 +368,10 @@ class cl_inicial
                 return false;
             }
         }
-        if (trim($this->v50_codlocal) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v50_codlocal"])) {
+        if (trim((string) $this->v50_codlocal) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v50_codlocal"])) {
             $sql .= $virgula . " v50_codlocal = $this->v50_codlocal ";
             $virgula = ",";
-            if (trim($this->v50_codlocal) == null) {
+            if (trim((string) $this->v50_codlocal) == null) {
                 $this->erro_sql = " Campo Local Foro nao Informado.";
                 $this->erro_campo = "v50_codlocal";
                 $this->erro_banco = "";
@@ -382,10 +382,10 @@ class cl_inicial
                 return false;
             }
         }
-        if (trim($this->v50_codmov) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v50_codmov"])) {
+        if (trim((string) $this->v50_codmov) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v50_codmov"])) {
             $sql .= $virgula . " v50_codmov = $this->v50_codmov ";
             $virgula = ",";
-            if (trim($this->v50_codmov) == null) {
+            if (trim((string) $this->v50_codmov) == null) {
                 $this->erro_sql = " Campo Movimento nao Informado.";
                 $this->erro_campo = "v50_codmov";
                 $this->erro_banco = "";
@@ -396,10 +396,10 @@ class cl_inicial
                 return false;
             }
         }
-        if (trim($this->v50_instit) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v50_instit"])) {
+        if (trim((string) $this->v50_instit) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v50_instit"])) {
             $sql .= $virgula . " v50_instit = $this->v50_instit ";
             $virgula = ",";
-            if (trim($this->v50_instit) == null) {
+            if (trim((string) $this->v50_instit) == null) {
                 $this->erro_sql = " Campo Cod. Instituição nao Informado.";
                 $this->erro_campo = "v50_instit";
                 $this->erro_banco = "";
@@ -410,10 +410,10 @@ class cl_inicial
                 return false;
             }
         }
-        if (trim($this->v50_situacao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v50_situacao"])) {
+        if (trim((string) $this->v50_situacao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["v50_situacao"])) {
             $sql .= $virgula . " v50_situacao = $this->v50_situacao ";
             $virgula = ",";
-            if (trim($this->v50_situacao) == null) {
+            if (trim((string) $this->v50_situacao) == null) {
                 $this->erro_sql = " Campo Situação nao Informado.";
                 $this->erro_campo = "v50_situacao";
                 $this->erro_banco = "";
@@ -432,46 +432,46 @@ class cl_inicial
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,564,'$this->v50_inicial','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["v50_inicial"]) || $this->v50_inicial != "") {
-                    $resac = db_query("insert into db_acount values($acount,108,564,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,108,564,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'v50_inicial')) . "','$this->v50_inicial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["v50_advog"]) || $this->v50_advog != "") {
-                    $resac = db_query("insert into db_acount values($acount,108,2559,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,108,2559,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'v50_advog')) . "','$this->v50_advog'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["v50_data"]) || $this->v50_data != "") {
-                    $resac = db_query("insert into db_acount values($acount,108,2561,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,108,2561,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'v50_data')) . "','$this->v50_data'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["v50_id_login"]) || $this->v50_id_login != "") {
-                    $resac = db_query("insert into db_acount values($acount,108,2562,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,108,2562,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'v50_id_login')) . "','$this->v50_id_login'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["v50_codlocal"]) || $this->v50_codlocal != "") {
-                    $resac = db_query("insert into db_acount values($acount,108,2563,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,108,2563,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'v50_codlocal')) . "','$this->v50_codlocal'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["v50_codmov"]) || $this->v50_codmov != "") {
-                    $resac = db_query("insert into db_acount values($acount,108,2566,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,108,2566,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'v50_codmov')) . "','$this->v50_codmov'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["v50_instit"]) || $this->v50_instit != "") {
-                    $resac = db_query("insert into db_acount values($acount,108,10651,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,108,10651,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'v50_instit')) . "','$this->v50_instit'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["v50_situacao"]) || $this->v50_situacao != "") {
-                    $resac = db_query("insert into db_acount values($acount,108,11063,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,108,11063,'" . AddSlashes(pg_fetch_result($resaco,
                             $conresaco,
                             'v50_situacao')) . "','$this->v50_situacao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -524,31 +524,31 @@ class cl_inicial
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,564,'$v50_inicial','E')");
-                $resac = db_query("insert into db_acount values($acount,108,564,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,108,564,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'v50_inicial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,108,2559,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,108,2559,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'v50_advog')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,108,2561,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,108,2561,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'v50_data')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,108,2562,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,108,2562,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'v50_id_login')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,108,2563,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,108,2563,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'v50_codlocal')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,108,2566,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,108,2566,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'v50_codmov')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,108,10651,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,108,10651,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'v50_instit')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,108,11063,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,108,11063,'','" . AddSlashes(pg_fetch_result($resaco,
                         $iresaco,
                         'v50_situacao')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -616,7 +616,7 @@ class cl_inicial
             $this->erro_status = "0";
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:inicial";
@@ -663,7 +663,7 @@ class cl_inicial
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -701,7 +701,7 @@ class cl_inicial
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -753,7 +753,7 @@ class cl_inicial
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -797,7 +797,7 @@ class cl_inicial
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -842,7 +842,7 @@ class cl_inicial
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -887,7 +887,7 @@ class cl_inicial
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -934,7 +934,7 @@ class cl_inicial
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1016,7 +1016,7 @@ class cl_inicial
                     substr($dDtEmiss, 0, 4),
                     $oDivida->k00_numpar);
 
-                for ($iIndDebito = 0; $iIndDebito < pg_numrows($rsDadosDebitoCorrigido); $iIndDebito++) {
+                for ($iIndDebito = 0; $iIndDebito < pg_num_rows($rsDadosDebitoCorrigido); $iIndDebito++) {
                     $nValor += db_utils::fieldsMemory($rsDadosDebitoCorrigido, $iIndDebito)->total;
                 }
 
@@ -1225,9 +1225,9 @@ class cl_inicial
 
     function sql_query_by_processo($codigoProcesso, $anulado = null)
     {
-        $where = array(
+        $where = [
             "v71_processoforo = {$codigoProcesso}"
-        );
+        ];
 
         if ($anulado !== null) {
             if ($anulado === true) {

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_setorregimovel_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsetorregimovel = new cl_setorregimovel;
 $clsetorregimovel->rotulo->label("j69_sequencial");
 $clsetorregimovel->rotulo->label("j69_descr");
@@ -55,7 +56,7 @@ $clsetorregimovel->rotulo->label("j69_descr");
               <?=$Lj69_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j69_sequencial",10,$Ij69_sequencial,true,"text",4,"","chave_j69_sequencial");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clsetorregimovel->rotulo->label("j69_descr");
               <?=$Lj69_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-           <?
+           <?php 
 		       db_input("j69_descr",40,$Ij69_descr,true,"text",4,"","chave_j69_descr");
 		       ?>
             </td>
@@ -83,7 +84,7 @@ $clsetorregimovel->rotulo->label("j69_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_setorregimovel.php")==true){
@@ -123,12 +124,12 @@ $clsetorregimovel->rotulo->label("j69_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 
 ?>

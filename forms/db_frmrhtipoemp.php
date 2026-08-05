@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -36,7 +36,7 @@ $clrhtipoemp->rotulo->label();
        <?=@$Lrh12_tipo?>
     </td>
     <td> 
-<?
+<?php 
 db_input('rh12_tipo',6,$Irh12_tipo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -46,7 +46,7 @@ db_input('rh12_tipo',6,$Irh12_tipo,true,'text',$db_opcao,"")
        <?=@$Lrh12_descr?>
     </td>
     <td> 
-<?
+<?php 
 db_input('rh12_descr',40,$Irh12_descr,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -62,7 +62,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_rhtipoemp.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_convocacao_classe.php"));
 include(modification("classes/db_progconfig_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clconvocacao = new cl_convocacao;
 $clprogconfig = new cl_progconfig;
 $db_opcao = 1;
@@ -78,23 +78,23 @@ if(isset($excluir)){
 <table width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <center>
    <fieldset style="width:90%"><legend><b>Cadastro de Convocações</b></legend>
-    <?include(modification("forms/db_frmconvocacao.php"));?>
+    <?php include(modification("forms/db_frmconvocacao.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
 js_tabulacaoforms("form1","ed111_c_titulo",true,1,"ed111_c_titulo",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
  if($clconvocacao->erro_status=="0"){
   $clconvocacao->erro(true,false);

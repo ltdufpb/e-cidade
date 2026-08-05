@@ -30,7 +30,6 @@ namespace ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial;
 use cl_rhpessoalprocessounicidade;
 use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\Unicidade as UnicidadeProcessual;
 use Exception;
-use DBDate;
 
 class UnicidadeRepository
 {
@@ -141,7 +140,7 @@ class UnicidadeRepository
      * @param UnicidadeProcessual|null $unicidade
      * @throws Exception
      */
-    public function delete(UnicidadeProcessual $unicidade = null)
+    public function delete(?UnicidadeProcessual $unicidade = null)
     {
         $id = $unicidade instanceof UnicidadeProcessual ? $unicidade->getSequencial() : null;
 
@@ -159,7 +158,7 @@ class UnicidadeRepository
      * @return bool|UnicidadeProcessual
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhpessoalprocessounicidade;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

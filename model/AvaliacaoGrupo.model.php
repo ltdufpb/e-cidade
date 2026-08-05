@@ -33,7 +33,7 @@ class AvaliacaoGrupo
 
     protected $sDescricao;
 
-    protected $aPerguntas = array();
+    protected $aPerguntas = [];
 
     /**
      * Identificador do grupo
@@ -80,9 +80,9 @@ class AvaliacaoGrupo
     }
     /**
      * @return integer
-     * @deprecated
      * @see self::getCodigo()
      */
+    #[Deprecated]
     public function getGrupo()
     {
         return $this->iGrupo;
@@ -231,7 +231,7 @@ class AvaliacaoGrupo
         if (empty($this->sIdentificador)) {
             $this->sIdentificador = $identifier->slugify($this->sDescricao);
         } elseif (!$identifier->validate($this->sIdentificador)) {
-            throw new \DBException("Identificador do grupo de avaliação já cadastrado: '$this->sIdentificador'");
+            throw new DBException("Identificador do grupo de avaliação já cadastrado: '$this->sIdentificador'");
         }
 
         $oDao = new cl_avaliacaogrupopergunta();

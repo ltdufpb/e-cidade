@@ -25,7 +25,7 @@ class AvaliacaoESocial
 
     /**
      * Instancia do cgm
-     * @var \CgmBase
+     * @var CgmBase
      */
     private $oCgm;
 
@@ -33,7 +33,7 @@ class AvaliacaoESocial
 
     private $ano;
 
-    private $perguntasParaExcluirRespostas = array();
+    private $perguntasParaExcluirRespostas = [];
 
     public function __construct()
     {
@@ -51,7 +51,7 @@ class AvaliacaoESocial
 
     /**
      * Define do servidor da Avaliacao
-     * @param \Servidor $oServidor
+     * @param Servidor $oServidor
      */
     public function setServidor(Servidor $oServidor)
     {
@@ -107,10 +107,10 @@ class AvaliacaoESocial
          * Percorre os grupoas enviados para montar array com as perguntas
          * e respostas que será utilizado para salvar as repostas logo abaixo
          */
-        $aPerguntasRespondidas = array();
+        $aPerguntasRespondidas = [];
 
         if (is_object($this->oPerguntasRespostas->grupos)) {
-            $this->oPerguntasRespostas->grupos = array($this->oPerguntasRespostas->grupos);
+            $this->oPerguntasRespostas->grupos = [$this->oPerguntasRespostas->grupos];
         }
 
         foreach ($this->oPerguntasRespostas->grupos as $iGrupo => $oGrupo) {
@@ -142,7 +142,7 @@ class AvaliacaoESocial
             $oPergunta->getRespostas();
 
             if (isset($aPerguntasRespondidas[$oPergunta->getCodigo()])) {
-                $aRespostasSalvar = array(); // Array com as respostas que devem ser salvas
+                $aRespostasSalvar = []; // Array com as respostas que devem ser salvas
 
                 if ($oPergunta->getTipo() == 1) {
 
@@ -167,7 +167,7 @@ class AvaliacaoESocial
 
                 foreach ($aPerguntasRespondidas[$oPergunta->getCodigo()] as $oRespostaSalvar) {
                     if (in_array((int)$oPergunta->getTipo(),
-                        array(1, 3))) { // Se for pergunta do tipo objetiva ou multipla escolha
+                        [1, 3])) { // Se for pergunta do tipo objetiva ou multipla escolha
                         if ((bool)$oRespostaSalvar->valor === false) { // Salva apenas se resposta estiver marcada
                             continue;
                         }
@@ -183,7 +183,7 @@ class AvaliacaoESocial
                      * salva o valor auxiliar quando existir
                      */
                     $sTextoResposta = (!empty($oRespostaSalvar->valorAuxiliar)) ? $oRespostaSalvar->valorAuxiliar : ((in_array((int)$oPergunta->getTipo(),
-                        array(1, 3))) ? $oRespostaSalvar->codigo : $oRespostaSalvar->valor);
+                        [1, 3])) ? $oRespostaSalvar->codigo : $oRespostaSalvar->valor);
                     $oAvaliacaoResposta->setPerguntaOpcao($oRespostaSalvar->codigo);
                     $oAvaliacaoResposta->setResposta($sTextoResposta);
                     AvaliacaoRespostaRepository::persist($oAvaliacaoResposta);
@@ -279,7 +279,7 @@ class AvaliacaoESocial
 
     /**
      * Persiste os dados da avaliacao do servidor
-     * @throws \DBException
+     * @throws DBException
      */
     private function persitirAlteracaoDadosServidor()
     {
@@ -337,7 +337,7 @@ class AvaliacaoESocial
 
     /**
      * Persiste os ddos da Avaliacao do Cgm
-     * @throws \DBException
+     * @throws DBException
      */
     private function persitirDadosCgm()
     {
@@ -371,10 +371,10 @@ class AvaliacaoESocial
             return null;
         }
 
-        $where = array(
+        $where = [
             "eso06_cgmempregador = {$this->getCgm()->getCodigo()}",
             "eso06_rhpessoal = {$this->getServidor()->getMatricula()}"
-        );
+        ];
 
         $daoTrabalhoIntermitente = new cl_avaliacaogruporespostatrabalhointermitente();
         $sql = $daoTrabalhoIntermitente->sql_query_file(null, '1', null, implode(' AND ', $where));
@@ -401,21 +401,21 @@ class AvaliacaoESocial
 
     /**
      *
-     * @return \CgmBase
+     * @return CgmBase
      */
     public function getCgm()
     {
         return $this->oCgm;
     }
 
-    public function setCgm(\CgmBase $oCgm)
+    public function setCgm(CgmBase $oCgm)
     {
         $this->oCgm = $oCgm;
     }
 
     /**
      * Persiste os ddos da Avaliacao da Lotacao
-     * @throws \DBException
+     * @throws DBException
      */
     private function persitirDadosLotacao()
     {
@@ -441,7 +441,7 @@ class AvaliacaoESocial
 
     /**
      * Persiste os ddos da Avaliacao dos Processos
-     * @throws \DBException
+     * @throws DBException
      */
     private function persitirDadosProcessos($aProcesso)
     {
@@ -455,13 +455,13 @@ class AvaliacaoESocial
         $rsTipoProcesso = db_query($sSql);
 
         if (pg_num_rows($rsTipoProcesso) == 0) {
-            throw new \DBException("Tipo de processo não encontrado.");
+            throw new DBException("Tipo de processo não encontrado.");
         }
 
-        $tipoProcesso = \db_utils::fieldsMemory($rsTipoProcesso, 0)->db104_valorresposta;
+        $tipoProcesso = db_utils::fieldsMemory($rsTipoProcesso, 0)->db104_valorresposta;
 
         if (empty($tipoProcesso)) {
-            throw new \DBException("Ocorreu algum problema ao buscar o tipo de processo.");
+            throw new DBException("Ocorreu algum problema ao buscar o tipo de processo.");
         }
 
         // Valida se o processo e tipo ja foram preenchidos com grupos de respostas diferentes
@@ -505,7 +505,7 @@ class AvaliacaoESocial
 
     /**
      * Persiste os ddos da Avaliacao de Obras
-     * @throws \DBException
+     * @throws DBException
      */
     private function persitirDadosObras($aObras)
     {
@@ -552,7 +552,7 @@ class AvaliacaoESocial
 
     /**
      * Persiste os ddos da Avaliacao de CAT
-     * @throws \DBException
+     * @throws DBException
      */
     private function persitirDadosCat($aCat)
     {
@@ -609,7 +609,7 @@ class AvaliacaoESocial
 
         /**
      * Persiste os ddos da Avaliacao de CAT
-     * @throws \DBException
+     * @throws DBException
      */
     private function persitirDadosMonitoriamentoSaude($aCat)
     {
@@ -701,7 +701,7 @@ class AvaliacaoESocial
             throw new Exception("Não foi informado o vínculo do servidor e o afastamento.");
         }
 
-        $dao = new \cl_avaliacaogruporespostaafastamentoesocial();
+        $dao = new cl_avaliacaogruporespostaafastamentoesocial();
         $sql = $dao->sql_query_file(null, "*", null, " eso13_afastamentoservidoresocial = {$parametros['vinculo']}");
         $rs = db_query($sql);
 
@@ -806,9 +806,7 @@ class AvaliacaoESocial
             return;
         }
 
-        $codigosAvaliacaoResposta = db_utils::makeCollectionFromRecord($rsAvalicaoResposta, function ($retorno) {
-            return $retorno->db106_sequencial;
-        });
+        $codigosAvaliacaoResposta = db_utils::makeCollectionFromRecord($rsAvalicaoResposta, fn($retorno) => $retorno->db106_sequencial);
 
         $codigosAvaliacaoResposta = implode(", ", $codigosAvaliacaoResposta);
 
@@ -943,7 +941,7 @@ class AvaliacaoESocial
         $daoAdmissaoPreliminar = new cl_avaliacaogruporespostaadmissaopreliminar();
 
         $cgm = $this->getCgm()->getCodigo();
-        $cpf = str_replace(array(".", "-"), "", $aParametros['cpfTrabalhador']);
+        $cpf = str_replace([".", "-"], "", $aParametros['cpfTrabalhador']);
 
         $daoAdmissaoPreliminar->excluir(null, "eso18_cgm = {$cgm} AND eso18_cpf = '{$cpf}'");
 
@@ -1025,11 +1023,11 @@ class AvaliacaoESocial
         }
 
         $daoRemuneracaoRGPS = new cl_avaliacaogruporespostaremuneracaorgps();
-        $whereRemuneracaoRGPS = array(
+        $whereRemuneracaoRGPS = [
             "eso28_cgm = {$parametros['cgm']}",
             "eso28_ano = {$parametros['ano']}",
             "eso28_mes = {$parametros['mes']}"
-        );
+        ];
         $sqlRemuneracaoRGPS = $daoRemuneracaoRGPS->sql_query_file(null, 'eso28_sequencial', null,
             implode(' AND ', $whereRemuneracaoRGPS));
         $rsRemuneracaoRGPS = db_query($sqlRemuneracaoRGPS);

@@ -2,8 +2,11 @@
 
 namespace ECidade\Educacao\Escola\Service;
 
+use EscolaRepository;
+use Escola;
+use EscolaProcedencia;
+use DBDate;
 use App\Domain\Educacao\Secretaria\Models\ParametrosNotificacao;
-use ECidade\Educacao\Escola\Model\Aluno;
 use ECidade\Educacao\Escola\Repository\AlunoRepository;
 use ECidade\Lib\Mail\SendMail;
 use PHPMailer\PHPMailer\Exception;
@@ -16,7 +19,7 @@ class NotificacaoTransferenciaService
     private $guiaTransferencia = '';
 
     /**
-     * @var \Escola
+     * @var Escola
      */
     private $escolaOrigem;
 
@@ -32,15 +35,15 @@ class NotificacaoTransferenciaService
 
     public function __construct($escolaOrigem, $escolaDestino, $codigoAluno, $tipo, $dataTransferencia)
     {
-        $this->escolaOrigem = \EscolaRepository::getEscolaByCodigo($escolaOrigem);
+        $this->escolaOrigem = EscolaRepository::getEscolaByCodigo($escolaOrigem);
         if ($tipo == 'TR') {
-            $this->escolaDestino = new \Escola($escolaDestino);
+            $this->escolaDestino = new Escola($escolaDestino);
         } else {
-            $this->escolaDestino = new \EscolaProcedencia($escolaDestino);
+            $this->escolaDestino = new EscolaProcedencia($escolaDestino);
         }
         $this->aluno = AlunoRepository::find($codigoAluno);
 
-        $this->dataTransferencia = new \DBDate($dataTransferencia);
+        $this->dataTransferencia = new DBDate($dataTransferencia);
     }
 
     /**
@@ -86,7 +89,7 @@ class NotificacaoTransferenciaService
                 }
 
                 //Content
-                $data = $this->dataTransferencia->getDate(\DBDate::DATA_PTBR);
+                $data = $this->dataTransferencia->getDate(DBDate::DATA_PTBR);
                     
                 $mensagem = "Informamos efetivação de transferência em {$data}:\r\n\r\n";
                 $mensagem .= "Aluno: {$this->aluno->getCodigo()} - {$this->aluno->getNome()}\r\n\r\n";
@@ -103,14 +106,14 @@ class NotificacaoTransferenciaService
                 $mensagemHtml .= $observacoes;
 
                 $tipo = "REDE";
-                if ($this->escolaDestino instanceof \EscolaProcedencia) {
+                if ($this->escolaDestino instanceof EscolaProcedencia) {
                     $tipo = "FORA";
                 }
                 $mail->Subject = "Informe de transferência ({$tipo}) - {$this->aluno->getNome()}";
                 $mail->Body = $mensagemHtml;
                 $mail->AltBody = $mensagem;
                 $mail->send();
-            } catch (Exception $e) {
+            } catch (Exception) {
                 throw new \Exception("A mensagem não foi enviada. Erro: {$mail->ErrorInfo}");
             }
         }
@@ -156,7 +159,7 @@ class NotificacaoTransferenciaService
                 }
 
                 //Content
-                $data = $this->dataTransferencia->getDate(\DBDate::DATA_PTBR);
+                $data = $this->dataTransferencia->getDate(DBDate::DATA_PTBR);
                 $mensagem = "Informamos o cancelamento da transferência em {$data}:\r\n";
                 $mensagem .= "Aluno: {$this->aluno->getCodigo()} - {$this->aluno->getNome()}\r\n\r\n";
                 $mensagem .= "Escola de origem: {$this->escolaOrigem->getNome()}\r\n";
@@ -164,7 +167,7 @@ class NotificacaoTransferenciaService
                 $mensagem .= "Escola destino: {$this->escolaDestino->getNome()}\r\n\r\n";
 
                 $tipo = "REDE";
-                if ($this->escolaDestino instanceof \EscolaProcedencia) {
+                if ($this->escolaDestino instanceof EscolaProcedencia) {
                     $tipo = "FORA";
                 }
 
@@ -172,7 +175,7 @@ class NotificacaoTransferenciaService
                 $mail->Body = $mensagem;
 
                 $mail->send();
-            } catch (Exception $e) {
+            } catch (Exception) {
                 throw new \Exception("A mensagem não foi enviada. Erro: {$mail->ErrorInfo}");
             }
         }

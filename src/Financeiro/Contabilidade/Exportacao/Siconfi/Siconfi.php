@@ -107,16 +107,16 @@ class Siconfi
     {
 
         $cabecalho = array_keys($this->getColunas());
-        $dados = array(
-            array($this->siconfi, $this->competencia),
+        $dados = [
+            [$this->siconfi, $this->competencia],
             $cabecalho
-        );
+        ];
         if ($this->encerramento) {
-            list($ano, $mes) = explode('-', $this->competencia);
-            $dados = array(
-                array($this->siconfi, "{$ano}-13"),
+            [$ano, $mes] = explode('-', $this->competencia);
+            $dados = [
+                [$this->siconfi, "{$ano}-13"],
                 $cabecalho
-            );
+            ];
         }
 
         $dados = array_merge($dados, $this->matrizSaldo);
@@ -141,15 +141,15 @@ class Siconfi
             return $this->cabecalho;
         }
 
-        $cabecalho = array(
+        $cabecalho = [
             2018 => ['fim' => 4],
             2019 => ['fim' => 6],
             2020 => ['fim' => 7],
             2021 => ['fim' => 7],
             2022 => ['fim' => 6],
-        );
+        ];
 
-        list($ano,$mes) = explode('-', $this->competencia);
+        [$ano, $mes] = explode('-', $this->competencia);
         if (empty($cabecalho[$ano])) {
             // apenas no php 7
             // $ano = array_key_last($cabecalho);

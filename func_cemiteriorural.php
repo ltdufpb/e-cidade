@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cemiteriorural_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcemiteriorural = new cl_cemiteriorural;
 $clcemiteriorural->rotulo->label("cm16_i_cemiterio");
 $clcemiteriorural->rotulo->label("cm16_c_nome");
@@ -54,7 +55,7 @@ $clcemiteriorural->rotulo->label("cm16_c_nome");
               <?=$Lcm16_i_cemiterio?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("cm16_i_cemiterio",10,$Icm16_i_cemiterio,true,"text",4,"","chave_cm16_i_cemiterio");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clcemiteriorural->rotulo->label("cm16_c_nome");
               <?=$Lcm16_c_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("cm16_c_nome",100,$Icm16_c_nome,true,"text",4,"","chave_cm16_c_nome");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clcemiteriorural->rotulo->label("cm16_c_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_cemiteriorural.php")==true){
@@ -118,12 +119,12 @@ $clcemiteriorural->rotulo->label("cm16_c_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

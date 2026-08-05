@@ -26,6 +26,13 @@
  */
 namespace ECidade\RecursosHumanos\ESocial\Service;
 
+use CgmJuridico;
+use DBDate;
+use cl_rhreajustesalarialesocial;
+use db_utils;
+use DateTime;
+use DBException;
+use Exception;
 use BusinessException;
 use ECidade\RecursosHumanos\ESocial\Entity\RemuneracaoRGPS;
 use ECidade\RecursosHumanos\Pessoal\Service\ServidorOutrosVinculosService;
@@ -95,8 +102,8 @@ class RemuneracaoRGPSService
     /**
      * @param CgmBase $cgm
      * @return RemuneracaoRGPS
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public function buscarPorCGM(CgmBase $cgm)
     {
@@ -141,12 +148,12 @@ class RemuneracaoRGPSService
     /**
      * @param CgmBase $cgm
      * @return boolean
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     public function validaRGPSPorCGM(CgmBase $cgm)
     {
-        if ($cgm instanceof \CgmJuridico) {
+        if ($cgm instanceof CgmJuridico) {
             return false;
         }
         $servidores = ServidorRepository::getServidoresByCgm(
@@ -167,7 +174,7 @@ class RemuneracaoRGPSService
 
     /**
      * @param $matricula
-     * @throws \Exception
+     * @throws Exception
      */
     private function buscarOutrosVinculos($matricula)
     {
@@ -184,7 +191,7 @@ class RemuneracaoRGPSService
 
     /**
      * @param Servidor $servidor
-     * @throws \Exception
+     * @throws Exception
      */
     private function buscarPlanoSaude(Servidor $servidor)
     {
@@ -206,8 +213,8 @@ class RemuneracaoRGPSService
 
     /**
      * @param Servidor $servidor
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function buscarPagamento(Servidor $servidor)
     {
@@ -273,12 +280,12 @@ class RemuneracaoRGPSService
         }
 
 
-        $dataObrigatoriedade = \DBPessoal::getDataFaseEsocial(3);
+        $dataObrigatoriedade = DBPessoal::getDataFaseEsocial(3);
         // Se nao tiver configurada a data de obrigatoriedade, desconsideramos os dados
         if (empty($dataObrigatoriedade)) {
             throw new BusinessException("Data da fase 3 não configurada.");
         }
-        $dataFase3 = new \DBDate("2022-08-22");
+        $dataFase3 = new DBDate("2022-08-22");
         // Verificamos de a data da fase 3 do grupo 4 é inferior a data de obrigatoriedade, se for inferior
         //  a instituicao pertence ao grupo 2
         // Caso seja grupo 2, não devemos enviar as verbas rescisorias nesse evento, caso contrario, sera enviada
@@ -509,7 +516,7 @@ class RemuneracaoRGPSService
 
     /**
      * @param int $matricula
-     * @throws \Exception
+     * @throws Exception
      */
     private function buscarProcessosJudiciais($matricula)
     {
@@ -567,7 +574,7 @@ class RemuneracaoRGPSService
         $reajuste->tpAcConv = "";
         $reajuste->dsc = "";
 
-        $reajusteSalarial  = new \cl_rhreajustesalarialesocial();
+        $reajusteSalarial  = new cl_rhreajustesalarialesocial();
         $camposReajusteSalarial = "eso39_dataefeito, eso39_tipo, eso39_descricao";
         $whereReajuste = "eso39_matricula =  {$matricula} ";
         $whereReajuste .= "and extract(year from eso39_dataefeito) <= {$this->anoCompetencia}";
@@ -582,7 +589,7 @@ class RemuneracaoRGPSService
         $rsReajusteSalarial = db_query($sqlReajusteSalarial);
 
         if (pg_num_rows($rsReajusteSalarial) > 0) {
-            $dadosReajuste = \db_utils::fieldsMemory($rsReajusteSalarial, 0);
+            $dadosReajuste = db_utils::fieldsMemory($rsReajusteSalarial, 0);
             $reajuste->dtAcConv = $dadosReajuste->eso39_dataefeito;
             $reajuste->tpAcConv = $dadosReajuste->eso39_tipo;
             $reajuste->dsc = $dadosReajuste->eso39_descricao;
@@ -595,7 +602,7 @@ class RemuneracaoRGPSService
         $grupoIdePeriodo = new stdClass();
         $grupoIdePeriodo->perRef = '';
 
-        $reajusteSalarial  = new \cl_rhreajustesalarialesocial();
+        $reajusteSalarial  = new cl_rhreajustesalarialesocial();
         $camposReajusteSalarial = "eso39_dataefeito, eso39_tipo, eso39_descricao";
         $whereReajuste = "eso39_matricula =  {$matricula} ";
         $whereReajuste .= "and extract(year from eso39_dataefeito) <= {$this->anoCompetencia}";
@@ -611,8 +618,8 @@ class RemuneracaoRGPSService
         $rsReajusteSalarial = db_query($sqlReajusteSalarial);
 
         if (pg_num_rows($rsReajusteSalarial) > 0) {
-            $dadoCompetenciaPeriodo = \db_utils::fieldsMemory($rsReajusteSalarial, 0);
-            $competenciaPeriodo = explode('-', $dadoCompetenciaPeriodo->eso39_dataefeito);
+            $dadoCompetenciaPeriodo = db_utils::fieldsMemory($rsReajusteSalarial, 0);
+            $competenciaPeriodo = explode('-', (string) $dadoCompetenciaPeriodo->eso39_dataefeito);
             if (!empty($competenciaPeriodo[1])) {
                 $grupoIdePeriodo->perRef  = $competenciaPeriodo[0] . '-' . $competenciaPeriodo[1];
             }
@@ -694,8 +701,8 @@ class RemuneracaoRGPSService
 
     private function retornaDiasEntreDatas($data1, $data2)
     {
-        $data_inicio = new \DateTime($data1);
-        $data_fim = new \DateTime($data2);
+        $data_inicio = new DateTime($data1);
+        $data_fim = new DateTime($data2);
         // Resgata diferença entre as datas
         $dias = $data_inicio->diff($data_fim);
         return $dias->days+1;
@@ -743,10 +750,10 @@ class RemuneracaoRGPSService
         }
 
         $resultado = db_query($sql);
-        $registro = pg_numrows($resultado);
+        $registro = pg_num_rows($resultado);
         if ($registro > 0) {
-            $grupoIdeEstabLot->nrInsc = \db_utils::fieldsMemory($resultado, 0)->cgc;
-            $grupoIdeEstabLot->codLotacao = \db_utils::fieldsMemory($resultado, 0)->rh268_codigolotacao;
+            $grupoIdeEstabLot->nrInsc = db_utils::fieldsMemory($resultado, 0)->cgc;
+            $grupoIdeEstabLot->codLotacao = db_utils::fieldsMemory($resultado, 0)->rh268_codigolotacao;
         }
         return $grupoIdeEstabLot;
     }

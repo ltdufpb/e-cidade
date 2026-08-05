@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -34,7 +34,7 @@ include(modification("classes/db_progconvocacao_classe.php"));
 include(modification("classes/db_progmatricula_classe.php"));
 include(modification("classes/db_progconfig_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clprogconvocacao = new cl_progconvocacao;
 $clprogmatricula = new cl_progmatricula;
 $clprogconfig = new cl_progconfig;
@@ -43,7 +43,7 @@ $db_botao = true;
 $result = $clprogconfig->sql_record($clprogconfig->sql_query("","*","",""));
 db_fieldsmemory($result,0);
 if(isset($incluir)){
- $convocacoes = explode(",",$convoca);
+ $convocacoes = explode(",",(string) $convoca);
  for($i=0;$i<count($convocacoes);$i++){
   db_inicio_transacao();
   $clprogconvocacao->ed115_i_progmatricula = $codmatricula;
@@ -74,23 +74,23 @@ if(isset($incluir)){
 <table width="790" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <center>
    <fieldset style="width:90%"><legend><b>Inclusão de Participações em Convocações</b></legend>
-    <?include(modification("forms/db_frmprogconvocacao.php"));?>
+    <?php include(modification("forms/db_frmprogconvocacao.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
 js_tabulacaoforms("form1","ed115_i_progmatricula",true,1,"ed115_i_progmatricula",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
  if($clprogconvocacao->erro_status=="0"){
   $clprogconvocacao->erro(true,false);

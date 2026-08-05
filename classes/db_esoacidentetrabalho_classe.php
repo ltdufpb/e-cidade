@@ -69,7 +69,7 @@ SQL;
         }
 
         $instituicaoCodigo = db_getsession("DB_instit");
-        $cgmInstituicao = \InstituicaoRepository::getInstituicaoByCodigo($instituicaoCodigo)->getCgm()->getCodigo();
+        $cgmInstituicao = InstituicaoRepository::getInstituicaoByCodigo($instituicaoCodigo)->getCgm()->getCodigo();
         $where[] = " eso36_empregador = {$cgmInstituicao} ";
 
         if (!empty($where)) {
@@ -83,7 +83,7 @@ SQL;
         return $sql;
     }
 
-    public function avaliacaoPreenchida(array $campos = array('*'), array $where = array(), $outrosComandos = null)
+    public function avaliacaoPreenchida(array $campos = ['*'], array $where = [], $outrosComandos = null)
     {
         $campos = implode(', ', $campos);
         $sql = <<<SQL
@@ -99,7 +99,7 @@ SQL;
                 join cgm on eso36_empregador = z01_numcgm
 SQL;
         $instituicaoCodigo = db_getsession("DB_instit");
-        $cgmInstituicao = \InstituicaoRepository::getInstituicaoByCodigo($instituicaoCodigo)->getCgm()->getCodigo();
+        $cgmInstituicao = InstituicaoRepository::getInstituicaoByCodigo($instituicaoCodigo)->getCgm()->getCodigo();
         $where[] = " eso36_empregador = {$cgmInstituicao} ";
 
         if (!empty($where)) {

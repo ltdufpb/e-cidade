@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -107,7 +107,7 @@ function js_emite(){
          <td >&nbsp;</td>
          <td >&nbsp;</td>
       </tr>
-        <?
+        <?php 
 if(!isset($tipo)){
    $tipo = "c";
  }
@@ -137,7 +137,7 @@ if(!isset($filtro)){
             <Legend align="left">
               <b>Selecione os Vinculos</b>
             </Legend>
-            <?
+            <?php 
             db_input("valor", 3, 0, true, 'hidden', 3);
             db_input("colunas_sselecionados", 3, 0, true, 'hidden', 3);
             db_input("colunas_nselecionados", 3, 0, true, 'hidden', 3);
@@ -173,16 +173,16 @@ if(!isset($filtro)){
   </tr>
       <tr>
           <td nowrap title="Padrão" align="right">
-            <?
+            <?php 
             $db_opcao = 2;
             db_ancora("<B>Código do Padrão :</B>","js_pesquisarh03_padrao(true);",$db_opcao);
             ?>
           </td>
           <td nowrap>
-            <?
+            <?php 
             db_input('rh03_padrao',10,"",true,'text',$db_opcao,"onchange='js_pesquisarh03_padrao(false);'")
             ?>
-            <?
+            <?php 
             db_input('r02_descr',29,"",true,'text',3,'');
             ?>
           </td>
@@ -192,7 +192,7 @@ if(!isset($filtro)){
 	     <td align="right"><strong>Tipo de Relatório :</strong>&nbsp;
        </td>
        <td align="left">
-         <?
+         <?php 
            $x = array("f"=>"Sintético","t"=>"Analítico");
            db_select('tiposa',$x,true,4,"");
          ?>
@@ -211,7 +211,7 @@ if(!isset($filtro)){
 </table>
   </form>
 </table>
-<?
+<?php 
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>

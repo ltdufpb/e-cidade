@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -71,7 +71,7 @@ if($clrechumano->numrows==0){
    </td>
   </tr>
  </table>
- <?
+ <?php 
  exit;
 }
 db_fieldsmemory($result,0);
@@ -260,7 +260,7 @@ if($clrechumanoescola->numrows>0){
   $pdf->cell(5,4,"","L",0,"C",0);
   $pdf->cell(15,4,($ed20_i_tiposervidor==1?"Matrícula:":"CGM:"),0,0,"L",0);
   $pdf->cell(15,4,$identificacao,0,0,"L",0);  
-  $pdf->cell(80,4,$ed18_i_codigo." - ".trim($ed18_c_nome),0,0,"L",0);
+  $pdf->cell(80,4,$ed18_i_codigo." - ".trim((string) $ed18_c_nome),0,0,"L",0);
   $pdf->cell(70,4,db_formatar($ed75_d_ingresso,'d'),0,0,"C",0);
   $pdf->cell(5,4,"","R",1,"C",0);
  }
@@ -276,7 +276,7 @@ $sSqlMovimentacao = $oDaoRecHumano->sql_query_movimentacao_professor_cgm($profes
 $rsMovimentacao   = $oDaoRecHumano->sql_record($sSqlMovimentacao);
 $iRegistro        = $oDaoRecHumano->numrows;
 
-$aMovimentos = array();
+$aMovimentos = [];
 
 $pdf->setfont('arial','b',7);
 $pdf->cell(190, 4,"AUSÊNCIAS/SUBSTITUIÇÕES", 1, 1, "C",1);
@@ -334,7 +334,7 @@ if ($iRegistro > 0) {
 	
 		$pdf->cell(20,  4, $oMovimento->dtInicio, "L", 0, "C");
 		$pdf->cell(20,  4, $oMovimento->dtFinal,  0, 0, "C");
-		$pdf->cell(150, 4, substr($oMovimento->sMessage, 0, 110), "R", 1, "L");
+		$pdf->cell(150, 4, substr((string) $oMovimento->sMessage, 0, 110), "R", 1, "L");
 
 	}
 } else {
@@ -358,7 +358,7 @@ function buscaMovimentacoes( $iRecHumano ) {
   $rsRecHumanoMovimentacao     = pg_query( $sSqlRecHumanoMovimentacao );
   $iLinhas                     = pg_num_rows( $rsRecHumanoMovimentacao );
 
-  $aMovimentacoes = array();
+  $aMovimentacoes = [];
   if ( $iLinhas > 0 ) {
 
     for ( $iContador = 0; $iContador < $iLinhas; $iContador++ ) {

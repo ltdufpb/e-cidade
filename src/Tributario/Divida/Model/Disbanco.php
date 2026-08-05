@@ -2,6 +2,7 @@
 
 namespace ECidade\Tributario\Divida\Model;
 
+use Exception;
 use DateTime;
 use Instituicao;
 use InstituicaoRepository;
@@ -432,7 +433,7 @@ class Disbanco
     /**
      * @param array $state
      * @return Disbanco
-     * @throws \Exception
+     * @throws Exception
      */
     public static function fromState(array $state)
     {

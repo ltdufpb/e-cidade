@@ -30,9 +30,9 @@ RUN touch /etc/apt/sources.list.d/pgdg.list && \
 
 RUN apt update && \
   apt install -y --no-install-recommends \
-  apache2 libapache2-mod-php5.6 php5.6 php5.6-bcmath php5.6-bz2 php5.6-cli php5.6-common \
-  php5.6-curl php5.6-gd php5.6-interbase php5.6-json php5.6-mbstring \
-  php5.6-pgsql php5.6-soap php5.6-sqlite3 php5.6-xml php5.6-xmlrpc php5.6-zip php5.6-intl
+  apache2 libapache2-mod-php8.4 php8.4 php8.4-bcmath php8.4-bz2 php8.4-cli php8.4-common \
+  php8.4-curl php8.4-gd php8.4-mbstring \
+  php8.4-pgsql php8.4-soap php8.4-sqlite3 php8.4-xml php8.4-zip php8.4-intl php8.4-opcache
 
 RUN echo '<VirtualHost *:80>\n\
         ServerAdmin equipe.infraestrutura@dbseller.com.br\n\
@@ -59,17 +59,16 @@ RUN a2enmod rewrite ssl proxy_fcgi setenvif && \
 RUN touch /var/log/php_errors.log && \
   chown www-data. /var/log/php_errors.log && \
   chmod 777 /var/log/php_errors.log && \
-  sed -i "s/^short_open_tag.*/short_open_tag = On/g" /etc/php/5.6/apache2/php.ini && \
-  sed -i "s/^;date.timezone.*/date.timezone = \"America\/Sao_Paulo\"/g" /etc/php/5.6/apache2/php.ini && \
-  sed -i "s/^session.gc_maxlifetime.*/session.gc_maxlifetime = 7200/g" /etc/php/5.6/apache2/php.ini && \
-  sed -i "s/^;error_log.*/error_log = \/var\/log\/php_errors.log/" /etc/php/5.6/apache2/php.ini && \
-  sed -i "s/^short_open_tag.*/short_open_tag = On/g" /etc/php/5.6/cli/php.ini && \
-  sed -i "s/^;date.timezone.*/date.timezone = \"America\/Sao_Paulo\"/g" /etc/php/5.6/cli/php.ini && \
-  sed -i "s/^session.gc_maxlifetime.*/session.gc_maxlifetime = 7200/g" /etc/php/5.6/cli/php.ini && \
-  sed -i "s/^;error_log.*/error_log = \/var\/log\/php_errors.log/" /etc/php/5.6/cli/php.ini
+  sed -i "s/^;date.timezone.*/date.timezone = \"America\/Sao_Paulo\"/g" /etc/php/8.4/apache2/php.ini && \
+  sed -i "s/^session.gc_maxlifetime.*/session.gc_maxlifetime = 7200/g" /etc/php/8.4/apache2/php.ini && \
+  sed -i "s/^;error_log.*/error_log = \/var\/log\/php_errors.log/" /etc/php/8.4/apache2/php.ini && \
+  sed -i "s/^display_errors.*/display_errors = On/g" /etc/php/8.4/apache2/php.ini && \
+  sed -i "s/^;date.timezone.*/date.timezone = \"America\/Sao_Paulo\"/g" /etc/php/8.4/cli/php.ini && \
+  sed -i "s/^session.gc_maxlifetime.*/session.gc_maxlifetime = 7200/g" /etc/php/8.4/cli/php.ini && \
+  sed -i "s/^;error_log.*/error_log = \/var\/log\/php_errors.log/" /etc/php/8.4/cli/php.ini
 
 RUN curl -sS https://getcomposer.org/installer -o composer-setup.php \
-    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+    && php8.4 composer-setup.php --install-dir=/usr/local/bin --filename=composer \
     && rm composer-setup.php
 
 ENV PATH=$PATH:/root/composer/vendor/bin COMPOSER_ALLOW_SUPERUSER=1

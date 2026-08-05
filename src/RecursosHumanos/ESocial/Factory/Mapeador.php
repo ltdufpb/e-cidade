@@ -21,16 +21,11 @@ class Mapeador
      */
     public static function get($tipo)
     {
-        switch ($tipo) {
-            case Tipo::RUBRICA:
-                $mapeador = new RubricaMapeador();
-                break;
-            case Tipo::TRABALHADOR_SEM_VINCULO:
-                $mapeador = new TrabalhadorSemVinculoMapeador();
-                break;
-            default:
-                throw new Exception('Tipo de fomulário não encontrado.');
-        }
+        $mapeador = match ($tipo) {
+            Tipo::RUBRICA => new RubricaMapeador(),
+            Tipo::TRABALHADOR_SEM_VINCULO => new TrabalhadorSemVinculoMapeador(),
+            default => throw new Exception('Tipo de fomulário não encontrado.'),
+        };
 
         return $mapeador;
     }

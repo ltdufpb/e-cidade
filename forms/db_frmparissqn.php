@@ -80,7 +80,7 @@ fieldset fieldset table tr td:first-child {
 
           <input name="oid" type="hidden" value="<?=@$oid?>">
 
-		 	    <?
+		 	    <?php 
 			      db_ancora(@$Lq60_receit,"js_pesquisaq60_receit(true);",$db_opcao);
 			    ?>
 
@@ -97,12 +97,12 @@ fieldset fieldset table tr td:first-child {
 
       <tr id="tipodebito">
         <td>
-          <?
+          <?php 
             db_ancora(@$Lq60_tipo,"js_pesquisaq60_tipo(true);",$db_opcao);
           ?>
         </td>
         <td>
-        	<?
+        	<?php 
           	db_input('q60_tipo', 10, $Iq60_tipo, true, 'text', $db_opcao, " onchange='js_pesquisaq60_tipo(false);'");
             db_input('k00_descr', 40, $Ik00_descr, true, 'text', 3, '');
           ?>
@@ -114,7 +114,7 @@ fieldset fieldset table tr td:first-child {
           <?=@$Lq60_aliq?>
         </td>
         <td>
-          <?
+          <?php 
       	    db_input('q60_aliq', 10, $Iq60_aliq, true, 'text', $db_opcao)
           ?>
         </td>
@@ -122,12 +122,12 @@ fieldset fieldset table tr td:first-child {
 
       <tr id="vencimento">
         <td>
-          <?
+          <?php 
             db_ancora(@$Lq60_codvencvar,"js_pesquisaq60_codvencvar(true);",$db_opcao);
           ?>
         </td>
         <td>
-          <?
+          <?php 
             db_input('q60_codvencvar',10,$Iq60_codvencvar,true,'text',$db_opcao," onchange='js_pesquisaq60_codvencvar(false);'");
             db_input('q92_descr',40,$Iq92_descr,true,'text',3,'');
           ?>
@@ -141,7 +141,7 @@ fieldset fieldset table tr td:first-child {
           ?>
         </td>
         <td>
-          <?
+          <?php 
             db_input('q60_histsemmov', 10, $Iq60_histsemmov, true, 'text', $db_opcao, "");
             db_input('k01_descr',      40, $Ik01_descr,      true, 'text', 3        , "");
           ?>
@@ -175,7 +175,7 @@ fieldset fieldset table tr td:first-child {
           <?=@$Lq60_campoutilcalc?>
         </td>
         <td>
-          <?
+          <?php 
      				$aCampoUtilCalc = array('1' => 'Area', '2' => 'Quantidade de funcionarios', '3' => 'Pontuação');
             db_select('q60_campoutilcalc',$aCampoUtilCalc, true, $db_opcao);
           ?>
@@ -195,7 +195,7 @@ fieldset fieldset table tr td:first-child {
           <?=@$Lq60_integrasani?>
         </td>
         <td>
-  	      <?
+  	      <?php 
     	      $aIntegracaoSanitario = array('0'=>'Nenhuma','1'=>'Inscrições com porte para pessoa juridica','2'=>'Integração por classe');
     	      db_select('q60_integrasani', $aIntegracaoSanitario, true, $db_opcao);
           ?>
@@ -207,7 +207,7 @@ fieldset fieldset table tr td:first-child {
           <?=@$Lq60_tipopermalvara?>
         </td>
         <td>
-          <?
+          <?php 
           	$aPermissao = array('0'=>'Não utiliza controle de permissão', '1'=>'Liberado com permissão para alterar alvará com cnpj.');
           	db_select('q60_tipopermalvara', $aPermissao, true, $db_opcao);
           ?>
@@ -217,12 +217,12 @@ fieldset fieldset table tr td:first-child {
 			<tr id="alvarapermanente">
 				<td>
 				  <input name="oid" type="hidden" value="<?=@$oid?>">
-  				  <?
+  				  <?php 
   					  db_ancora(@$Lq60_isstipoalvaraper,"js_pesquisaq60_isstipoalvaraper(true);",$db_opcao);
   					?>
 				</td>
 				<td>
-  				<?
+  				<?php 
     				db_input('q60_isstipoalvaraper',10,$Iq60_isstipoalvaraper,true,'text',$db_opcao," onchange='js_pesquisaq60_isstipoalvaraper(false);'");
     				db_input('q98_descricaoper',40,$Iq98_descricao,true,'text',3,'');
   				?>
@@ -232,12 +232,12 @@ fieldset fieldset table tr td:first-child {
 			<tr id="alvaraprovisorio">
 				<td>
 				<input name="oid" type="hidden" value="<?=@$oid?>">
-				  <?
+				  <?php 
 					  db_ancora(@$Lq60_isstipoalvaraprov,"js_pesquisaq60_isstipoalvaraprov(true);",$db_opcao);
 					?>
 				</td>
 				<td nowrap>
-				  <?
+				  <?php 
             db_input('q60_isstipoalvaraprov',10,$Iq60_isstipoalvaraprov,true,'text',$db_opcao," onchange='js_pesquisaq60_isstipoalvaraprov(false);'");
             db_input('q98_descricaoprov',40,$Iq98_descricao,true,'text',3,'');
           ?>
@@ -249,7 +249,7 @@ fieldset fieldset table tr td:first-child {
 				  <?=@$Lq60_alvbaixadiv?>
 				</td>
 				<td>
-				  <?
+				  <?php 
 				    $aAlvaraDivida = array('0'=>'Não','1'=>'Sim');
 				    db_select('q60_alvbaixadiv',$aAlvaraDivida, true, $db_opcao);
 				  ?>
@@ -268,7 +268,7 @@ fieldset fieldset table tr td:first-child {
 					        <?=@$Lq60_impcodativ?>
 					      </td>
 					      <td>
-								  <?
+								  <?php 
 									  $aImprimeCodigoAtividade = array('f'=>'NÃO','t'=>'SIM');
 									  db_select('q60_impcodativ',$aImprimeCodigoAtividade, true, $db_opcao);
 								  ?>
@@ -280,7 +280,7 @@ fieldset fieldset table tr td:first-child {
   					      <?=@$Lq60_impobsativ?>
   					    </td>
   					    <td>
-  								<?
+  								<?php 
   									$aImprimeObservacoesAtividade = array('f'=>'NÃO','t'=>'SIM');
   									db_select('q60_impobsativ',$aImprimeObservacoesAtividade, true, $db_opcao);
   								?>
@@ -292,7 +292,7 @@ fieldset fieldset table tr td:first-child {
 								  <?=@$Lq60_impdatas?>
 								</td>
 								<td>
-								  <?
+								  <?php 
 								    $aImprimeDatas = array('f'=>'NÃO','t'=>'SIM');
 								    db_select('q60_impdatas', $aImprimeDatas, true, $db_opcao);
 								  ?>
@@ -304,7 +304,7 @@ fieldset fieldset table tr td:first-child {
 								  <?=@$Lq60_impobsissqn?>
 								</td>
 								<td>
-								  <?
+								  <?php 
     								$aImprimeObservacoesIssqn = array('f'=>'NÃO','t'=>'SIM');
     								db_select('q60_impobsissqn',$aImprimeObservacoesIssqn, true, $db_opcao);
   								?>
@@ -316,7 +316,7 @@ fieldset fieldset table tr td:first-child {
 								  <?=@$Lq60_modalvara?>
 								</td>
 								<td>
-								  <?
+								  <?php 
     								$aModeloAlvara = array('1'=>'A5',
                       								     '2'=>'A4',
                       								     '3'=>'Pré-impresso',
@@ -334,13 +334,13 @@ fieldset fieldset table tr td:first-child {
 
 							<tr style="display: none" id="lab_templatealvara">
 								<td>
-								  <?
+								  <?php 
 								    $q60_templatealvara =1;
 								    db_ancora(@$Lq60_templatealvara,"js_pesquisaq60_templatealvara(true);",$db_opcao);
 								  ?>
 								</td>
 								<td>
-								  <?
+								  <?php 
 								    db_input('q60_templatealvara',10,$Iq60_templatealvara,true,'text',$db_opcao," onchange='js_pesquisaq60_templatealvara(false);'");
 								    db_input('db82_descricao',40,$Idb82_descricao,true,'text',3,'');
 								  ?>
@@ -364,7 +364,7 @@ fieldset fieldset table tr td:first-child {
 				  <?=@$Lq60_notaavulsapesjur?>
 				</td>
 				<td>
-				  <?
+				  <?php 
 				    $aNotaFiscalAvulsaPerjur = array("f"=>"NÃO","t"=>"SIM");
 				    db_select('q60_notaavulsapesjur', $aNotaFiscalAvulsaPerjur, true, $db_opcao);
 				  ?>
@@ -376,7 +376,7 @@ fieldset fieldset table tr td:first-child {
 				  <?=@$Lq60_notaavulsavias?>
 				</td>
 				<td>
-				  <?
+				  <?php 
 				    db_input('q60_notaavulsavias', 10, $Iq60_notaavulsavias, true, 'text', $db_opcao);
 				  ?>
 				</td>
@@ -387,7 +387,7 @@ fieldset fieldset table tr td:first-child {
 				  <?=@$Lq60_notaavulsavlrmin?>
 				</td>
 				<td>
-				  <?
+				  <?php 
 				    db_input('q60_notaavulsavlrmin',10,$Iq60_notaavulsavlrmin,true,'text',$db_opcao,"");
 				  ?>
 				</td>
@@ -398,7 +398,7 @@ fieldset fieldset table tr td:first-child {
 				  <?=@$Lq60_notaavulsamax?>
 				</td>
 				<td>
-				  <?
+				  <?php 
 				    db_input('q60_notaavulsamax',10,$Iq60_notaavulsamax,true,'text',$db_opcao,"")
 				  ?>
 				</td>
@@ -409,7 +409,7 @@ fieldset fieldset table tr td:first-child {
 				  <?=@$Lq60_notaavulsaultimanota?>
 				</td>
 				<td>
-				  <?
+				  <?php 
     				if (!isset($q60_notaavulsaultimanota) || trim($q60_notaavulsaultimanota)=="") {
     				  $q60_notaavulsaultimanota = 1;
     				}
@@ -423,7 +423,7 @@ fieldset fieldset table tr td:first-child {
 				  <?=@$Lq60_notaavulsadiasprazo?>
 				</td>
 				<td>
-				  <?
+				  <?php 
 				    db_input('q60_notaavulsadiasprazo',10,$Iq60_notaavulsadiasprazo,true,'text',$db_opcao,"");
 				  ?>
 				</td>
@@ -439,7 +439,7 @@ fieldset fieldset table tr td:first-child {
           <?=@$Lq60_tiponumcertbaixa?>
         </td>
         <td>
-          <?
+          <?php 
             $aNumeracaoCertidaoBaixa = array('1'=>'Utiliza número do processo','2'=>'Sequencial','3'=>'Sequencial por exercício');
             db_select('q60_tiponumcertbaixa', $aNumeracaoCertidaoBaixa, true, $db_opcao, " onchange='js_habilitaTemplateCertidao();'");
           ?>
@@ -453,7 +453,7 @@ fieldset fieldset table tr td:first-child {
         </td>
 
         <td>
-          <?
+          <?php 
             db_input('q79_ultcodcertbaixa',10,$Iq79_ultcodcertbaixa,true,'text',$db_opcao)
           ?>
         </td>
@@ -464,7 +464,7 @@ fieldset fieldset table tr td:first-child {
           <?=@$Lq60_bloqemiscertbaixa?>
         </td>
         <td>
-          <?
+          <?php 
             $aBloqueioEmissaoCertidao = array(1 => 'Nunca bloqueia',
                                               2 => 'Avisa que tem débito e não bloqueia',
                                               3 => 'Avisa que tem debito e bloqueia');
@@ -475,12 +475,12 @@ fieldset fieldset table tr td:first-child {
 
       <tr>
         <td nowrap="nowrap">
-          <?
+          <?php 
             db_ancora("<strong>Template Baixa Normal:</strong>","js_pesquisaCertidaoNormal(true);",$db_opcao);
           ?>
         </td>
         <td nowrap="nowrap">
-          <?
+          <?php 
             db_input('q60_templatebaixaalvaranormal',10,@$Iq60_templatebaixaalvaranormal,true,'text',$db_opcao,'onchange="js_pesquisaCertidaoNormal(false);"');
             db_input('db82_descricaocertidaonormal',40,$Idb82_descricao,true,'text',3,'','db82_descricaocertidaonormal');
           ?>
@@ -489,12 +489,12 @@ fieldset fieldset table tr td:first-child {
 
       <tr>
         <td nowrap="nowrap">
-          <?
+          <?php 
             db_ancora("<strong>Template Baixa Oficial:</strong>","js_pesquisaCertidaoOficial(true);",$db_opcao);
           ?>
         </td>
         <td nowrap="nowrap">
-          <?
+          <?php 
             db_input('q60_templatebaixaalvaraoficial',10,@$Iq60_templatebaixaalvaraoficial,true,'text',$db_opcao,'onchange="js_pesquisaCertidaoOficial(false);"');
             db_input('db82_descricaocertidaooficial',40,$Idb82_descricao,true,'text',3,'','db82_descricaocertidaooficial');
           ?>
@@ -513,7 +513,7 @@ fieldset fieldset table tr td:first-child {
 				  <?=@$Lq60_dataimpmei?>
 				</td>
 				<td>
-				  <?
+				  <?php 
 				    db_inputdata('q60_dataimpmei',@$q60_dataimpmei_dia,@$q60_dataimpmei_mes,@$q60_dataimpmei_ano,true,'text',$db_opcao,'');
 				  ?>
 				</td>
@@ -522,12 +522,12 @@ fieldset fieldset table tr td:first-child {
       <tr id="portepadraomei">
         <td>
           <input name="portepadraomei" type="hidden" value="<?= @$q60_portepadraomei ?>">
-          <?
+          <?php 
           db_ancora(@$Lq60_portepadraomei, "js_pesquisaq60_portepadraomei(true);", $db_opcao);
           ?>
         </td>
         <td>
-          <?
+          <?php 
           db_input('q60_portepadraomei', 10, @$Iq60_portepadraomei, true, 'text', $db_opcao, " onchange='js_pesquisaq60_portepadraomei(false);'");
           db_input('q40_descr', 40, $Iq40_descr, true, 'text', 3, '');
           ?>
@@ -536,12 +536,12 @@ fieldset fieldset table tr td:first-child {
 
       <tr>
         <td nowrap="nowrap">
-          <?
+          <?php 
             db_ancora("<strong>Template BIC Veículos:</strong>","pesquisaTemplateVeiculoBIC(true);",$db_opcao);
           ?>
         </td>
         <td nowrap="nowrap">
-          <?
+          <?php 
             db_input('q60_templatebicveiculo',10,@$Iq60_templatebicveiculo,true,'text',$db_opcao,'onchange="pesquisaTemplateVeiculoBIC(false);"');
             db_input('db82_descricaobicveiculo',40,$Idb82_descricao,true,'text',3,'','db82_descricaobicveiculo');
           ?>
@@ -552,7 +552,7 @@ fieldset fieldset table tr td:first-child {
                 <?= @$Lq60_formaaliquotarbt ?>
             </td>
             <td>
-                <?
+                <?php 
                 db_select("q60_formaaliquotarbt", [1 => "Item de Serviço", 2 => "CNAE"], true, 1);
                 ?>
             </td>
@@ -811,7 +811,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
 
   db_iframe_parissqn.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

@@ -2,12 +2,10 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
-use ECidade\RecursosHumanos\ESocial\Entity\Servidor;
-use ECidade\RecursosHumanos\ESocial\Service\ServidorService;
-use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
+use Override;
+use BusinessException;
+use DBException;
 use stdClass;
-use CgmJuridico;
-use DBPessoal;
 
 /**
  * Class ProcessoTrabalhistaFormatter
@@ -19,9 +17,10 @@ class ProcessoTrabalhistaFormatter extends Formatter
     /**
      * @param  array $dados
      * @return mixed|stdClass[]
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
+    #[Override]
     public function formatar($dados)
     {
         $dadosProcessoTrabalhista = null;
@@ -35,7 +34,7 @@ class ProcessoTrabalhistaFormatter extends Formatter
             $dadoProcesso->infoProcesso->origem = (int) $processoTrabalhista->getOrigem();
             $dadoProcesso->infoProcesso->nrProcTrab = $processoTrabalhista->getNumeroProcesso();
             $dadoProcesso->infoProcesso->obsProcTrab =
-                str_replace(array("\r\n", "\r", "\n"), "", $processoTrabalhista->getObservacaoProcesso());
+                str_replace(["\r\n", "\r", "\n"], "", $processoTrabalhista->getObservacaoProcesso());
             $dadoProcesso->infoProcesso->dadosCompl = new stdClass();
             if ($dadoProcesso->infoProcesso->origem == 1) {
                 $dadoProcesso->infoProcesso->dadosCompl->infoProcJud = new stdClass();

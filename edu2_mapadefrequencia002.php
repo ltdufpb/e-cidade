@@ -44,10 +44,10 @@ db_app::import("educacao.avaliacao.*");
 db_app::import("educacao.*");
 db_app::import("exceptions.*");
 
-$aTurmaProcessada = array();
-$aTurmas          = array();
+$aTurmaProcessada = [];
+$aTurmas          = [];
 
-foreach (explode(",", $oGet->aTurmas) as $iCodigoTurma) {
+foreach (explode(",", (string) $oGet->aTurmas) as $iCodigoTurma) {
 
   $aTurmas[] = TurmaRepository::getTurmaByCodigo($iCodigoTurma);
 }
@@ -67,7 +67,7 @@ foreach ($aTurmas as $oTurma) {
   }
 
   $oDadosTurma                  = new stdClass();
-  $oDadosTurma->aAlunos         = array();
+  $oDadosTurma->aAlunos         = [];
   $oDadosTurma->iCodigoTurma    = $oTurma->getCodigo();
   $oDadosTurma->sDescricaoTurma = $oTurma->getDescricao();
   $oDadosTurma->sCalendario     = $oTurma->getCalendario()->getDescricao();

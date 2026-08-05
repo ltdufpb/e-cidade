@@ -607,7 +607,7 @@ $aOperacoes = $operacoestefRepository->get();
                             <?= @$Lk00_bloqnutil ?>
                         </td>
                         <td>
-                            <?
+                            <?php 
                             $x = array("f" => "NAO", "t" => "SIM");
                             db_select('k00_bloqnutil', $x, true, $db_opcao, "");
                             ?>
@@ -801,7 +801,7 @@ $aOperacoes = $operacoestefRepository->get();
             </fieldset>
         </div>
         <div id="tef">
-          <? db_input('k196_sequencial', 10, $Ik196_sequencial, true, 'hidden', $db_opcao) ?>
+          <?php  db_input('k196_sequencial', 10, $Ik196_sequencial, true, 'hidden', $db_opcao) ?>
           <fieldset class="fieldsetPrincipal" style="width:451px;">
               <legend>Configuração TEF</legend>
               <table>

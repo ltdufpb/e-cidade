@@ -2,7 +2,6 @@
 
 namespace ECidade\Tributario\Issqn\Model;
 
-use DateTime;
 use Exception;
 
 class ParametroProcessoEletronico
@@ -202,7 +201,7 @@ class ParametroProcessoEletronico
      */
     public function toArray()
     {
-        return array(
+        return [
             'alvaraAutonomo' => $this->getAlvaraAutonomo(),
             'alvaraEmpresa' => $this->getAlvaraEmpresa(),
             'alvaraMei' => $this->getAlvaraMei(),
@@ -212,7 +211,7 @@ class ParametroProcessoEletronico
             'alvaraAutonomoProcessoEletronico' => $this->getAlvaraAutonomoProcessoEletronico(),
             'alvaraEmpresaProcessoEletronico' => $this->getAlvaraEmpresaProcessoEletronico(),
             'alvaraMeiProcessoEletronico' => $this->getAlvaraMeiProcessoEletronico()
-        );
+        ];
     }
 
     /**

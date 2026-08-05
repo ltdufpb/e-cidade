@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -73,7 +73,7 @@ echo "<script>parent.iframe_g2.location.href = 'cad2_estatiptu004.php'</script>"
 							</td>
 							<td>   
 								<select name="anoexei" id="anoexei">
-									<?
+									<?php 
 										$result = $cliptucalc->sql_record($cliptucalc->sql_query_file("","","distinct j23_anousu","j23_anousu desc"));
 										for($i = 0;$i < $cliptucalc->numrows;$i++){
 											 db_fieldsmemory($result,$i);
@@ -89,7 +89,7 @@ echo "<script>parent.iframe_g2.location.href = 'cad2_estatiptu004.php'</script>"
 							 </td>
 							 <td>	
 									<select name="anoexef" id="anoexef">
-										<?
+										<?php 
 											$result = $cliptucalc->sql_record($cliptucalc->sql_query_file("","","distinct j23_anousu","j23_anousu desc"));
 											for($i = 0;$i < $cliptucalc->numrows;$i++){
 												 db_fieldsmemory($result,$i);
@@ -104,7 +104,7 @@ echo "<script>parent.iframe_g2.location.href = 'cad2_estatiptu004.php'</script>"
 							<td colspan="2"><b>Agrupar por :&nbsp;</b>
 							</td>
 							<td> 
-							 <?
+							 <?php 
 									$x = array("m"=>"Matrícula","b"=>"Bairro","s"=>"Setor");
 									db_select("selagrupa",$x,false,2,"onChange='js_mostratipo();'");
 								?>
@@ -115,7 +115,7 @@ echo "<script>parent.iframe_g2.location.href = 'cad2_estatiptu004.php'</script>"
 							<td colspan="2" ><b>Ordem	:&nbsp;</b>
 							</td>
 							<td>    
-							  <?
+							  <?php 
 									$x = array("m"=>"Matrícula",
 														 "n"=>"Nome",
 														 "b"=>"Bairro",
@@ -129,7 +129,7 @@ echo "<script>parent.iframe_g2.location.href = 'cad2_estatiptu004.php'</script>"
 							<td colspan="2" ><b>Tipo	:&nbsp;</b>
 							</td>
 							<td>    
-							  <?
+							  <?php 
 									$x = array("a"=>"Analítica","s"=>"Sintética");
 									db_select("seltipo",$x,false,2);
 								?>

@@ -49,7 +49,8 @@ $clrotulo->label("DBtxtmesacumulado");
 $clrotulo->label("DBtxtperiodoini");
 $clrotulo->label("DBtxtperiodofim");
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($_POST);
 db_postmemory($_GET);
 
@@ -331,7 +332,7 @@ $complementoDescricao = ComplementoRepository::find($complemento)->getDescricao(
                         <tr>
                             <td class="coluna-label">Mês:</td>
                             <td>
-                                <?
+                                <?php 
                                 $x = array("01" => "Janeiro",
                                     "02" => "Fevereiro",
                                     "03" => "Março",

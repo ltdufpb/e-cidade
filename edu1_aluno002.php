@@ -34,7 +34,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_jsplibwebseller.php"));
 use App\Domain\Configuracao\Helpers\StorageHelper;
 
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 db_postmemory( $_POST );
 
 $oDaoAluno           = new cl_aluno();
@@ -131,7 +131,7 @@ if (isset($alterar)) {
     $rs = db_query($oDaoAluno->sql_query_file(null,"ed47_i_certidado_estorage  as idCertidao",null, "ed47_i_codigo = $chavepesquisa"));
     $dados = db_utils::fieldsMemory($rs, 0);
     $arquivoCertidao = !empty($dados->idcertidao) ? StorageHelper::downloadArquivo($dados->idcertidao) : "";
-    $namecertidao = @trim($GLOBALS["HTTP_POST_VARS"]["oid_arquivoCertidao"]);
+    $namecertidao = @trim((string) $GLOBALS["HTTP_POST_VARS"]["oid_arquivoCertidao"]);
 
     if ($namecertidao != "" && $arquivoCertidao != $namecertidao) {
       $idFileCertidao = StorageHelper::uploadArquivo($namecertidao, null, true);
@@ -148,7 +148,7 @@ if (isset($alterar)) {
     $rs = db_query($oDaoAluno->sql_query_file(null,"ed47_i_cpf_estorage  as idCpf",null, "ed47_i_codigo = $chavepesquisa"));
     $dados = db_utils::fieldsMemory($rs, 0);
     $arquivoCpf = !empty($dados->idcpf) ? StorageHelper::downloadArquivo($dados->idcpf) : "";
-    $namecpf = @trim($GLOBALS["HTTP_POST_VARS"]["oid_arquivoCPF"]);
+    $namecpf = @trim((string) $GLOBALS["HTTP_POST_VARS"]["oid_arquivoCPF"]);
 
     if ($namecpf != "" && $arquivoCpf != $namecpf) {
       $idFileCpf = StorageHelper::uploadArquivo($namecpf, null, true);
@@ -205,7 +205,7 @@ if (isset($chavepesquisa)) {
             </select>
           </fieldset>
           <fieldset style="width:95%"><legend><b>Documentação do Aluno</b></legend>
-            <?include(modification("forms/db_frmaluno.php"));?>
+            <?php include(modification("forms/db_frmaluno.php"));?>
           </fieldset>
         </center>
       </td>

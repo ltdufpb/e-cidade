@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE pcorcamitemsol
 class cl_pcorcamitemsol { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $pc29_orcamitem = 0; 
-   var $pc29_solicitem = 0; 
+   public $pc29_orcamitem = 0; 
+   public $pc29_solicitem = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  pc29_orcamitem = int4 = Código sequencial do item no orçamento 
                  pc29_solicitem = int8 = Código sequencial do registro 
                  ";
    //funcao construtor da classe 
-   function cl_pcorcamitemsol() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcorcamitemsol"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,7 +106,7 @@ class cl_pcorcamitemsol {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Itens do orcamento de solicitação ($this->pc29_orcamitem."-".$this->pc29_solicitem) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Itens do orcamento de solicitação já Cadastrado";
@@ -130,12 +130,12 @@ class cl_pcorcamitemsol {
      $resaco = $this->sql_record($this->sql_query_file($this->pc29_orcamitem,$this->pc29_solicitem));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6389,'$this->pc29_orcamitem','I')");
        $resac = db_query("insert into db_acountkey values($acount,5516,'$this->pc29_solicitem','I')");
-       $resac = db_query("insert into db_acount values($acount,1045,6389,'','".AddSlashes(pg_result($resaco,0,'pc29_orcamitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1045,5516,'','".AddSlashes(pg_result($resaco,0,'pc29_solicitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1045,6389,'','".AddSlashes(pg_fetch_result($resaco,0,'pc29_orcamitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1045,5516,'','".AddSlashes(pg_fetch_result($resaco,0,'pc29_solicitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -144,10 +144,10 @@ class cl_pcorcamitemsol {
       $this->atualizacampos();
      $sql = " update pcorcamitemsol set ";
      $virgula = "";
-     if(trim($this->pc29_orcamitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc29_orcamitem"])){ 
+     if(trim((string) $this->pc29_orcamitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc29_orcamitem"])){ 
        $sql  .= $virgula." pc29_orcamitem = $this->pc29_orcamitem ";
        $virgula = ",";
-       if(trim($this->pc29_orcamitem) == null ){ 
+       if(trim((string) $this->pc29_orcamitem) == null ){ 
          $this->erro_sql = " Campo Código sequencial do item no orçamento nao Informado.";
          $this->erro_campo = "pc29_orcamitem";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_pcorcamitemsol {
          return false;
        }
      }
-     if(trim($this->pc29_solicitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc29_solicitem"])){ 
+     if(trim((string) $this->pc29_solicitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc29_solicitem"])){ 
        $sql  .= $virgula." pc29_solicitem = $this->pc29_solicitem ";
        $virgula = ",";
-       if(trim($this->pc29_solicitem) == null ){ 
+       if(trim((string) $this->pc29_solicitem) == null ){ 
          $this->erro_sql = " Campo Código sequencial do registro nao Informado.";
          $this->erro_campo = "pc29_solicitem";
          $this->erro_banco = "";
@@ -181,14 +181,14 @@ class cl_pcorcamitemsol {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6389,'$this->pc29_orcamitem','A')");
          $resac = db_query("insert into db_acountkey values($acount,5516,'$this->pc29_solicitem','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc29_orcamitem"]))
-           $resac = db_query("insert into db_acount values($acount,1045,6389,'".AddSlashes(pg_result($resaco,$conresaco,'pc29_orcamitem'))."','$this->pc29_orcamitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1045,6389,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc29_orcamitem'))."','$this->pc29_orcamitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc29_solicitem"]))
-           $resac = db_query("insert into db_acount values($acount,1045,5516,'".AddSlashes(pg_result($resaco,$conresaco,'pc29_solicitem'))."','$this->pc29_solicitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1045,5516,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc29_solicitem'))."','$this->pc29_solicitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -233,12 +233,12 @@ class cl_pcorcamitemsol {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6389,'$pc29_orcamitem','E')");
          $resac = db_query("insert into db_acountkey values($acount,5516,'$pc29_solicitem','E')");
-         $resac = db_query("insert into db_acount values($acount,1045,6389,'','".AddSlashes(pg_result($resaco,$iresaco,'pc29_orcamitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1045,5516,'','".AddSlashes(pg_result($resaco,$iresaco,'pc29_solicitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1045,6389,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc29_orcamitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1045,5516,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc29_solicitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pcorcamitemsol
@@ -304,7 +304,7 @@ class cl_pcorcamitemsol {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pcorcamitemsol";
@@ -318,7 +318,7 @@ class cl_pcorcamitemsol {
    function sql_query ( $pc29_orcamitem=null,$pc29_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -363,7 +363,7 @@ class cl_pcorcamitemsol {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -375,7 +375,7 @@ class cl_pcorcamitemsol {
    function sql_query_dotac ( $pc29_orcamitem=null,$pc29_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,7 +421,7 @@ class cl_pcorcamitemsol {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -433,7 +433,7 @@ class cl_pcorcamitemsol {
    function sql_query_file ( $pc29_orcamitem=null,$pc29_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -462,7 +462,7 @@ class cl_pcorcamitemsol {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -474,7 +474,7 @@ class cl_pcorcamitemsol {
    function sql_query_orcam ( $pc29_orcamitem=null,$pc29_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -505,7 +505,7 @@ class cl_pcorcamitemsol {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -517,7 +517,7 @@ class cl_pcorcamitemsol {
    function sql_query_pcmater ( $pc29_orcamitem=null,$pc29_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -557,7 +557,7 @@ class cl_pcorcamitemsol {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -569,7 +569,7 @@ class cl_pcorcamitemsol {
    function sql_query_solicitem ( $pc29_orcamitem=null,$pc29_solicitem=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -603,7 +603,7 @@ class cl_pcorcamitemsol {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

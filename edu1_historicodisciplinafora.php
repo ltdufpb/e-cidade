@@ -145,7 +145,7 @@ $oDaoDisciplina       = new cl_disciplina();
             $cor = $cor1;
           }
 
-          $ed100_t_resultobtido = isset( $ed100_t_resultobtido ) ? $ed100_t_resultobtido : "";
+          $ed100_t_resultobtido ??= "";
 
           if( isset( $ed100_c_situacao ) && trim( $ed100_c_situacao ) == "AMPARADO" ) {
             $ed100_t_resultobtido = "&nbsp;";
@@ -164,8 +164,8 @@ $oDaoDisciplina       = new cl_disciplina();
             <td class='aluno' align="<?=$ed100_c_tiporesultado=='N'?'right':'center'?>"><?=$ed100_t_resultobtido?></td>
             <td class='aluno'><?=$ed100_c_resultadofinal=="R"?"REPROVADO":"APROVADO"?></td>
             <td class='aluno' align="right"><?=$ed100_i_qtdch?></td>
-            <td class='aluno' align="right"><?=trim($ed100_c_tiporesultado)?></td>
-            <td class='aluno' align="right"><?=trim($ed100_c_termofinal)?></td>
+            <td class='aluno' align="right"><?=trim((string) $ed100_c_tiporesultado)?></td>
+            <td class='aluno' align="right"><?=trim((string) $ed100_c_termofinal)?></td>
           </tr>
           <?php
         }
@@ -199,8 +199,8 @@ function js_abrir() {
 
 (function () {
 
-  var iEnsino                    = "<?php echo isset( $ed11_i_ensino ) ? $ed11_i_ensino : '';?>",
-      iSequenciaEtapa            = "<?php echo isset( $ed11_i_sequencia ) ? $ed11_i_sequencia : '';?>",
+  var iEnsino                    = "<?php echo $ed11_i_ensino ?? '';?>",
+      iSequenciaEtapa            = "<?php echo $ed11_i_sequencia ?? '';?>",
       oDadosManutencaoHistorico  = CurrentWindow.corpo.oDadosManutencaoHistorico,
       iStatusManutencaoHistorico = oDadosManutencaoHistorico.iStatusAlteracaoHistorico,
       iOrdemEtapaAtual           = oDadosManutencaoHistorico.aSenquenciaEtapas[iEnsino],

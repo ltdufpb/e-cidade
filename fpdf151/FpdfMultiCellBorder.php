@@ -52,6 +52,7 @@ class FpdfMultiCellBorder extends scpdf
      * @param integer $indent tamanhodo Recuo de 1 linha
      * @see FPDF::MultiCell()
      */
+    #[Override]
     function MultiCell($w, $h, $txt, $border = 0, $align = 'J', $fill = 0, $indent = 0)
     {
         $sTopBorder = '';
@@ -78,20 +79,20 @@ class FpdfMultiCellBorder extends scpdf
                 $b2 = 'LR';
                 $sTopBorder = 'TB';
             } else {
-                if (strpos($border, "B") !== false) {
+                if (str_contains((string) $border, "B")) {
                     $sTopBorder .= 'B';
                 }
-                if (strpos($border, "T") !== false) {
+                if (str_contains((string) $border, "T")) {
                     $sTopBorder .= 'T';
                 }
                 $b2 = '';
-                if (is_int(strpos($border, 'L'))) {
+                if (is_int(strpos((string) $border, 'L'))) {
                     $b2 .= 'L';
                 }
-                if (is_int(strpos($border, 'R'))) {
+                if (is_int(strpos((string) $border, 'R'))) {
                     $b2 .= 'R';
                 }
-                $b = is_int(strpos($border, 'T')) ? $b2 . 'T' : $b2;
+                $b = is_int(strpos((string) $border, 'T')) ? $b2 . 'T' : $b2;
             }
         }
         $sep = -1;
@@ -197,7 +198,7 @@ class FpdfMultiCellBorder extends scpdf
             $this->_out('0 Tw');
         }
 
-        if ($border && is_int(strpos($border, 'B'))) {
+        if ($border && is_int(strpos((string) $border, 'B'))) {
             $b .= 'B';
         }
 
@@ -233,7 +234,7 @@ class FpdfMultiCellBorder extends scpdf
         /**
          * Borda do multicell necessita a impressao na parte de baixo
          */
-        $lBottomBorder = strpos($sParentBorder, "B") !== false;
+        $lBottomBorder = str_contains($sParentBorder, "B");
 
         /**
          * próxima celula deverá estar na página de baixo, marcamos essa celula com a última da página
@@ -253,7 +254,7 @@ class FpdfMultiCellBorder extends scpdf
                 return;
             }
 
-            $lTopBorder = strpos($sParentBorder, "T") !== false ? true : false;
+            $lTopBorder = str_contains($sParentBorder, "T") ? true : false;
             $this->AddPage($this->CurOrientation);
             if ($this->sFunctionMulticellBreakPage != "") {
                 call_user_func($this->sFunctionMulticellBreakPage);
@@ -343,6 +344,7 @@ class FpdfMultiCellBorder extends scpdf
     /**
      *
      */
+    #[Override]
     public function footer()
     {
         if (!$this->lEnableFooter) {
@@ -361,7 +363,7 @@ class FpdfMultiCellBorder extends scpdf
             $rsMenuAcess = db_query($sSqlMenuAcess);
             $sMenuAcess = '';
             if (pg_num_rows($rsMenuAcess)) {
-                $sMenuAcess = substr(pg_result($rsMenuAcess, 0, "menu"), 0, 50);
+                $sMenuAcess = substr(pg_fetch_result($rsMenuAcess, 0, "menu"), 0, 50);
             }
 
             //Position at 1.5 cm from bottom
@@ -370,22 +372,22 @@ class FpdfMultiCellBorder extends scpdf
             $this->SetFont('Arial', 'I', 6);
             $this->SetY(-10);
             $nome = @$GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"];
-            $nome = substr($nome, strrpos($nome, "/") + 1);
+            $nome = substr((string) $nome, strrpos((string) $nome, "/") + 1);
             $sSqlMenu = "select nome as nomeusu from db_usuarios where id_usuario =" . db_getsession("DB_id_usuario");
             $result_nomeusu = db_query($sSqlMenu);
-            if (pg_numrows($result_nomeusu) > 0) {
-                $nomeusu = pg_result($result_nomeusu, 0, 0);
+            if (pg_num_rows($result_nomeusu) > 0) {
+                $nomeusu = pg_fetch_result($result_nomeusu, 0, 0);
             }
             if (isset($nomeusu) && $nomeusu != "") {
                 $emissor = $nomeusu;
             } else {
                 $emissor = @$GLOBALS["DB_login"];
             }
-            $sStringMenu = $sMenuAcess . "  " . $nome . '   Emissor: ' . substr(ucwords(strtolower($emissor)), 0, 30);
+            $sStringMenu = $sMenuAcess . "  " . $nome . '   Emissor: ' . substr(ucwords(strtolower((string) $emissor)), 0, 30);
             $sStringMenu .= '  Exerc: ' . db_getsession("DB_anousu");
             $sStringMenu .= 'Data: ' . date("d-m-Y", db_getsession("DB_datausu")) . " - " . date("H:i:s");
             //die($sStringMenu);
-            $this->text(($this->lMargin) + 15, $this->h - 6, $sStringMenu, 0, 1, 'R');
+            $this->text(($this->lMargin) + 15, $this->h - 6, $sStringMenu);
         }
 
         $this->showPageNumber();
@@ -395,7 +397,7 @@ class FpdfMultiCellBorder extends scpdf
     {
         if ($this->lShowPageNumber) {
             $sString = 'Pág ' . $this->PageNo() . '/{nb}';
-            $this->text(($this->w - $this->rMargin) - $this->GetStringWidth($sString) + 1, $this->h - 6, $sString, 0, 1, 'R');
+            $this->text(($this->w - $this->rMargin) - $this->GetStringWidth($sString) + 1, $this->h - 6, $sString);
         }
     }
 
@@ -446,6 +448,7 @@ class FpdfMultiCellBorder extends scpdf
         $this->lExibeBrasao = $lExibeBrasao;
     }
 
+    #[Override]
     function Header()
     {
         if (!$this->lExibeHeader) {
@@ -482,10 +485,10 @@ class FpdfMultiCellBorder extends scpdf
         //   $dados = db_query("select nomeinst,ender,munic,uf,telef,email,url,logo from db_config where codigo = ".db_getsession("DB_instit"));
 
         $dados = db_query("select nomeinst,trim(ender)||','||trim(cast(numero as text)) as ender,munic,uf,telef,email,url,logo from db_config where codigo = " . db_getsession("DB_instit"));
-        $url = @pg_result($dados, 0, "url");
+        $url = @pg_fetch_result($dados, 0, "url");
         $this->SetXY(1, 1);
         if ($this->lExibeBrasao) {
-            $this->Image('imagens/files/' . pg_result($dados, 0, "logo"), 7, 3, 20);
+            $this->Image('imagens/files/' . pg_fetch_result($dados, 0, "logo"), 7, 3, 20);
         }
         if ($_SESSION["DB_modulo"] == 1100747) {
             if (!isset($iEscola)) {
@@ -513,36 +516,36 @@ class FpdfMultiCellBorder extends scpdf
                               left join ceplogradouros on ceplogradouros.cp06_codlogradouro = logradcep.j65_ceplog
                               left join ceplocalidades on ceplocalidades.cp05_codlocalidades = ceplogradouros.cp06_codlocalidade
                              where ed18_i_codigo = " . $iEscola);
-            $nome = pg_result($dados, 0, "nomeinst");
+            $nome = pg_fetch_result($dados, 0, "nomeinst");
 
-            $nomeescola = pg_result($dados1, 0, "ed18_c_nome");
-            $iCodigoReferencia = pg_result($dados1, 0, "ed18_codigoreferencia");
+            $nomeescola = pg_fetch_result($dados1, 0, "ed18_c_nome");
+            $iCodigoReferencia = pg_fetch_result($dados1, 0, "ed18_codigoreferencia");
 
             if ($iCodigoReferencia != null) {
                 $nomeescola = "{$iCodigoReferencia} - {$nomeescola}";
             }
 
             global $nomeinst;
-            $nomeinst = pg_result($dados, 0, "nomeinst");
+            $nomeinst = pg_fetch_result($dados, 0, "nomeinst");
             if (strlen($nome) > 42 || strlen($nomeescola) > 42) {
                 $TamFonteNome = 8;
             } else {
                 $TamFonteNome = 9;
             }
-            if (trim(pg_result($dados1, 0, "ed18_c_logo")) != "") {
+            if (trim(pg_fetch_result($dados1, 0, "ed18_c_logo")) != "") {
                 if ($this->lExibeBrasao) {
-                    $this->Image('imagens/' . trim(pg_result($dados1, 0, "ed18_c_logo")), 105, 4, 20);
+                    $this->Image('imagens/' . trim(pg_fetch_result($dados1, 0, "ed18_c_logo")), 105, 4, 20);
                 }
             }
-            $ruaescola = trim(pg_result($dados1, 0, "j14_nome"));
-            $numescola = trim(pg_result($dados1, 0, "ed18_i_numero"));
-            $bairroescola = trim(pg_result($dados1, 0, "j13_descr"));
-            $cidadeescola = trim(pg_result($dados1, 0, "ed261_c_nome"));
-            $estadoescola = trim(pg_result($dados1, 0, "ed260_c_sigla"));
-            $emailescola = trim(pg_result($dados1, 0, "ed18_c_email"));
+            $ruaescola = trim(pg_fetch_result($dados1, 0, "j14_nome"));
+            $numescola = trim(pg_fetch_result($dados1, 0, "ed18_i_numero"));
+            $bairroescola = trim(pg_fetch_result($dados1, 0, "j13_descr"));
+            $cidadeescola = trim(pg_fetch_result($dados1, 0, "ed261_c_nome"));
+            $estadoescola = trim(pg_fetch_result($dados1, 0, "ed260_c_sigla"));
+            $emailescola = trim(pg_fetch_result($dados1, 0, "ed18_c_email"));
             $dados2 = db_query("select ed26_i_numero from telefoneescola where ed26_i_escola = " . db_getsession("DB_coddepto") . " LIMIT 1");
             if (pg_num_rows($dados2) > 0) {
-                $telefoneescola = trim(pg_result($dados2, 0, "ed26_i_numero"));
+                $telefoneescola = trim(pg_fetch_result($dados2, 0, "ed26_i_numero"));
             } else {
                 $telefoneescola = "";
             }
@@ -590,14 +593,14 @@ class FpdfMultiCellBorder extends scpdf
                                    url,
                                    logo
                             from db_config where codigo = " . db_getsession("DB_instit"));
-            $url = @pg_result($dados, 0, "url");
+            $url = @pg_fetch_result($dados, 0, "url");
             $this->SetXY(1, 1);
-            $this->Image('imagens/files/' . pg_result($dados, 0, "logo"), 7, 3, 20);
+            $this->Image('imagens/files/' . pg_fetch_result($dados, 0, "logo"), 7, 3, 20);
 
             //$this->Cell(100,32,"",1);
-            $nome = pg_result($dados, 0, "nomeinst");
+            $nome = pg_fetch_result($dados, 0, "nomeinst");
             global $nomeinst;
-            $nomeinst = pg_result($dados, 0, "nomeinst");
+            $nomeinst = pg_fetch_result($dados, 0, "nomeinst");
 
             if (strlen($nome) > 42) {
                 $TamFonteNome = 8;
@@ -608,14 +611,14 @@ class FpdfMultiCellBorder extends scpdf
             $this->SetFont('Arial', 'BI', $TamFonteNome);
             $this->Text(33, 9, $nome);
             $this->SetFont('Arial', 'I', 8);
-            $sComplento = substr(trim(pg_result($dados, 0, "db21_compl")), 0, 20);
+            $sComplento = substr(trim(pg_fetch_result($dados, 0, "db21_compl")), 0, 20);
             if ($sComplento != '' || $sComplento != null) {
-                $sComplento = ", " . substr(trim(pg_result($dados, 0, "db21_compl")), 0, 20);
+                $sComplento = ", " . substr(trim(pg_fetch_result($dados, 0, "db21_compl")), 0, 20);
             }
-            $this->Text(33, 14, trim(pg_result($dados, 0, "rua")) . ", " . trim(pg_result($dados, 0, "numero")) . $sComplento);
-            $this->Text(33, 18, trim(pg_result($dados, 0, "munic")) . " - " . pg_result($dados, 0, "uf"));
-            $this->Text(33, 22, trim(pg_result($dados, 0, "telef")) . "   -    CNPJ : " . db_formatar(pg_result($dados, 0, "cgc"), "cnpj"));
-            $this->Text(33, 26, trim(pg_result($dados, 0, "email")));
+            $this->Text(33, 14, trim(pg_fetch_result($dados, 0, "rua")) . ", " . trim(pg_fetch_result($dados, 0, "numero")) . $sComplento);
+            $this->Text(33, 18, trim(pg_fetch_result($dados, 0, "munic")) . " - " . pg_fetch_result($dados, 0, "uf"));
+            $this->Text(33, 22, trim(pg_fetch_result($dados, 0, "telef")) . "   -    CNPJ : " . db_formatar(pg_fetch_result($dados, 0, "cgc"), "cnpj"));
+            $this->Text(33, 26, trim(pg_fetch_result($dados, 0, "email")));
             $comprim = ($this->w - $this->rMargin - $this->lMargin);
             $this->Text(33, 30, $url);
             $Espaco = $this->w - 80;
@@ -666,7 +669,7 @@ class FpdfMultiCellBorder extends scpdf
         $link = ''
     ) {
         // Adiciona uma "margin" com espaos
-        $content = "${content}  ";
+        $content = "{$content}  ";
         $tamanhoString = $this->GetStringWidth($content);
 
         $content = trim($content);

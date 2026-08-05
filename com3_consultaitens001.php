@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -88,7 +88,7 @@ db_postmemory($HTTP_POST_VARS);
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#cccccc" onload="">
 <center>
     <form name="form1" method="post" action="com3_conssolic002.php">
-        <?
+        <?php 
         if (isset($solicitacao)) {
             if ($solicitacao == "1") {
                 $result_itensdotac = $clsolicitem->sql_record(
@@ -542,14 +542,14 @@ db_postmemory($HTTP_POST_VARS);
                             </tr>
                             <tr>
                                 <td nowrap="nowrap">
-                                    <? echo "<b>" . $Ll20_codigo . "</b>&nbsp;"; ?>
+                                    <?php  echo "<b>" . $Ll20_codigo . "</b>&nbsp;"; ?>
                                 </td>
                                 <td nowrap="nowrap">
-                                    <? db_input('l20_codigo', 20, $Il20_codigo, true, 'text', 4, "readonly"); ?>
+                                    <?php  db_input('l20_codigo', 20, $Il20_codigo, true, 'text', 4, "readonly"); ?>
                                 </td>
                                 <td nowrap="nowrap"><b>Modalidade:</b>&nbsp;</td>
                                 <td nowrap="nowrap">
-                                    <?
+                                    <?php 
                                     db_input('l20_codtipocom', 6, $Il20_codtipocom, true, 'text', 4, "readonly");
                                     db_input('l03_descr', 35, $Il03_descr, true, 'text', 4, "readonly");
                                     ?>
@@ -610,7 +610,7 @@ db_postmemory($HTTP_POST_VARS);
                             <tr>
                                 <td nowrap="nowrap" colspan="1"><b><?= @$Ll20_local ?></b>&nbsp;</td>
                                 <td nowrap="nowrap" colspan="3">
-                                    <?
+                                    <?php 
                                     db_textarea("l20_local", "", "60", $Il20_local, true, 'text', 4, "readonly");
                                     ?>
                                 </td>
@@ -618,7 +618,7 @@ db_postmemory($HTTP_POST_VARS);
                             <tr>
                                 <td nowrap="nowrap" colspan="1"><b><?= @$Ll20_objeto ?></b>&nbsp;</td>
                                 <td nowrap="nowrap" colspan="3">
-                                    <?
+                                    <?php 
                                     db_textarea("l20_objeto", "", "60", $Il20_objeto, true, 'text', 4, "readonly");
                                     ?>
                                 </td>
@@ -638,7 +638,7 @@ db_postmemory($HTTP_POST_VARS);
                                 </td>
                             </tr>
                         </table>
-                        <?
+                        <?php 
                     }
                 } else {
                     ?>
@@ -649,7 +649,7 @@ db_postmemory($HTTP_POST_VARS);
                                 </h3></td>
                         </tr>
                     </table>
-                    <?
+                    <?php 
                 }
             }
         }

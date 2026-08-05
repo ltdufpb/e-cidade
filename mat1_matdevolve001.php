@@ -462,16 +462,16 @@ if (isset($incluir)) {
   </tr>
 </table>
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmmatdevolve.php"));
 	?>
     </center>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir)){
   if (trim($erro_msg)==""){
        $sqlerro = false;

@@ -58,7 +58,7 @@ class cl_testada {
                  j36_orientacao = int4 = Orientação
                  ";
    //funcao construtor da classe
-   function cl_testada() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("testada");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

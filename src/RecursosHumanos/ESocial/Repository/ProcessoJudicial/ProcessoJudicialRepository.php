@@ -27,27 +27,20 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial;
 
+use cl_cadendermunicipiosistema;
+use db_utils;
 use cl_rhpessoalprocessojudicialesocial;
 use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\ProcessoJudicial;
-use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\Servidor as ServidorProcesso;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\ContratoRepository;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\MudancaRepository;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\UnicidadeRepository;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\VinculoRepository;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\PeriodoRepository;
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\ServidorRepository as ServidorRepositoryProcesso;
-use ECidade\RecursosHumanos\Pessoal\Repository\DependenteRepository;
-use ECidade\RecursosHumanos\ESocial\Service\ServidorService;
-use Cedencia;
-use ECidade\RecursosHumanos\RH\PontoEletronico\Contrato\Model\ContratoJornada;
-use ECidade\RecursosHumanos\Pessoal\Model\ContratoEmergencial;
-use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
-use ECidade\RecursosHumanos\Pessoal\Repository\DataPagamentoFolhaRepository;
 use Exception;
 use ServidorRepository as ServidorFolhaRepository;
 use stdClass;
 use App\Domain\RecursosHumanos\Pessoal\Repository\Helper\CompetenciaHelper;
-use Admissao;
 use db_stdClass;
 
 class ProcessoJudicialRepository
@@ -166,7 +159,7 @@ class ProcessoJudicialRepository
      * @param ProcessoJudicial|null $processo
      * @throws Exception
      */
-    public function delete(ProcessoJudicial $processo = null)
+    public function delete(?ProcessoJudicial $processo = null)
     {
         $id = $processo instanceof ProcessoJudicial ? $processo->getSequencial() : null;
 
@@ -184,7 +177,7 @@ class ProcessoJudicialRepository
      * @return bool|ProcessoJudicial
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_rhpessoalprocessojudicialesocial;
         $sql = $dao->sql_query($id, implode(', ', $columns));
@@ -362,7 +355,7 @@ class ProcessoJudicialRepository
         }
 
         foreach ($processosDadosIniciais as $processoDadoInicial) {
-            $processos = ProcessoJudicialRepository::getDadosComplemetaresProcesso($processoDadoInicial);
+            $processos = $this->getDadosComplemetaresProcesso($processoDadoInicial);
         }
 
         return $processos;
@@ -400,7 +393,7 @@ class ProcessoJudicialRepository
         }
       
         foreach ($processosDadosIniciais as $processoDadoInicial) {
-            $processos = ProcessoJudicialRepository::getDadosComplemetaresProcesso($processoDadoInicial);
+            $processos = $this->getDadosComplemetaresProcesso($processoDadoInicial);
         }
 
         return $processos;
@@ -433,7 +426,7 @@ class ProcessoJudicialRepository
         }
     
         foreach ($processosDadosIniciais as $processoDadoInicial) {
-            $processos = ProcessoJudicialRepository::getDadosComplemetaresProcesso($processoDadoInicial);
+            $processos = $this->getDadosComplemetaresProcesso($processoDadoInicial);
         }
         return $processos;
     }
@@ -750,7 +743,7 @@ class ProcessoJudicialRepository
                 $dadosInformacoesContrato->ideEstab->tpInsc = (int) $tipoInscricao;
                 $dadosInformacoesContrato->ideEstab->nrInsc = $numeroInscricaoInstituicao;
                 if ($dadosInformacoesContrato->ideEstab->tpInsc == 1
-                    && strlen($dadosInformacoesContrato->ideEstab->nrInsc) != 14) {
+                    && strlen((string) $dadosInformacoesContrato->ideEstab->nrInsc) != 14) {
                         $dadosInformacoesContrato->ideEstab->nrInsc = null;
                 }
 
@@ -771,7 +764,7 @@ class ProcessoJudicialRepository
 
                 $dados = [];
                 foreach ($remuneracoes as $itemRemuneracao) {
-                    $dadosDataRemuneracao = explode('-', $itemRemuneracao->dtRemun);
+                    $dadosDataRemuneracao = explode('-', (string) $itemRemuneracao->dtRemun);
                     $competenciaRemuneracao = $dadosDataRemuneracao[0] . '-' . $dadosDataRemuneracao[1];
                     $validaCompetencia = $this->getValidacaoCompetenciaNoPeriodo(
                         $competenciaDadoInicial,
@@ -781,8 +774,8 @@ class ProcessoJudicialRepository
                     if ($validaCompetencia) {
                         $chave = $dadosDataRemuneracao[0] . '-' . $dadosDataRemuneracao[1];
                         if (array_key_exists($chave, $dados)) {
-                            $valorAtual = (double) $itemRemuneracao->vrSalFx;
-                            $valorAnterior = (double) $dados[$chave]->vrSalFx;
+                            $valorAtual = (float) $itemRemuneracao->vrSalFx;
+                            $valorAnterior = (float) $dados[$chave]->vrSalFx;
                             $soma = strval($valorAtual + $valorAnterior);
                             $dados[$chave]->vrSalFx = $this->truncate($soma, 2);
                         } else {
@@ -892,7 +885,7 @@ class ProcessoJudicialRepository
      */
     public static function getListaCodigoMunicipioIBGE()
     {
-        $dao = new \cl_cadendermunicipiosistema();
+        $dao = new cl_cadendermunicipiosistema();
         $campos = ['db125_codigosistema as codigoIBGE'];
         $where = 'db125_db_sistemaexterno = 4';
         $order = 'db125_codigosistema';
@@ -907,7 +900,7 @@ class ProcessoJudicialRepository
             return $listaMunicipioIBGE;
         }
 
-        $codigosMunicipiosIBGE = \db_utils::getCollectionByRecord($rs);
+        $codigosMunicipiosIBGE = db_utils::getCollectionByRecord($rs);
 
         foreach ($codigosMunicipiosIBGE as $codigoMunicipioIBGE) {
             $listaMunicipioIBGE[] = $codigoMunicipioIBGE->codigoibge;
@@ -921,8 +914,8 @@ class ProcessoJudicialRepository
      */
     private function truncate($val, $f = "0")
     {
-        if (($p = strpos($val, '.')) !== false) {
-            $val = floatval(substr($val, 0, $p + 1 + $f));
+        if (($p = strpos((string) $val, '.')) !== false) {
+            $val = floatval(substr((string) $val, 0, $p + 1 + $f));
         }
         return $val;
     }
@@ -939,12 +932,12 @@ class ProcessoJudicialRepository
         $mes = false;
         $mesmoAnoFinal = false;
         $mesmoAnoInicial = false;
-        $anoInicial = explode('-', $competenciaInicial)[0];
-        $anoFinal = explode('-', $competenciaFinal)[0];
-        $anoComparado = explode('-', $competenciaComparada)[0];
-        $mesInicial = explode('-', $competenciaInicial)[1];
-        $mesFinal = explode('-', $competenciaFinal)[1];
-        $mesComparado = explode('-', $competenciaComparada)[1];
+        $anoInicial = explode('-', (string) $competenciaInicial)[0];
+        $anoFinal = explode('-', (string) $competenciaFinal)[0];
+        $anoComparado = explode('-', (string) $competenciaComparada)[0];
+        $mesInicial = explode('-', (string) $competenciaInicial)[1];
+        $mesFinal = explode('-', (string) $competenciaFinal)[1];
+        $mesComparado = explode('-', (string) $competenciaComparada)[1];
         if ($anoComparado > $anoInicial) {
             $ano = true;
         }

@@ -1,6 +1,7 @@
 <?php
 namespace ECidade\Educacao\Escola\Censo\SituacaoAluno;
 
+use BusinessException;
 use db_layouttxt;
 use ECidade\Educacao\Escola\Censo\Censo;
 use ECidade\Educacao\Escola\Censo\SituacaoAluno\Dados\DadosInterface;
@@ -23,33 +24,21 @@ class Exportacao
     private $oLayout = null;
 
     /**
-     * @var Escola
-     */
-    private $oEscola = null;
-
-    /**
      * @var DadosInterface
      */
     private $oDadosEscola = null;
     /**
      * @var DadosInterface[]
      */
-    private $aDadosAlunoAntes = array();
+    private $aDadosAlunoAntes = [];
 
     /**
      * @var DadosInterface[]
      */
-    private $aDadosAlunoDepois = array();
+    private $aDadosAlunoDepois = [];
 
-    /**
-     * @var Censo
-     */
-    private $oCenso = null;
-
-    public function __construct(Censo $oCenso, \Escola $oEscola)
+    public function __construct(private readonly Censo $oCenso, private readonly Escola $oEscola)
     {
-        $this->oCenso = $oCenso;
-        $this->oEscola = $oEscola;
     }
 
     /**
@@ -59,19 +48,10 @@ class Exportacao
      */
     protected function buscarLayout()
     {
-        switch ($this->oCenso->getAno()) {
-            case 2016:
-            case 2017:
-            case 2018:
-            case 2019:
-            case 2020:
-            case 2021:
-                $this->oLayout = new Layout2016();
-                break;
-            default:
-                throw new \BusinessException("Não há layout cadastrado para o ano de {$this->oCenso->getAno()}.");
-                break;
-        }
+        $this->oLayout = match ($this->oCenso->getAno()) {
+            2016, 2017, 2018, 2019, 2020, 2021 => new Layout2016(),
+            default => throw new BusinessException("Não há layout cadastrado para o ano de {$this->oCenso->getAno()}."),
+        };
 
         return $this->oLayout;
     }
@@ -127,7 +107,7 @@ class Exportacao
      */
     private function validar()
     {
-        $aValidacoes = array();
+        $aValidacoes = [];
         $aValidacoes[] = $this->oDadosEscola->validar();
 
         $this->registrarErros($this->oDadosEscola->getErros(), 89);

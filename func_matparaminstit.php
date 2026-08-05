@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matparaminstit_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmatparaminstit = new cl_matparaminstit;
 $clmatparaminstit->rotulo->label("m10_instit");
 $clmatparaminstit->rotulo->label("m10_controlapit");
@@ -54,7 +55,7 @@ $clmatparaminstit->rotulo->label("m10_controlapit");
               <?=$Lm10_instit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m10_instit",10,$Im10_instit,true,"text",4,"","chave_m10_instit");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clmatparaminstit->rotulo->label("m10_controlapit");
               <?=$Lm10_controlapit?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m10_controlapit",1,$Im10_controlapit,true,"text",4,"","chave_m10_controlapit");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clmatparaminstit->rotulo->label("m10_controlapit");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
      $chave_m10_instit = db_getsession("DB_instit");
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -123,12 +124,12 @@ $clmatparaminstit->rotulo->label("m10_controlapit");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

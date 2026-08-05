@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhpesfgts_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhpesfgts = new cl_rhpesfgts;
 $clrhpesfgts->rotulo->label("rh15_regist");
 $clrhpesfgts->rotulo->label("rh15_data");
@@ -54,7 +55,7 @@ $clrhpesfgts->rotulo->label("rh15_data");
               <?=$Lrh15_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh15_regist",6,$Irh15_regist,true,"text",4,"","chave_rh15_regist");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clrhpesfgts->rotulo->label("rh15_data");
               <?=$Lrh15_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh15_data",10,$Irh15_data,true,"text",4,"","chave_rh15_data");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clrhpesfgts->rotulo->label("rh15_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhpesfgts.php")==true){
@@ -118,12 +119,12 @@ $clrhpesfgts->rotulo->label("rh15_data");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

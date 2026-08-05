@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -146,7 +146,7 @@ db_putsession("DB_acessado",$codsequen);
 if(isset($mostrahtml) and $mostrahtml== true){
   ?>
     <link href="estilos.css" rel="stylesheet" type="text/css">
-    <?
+    <?php 
     echo "<br><center><b>PROCESSAMENTO GERAL</b></center><br>";
   db_criatermometro('termometro2', 'Concluido...', 'blue', 1);
   echo "<br><br><br>";

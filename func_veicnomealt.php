@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,8 +32,10 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cgm_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-if (!isset ($pesquisar))
-	parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+if (!isset ($pesquisar)) {
+    parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+    extract($_parseStr, EXTR_SKIP);
+}
 $clcgm = new cl_cgm;
 $clrotulo = new rotulocampo;
 $clcgm->rotulo->label("z01_numcgm");
@@ -44,7 +46,7 @@ $clrotulo->label("DBtxt31");
 if (isset ($script) && $script != "") {
 ?>
 <script>
-<?
+<?php 
 	$vals = "";
 	$vir = "";
 	$camp = split(",", $valores);
@@ -55,7 +57,7 @@ if (isset ($script) && $script != "") {
 	echo $script."(".$vals.")";
 ?>
 </script>
-<?
+<?php 
 	exit;
 }
 if (isset ($testanome) && !isset ($pesquisa_chave)) {
@@ -87,7 +89,7 @@ if (isset ($testanome) && !isset ($pesquisa_chave)) {
     document.form_busca_dados.numcgm_busca_dados.value = numcgm;
     document.form_busca_dados.submit();
   }
-<?
+<?php 
 if (isset ($testanome) && !isset ($pesquisa_chave)) {
 ?>
   function js_testanome(z01_numcgm,ender,cgccpf,<?=$camp?>){
@@ -96,7 +98,7 @@ if (isset ($testanome) && !isset ($pesquisa_chave)) {
       alerta += "Endereço\n";
     }
     valcpf=true;
-    <?
+    <?php 
 	if (isset ($incproc) && ($incproc != "")) {
 		$result_protparam = db_query("select * from protparam");
 		if (pg_numrows($result_protparam) > 0) {
@@ -104,7 +106,7 @@ if (isset ($testanome) && !isset ($pesquisa_chave)) {
 			if ($p90_valcpfcnpj == 'f') {
 ?>
       		valcpf=false;
-      		<?
+      		<?php 
 			}
 		}
 	}
@@ -117,7 +119,7 @@ if (isset ($testanome) && !isset ($pesquisa_chave)) {
     
     if(alerta != ""){
       alert("O Contribuinte não possui o CGM atualizado");
-      <?
+      <?php 
  //testa permissao de menu
 	echo "location.href = 'prot1_cadcgm002.php?chavepesquisa='+z01_numcgm+'&testanome=$func_antes&valores=$valores&funcao_js=".$func_antes.$valores."';";
 ?>
@@ -125,7 +127,7 @@ if (isset ($testanome) && !isset ($pesquisa_chave)) {
       <?=$func_antes."(".$camp.")"?>;
     }
   }
-<?
+<?php 
 }
 ?>
 </script>
@@ -136,19 +138,19 @@ if (isset ($testanome) && !isset ($pesquisa_chave)) {
     <td height="63" align="center" valign="top">
        <table width="100%" border="0" cellspacing="0">
 	<form name="form2" method="post" action="" >
-	<?db_input('incproc',6,"",true,'hidden',3); ?>
+	<?php db_input('incproc',6,"",true,'hidden',3); ?>
         <tr> 
           <td align="right">C&oacute;digo: </td>
           <td >
-		  <!--input name="numcgmDigitadoParaPesquisa" type="text" id="numcgmDigitadoParaPesquisa" value="<? if (isset($numcgmDigitadoParaPesquisa)){echo $numcgmDigitadoParaPesquisa;} ?>" size="10" maxlength="6"-->
-          <?
+		  <!--input name="numcgmDigitadoParaPesquisa" type="text" id="numcgmDigitadoParaPesquisa" value="<?php  if (isset($numcgmDigitadoParaPesquisa)){echo $numcgmDigitadoParaPesquisa;} ?>" size="10" maxlength="6"-->
+          <?php 
 db_input('z01_numcgm', 6, $Iz01_numcgm, true, 'text', 4, "", "numcgmDigitadoParaPesquisa");
 ?>
 		  </td>
           <td align="right">&nbsp;<?=$DBtxt30?>: </td>
           <td>
-		  <!--input name="nomeDigitadoParaPesquisa" type="text" id="nomeDigitadoParaPesquisa4" value="<? if (isset($nomeDigitadoParaPesquisa)){echo $nomeDigitadoParaPesquisa;} ?>" size="41" maxlength="40"-->
-		  <?
+		  <!--input name="nomeDigitadoParaPesquisa" type="text" id="nomeDigitadoParaPesquisa4" value="<?php  if (isset($nomeDigitadoParaPesquisa)){echo $nomeDigitadoParaPesquisa;} ?>" size="41" maxlength="40"-->
+		  <?php 
 db_input('z01_cgccpf', 20, $Iz01_cgccpf, true, 'text', 1, "", 'cpf');
 ?>
           </td>        
@@ -156,15 +158,15 @@ db_input('z01_cgccpf', 20, $Iz01_cgccpf, true, 'text', 1, "", 'cpf');
         <tr> 
           <td align="right">&nbsp;Nome: </td>
           <td>
-		  <!--input name="nomeDigitadoParaPesquisa" type="text" id="nomeDigitadoParaPesquisa4" value="<? if (isset($nomeDigitadoParaPesquisa)){echo $nomeDigitadoParaPesquisa;} ?>" size="41" maxlength="40"-->
-		  <?
+		  <!--input name="nomeDigitadoParaPesquisa" type="text" id="nomeDigitadoParaPesquisa4" value="<?php  if (isset($nomeDigitadoParaPesquisa)){echo $nomeDigitadoParaPesquisa;} ?>" size="41" maxlength="40"-->
+		  <?php 
 db_input('z01_nome', 40, $Iz01_nome, true, 'text', 4, "", 'nomeDigitadoParaPesquisa');
 ?>
           </td>
           <td align="right">&nbsp;<?=$DBtxt31?>: </td>
           <td>
-		  <!--input name="nomeDigitadoParaPesquisa" type="text" id="nomeDigitadoParaPesquisa4" value="<? if (isset($nomeDigitadoParaPesquisa)){echo $nomeDigitadoParaPesquisa;} ?>" size="41" maxlength="40"-->
-		  <?
+		  <!--input name="nomeDigitadoParaPesquisa" type="text" id="nomeDigitadoParaPesquisa4" value="<?php  if (isset($nomeDigitadoParaPesquisa)){echo $nomeDigitadoParaPesquisa;} ?>" size="41" maxlength="40"-->
+		  <?php 
 db_input('z01_cgccpf', 20, $Iz01_cgccpf, true, 'text', 1, "", 'cnpj');
 ?>
           </td>       
@@ -174,7 +176,7 @@ db_input('z01_cgccpf', 20, $Iz01_cgccpf, true, 'text', 1, "", 'cnpj');
 		    <input name="pesquisar" type="submit" id="pesquisar2" value="Pesquisar"> 
             <input name="limpar" type="button" id="naoencontrado2" value="Limpar" onClick="js_limpa()">
             <input name="Fechar" type="button" id="limpar" value="Fechar" onClick="parent.db_iframe_cgm.hide();">
-            <?
+            <?php 
 if (isset ($testanome)) {
 ?>
 	    <input name="Incluir" type="button" value="Incluir Novo CGM" onClick="location.href = 'prot1_cadcgm001.php?testanome=<?=$func_antes?>&valores=<?=$valores?>&funcao_js=<?=$func_antes.$valores?>'">
@@ -184,7 +186,7 @@ if (isset ($testanome)) {
 	      document.form2.Incluir.disabled = true;
 	    }
 	    </script>
-	    <?
+	    <?php 
 }
 ?>
 	    </td>	    
@@ -204,7 +206,7 @@ function js_limpa(){
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
 $where = "";
 if (isset ($pessoal) && trim($pessoal) != "") {
   if ($pessoal == "true"){

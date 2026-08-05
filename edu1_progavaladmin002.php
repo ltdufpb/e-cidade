@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -35,8 +35,8 @@ include(modification("classes/db_questaoaval_classe.php"));
 include(modification("classes/db_opcaoquestao_classe.php"));
 include(modification("classes/db_progconfig_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 $clprogavaladmin = new cl_progavaladmin;
 $clquestaoaval = new cl_questaoaval;
 $clopcaoquestao = new cl_opcaoquestao;
@@ -54,16 +54,16 @@ if(isset($alterar)){
   $ed116_i_opcaoquestao = "ed116_i_opcaoquestao".$t;
   $ed116_i_codigo = "ed116_i_codigo".$t;
   db_inicio_transacao();
-  $clprogavaladmin->ed116_i_questaoaval = $$ed116_i_questaoaval;
-  $clprogavaladmin->ed116_i_opcaoquestao = $$ed116_i_opcaoquestao;
+  $clprogavaladmin->ed116_i_questaoaval = ${$ed116_i_questaoaval};
+  $clprogavaladmin->ed116_i_opcaoquestao = ${$ed116_i_opcaoquestao};
   $clprogavaladmin->ed116_i_usuario = db_getsession("DB_id_usuario");
-  $clprogavaladmin->ed116_i_codigo = $$ed116_i_codigo;
-  $clprogavaladmin->alterar($$ed116_i_codigo);
+  $clprogavaladmin->ed116_i_codigo = ${$ed116_i_codigo};
+  $clprogavaladmin->alterar(${$ed116_i_codigo});
   db_fim_transacao();
  }
 }elseif(isset($ed112_i_rhpessoal)){
  $db_opcao = 2;
- $ed116_c_tipo = trim($ed116_c_tipo)=="AVALIAÇÃO"?"A":"U";
+ $ed116_c_tipo = trim((string) $ed116_c_tipo)=="AVALIAÇÃO"?"A":"U";
  $result = $clprogavaladmin->sql_record($clprogavaladmin->sql_query("","*",""," ed112_i_rhpessoal = $ed112_i_rhpessoal AND ed116_i_ano = $ed116_i_ano AND ed116_c_tipo = '$ed116_c_tipo'"));
  db_fieldsmemory($result,0);
  $db_botao = true;
@@ -89,20 +89,20 @@ if(isset($alterar)){
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Avaliação Administrativa</b></legend>
-    <?include(modification("forms/db_frmprogavaladmin2.php"));?>
+    <?php include(modification("forms/db_frmprogavaladmin2.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar)){
  if($clprogavaladmin->erro_status=="0"){
   $clprogavaladmin->erro(true,false);

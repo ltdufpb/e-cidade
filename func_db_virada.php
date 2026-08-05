@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_virada_classe.php"));
 db_postmemory($HTTP_POST_VARS);
 db_postmemory($HTTP_GET_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_virada = new cl_db_virada;
 $cldb_virada->rotulo->label("c30_sequencial");
 $cldb_virada->rotulo->label("c30_anoorigem");
@@ -56,7 +57,7 @@ $cldb_virada->rotulo->label("c30_data");
               <?=$Lc30_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		            db_input("c30_sequencial",10,$Ic30_sequencial,true,"text",4,"","chave_c30_sequencial");
 		          ?>
             </td>
@@ -66,7 +67,7 @@ $cldb_virada->rotulo->label("c30_data");
               <?=$Lc30_anoorigem?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
     		        db_input("c30_anoorigem",10,$Ic30_anoorigem,true,"text",4,"","chave_c30_anoorigem");
 		          ?>
             </td>
@@ -76,7 +77,7 @@ $cldb_virada->rotulo->label("c30_data");
               <?=$Lc30_data?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
                 db_inputdata("c30_data",@$chave_c30_data_dia,@$chave_c30_data_mes,@$chave_c30_data_ano,true,"text",4,"","chave_c30_data");
               ?>
             </td>
@@ -94,7 +95,7 @@ $cldb_virada->rotulo->label("c30_data");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_virada.php")==true){
@@ -137,12 +138,12 @@ $cldb_virada->rotulo->label("c30_data");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

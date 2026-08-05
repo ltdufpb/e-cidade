@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptutaxamatric_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cliptutaxamatric = new cl_iptutaxamatric;
 $cliptutaxamatric->rotulo->label("j09_iptutaxamatric");
 $cliptutaxamatric->rotulo->label("j09_iptucadtaxa");
@@ -54,7 +55,7 @@ $cliptutaxamatric->rotulo->label("j09_iptucadtaxa");
               <?=$Lj09_iptutaxamatric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j09_iptutaxamatric",10,$Ij09_iptutaxamatric,true,"text",4,"","chave_j09_iptutaxamatric");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cliptutaxamatric->rotulo->label("j09_iptucadtaxa");
               <?=$Lj09_iptucadtaxa?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j09_iptucadtaxa",10,$Ij09_iptucadtaxa,true,"text",4,"","chave_j09_iptucadtaxa");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cliptutaxamatric->rotulo->label("j09_iptucadtaxa");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_iptutaxamatric.php")==true){
@@ -122,12 +123,12 @@ $cliptutaxamatric->rotulo->label("j09_iptucadtaxa");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

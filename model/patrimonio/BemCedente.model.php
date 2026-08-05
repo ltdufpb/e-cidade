@@ -29,22 +29,22 @@
 class BemCedente {
 
   /**
-   * Codigo do Cecedente
-   * @var integer
-   */
-  private $iCodigo;
-  
-  /**
    * Objeto do Cedente
    * @var CgmBase
    */
   private $oCedente;
   
   /**
-   * 
+   *
+   * @param int $iCodigoCedente
    */
-  function __construct($iCodigoCedente) {
-    $this->iCodigo = $iCodigoCedente;
+  function __construct(
+      /**
+       * Codigo do Cecedente
+       */
+      private $iCodigo
+  )
+  {
   }
   
   /**

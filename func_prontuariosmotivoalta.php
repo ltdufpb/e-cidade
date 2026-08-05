@@ -1,4 +1,4 @@
-<?
+<?php 
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -6,7 +6,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_prontuariosmotivoalta_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clprontuariosmotivoalta = new cl_prontuariosmotivoalta;
 $clprontuariosmotivoalta->rotulo->label("sd25_codigo");
 $clprontuariosmotivoalta->rotulo->label("sd25_codigo");
@@ -24,11 +25,11 @@ $clprontuariosmotivoalta->rotulo->label("sd25_codigo");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label><?=$Lsd25_codigo?></label></td>
-          <td><? db_input("sd25_codigo",10,$Isd25_codigo,true,"text",4,"","chave_sd25_codigo"); ?></td>
+          <td><?php  db_input("sd25_codigo",10,$Isd25_codigo,true,"text",4,"","chave_sd25_codigo"); ?></td>
         </tr>
         <tr>
           <td><label><?=$Lsd25_codigo?></label></td>
-          <td><? db_input("sd25_codigo",10,$Isd25_codigo,true,"text",4,"","chave_sd25_codigo");?></td>
+          <td><?php  db_input("sd25_codigo",10,$Isd25_codigo,true,"text",4,"","chave_sd25_codigo");?></td>
         </tr>
       </table>
     </fieldset>
@@ -36,7 +37,7 @@ $clprontuariosmotivoalta->rotulo->label("sd25_codigo");
     <input name="limpar" type="reset" id="limpar" value="Limpar" >
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_prontuariosmotivoalta.hide();">
   </form>
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_prontuariosmotivoalta.php")==true){
@@ -78,12 +79,12 @@ $clprontuariosmotivoalta->rotulo->label("sd25_codigo");
       ?>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

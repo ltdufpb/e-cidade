@@ -35,7 +35,7 @@ require_once(modification("libs/db_app.utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_jsplibwebseller.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($_POST);
 
 $claluno           = new cl_aluno;
@@ -53,12 +53,12 @@ $db_opcao1      = 3;
 $db_botao       = false;
 $_rollback      = false;
 $iOpcaoFiliacao = 2;
-$ed47_v_nomesocial = isset($ed47_v_nomesocial) ? $ed47_v_nomesocial : "";
+$ed47_v_nomesocial ??= "";
 function TiraEspacoNome($nome) {
 
   $sep   = "";
   $str   = "";
-  $parte = explode(" ",$nome);
+  $parte = explode(" ",(string) $nome);
 
   for( $i = 0; $i < count($parte); $i++ ) {
 
@@ -102,9 +102,9 @@ if ( isset( $alterar ) ) {
          exit;
        }
 
-       if(    trim($ed47_v_mae) == trim($maesim)
-           && trim($ed47_v_mae) != ""
-           && trim($maesim)     != "") {
+       if(    trim((string) $ed47_v_mae) == trim((string) $maesim)
+           && trim((string) $ed47_v_mae) != ""
+           && trim((string) $maesim)     != "") {
 
          $erroconf   = true;
          $sMensagem  = "Este nome ($ed47_v_nome) já possui cadastro com o mesmo nome da mae digitado ($maesim)!";
@@ -120,13 +120,13 @@ if ( isset( $alterar ) ) {
 
      $db_opcao    = 2;
      $db_opcao1   = 3;
-     $ed47_c_foto = @trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
-     $ed47_o_oid  = "tmp/".@trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
+     $ed47_c_foto = @trim((string) $GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
+     $ed47_o_oid  = "tmp/".@trim((string) $GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
 
      if($ed47_c_foto != "") {
 
        db_query("begin");
-       $oid_imagem = pg_loimport($conn, $ed47_o_oid) or die("Erro(15) importando imagem");
+       $oid_imagem = pg_lo_import($conn, $ed47_o_oid) or die("Erro(15) importando imagem");
        db_query("end");
        $ed47_o_oid = $oid_imagem;
      } else {
@@ -171,20 +171,20 @@ if ( isset( $alterar ) ) {
      /**
       * Verifica se o campo ed47_celularresponsavel já possui DDD
       */
-     if ( strlen($ed47_celularresponsavel) <= 9 ) {
+     if ( strlen((string) $ed47_celularresponsavel) <= 9 ) {
       $ed47_celularresponsavel = "{$dddcelularresponsavel}{$ed47_celularresponsavel}";
      }
 
-     $claluno->ed47_celularresponsavel = preg_replace("/[^0-9]/", "", $ed47_celularresponsavel);
-     $claluno->ed47_v_telef            = preg_replace("/[^0-9]/", "", $ed47_v_telef);
-     $claluno->ed47_v_telcel           = preg_replace("/[^0-9]/", "", $ed47_v_telcel);
-     $claluno->ed47_v_fax              = preg_replace("/[^0-9]/", "", $ed47_v_fax);
+     $claluno->ed47_celularresponsavel = preg_replace("/[^0-9]/", "", (string) $ed47_celularresponsavel);
+     $claluno->ed47_v_telef            = preg_replace("/[^0-9]/", "", (string) $ed47_v_telef);
+     $claluno->ed47_v_telcel           = preg_replace("/[^0-9]/", "", (string) $ed47_v_telcel);
+     $claluno->ed47_v_fax              = preg_replace("/[^0-9]/", "", (string) $ed47_v_fax);
      $claluno->ed47_c_nomeresp         = $ed47_c_nomeresp;
      $claluno->ed47_d_ultalt           = date("Y-m-d");
      $claluno->ed47_tiposanguineo      = !empty( $ed47_tiposanguineo ) ? $ed47_tiposanguineo   : 'null';
      $claluno->ed47_i_censoufnat       = !empty($ed47_i_censoufnat)    ? $ed47_i_censoufnat    : 'null';
      $claluno->ed47_i_censomunicnat    = !empty($ed47_i_censomunicnat) ? $ed47_i_censomunicnat : 'null';
-       $ed47_paisresidencia = trim($ed47_paisresidencia);
+       $ed47_paisresidencia = trim((string) $ed47_paisresidencia);
        $claluno->ed47_paisresidencia = empty($ed47_paisresidencia) ? "null" : $ed47_paisresidencia;
        $claluno->ed47_localizacaodiferenciada = empty($ed47_localizacaodiferenciada) ? "null" : $ed47_localizacaodiferenciada;
        $claluno->ed47_censoregiao        = !empty($ed47_censoregiao) ? (int)$ed47_censoregiao : 'null';
@@ -407,13 +407,13 @@ if ( isset( $alterar ) ) {
 
   $db_opcao    = 2;
   $db_opcao1   = 3;
-  $ed47_c_foto = @trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
-  $ed47_o_oid  = "tmp/".@trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
+  $ed47_c_foto = @trim((string) $GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
+  $ed47_o_oid  = "tmp/".@trim((string) $GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
 
   if ( $ed47_c_foto != "" ) {
 
     db_query("begin");
-    $oid_imagem = pg_loimport($conn,$ed47_o_oid) or die("Erro(15) importando imagem");
+    $oid_imagem = pg_lo_import($conn,$ed47_o_oid) or die("Erro(15) importando imagem");
     db_query("end");
     $ed47_o_oid = $oid_imagem;
   } else {
@@ -530,7 +530,7 @@ if ( isset( $alterar ) ) {
   parent.document.formaba.a7.style.color = "black";
 
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a2.location.href = 'edu1_aluno002.php?chavepesquisa=<?=  $ed47_i_codigo ?>';
-  var sUrlCurso = 'edu1_alunocurso001.php?ed56_i_aluno=<?=$ed47_i_codigo?>&ed47_v_nome=<?= addslashes($ed47_v_nome)?>';
+  var sUrlCurso = 'edu1_alunocurso001.php?ed56_i_aluno=<?=$ed47_i_codigo?>&ed47_v_nome=<?= addslashes((string) $ed47_v_nome)?>';
 
   if (parent.document.getElementsByTagName('form')[0].int_ed57_i_codigo.value != '') {
     sUrlCurso += '&ed60_i_turma='+parent.document.getElementsByTagName('form')[0].int_ed57_i_codigo.value
@@ -542,14 +542,14 @@ if ( isset( $alterar ) ) {
     sUrlCurso += '&codigo_etapa_multi='+parent.document.getElementsByTagName('form')[0].codigo_etapa_multi.value;
   }
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href = sUrlCurso;
-  (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a4.location.href = 'edu1_docaluno001.php?ed49_i_aluno=<?=$ed47_i_codigo?>&ed47_v_nome=<?=addslashes($ed47_v_nome) ?>';
-  (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a5.location.href = 'edu1_alunonecessidade001.php?ed214_i_aluno=<?=$ed47_i_codigo?>&ed47_v_nome=<?= addslashes($ed47_v_nome )?>';
-  (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a6.location.href = 'edu1_alunomatcenso001.php?ed280_i_aluno=<?=$ed47_i_codigo?>&ed47_v_nome=<?= addslashes($ed47_v_nome) ?>';
+  (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a4.location.href = 'edu1_docaluno001.php?ed49_i_aluno=<?=$ed47_i_codigo?>&ed47_v_nome=<?=addslashes((string) $ed47_v_nome) ?>';
+  (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a5.location.href = 'edu1_alunonecessidade001.php?ed214_i_aluno=<?=$ed47_i_codigo?>&ed47_v_nome=<?= addslashes((string) $ed47_v_nome )?>';
+  (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a6.location.href = 'edu1_alunomatcenso001.php?ed280_i_aluno=<?=$ed47_i_codigo?>&ed47_v_nome=<?= addslashes((string) $ed47_v_nome) ?>';
   (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a7.location.href = 'edu1_alunotransporteutilizado.php?iAluno=<?=$ed47_i_codigo?>'
-                                                                      +'&ed47_v_nome=<?= addslashes($ed47_v_nome) ?>'
+                                                                      +'&ed47_v_nome=<?= addslashes((string) $ed47_v_nome) ?>'
                                                                       +'&iUtilizaTransporte=<?=$ed47_i_transpublico?>';
  </script>
- <?
+ <?php 
 }
 if ( isset( $excluirfoto ) ) {
 
@@ -585,7 +585,7 @@ if ( isset( $excluirfoto ) ) {
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
             <center>
                 <fieldset style="width:95%"><legend><b>Alteração de Aluno</b></legend>
-                    <?include(modification("forms/db_frmalunodados.php"));?>
+                    <?php include(modification("forms/db_frmalunodados.php"));?>
                 </fieldset>
    </center>
   </td>
@@ -593,7 +593,7 @@ if ( isset( $excluirfoto ) ) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if ( isset($alterar) ) {
 
   if ( $claluno->erro_status == "0" ) {

@@ -26,6 +26,13 @@
  */
 namespace ECidade\RecursosHumanos\RH\PontoEletronico\Arquivo\Repository;
 
+use cl_pontoeletronicoarquivodata;
+use cl_pontoeletronicoarquivodataregistro;
+use ServidorRepository;
+use Servidor;
+use DBException;
+use db_utils;
+use DBDate;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Arquivo\Registro\Marcacao as MarcacaoRegistro;
 use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 
@@ -39,12 +46,12 @@ use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 class Marcacao {
 
   /**
-   * @var \cl_pontoeletronicoarquivodata
+   * @var cl_pontoeletronicoarquivodata
    */
   private $oDaoData;
 
   /**
-   * @var \cl_pontoeletronicoarquivodata
+   * @var cl_pontoeletronicoarquivodata
    */
   private $oDaoDataRegistro;
 
@@ -62,8 +69,8 @@ class Marcacao {
    * Marcacao constructor.
    */
   public function __construct() {
-    $this->oDaoData         = new \cl_pontoeletronicoarquivodata();
-    $this->oDaoDataRegistro = new \cl_pontoeletronicoarquivodataregistro();
+    $this->oDaoData         = new cl_pontoeletronicoarquivodata();
+    $this->oDaoDataRegistro = new cl_pontoeletronicoarquivodataregistro();
   }
 
   /**
@@ -83,7 +90,7 @@ class Marcacao {
   /**
    * Responsável por persistir os dados da tabela pontoeletronicoarquivodata
    * @param MarcacaoRegistro $oMarcacaoRegistro
-   * @throws \DBException
+   * @throws DBException
    */
   public function addArquivoData(MarcacaoRegistro $oMarcacaoRegistro) {
 
@@ -94,14 +101,14 @@ class Marcacao {
 
     if($oMarcacaoRegistro->getMatricula() === null && $oMarcacaoRegistro->getPIS() != '') {
 
-      $oServidor                       = \ServidorRepository::getServidorByPIS($oMarcacaoRegistro->getPIS());
-      $this->oDaoData->rh197_matricula = $oServidor instanceof \Servidor ? $oServidor->getMatricula() : null;
+      $oServidor                       = ServidorRepository::getServidorByPIS($oMarcacaoRegistro->getPIS());
+      $this->oDaoData->rh197_matricula = $oServidor instanceof Servidor ? $oServidor->getMatricula() : null;
       $sWhereVerificaNovaData          = "rh197_pis = '{$oMarcacaoRegistro->getPIS()}'";
     }
 
     if($oMarcacaoRegistro->getMatricula() != null) {
 
-      $oServidor                       = \ServidorRepository::getInstanciaByCodigo($oMarcacaoRegistro->getMatricula());
+      $oServidor                       = ServidorRepository::getInstanciaByCodigo($oMarcacaoRegistro->getMatricula());
       $this->oDaoData->rh197_matricula = $oServidor->getMatricula();
       $sWhereVerificaNovaData          = "rh197_matricula = {$oServidor->getMatricula()}";
     }
@@ -120,17 +127,17 @@ class Marcacao {
     );
 
     if(!$rsVerificaNovaData) {
-      throw new \DBException("Ocorreu um erro ao verificar a(s) data(s) da(s) marcação(ões) do ponto.");
+      throw new DBException("Ocorreu um erro ao verificar a(s) data(s) da(s) marcação(ões) do ponto.");
     }
 
     if(pg_num_rows($rsVerificaNovaData) == 0) {
       $this->oDaoData->incluir(null);
     } else {
-      $this->oDaoData->rh197_sequencial = \db_utils::fieldsMemory($rsVerificaNovaData, 0)->rh197_sequencial;
+      $this->oDaoData->rh197_sequencial = db_utils::fieldsMemory($rsVerificaNovaData, 0)->rh197_sequencial;
     }
 
     if($this->oDaoData->erro_status == '0') {
-      throw new \DBException($this->oDaoData->erro_msg);
+      throw new DBException($this->oDaoData->erro_msg);
     }
 
     return true;
@@ -141,7 +148,7 @@ class Marcacao {
    * @param MarcacaoRegistro $oMarcacaoRegistro
    * @param bool $lSalvarArquivoData
    * @return MarcacaoRegistro
-   * @throws \DBException
+   * @throws DBException
    */
   public function add(MarcacaoRegistro $oMarcacaoRegistro, $lSalvarArquivoData = true) {
 
@@ -162,10 +169,10 @@ class Marcacao {
       );
 
       if(!$rsOrdemRegistro || pg_num_rows($rsOrdemRegistro) == 0) {
-        throw new \DBException("Ocorreu um erro ao buscar a ordem da marcação.");
+        throw new DBException("Ocorreu um erro ao buscar a ordem da marcação.");
       }
 
-      $iOrdem = \db_utils::fieldsMemory($rsOrdemRegistro, 0)->ordem + 1;
+      $iOrdem = db_utils::fieldsMemory($rsOrdemRegistro, 0)->ordem + 1;
     }
 
     $sAcao = $oMarcacaoRegistro->getCodigo() != null ? 'alterar' :  'incluir';
@@ -180,7 +187,7 @@ class Marcacao {
     $this->oDaoDataRegistro->{$sAcao}($oMarcacaoRegistro->getCodigo());
 
     if($this->oDaoDataRegistro->erro_status == '0') {
-      throw new \DBException($this->oDaoDataRegistro->erro_msg);
+      throw new DBException($this->oDaoDataRegistro->erro_msg);
     }
 
     $oMarcacaoRegistro->setCodigo($this->oDaoDataRegistro->rh198_sequencial);
@@ -191,15 +198,15 @@ class Marcacao {
     /**
      * Exclusão de marcações de um determinado dia
      * @param DiaTrabalho $oDiaTrabalho
-     * @throws \DBException
+     * @throws DBException
      */
     public function excluirRegistroDiaTrabalho(DiaTrabalho $oDiaTrabalho)
     {
-        $oDaoPontoEletronicoRegistro = new \cl_pontoeletronicoarquivodataregistro();
+        $oDaoPontoEletronicoRegistro = new cl_pontoeletronicoarquivodataregistro();
         $oDaoPontoEletronicoRegistro->excluir(null, "rh198_pontoeletronicoarquivodata = {$oDiaTrabalho->getCodigo()}");
 
         if($oDaoPontoEletronicoRegistro->erro_status == '0') {
-            throw new \DBException("Erro ao excluir as marcações do dia {$oDiaTrabalho->getData()->getDate(\DBDate::DATA_PTBR)}.");
+            throw new DBException("Erro ao excluir as marcações do dia {$oDiaTrabalho->getData()->getDate(DBDate::DATA_PTBR)}.");
         }
     }
 }

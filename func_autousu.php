@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_autousu_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clautousu = new cl_autousu;
 $clautousu->rotulo->label("y56_codauto");
 $clautousu->rotulo->label("y56_id_usuario");
@@ -55,7 +56,7 @@ $clautousu->rotulo->label("y56_obs");
               <?=$Ly56_codauto?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y56_codauto",10,$Iy56_codauto,true,"text",4,"","chave_y56_codauto");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clautousu->rotulo->label("y56_obs");
               <?=$Ly56_id_usuario?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y56_id_usuario",5,$Iy56_id_usuario,true,"text",4,"","chave_y56_id_usuario");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clautousu->rotulo->label("y56_obs");
               <?=$Ly56_obs?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("y56_obs",0,$Iy56_obs,true,"text",4,"","chave_y56_obs");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clautousu->rotulo->label("y56_obs");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_autousu.php")==true){
@@ -129,12 +130,12 @@ $clautousu->rotulo->label("y56_obs");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

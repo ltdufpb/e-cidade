@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_botiposat_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbotiposat = new cl_botiposat;
 $clbotiposat->rotulo->label("bo02_codsat");
 $clbotiposat->rotulo->label("bo02_descsat");
@@ -54,7 +55,7 @@ $clbotiposat->rotulo->label("bo02_descsat");
               <?=$Lbo02_codsat?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("bo02_codsat",4,$Ibo02_codsat,true,"text",4,"","chave_bo02_codsat");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clbotiposat->rotulo->label("bo02_descsat");
               <?=$Lbo02_descsat?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("bo02_descsat",20,$Ibo02_descsat,true,"text",4,"","chave_bo02_descsat");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clbotiposat->rotulo->label("bo02_descsat");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_botiposat.php")==true){
@@ -118,12 +119,12 @@ $clbotiposat->rotulo->label("bo02_descsat");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

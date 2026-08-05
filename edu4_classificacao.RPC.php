@@ -43,7 +43,7 @@ $iEscola           = db_getsession("DB_coddepto");
 $oJson             = new Services_JSON();
 $oParam            = $oJson->decode(str_replace("\\", "", $_POST["json"]));
 $oRetorno          = new stdClass();
-$oRetorno->dados   = array();
+$oRetorno->dados   = [];
 $oRetorno->status  = 1;
 $oRetorno->message = '';
 
@@ -72,7 +72,7 @@ try {
   	  $oTurma     = TurmaRepository::getTurmaByCodigo($oParam->iTurma);
   	  $aRegencias = $oTurma->getDisciplinasPorEtapa(EtapaRepository::getEtapaByCodigo($oParam->iEtapa));
   	  
-  	  $aDisciplinas = array(); 
+  	  $aDisciplinas = []; 
   	  foreach ($aRegencias as $oRegencia) {
   	  	
   	    $oDisciplina          = new stdClass();
@@ -125,7 +125,7 @@ try {
   	  	
   	    $oAlunoRetorno          = new stdClass();
   	    $oAlunoRetorno->iCodigo = $oAluno->getCodigoAluno();
-  	    $oAlunoRetorno->sNome   = urlencode($oAluno->getNome());
+  	    $oAlunoRetorno->sNome   = urlencode((string) $oAluno->getNome());
   	    $oRetorno->dados[]      = $oAlunoRetorno; 
   	  }
   	  
@@ -155,7 +155,7 @@ try {
   	    $oDadosModelos       = db_utils::fieldsMemory($rsDocumentoTemplate, $i);
   	    $oModelo             = new stdClass();
   	    $oModelo->iCodigo    = $oDadosModelos->db82_sequencial;
-  	    $oModelo->sDescricao = urlencode($oDadosModelos->db82_descricao);
+  	    $oModelo->sDescricao = urlencode((string) $oDadosModelos->db82_descricao);
   	    $oRetorno->dados[]   = $oModelo;
   	  }
   	  	

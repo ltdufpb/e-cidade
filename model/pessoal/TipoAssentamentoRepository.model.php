@@ -41,7 +41,7 @@ class TipoAssentamentoRepository
      * @var TipoAssentamento[]
      * @access private
      */
-    static private $aColecao = array();
+    static private $aColecao = [];
 
     /**
      * Representa a instancia a classe
@@ -51,14 +51,14 @@ class TipoAssentamentoRepository
      */
     private static $oInstance;
 
-    private static $aNaturezas = array(
+    private static $aNaturezas = [
         Assentamento::NATUREZA_PADRAO => 'Padrão',
         Assentamento::NATUREZA_SUBSTITUICAO => 'Substituição',
         Assentamento::NATUREZA_RRA => 'RRA',
         Assentamento::NATUREZA_PONTO_ELETRONICO => 'Ponto Eletrônico',
         Assentamento::NATUREZA_JUSTIFICATIVA => 'Justificativa',
         Assentamento::NATUREZA_DIA_EXTRA => 'Dia Extra'
-    );
+    ];
 
     /**
      * Previne a criação do objeto externamente
@@ -221,7 +221,7 @@ class TipoAssentamentoRepository
         $rsDados = db_query($sSqlTipoasse);
 
         if (!$rsDados || pg_num_rows($rsDados) == 0) {
-            return array();
+            return [];
         }
 
         foreach (db_utils::getCollectionByRecord($rsDados) as $oRetorno) {
@@ -250,7 +250,7 @@ class TipoAssentamentoRepository
             throw new Exception("Ocorreu um erro ao consultar os tipos de assentamento de afastamento\n" . pg_last_error());
         }
 
-        $tipos = array();
+        $tipos = [];
 
         if (pg_num_rows($rs) == 0) {
             return $tipos;
@@ -270,7 +270,7 @@ class TipoAssentamentoRepository
     public static function getInstanciasAfastamento()
     {
 
-        if (!\DBRegistry::has('instanciasAssentamentoAfastamento')) {
+        if (!DBRegistry::has('instanciasAssentamentoAfastamento')) {
 
             $oRepository = self::getInstance();
             $oDaoTipoasse = new cl_tipoasse();
@@ -282,17 +282,17 @@ class TipoAssentamentoRepository
             }
 
             if (pg_num_rows($rsTipoasse) == 0) {
-                return array();
+                return [];
             }
 
             $colecaoRetornada = db_utils::getCollectionByRecord($rsTipoasse);
 
-            \DBRegistry::add('instanciasAssentamentoAfastamento', $colecaoRetornada);
+            DBRegistry::add('instanciasAssentamentoAfastamento', $colecaoRetornada);
         }
 
-        if (\DBRegistry::has('instanciasAssentamentoAfastamento')) {
+        if (DBRegistry::has('instanciasAssentamentoAfastamento')) {
 
-            $colecaoRetornada = \DBRegistry::get('instanciasAssentamentoAfastamento');
+            $colecaoRetornada = DBRegistry::get('instanciasAssentamentoAfastamento');
 
             foreach ($colecaoRetornada as $oRetorno) {
                 if (!isset(self::$aColecao[$oRetorno->h12_codigo])) {

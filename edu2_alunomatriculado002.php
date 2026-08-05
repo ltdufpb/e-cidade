@@ -31,11 +31,11 @@ require_once(modification("libs/db_utils.php"));
 
 $oCalendario = CalendarioRepository::getCalendarioByCodigo($iCalendario);
 $oEscola     = EscolaRepository::getEscolaByCodigo($iEscola);
-$aEtapas     = array($iSerieEscolhida);
+$aEtapas     = [$iSerieEscolhida];
 
 if ($iSerieEscolhida == 0) {
 
-  $aEtapas   = array();
+  $aEtapas   = [];
   $sCampos   = "distinct ed11_i_codigo ";
   $sWhere    = "     ed57_i_escola     = $iEscola ";
   $sWhere   .= " and ed57_i_calendario = $iCalendario ";

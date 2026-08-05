@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -215,13 +215,13 @@ function js_carrega() {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Substituição de alimentos</b></legend>
-    <?include(modification("forms/db_frmmer_subitem.php"));?>
+    <?php include(modification("forms/db_frmmer_subitem.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),
+<?php db_menu(db_getsession("DB_id_usuario"),
           db_getsession("DB_modulo"),
           db_getsession("DB_anousu"),
           db_getsession("DB_instit")
@@ -232,7 +232,7 @@ function js_carrega() {
 <script>
 js_tabulacaoforms("form1","me29_i_refeicao",true,1,"me29_i_refeicao",true);
 </script>
-<?
+<?php 
 if (isset($opcao)) {
   echo"<script>js_carrega(); js_validadata(1); </script>";
 }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label("ed52_i_ano");
 $clrotulo->label("ed52_d_inicio");
@@ -57,7 +57,7 @@ $db_botao = true;
   <td width="140">&nbsp;</td>
  </tr>
 </table>
-<?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+<?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
 <form name="form1" method="post" action="" enctype="multipart/form-data">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
@@ -69,8 +69,8 @@ $db_botao = true;
     <tr>
      <td colspan="2">
       <b>Arquivo de exportação gerado pelo sistema:</b>
-      <?db_input('arquivo_censo',50,@$Iarquivo_censo,true,'file',3,"");?>
-      <?db_input('caminho_arquivo',100,@$Icaminho_arquivo,true,'hidden',3,"");?>
+      <?php db_input('arquivo_censo',50,@$Iarquivo_censo,true,'file',3,"");?>
+      <?php db_input('caminho_arquivo',100,@$Icaminho_arquivo,true,'hidden',3,"");?>
      </td>
     </tr>
    </table>
@@ -85,7 +85,7 @@ $db_botao = true;
  </tr>
 </table>
 </form>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 <script>
 function js_valida(){
  if(document.form1.arquivo_censo.value==""){
@@ -96,7 +96,7 @@ function js_valida(){
  return true;
 }
 </script>
-<?
+<?php 
 if(isset($processar)){
  $tmp_name = $_FILES["arquivo_censo"]["tmp_name"];
  $name     = $_FILES["arquivo_censo"]["name"];
@@ -109,7 +109,7 @@ if(isset($processar)){
  }
  $caminho_arquivo = "tmp/".$name;
  $inicio_nome = "censo_".$escola;
- $explode_nome = explode("_",$name);
+ $explode_nome = explode("_",(string) $name);
  $inicio_nome_arquivo = $explode_nome[0]."_".$explode_nome[1];
  if(trim($inicio_nome)!=trim($inicio_nome_arquivo)){
   db_msgbox("[1] Arquivo informado não é um arquivo de exportação desta escola !");
@@ -121,7 +121,7 @@ if(isset($processar)){
    $valida_arquivo = false;
    while(!feof($ponteiro3)){
     $linha = fgets($ponteiro3,500);
-    if(substr($linha,0,2)!="00"){
+    if(!str_starts_with($linha, "00")){
      $valida_arquivo = true;
     }
     break;
@@ -149,7 +149,7 @@ if(isset($processar)){
       </td>
      </tr>
     </table>
-    <?
+    <?php 
    }
   }
  }

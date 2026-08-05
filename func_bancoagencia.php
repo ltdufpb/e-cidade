@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bancoagencia_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clbancoagencia = new cl_bancoagencia;
 $clbancoagencia->rotulo->label("db89_sequencial");
 $clbancoagencia->rotulo->label("db89_codagencia");
@@ -54,7 +55,7 @@ $clbancoagencia->rotulo->label("db89_codagencia");
               <?=$Ldb89_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db89_sequencial",10,$Idb89_sequencial,true,"text",4,"","chave_db89_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clbancoagencia->rotulo->label("db89_codagencia");
               <?=$Ldb89_codagencia?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db89_codagencia",5,$Idb89_codagencia,true,"text",4,"","chave_db89_codagencia");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clbancoagencia->rotulo->label("db89_codagencia");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_bancoagencia.php")==true){
@@ -137,12 +138,12 @@ $clbancoagencia->rotulo->label("db89_codagencia");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

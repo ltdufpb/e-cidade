@@ -2,6 +2,7 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
 use ECidade\RecursosHumanos\ESocial\Integracao\Formatter\Formatter;
 
 /**
@@ -18,6 +19,7 @@ class CargoFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[Override]
     public function formatar($dados)
     {
         $dadosFormatado = parent::formatar($dados);
@@ -41,7 +43,7 @@ class CargoFormatter extends Formatter
             if (isset($dados->dadosCargo->cargoPublico->leiCargo->dtLei)) {
                 $leiCargoDt =  $dados->dadosCargo->cargoPublico->leiCargo->dtLei;
                 if (!empty($leiCargoDt)) {
-                    $dados->dadosCargo->cargoPublico->leiCargo->dtLei = date('Y-m-d', strtotime($leiCargoDt));
+                    $dados->dadosCargo->cargoPublico->leiCargo->dtLei = date('Y-m-d', strtotime((string) $leiCargoDt));
                 } else {
                     unset($dados->dadosCargo->cargoPublico->leiCargo->dtLei);
                 }

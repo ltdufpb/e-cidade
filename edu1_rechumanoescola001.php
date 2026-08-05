@@ -410,10 +410,10 @@ $rsValidavinculo = db_query($sSqlValidavinculo);
 if (pg_num_rows($rsValidavinculo) > 0) {
 
     $sComplementoUrl = "&identificacao=$identificacao";
-    $sComplementoUrl .= "&z01_nome=" . addslashes($z01_nome);
+    $sComplementoUrl .= "&z01_nome=" . addslashes((string) $z01_nome);
     $sComplementoUrl .= "&ed20_i_tiposervidor=$ed20_i_tiposervidor";
 
-    $sNome = base64_encode($z01_nome);
+    $sNome = base64_encode((string) $z01_nome);
 
     echo "<script>";
     echo "  parent.document.formaba.a4.disabled = false;";

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_versao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldb_versao = new cl_db_versao;
 $cldb_versao->rotulo->label("db30_codver");
 $cldb_versao->rotulo->label("db30_codversao");
@@ -54,7 +55,7 @@ $cldb_versao->rotulo->label("db30_codversao");
               <?=$Ldb30_codver?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db30_codver",6,$Idb30_codver,true,"text",4,"","chave_db30_codver");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $cldb_versao->rotulo->label("db30_codversao");
               <?=$Ldb30_codversao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("db30_codversao",6,$Idb30_codversao,true,"text",4,"","chave_db30_codversao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $cldb_versao->rotulo->label("db30_codversao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_db_versao.php")==true){
@@ -118,12 +119,12 @@ $cldb_versao->rotulo->label("db30_codversao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -38,7 +38,7 @@ $ed102_d_data_dia = date("d", db_getsession("DB_datausu"));
 $ed102_d_data_mes = date("m", db_getsession("DB_datausu"));
 $ed102_d_data_ano = date("Y", db_getsession("DB_datausu"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoAtestVaga  = db_utils::getdao("atestvaga");
 $db_opcao       = 1;
@@ -65,11 +65,11 @@ if (isset($incluir)) {
   <link href="estilos.css" rel="stylesheet" type="text/css">
  </head>
  <body bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"), "escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"), "escola");?>
    
-   <?include(modification("forms/db_frmatestvaga.php"));?>
+   <?php include(modification("forms/db_frmatestvaga.php"));?>
    
-   <?
+   <?php 
      db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), 
              db_getsession("DB_anousu"), db_getsession("DB_instit")
             );
@@ -79,7 +79,7 @@ if (isset($incluir)) {
 <script>
 js_tabulacaoforms("form1", "ed102_i_aluno", true, 1, "ed102_i_aluno", true);
 </script>
-<?
+<?php 
 if (isset($incluir)) {
 	
   if ($oDaoAtestVaga->erro_status == "0") {
@@ -104,7 +104,7 @@ if (isset($incluir)) {
     	              );
      jan.moveTo(0, 0);
     </script>
-    <?
+    <?php 
     db_redireciona("edu1_atestvaga001.php");
   }
 }

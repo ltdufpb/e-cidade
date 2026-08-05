@@ -40,7 +40,8 @@ $oPost = db_utils::postMemory($_POST);
 
 db_postmemory($_POST);
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $cliptubase = new cl_iptubase;
 $clsetorloc = new cl_setorloc();
@@ -264,7 +265,7 @@ if ( isset($oPost->j107_nome) ) {
                 <tr>
                   <td width="34%" align="right" nowrap title="<?= $Tj06_setorloc ?>"><?= $Lj06_setorloc ?></td>
                   <td>
-                      <?
+                      <?php 
                       db_selectrecord('j05_codigoproprio', $rsSetorLoc, true, 4, '', 'j05_codigoproprio', '', 'todos',
                         'js_carregaQuadra(this.value)');
                       ?>

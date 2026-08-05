@@ -42,7 +42,7 @@ class RecursoHumanoAusenteRepository {
    */
   private static $oInstance;
 
-  private $aRecursoHumanoAusente = array();
+  private $aRecursoHumanoAusente = [];
 
   private function __construct() {}
   private function __clone() {}
@@ -99,7 +99,7 @@ class RecursoHumanoAusenteRepository {
       throw new DBException( _M( MENSAGENS_RECURSOHUMANOREPOSITORY . 'erro_buscar_ausencias', $oErro ) );
     }
 
-    $aRecursoHumanoAusente = array();
+    $aRecursoHumanoAusente = [];
     $iQuantidadeLinhas     = pg_num_rows($rsRecHumanoAusente);
 
     if ( $iQuantidadeLinhas > 0 ) {

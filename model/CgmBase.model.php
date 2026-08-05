@@ -321,7 +321,7 @@ abstract class CgmBase {
         $this->setObs                 ($oDadosCgm->z01_obs);
         $this->setCadastro            ($oDadosCgm->z01_cadast);
 
-        if ( strlen(trim($oDadosCgm->z01_cgccpf)) == 14 ) {
+        if ( strlen(trim((string) $oDadosCgm->z01_cgccpf)) == 14 ) {
           $this->lJuridico = true;
         } else {
           $this->lJuridico = false;
@@ -1014,7 +1014,7 @@ abstract class CgmBase {
   }
 
   public function salvaCgmEnderecoSecundario() {
-    $oDaoCgmEndereco = new \cl_cgmendereco();
+    $oDaoCgmEndereco = new cl_cgmendereco();
 
     $sWhereCgmEnderSecundario = " z07_numcgm = ".$this->getCodigo()." and z07_tipo='S' ";
     $sSqlConsultaCgmEnderSecundario = $oDaoCgmEndereco->sql_query_file(null,'z07_sequencial',null,$sWhereCgmEnderSecundario);
@@ -1040,7 +1040,7 @@ abstract class CgmBase {
   }
 
   public function salvaCgmEndereco() {
-    $oDaoCgmEndereco = new \cl_cgmendereco();
+    $oDaoCgmEndereco = new cl_cgmendereco();
 
     $sWhereCgmEnderPrimario = " z07_numcgm = ".$this->getCodigo()." and z07_tipo='P' ";
     $sSqlConsultaCgmEnderPrimario = $oDaoCgmEndereco->sql_query_file(null,'z07_sequencial',null,$sWhereCgmEnderPrimario);
@@ -1069,7 +1069,7 @@ abstract class CgmBase {
     /**
      *  Consulta o código do município
      */
-    $oDaoDBConfig  = new \cl_db_config();
+    $oDaoDBConfig  = new cl_db_config();
 
     $sSqlConfig = $oDaoDBConfig->sql_query_file(db_getsession('DB_instit'), "munic");
     $rsConfig   = $oDaoDBConfig->sql_record($sSqlConfig);
@@ -1080,17 +1080,17 @@ abstract class CgmBase {
       throw new Exception("Falha ao salvar CGM, {$oDaoDBConfig->erro_msg}");
     }
 
-    $oDaoCgm = new \cl_cgm();
-    $oDaoCgmBairro = new \cl_db_cgmbairro();
-    $oDaoCgmRuas = new \cl_db_cgmruas();
-    $oDaoRuas = new \cl_ruas();
-    $oDaoBairro = new \cl_bairro();
+    $oDaoCgm = new cl_cgm();
+    $oDaoCgmBairro = new cl_db_cgmbairro();
+    $oDaoCgmRuas = new cl_db_cgmruas();
+    $oDaoRuas = new cl_ruas();
+    $oDaoBairro = new cl_bairro();
 
-    if ( trim($sMunicipio) == trim($this->getMunicipio())) {
+    if ( trim((string) $sMunicipio) == trim($this->getMunicipio())) {
       $rsEnderCGM = $oDaoCgm->sql_record($oDaoCgm->sql_query_ender($this->getCodigo()));
       $oEnderCGM = db_utils::fieldsMemory($rsEnderCGM,0);
-      $iCodRuaCgm = trim($oEnderCGM->j14_codigo);
-      $iCodBairroCgm = trim($oEnderCGM->j13_codi);
+      $iCodRuaCgm = trim((string) $oEnderCGM->j14_codigo);
+      $iCodBairroCgm = trim((string) $oEnderCGM->j13_codi);
 
       /**
        * Consulta o código da rua apartir do nome, caso exista então é incluído um registro
@@ -1253,7 +1253,7 @@ abstract class CgmBase {
    */
   public function getFotos() {
 
-     $aFotos      = array();
+     $aFotos      = [];
      $oDaoCgmFoto = db_utils::getDao("cgmfoto");
      $sSqlFotos   = $oDaoCgmFoto->sql_query_file(null,"*", "z16_sequencial","z16_numcgm ={$this->getCodigo()}");
      $rsFotos     = $oDaoCgmFoto->sql_record($sSqlFotos);
@@ -1422,7 +1422,7 @@ abstract class CgmBase {
     $sSqlDebitosEmAberto .= "             else arrecad.k00_dtvenc + k27_dias < '{$dtDataUsu}'::date - cast('{$iNumeroDias} days' as interval) ";
     $sSqlDebitosEmAberto .= "           end )                                                                                                 ";
     $sSqlDebitosEmAberto .= " order by arrecad.k00_numpre, arrecad.k00_numpar, arrecad.k00_receit                                             ";
-    $aDebitosEmAberto        = array();
+    $aDebitosEmAberto        = [];
     $rsSqlDebitosEmAberto    = db_query($sSqlDebitosEmAberto);
     $iNumRowsDebitosEmAberto = pg_num_rows($rsSqlDebitosEmAberto);
     for ($iDebitosEmAberto   = 0; $iDebitosEmAberto < $iNumRowsDebitosEmAberto; $iDebitosEmAberto++) {
@@ -1449,10 +1449,10 @@ abstract class CgmBase {
      */
     public function toArray()
     {
-        return array(
+        return [
             'codigo' => $this->getCodigo(),
             'nome' => $this->getNome()
-        );
+        ];
     }
 
     /**

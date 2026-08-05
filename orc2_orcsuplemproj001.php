@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -94,7 +94,7 @@ function emite_lista(){
 
      <tr>
          <td align="center" colspan="3">
-         <?
+         <?php 
            db_selinstit('',300,150);
          ?>
          </td>
@@ -105,7 +105,7 @@ function emite_lista(){
   <tr>
    <td nowrap><b>  Período inicial </b></td>
       <td colspan="2">
-         <? 
+         <?php  
 	   $data_ini_dia = '01';
 	   $data_ini_mes = '01';
            $data_ini_ano = db_getsession("DB_anousu"); 	 
@@ -115,7 +115,7 @@ function emite_lista(){
   <tr>
    <td nowrap><b>  Período final  </b> </td>
       <td colspan="2">
-	  <? 
+	  <?php  
 	   $data_fim_dia = date('d',db_getsession("DB_datausu"));
 	   $data_fim_mes = date('m',db_getsession("DB_datausu"));
 	   $data_fim_ano = db_getsession("DB_anousu");
@@ -145,10 +145,10 @@ function emite_lista(){
    </tr>
 
    <tr>
-      <td nowrap title="<?=@$To39_codlei?>"><?db_ancora(@$Lo39_codlei,"js_pesquisao39_codlei(true);",$db_opcao);?></td>
+      <td nowrap title="<?=@$To39_codlei?>"><?php db_ancora(@$Lo39_codlei,"js_pesquisao39_codlei(true);",$db_opcao);?></td>
       <td> 
-         <? db_input('o39_codlei',8,$Io39_codlei,true,'text',$db_opcao," onchange='js_pesquisao39_codlei(false);'")?>
-         <? db_input('o45_numlei',30,$Io45_numlei,true,'text',3,'')     ?>
+         <?php  db_input('o39_codlei',8,$Io39_codlei,true,'text',$db_opcao," onchange='js_pesquisao39_codlei(false);'")?>
+         <?php  db_input('o45_numlei',30,$Io45_numlei,true,'text',3,'')     ?>
       </td>
    </tr>
 
@@ -160,7 +160,7 @@ function emite_lista(){
   </table>
  </form>
 
-<?  db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
+<?php   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit")); ?>
 
 </body>
 </html>

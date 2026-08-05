@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -134,23 +134,23 @@ function montaCabecalho($oPdf, $oDadosRelatModel, $oDadosEscola, $oDadosAluno, $
   $oPdf->Cell(155, 4, $oDadosAluno->ed47_v_nome, 0, 0, "L", 0);
   $oPdf->SetFont('Arial', 'b', 7);
   
-  $aNacionalidade = array(
+  $aNacionalidade = [
                            "1" => "BRASILEIRO", 
                            "2" => "ESTRANGEIRO", 
                            "3" => "BRASILEIRO NASCIDO NO EXTERIOR OU NATURALIZADO"
-                         );
+                         ];
   
   $oPdf->Cell(20, 4, "Nacionalidade: ", 0, 0, "L", 0);
   $oPdf->Cell(111, 4, $aNacionalidade[$oDadosAluno->ed47_i_nacion], 0, 1, "L", 0);
   $oPdf->Cell(15, 4, "Filho(a) de: ", 0, 0, "L", 0);
   
-  if (trim($oDadosAluno->ed47_v_pai) == "" && trim($oDadosAluno->ed47_v_mae) == "") {
+  if (trim((string) $oDadosAluno->ed47_v_pai) == "" && trim((string) $oDadosAluno->ed47_v_mae) == "") {
     $sFiliacao = "";
-  } elseif (trim($oDadosAluno->ed47_v_pai) == "" && trim($oDadosAluno->ed47_v_mae) != "") {
+  } elseif (trim((string) $oDadosAluno->ed47_v_pai) == "" && trim((string) $oDadosAluno->ed47_v_mae) != "") {
     $sFiliacao = $oDadosAluno->ed47_v_mae;
-  } elseif (trim($oDadosAluno->ed47_v_pai) != "" && trim($oDadosAluno->ed47_v_mae) == "") {
+  } elseif (trim((string) $oDadosAluno->ed47_v_pai) != "" && trim((string) $oDadosAluno->ed47_v_mae) == "") {
     $sFiliacao = $oDadosAluno->ed47_v_pai;
-  } elseif (trim($oDadosAluno->ed47_v_pai) !== "" && trim($oDadosAluno->ed47_v_mae) != "") {
+  } elseif (trim((string) $oDadosAluno->ed47_v_pai) !== "" && trim((string) $oDadosAluno->ed47_v_mae) != "") {
     $sFiliacao = "$oDadosAluno->ed47_v_pai e de $oDadosAluno->ed47_v_mae";
   }
   
@@ -227,7 +227,7 @@ function montaRodape($oPdf, $oDadosRelatModel, $oDadosAluno, $oDadosHist, $iCodi
   
   if ($_GET['sDiretor'] != "") {
 	
-    $aDiretor       = explode("-", $_GET['sDiretor']);
+    $aDiretor       = explode("-", (string) $_GET['sDiretor']);
     $sNomeDiretor   = $aDiretor[1];
     $sFuncaoDiretor = $aDiretor[0].(trim($aDiretor[2]) != "" ? " ($aDiretor[2])" : "");
   
@@ -240,7 +240,7 @@ function montaRodape($oPdf, $oDadosRelatModel, $oDadosAluno, $oDadosHist, $iCodi
 
   if ($_GET['sSecretario'] != "") {
 	
-    $aSecretario       = explode("-", $_GET['sSecretario']);
+    $aSecretario       = explode("-", (string) $_GET['sSecretario']);
     $sNomeSecretario   = $aSecretario[1];
     $sFuncaoSecretario = $aSecretario[0].(trim($aSecretario[2]) != "" ? " ($aSecretario[2])" : "");
   
@@ -309,7 +309,7 @@ function montaRodape($oPdf, $oDadosRelatModel, $oDadosAluno, $oDadosHist, $iCodi
   $iLimiteObs = 1500 - ($iLinhasSerie * 100);
   $oPdf->SetFont('Arial', 'b', 6);
   $iPosY = $oPdf->GetY();
-  $oPdf->Multicell(138, 3, substr($oDadosRelatModel->ed217_t_rodape, 0, $iLimiteObs), "LR", "L", 0, 0);
+  $oPdf->Multicell(138, 3, substr((string) $oDadosRelatModel->ed217_t_rodape, 0, $iLimiteObs), "LR", "L", 0, 0);
   
   $sObsConselho      = "";
   $sCamposAprovCons  = " cgm.z01_nome,ed253_i_data,ed232_c_descrcompleta as disc_conselho,ed253_t_obs,";
@@ -355,11 +355,11 @@ function montaRodape($oPdf, $oDadosRelatModel, $oDadosAluno, $oDadosHist, $iCodi
       $oDadosTrocaSerie  = db_utils::fieldsmemory($rsTrocaSerie, $iContTrocaSerie) ;
       $sObsTroca        .= $sSepTroca."-".($oDadosTrocaSerie->ed101_c_tipo == "A" ? 
                                            "AVANÇADO" : "CLASSIFICADO")."(A) DA ETAPA ".
-                                           (trim($oDadosTrocaSerie->ed11_c_origem))." PARA ETAPA ".
-                                           (trim($oDadosTrocaSerie->ed11_c_destino))." EM ".
-                                            substr($oDadosTrocaSerie->ed101_d_data, 8, 2)."/".substr
-                                           ($oDadosTrocaSerie->ed101_d_data, 5, 2)."/".substr
-                                           ($oDadosTrocaSerie->ed101_d_data, 0, 4);
+                                           (trim((string) $oDadosTrocaSerie->ed11_c_origem))." PARA ETAPA ".
+                                           (trim((string) $oDadosTrocaSerie->ed11_c_destino))." EM ".
+                                            substr((string) $oDadosTrocaSerie->ed101_d_data, 8, 2)."/".substr
+                                           ((string) $oDadosTrocaSerie->ed101_d_data, 5, 2)."/".substr
+                                           ((string) $oDadosTrocaSerie->ed101_d_data, 0, 4);
       $sObsTroca        .= ",  CONFORME LEI FEDERAL N° 9394/96 - ARTIGO 23,  § 1o ,  ";
       $sObsTroca        .= " PARECER CEED N° 740/99 E REGIMENTO ESCOLAR";
       $sSepTroca         = "\n";
@@ -476,58 +476,58 @@ $oPdf->Open();
 $oPdf->AliasNbPages();
 
 for ($iContPrincipal = 0; $iContPrincipal < $iLinhasAluno; $iContPrincipal++) {
-	
+
   $oDadosAluno      = db_utils::fieldsmemory($rsAluno, $iContPrincipal); 
-  
+
   $sWhereHistorico  = " ed61_i_aluno in (".$oDadosAluno->ed47_i_codigo.") ";
   $sSqlHistorico    = $oDaoHistorico->sql_query("", "*", " ed47_v_nome ", $sWhereHistorico);
   $rsHistorico      = $oDaoHistorico->sql_record($sSqlHistorico);
   $iLinhasHistorico = $oDaoHistorico->numrows;
-  
+
   $iCodigoHist      = "";
   $iCodigoCurso     = "";
   $sSeparador       = "";
-  
+
   for ($iContHist = 0; $iContHist < $iLinhasHistorico; $iContHist++) {
-  	
+
   	$oDadosHist    = db_utils::fieldsmemory($rsHistorico, $iContHist);
-  	
+
   	$iCodigoHist  .= $sSeparador.$oDadosHist->ed61_i_codigo;
   	$iCodigoCurso .= $sSeparador.$oDadosHist->ed61_i_curso; 
-  	
+
   	$sSeparador    = ", ";
-  	
+
   }
-  
+
   $sCamposAno  = "max(ed62_i_anoref) as ultimoanorede,  max(ed99_i_anoref) as ultimoanofora";
   $sSqlAnoHist = $oDaoHistorico->sql_query_historico("",  $sCamposAno,  "",  " ed61_i_codigo in ($iCodigoHist)");
   $rsAnoHist   = $oDaoHistorico->sql_record($sSqlAnoHist);
   $iLinhasAno  = $oDaoHistorico->numrows;
-  
+
   if ($iLinhasAno > 0) {
-  	
+
   	$oDadosAnoHist = db_utils::fieldsmemory($rsAnoHist, 0);
-  	
-    if (trim($oDadosAnoHist->ultimoanorede) == "" && trim($oDadosAnoHist->ultimoanofora) == "") {
+
+    if (trim((string) $oDadosAnoHist->ultimoanorede) == "" && trim((string) $oDadosAnoHist->ultimoanofora) == "") {
       $iUltimoAno = date("Y",  db_getsession("DB_datausu"));
-    } else if (trim($oDadosAnoHist->ultimoanorede) == "" && trim($oDadosAnoHist->ultimoanofora) != "") {
+    } else if (trim((string) $oDadosAnoHist->ultimoanorede) == "" && trim((string) $oDadosAnoHist->ultimoanofora) != "") {
       $iUltimoAno = $oDadosAnoHist->ultimoanofora;
-    } else if (trim($oDadosAnoHist->ultimoanorede) != "" && trim($oDadosAnoHist->ultimoanofora) == "") {
+    } else if (trim((string) $oDadosAnoHist->ultimoanorede) != "" && trim((string) $oDadosAnoHist->ultimoanofora) == "") {
       $iUltimoAno = $oDadosAnoHist->ultimoanorede;
-    } else if (trim($oDadosAnoHist->ultimoanorede) != "" && trim($oDadosAnoHist->ultimoanofora) != "") {
-    	
-      if (trim($oDadosAnoHist->ultimoanorede) > trim($oDadosAnoHist->ultimoanofora)) {
+    } else if (trim((string) $oDadosAnoHist->ultimoanorede) != "" && trim((string) $oDadosAnoHist->ultimoanofora) != "") {
+
+      if (trim((string) $oDadosAnoHist->ultimoanorede) > trim((string) $oDadosAnoHist->ultimoanofora)) {
         $iUltimoAno = $oDadosAnoHist->ultimoanorede;
       } else {
         $iUltimoAno = $oDadosAnoHist->ultimoanofora;
       }
-      
+
     }
-  	
+
   } else {
     $iUltimoAno = date("Y",  db_getsession("DB_datausu"));;
   }
-  
+
   /* Carga Horária */
   $sWhereCarga  = " ed61_i_codigo IN ($iCodigoHist) AND ed62_c_resultadofinal = 'A' AND ed62_i_anoref <= $iUltimoAno ";
   $sCamposCR    = "sum(ed62_i_qtdch) as chtotalrede";
@@ -535,7 +535,7 @@ for ($iContPrincipal = 0; $iContPrincipal < $iLinhasAluno; $iContPrincipal++) {
   $rsCarga      = $oDaoHistorico->sql_record($sSqlCarga);
   $iLinhasCarga = $oDaoHistorico->numrows;
   $oDadosCarga  = db_utils::fieldsmemory($rsCarga, 0);
-  
+
   /* Carga Horária Fora */
   $sWhereCargaFora  = " ed61_i_codigo IN ($iCodigoHist) AND ed99_c_resultadofinal = 'A' AND ed99_i_anoref <= $iUltimoAno ";
   $sCamposCF        = " sum(ed99_i_qtdch) as chtotalfora ";
@@ -543,19 +543,19 @@ for ($iContPrincipal = 0; $iContPrincipal < $iLinhasAluno; $iContPrincipal++) {
   $rsCargaFora      = $oDaoHistorico->sql_record($sSqlCargaFora);
   $iLinhasCargaFora = $oDaoHistorico->numrows;
   $oDadosCargaFora  = db_utils::fieldsmemory($rsCargaFora, 0);
-  
+
   if ($iTipoRegistro == "A") {
-  	
+
     //somente registros aprovados
     $sCondicaoHistMps     = " AND ed62_i_anoref <= $iUltimoAno AND ed62_c_resultadofinal = 'A' ";
     $sCondicaoHistMpsFora = " AND ed99_i_anoref <= $iUltimoAno AND ed99_c_resultadofinal = 'A' ";
-    
+
   } else if ($iTipoRegistro == "AR") {
-  	
+
     //registros aprovados e reprovados
     $sCondicaoHistMps     = " AND ed62_i_anoref <= $iUltimoAno ";
     $sCondicaoHistMpsFora = " AND ed99_i_anoref <= $iUltimoAno ";
-    
+
   } else if ($iTipoRegistro == "U") {
 
     /* Exibe todos os registros com aprovado,  exceto o último,  que exibe de qualquer forma (aprovado ou não). */
@@ -563,12 +563,12 @@ for ($iContPrincipal = 0; $iContPrincipal < $iLinhasAluno; $iContPrincipal++) {
     $sCondicaoHistMps     .= " AND (ed62_c_resultadofinal = 'A' OR ed62_i_anoref = $iUltimoAno)";
     $sCondicaoHistMpsFora  = " AND ed99_i_anoref <= $iUltimoAno ";
     $sCondicaoHistMpsFora .= "AND (ed99_c_resultadofinal = 'A' OR ed99_i_anoref = $iUltimoAno)";
-    
+
   }
-  
+
   montaCabecalho($oPdf, $oDadosRelatModel, $oDadosEscola, $oDadosAluno, $oDadosHist, $iEscola, 
                  $iCodigoCurso, $sTelefoneEscola, $iCodigoHist, $sCondicaoHistMps, $sCondicaoHistMpsFora);
-  
+
   $sSqlUnion    = " SELECT ed11_i_sequencia,  ed62_i_anoref,  ed62_i_escola,  ed232_c_descrcompleta,  ed11_c_abrev,  ";
   $sSqlUnion   .= "        ed65_i_disciplina,  ed65_i_justificativa,  ed65_i_qtdch,  ed65_c_resultadofinal,  ";
   $sSqlUnion   .= "        ed65_c_situacao,  ed65_c_tiporesultado,  ed65_t_resultobtido, ed29_c_historico";
@@ -595,9 +595,9 @@ for ($iContPrincipal = 0; $iContPrincipal < $iLinhasAluno; $iContPrincipal++) {
   $sSqlUnion   .= "       ORDER BY ed62_i_anoref ASC ";
   $rsUnion      = db_query($sSqlUnion);
   $iLinhasUnion = pg_num_rows($rsUnion);
-  
+
   $oPdf->SetY(48);
-  
+
   $lCor          = true;
   $iCont         = 0;
   $iTopo         = 48;
@@ -607,112 +607,112 @@ for ($iContPrincipal = 0; $iContPrincipal < $iLinhasAluno; $iContPrincipal++) {
   $iAlturaAntes  = 0;
   $iAlturaAtual  = 0;
   $iLinhasAdd    = 0;
-  
+
   /* Percorre as disciplinas encontradas no histórico do aluno */
   for ($iContDisc = 0; $iContDisc < $iLinhasUnion; $iContDisc++) {
-  	
+
   	$oDadosDisciplina = db_utils::fieldsmemory($rsUnion, $iContDisc);
-  	
+
   	/* Variável que irá 'zebrar' as linhas */
   	if ($lCor) {
   	  $lCor = false;
   	} else {
   	  $lCor = true;
   	}
-  	
+
   	/* Verifico (superficialmente) se a linha irá ser suportada pela coluna */
-    $iTeste = ceil(strlen($oDadosDisciplina->ed232_c_descrcompleta) / 32) * 4; 
-   
+    $iTeste = ceil(strlen((string) $oDadosDisciplina->ed232_c_descrcompleta) / 32) * 4; 
+
     /* Se o teste retornar que a disciplina dará em uma linha */
     if ($iTeste == 4) {
-    	
+
       if (($iAlturaAtual + 4) > $iAlturaColuna) {
-      	
+
       	if ($iPassou == 2) {
-      	
+
       	  montaCabecalho($oPdf, $oDadosRelatModel, $oDadosEscola, $oDadosAluno, $oDadosHist, $iEscola, 
                          $iCodigoCurso, $sTelefoneEscola, $iCodigoHist, $sCondicaoHistMps, $sCondicaoHistMpsFora);
-                 
+
           $oPdf->SetY(48);
           $iPassou = 0;
-                 
+
         } else {
       	  $iPassou++;
         }
-    	
+
         $iTopo        = 48;
         $iAlturaAtual = 0;
         $iAltura      = 4;
         $iCont = 0;
-      	
+
       }	
     /* Se o teste retornar que a linha dará em mais de uma linha */
     } elseif (($iAlturaAtual + $iTeste) >= $iAlturaColuna) {
-      
+
       if ($iPassou == 2) {
-      	
+
       	montaCabecalho($oPdf, $oDadosRelatModel, $oDadosEscola, $oDadosAluno, $oDadosHist, $iEscola, 
                  $iCodigoCurso, $sTelefoneEscola, $iCodigoHist, $sCondicaoHistMps, $sCondicaoHistMpsFora);
-                 
+
         $oPdf->SetY(48);
         $iPassou = 0;
-                 
+
       } else {
       	$iPassou++;
       }
-    	
+
       $iTopo        = 48;
       $iAlturaAtual = 0;
       $iAltura      = 4;
       $iCont = 0;	
-    	
+
     }
-  	
+
   	/* Posiciona na próxima coluna */
   	if ($iPassou == 1) {
-  	  
+
   	  if ($iCont > 0) {
   	    $iTopo = $iTopo + $iAlturaLinha;
   	  }
-  	  
+
   	  $oPdf->SetXY(102, $iTopo);
   	  $iAlturaAntes = $iAlturaLinha;
-  		
+
   	} 	
   	if ($iPassou == 2) {
-  	  
+
   	  if ($iCont > 0) {
   	    $iTopo = $iTopo + $iAlturaLinha;
   	  }
-  	  
+
   	  $oPdf->SetXY(194, $iTopo);
   	  $iAlturaAntes = $iAlturaLinha;
-  		
+
   	}
-  	
+
   	if (is_numeric($oDadosDisciplina->ed65_t_resultobtido)) {
-  	  
+
   	  if ($sParamEdu == 'S') {
         $sResultado = number_format($oDadosDisciplina->ed65_t_resultobtido, 2, ".", ".");
       } else {
         $sResultado = floor($oDadosDisciplina->ed65_t_resultobtido);
       }
-  		
+
   	} else {
   	  $sResultado = $oDadosDisciplina->ed65_t_resultobtido;
   	}
-  	
+
   	$iAltAnterior = $oPdf->getY();
     $oPdf->setfont('arial','',7);
     $oPdf->multicell(36, 4, $oDadosDisciplina->ed232_c_descrcompleta, "LR", "L", $lCor, 0);
-    
+
     $iAltDepois    = $oPdf->getY();
     $iAltura       = $iAltDepois - $iAltAnterior;
     $iAlturaAtual += $iAltura;
     $iAlturaLinha  = $iAltura;
 
     $iLinhasAdd   += $iAltura / 4;
-    
+
     if ($iPassou == 0) {
       $oPdf->setXY($oPdf->getX() + 36, $iAltDepois - $iAltura);
     } elseif ($iPassou == 1) {
@@ -720,9 +720,9 @@ for ($iContPrincipal = 0; $iContPrincipal < $iLinhasAluno; $iContPrincipal++) {
     } else {
       $oPdf->setXY($oPdf->getX() + 220, $iAltDepois - $iAltura);
     }
-    
+
     $iCont++;
-    
+
     $oPdf->Cell(8, $iAltura, $oDadosDisciplina->ed11_c_abrev, "LR", 0, "C", $lCor);
     $oPdf->SetFont('arial', '', 6);
     $oPdf->Cell(10, $iAltura, ($oDadosDisciplina->ed65_c_situacao != "CONCLUÍDO") ? "Amparo" :
@@ -731,19 +731,19 @@ for ($iContPrincipal = 0; $iContPrincipal < $iLinhasAluno; $iContPrincipal++) {
     $oPdf->Cell(10, $iAltura, $oDadosDisciplina->ed65_i_qtdch == "" ? "0" : 
                               $oDadosDisciplina->ed65_i_qtdch, "LR", 0, "C", $lCor);
     $oPdf->Cell(8, $iAltura, $oDadosDisciplina->ed65_c_resultadofinal == "A" ? "APR" : 
-                            ($oDadosDisciplina->ed65_c_situacao!="CONCLUÍDO")?"APR":"REP", "LR", 0, "C", $lCor);
+                            (($oDadosDisciplina->ed65_c_situacao!="CONCLUÍDO")?"APR":"REP"), "LR", 0, "C", $lCor);
     $oPdf->Cell(10, $iAltura, $oDadosDisciplina->ed62_i_anoref, "LR", 0, "C", $lCor);
     $oPdf->Cell(10, $iAltura, $oDadosDisciplina->ed62_i_escola, "LR", 1, "C", $lCor);
-    
+
     if ($iAlturaAtual > $iAlturaColuna) {
-      
+
       $iTopo        = 48;
       $iAltura      = 4;
       $iAlturaAtual = 0;
       $iPassou++;
-    	
+
     }
-  
+
   } //End FOR Percorre Disciplinas
   
 } //End FOR $oDaoAluno->numrows

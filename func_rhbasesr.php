@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhbasesr_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhbasesr = new cl_rhbasesr;
 $clrhbasesr->rotulo->label("rh33_base");
 $clrhbasesr->rotulo->label("rh33_rubric");
@@ -55,7 +56,7 @@ $clrhbasesr->rotulo->label("rh33_rubric");
               <?=$Lrh33_base?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh33_base",4,$Irh33_base,true,"text",4,"","chave_rh33_base");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clrhbasesr->rotulo->label("rh33_rubric");
               <?=$Lrh33_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh33_rubric",4,$Irh33_rubric,true,"text",4,"","chave_rh33_rubric");
 		       ?>
             </td>
@@ -75,7 +76,7 @@ $clrhbasesr->rotulo->label("rh33_rubric");
               <?=$Lrh33_rubric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh33_rubric",4,$Irh33_rubric,true,"text",4,"","chave_rh33_rubric");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clrhbasesr->rotulo->label("rh33_rubric");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhbasesr.php")==true){
@@ -129,12 +130,12 @@ $clrhbasesr->rotulo->label("rh33_rubric");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

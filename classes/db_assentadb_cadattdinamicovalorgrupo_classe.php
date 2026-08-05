@@ -28,23 +28,23 @@
 //CLASSE DA ENTIDADE assentadb_cadattdinamicovalorgrupo
 class cl_assentadb_cadattdinamicovalorgrupo {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $h80_db_cadattdinamicovalorgrupo = 0;
-   var $h80_assenta = 0;
+   public $h80_db_cadattdinamicovalorgrupo = 0;
+   public $h80_assenta = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  h80_db_cadattdinamicovalorgrupo = int4 = Codigo Grupo 
                  h80_assenta = int4 = Codigo do Assentamento 
                  ";
@@ -55,7 +55,7 @@ class cl_assentadb_cadattdinamicovalorgrupo {
     public function __construct()
     {
         $this->rotulo = new rotulo("assentadb_cadattdinamicovalorgrupo");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
    //funcao erro
@@ -111,7 +111,7 @@ class cl_assentadb_cadattdinamicovalorgrupo {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "assentadb_cadattdinamicovalorgrupo ($this->h80_assenta."-".$this->h80_db_cadattdinamicovalorgrupo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "assentadb_cadattdinamicovalorgrupo já Cadastrado";
@@ -140,12 +140,12 @@ class cl_assentadb_cadattdinamicovalorgrupo {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21207,'$this->h80_assenta','I')");
          $resac = db_query("insert into db_acountkey values($acount,21206,'$this->h80_db_cadattdinamicovalorgrupo','I')");
-         $resac = db_query("insert into db_acount values($acount,3819,21206,'','".AddSlashes(pg_result($resaco,0,'h80_db_cadattdinamicovalorgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3819,21207,'','".AddSlashes(pg_result($resaco,0,'h80_assenta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3819,21206,'','".AddSlashes(pg_fetch_result($resaco,0,'h80_db_cadattdinamicovalorgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3819,21207,'','".AddSlashes(pg_fetch_result($resaco,0,'h80_assenta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -155,10 +155,10 @@ class cl_assentadb_cadattdinamicovalorgrupo {
       $this->atualizacampos();
      $sql = " update assentadb_cadattdinamicovalorgrupo set ";
      $virgula = "";
-     if(trim($this->h80_db_cadattdinamicovalorgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h80_db_cadattdinamicovalorgrupo"])){
+     if(trim((string) $this->h80_db_cadattdinamicovalorgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h80_db_cadattdinamicovalorgrupo"])){
        $sql  .= $virgula." h80_db_cadattdinamicovalorgrupo = $this->h80_db_cadattdinamicovalorgrupo ";
        $virgula = ",";
-       if(trim($this->h80_db_cadattdinamicovalorgrupo) == null ){
+       if(trim((string) $this->h80_db_cadattdinamicovalorgrupo) == null ){
          $this->erro_sql = " Campo Codigo Grupo não informado.";
          $this->erro_campo = "h80_db_cadattdinamicovalorgrupo";
          $this->erro_banco = "";
@@ -168,10 +168,10 @@ class cl_assentadb_cadattdinamicovalorgrupo {
          return false;
        }
      }
-     if(trim($this->h80_assenta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h80_assenta"])){
+     if(trim((string) $this->h80_assenta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h80_assenta"])){
        $sql  .= $virgula." h80_assenta = $this->h80_assenta ";
        $virgula = ",";
-       if(trim($this->h80_assenta) == null ){
+       if(trim((string) $this->h80_assenta) == null ){
          $this->erro_sql = " Campo Codigo do Assentamento não informado.";
          $this->erro_campo = "h80_assenta";
          $this->erro_banco = "";
@@ -198,14 +198,14 @@ class cl_assentadb_cadattdinamicovalorgrupo {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21207,'$this->h80_assenta','A')");
            $resac = db_query("insert into db_acountkey values($acount,21206,'$this->h80_db_cadattdinamicovalorgrupo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h80_db_cadattdinamicovalorgrupo"]) || $this->h80_db_cadattdinamicovalorgrupo != "")
-             $resac = db_query("insert into db_acount values($acount,3819,21206,'".AddSlashes(pg_result($resaco,$conresaco,'h80_db_cadattdinamicovalorgrupo'))."','$this->h80_db_cadattdinamicovalorgrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3819,21206,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h80_db_cadattdinamicovalorgrupo'))."','$this->h80_db_cadattdinamicovalorgrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h80_assenta"]) || $this->h80_assenta != "")
-             $resac = db_query("insert into db_acount values($acount,3819,21207,'".AddSlashes(pg_result($resaco,$conresaco,'h80_assenta'))."','$this->h80_assenta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3819,21207,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h80_assenta'))."','$this->h80_assenta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -257,12 +257,12 @@ class cl_assentadb_cadattdinamicovalorgrupo {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21207,'$h80_assenta','E')");
            $resac  = db_query("insert into db_acountkey values($acount,21206,'$h80_db_cadattdinamicovalorgrupo','E')");
-           $resac  = db_query("insert into db_acount values($acount,3819,21206,'','".AddSlashes(pg_result($resaco,$iresaco,'h80_db_cadattdinamicovalorgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3819,21207,'','".AddSlashes(pg_result($resaco,$iresaco,'h80_assenta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3819,21206,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h80_db_cadattdinamicovalorgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3819,21207,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h80_assenta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -412,7 +412,7 @@ class cl_assentadb_cadattdinamicovalorgrupo {
               join assenta ON assenta.h16_codigo = assentadb_cadattdinamicovalorgrupo.h80_assenta
       ";
 
-      $condicoes = array();
+      $condicoes = [];
 
       if (!empty($assetamento)) {
           $condicoes[] = "h80_assenta = {$assetamento}";

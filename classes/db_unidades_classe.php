@@ -101,7 +101,7 @@ class cl_unidades {
                  sd02_cnpjcpf = varchar(14) = CNPJ/CPF 
                  ";
    //funcao construtor da classe 
-   function cl_unidades() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("unidades"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

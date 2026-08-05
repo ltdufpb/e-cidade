@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE acertid
 class cl_acertid {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $v15_codigo = 0;
-   var $v15_certid = 0;
-   var $v15_data_dia = null;
-   var $v15_data_mes = null;
-   var $v15_data_ano = null;
-   var $v15_data = null;
-   var $v15_hora = null;
-   var $v15_usuario = 0;
-   var $v15_parcial = 'f';
-   var $v15_instit = 0;
-   var $v15_observacao = null;
+   public $v15_codigo = 0;
+   public $v15_certid = 0;
+   public $v15_data_dia = null;
+   public $v15_data_mes = null;
+   public $v15_data_ano = null;
+   public $v15_data = null;
+   public $v15_hora = null;
+   public $v15_usuario = 0;
+   public $v15_parcial = 'f';
+   public $v15_instit = 0;
+   public $v15_observacao = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  v15_codigo = int8 = Código
                  v15_certid = int8 = Código da Certidão
                  v15_data = date = Data
@@ -65,10 +65,10 @@ class cl_acertid {
                  v15_observacao = text = Observação
                  ";
    //funcao construtor da classe
-   function cl_acertid() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("acertid");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -168,10 +168,10 @@ class cl_acertid {
          $this->erro_status = "0";
          return false;
        }
-       $this->v15_codigo = pg_result($result,0,0);
+       $this->v15_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from acertid_v15_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v15_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v15_codigo)){
          $this->erro_sql = " Campo v15_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -213,7 +213,7 @@ class cl_acertid {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Certidões Anuladas ($this->v15_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Certidões Anuladas já Cadastrado";
@@ -237,17 +237,17 @@ class cl_acertid {
      $resaco = $this->sql_record($this->sql_query_file($this->v15_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7625,'$this->v15_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1265,7625,'','".AddSlashes(pg_result($resaco,0,'v15_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1265,7626,'','".AddSlashes(pg_result($resaco,0,'v15_certid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1265,7627,'','".AddSlashes(pg_result($resaco,0,'v15_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1265,7628,'','".AddSlashes(pg_result($resaco,0,'v15_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1265,7629,'','".AddSlashes(pg_result($resaco,0,'v15_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1265,7630,'','".AddSlashes(pg_result($resaco,0,'v15_parcial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1265,10571,'','".AddSlashes(pg_result($resaco,0,'v15_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1265,19289,'','".AddSlashes(pg_result($resaco,0,'v15_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1265,7625,'','".AddSlashes(pg_fetch_result($resaco,0,'v15_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1265,7626,'','".AddSlashes(pg_fetch_result($resaco,0,'v15_certid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1265,7627,'','".AddSlashes(pg_fetch_result($resaco,0,'v15_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1265,7628,'','".AddSlashes(pg_fetch_result($resaco,0,'v15_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1265,7629,'','".AddSlashes(pg_fetch_result($resaco,0,'v15_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1265,7630,'','".AddSlashes(pg_fetch_result($resaco,0,'v15_parcial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1265,10571,'','".AddSlashes(pg_fetch_result($resaco,0,'v15_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1265,19289,'','".AddSlashes(pg_fetch_result($resaco,0,'v15_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -256,10 +256,10 @@ class cl_acertid {
       $this->atualizacampos();
      $sql = " update acertid set ";
      $virgula = "";
-     if(trim($this->v15_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v15_codigo"])){
+     if(trim((string) $this->v15_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v15_codigo"])){
        $sql  .= $virgula." v15_codigo = $this->v15_codigo ";
        $virgula = ",";
-       if(trim($this->v15_codigo) == null ){
+       if(trim((string) $this->v15_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "v15_codigo";
          $this->erro_banco = "";
@@ -269,10 +269,10 @@ class cl_acertid {
          return false;
        }
      }
-     if(trim($this->v15_certid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v15_certid"])){
+     if(trim((string) $this->v15_certid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v15_certid"])){
        $sql  .= $virgula." v15_certid = $this->v15_certid ";
        $virgula = ",";
-       if(trim($this->v15_certid) == null ){
+       if(trim((string) $this->v15_certid) == null ){
          $this->erro_sql = " Campo Código da Certidão nao Informado.";
          $this->erro_campo = "v15_certid";
          $this->erro_banco = "";
@@ -282,10 +282,10 @@ class cl_acertid {
          return false;
        }
      }
-     if(trim($this->v15_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v15_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v15_data_dia"] !="") ){
+     if(trim((string) $this->v15_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v15_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v15_data_dia"] !="") ){
        $sql  .= $virgula." v15_data = '$this->v15_data' ";
        $virgula = ",";
-       if(trim($this->v15_data) == null ){
+       if(trim((string) $this->v15_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "v15_data_dia";
          $this->erro_banco = "";
@@ -298,7 +298,7 @@ class cl_acertid {
        if(isset($GLOBALS["HTTP_POST_VARS"]["v15_data_dia"])){
          $sql  .= $virgula." v15_data = null ";
          $virgula = ",";
-         if(trim($this->v15_data) == null ){
+         if(trim((string) $this->v15_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "v15_data_dia";
            $this->erro_banco = "";
@@ -309,10 +309,10 @@ class cl_acertid {
          }
        }
      }
-     if(trim($this->v15_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v15_hora"])){
+     if(trim((string) $this->v15_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v15_hora"])){
        $sql  .= $virgula." v15_hora = '$this->v15_hora' ";
        $virgula = ",";
-       if(trim($this->v15_hora) == null ){
+       if(trim((string) $this->v15_hora) == null ){
          $this->erro_sql = " Campo Hora da anulação nao Informado.";
          $this->erro_campo = "v15_hora";
          $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_acertid {
          return false;
        }
      }
-     if(trim($this->v15_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v15_usuario"])){
+     if(trim((string) $this->v15_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v15_usuario"])){
        $sql  .= $virgula." v15_usuario = $this->v15_usuario ";
        $virgula = ",";
-       if(trim($this->v15_usuario) == null ){
+       if(trim((string) $this->v15_usuario) == null ){
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "v15_usuario";
          $this->erro_banco = "";
@@ -335,10 +335,10 @@ class cl_acertid {
          return false;
        }
      }
-     if(trim($this->v15_parcial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v15_parcial"])){
+     if(trim((string) $this->v15_parcial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v15_parcial"])){
        $sql  .= $virgula." v15_parcial = '$this->v15_parcial' ";
        $virgula = ",";
-       if(trim($this->v15_parcial) == null ){
+       if(trim((string) $this->v15_parcial) == null ){
          $this->erro_sql = " Campo Parcial nao Informado.";
          $this->erro_campo = "v15_parcial";
          $this->erro_banco = "";
@@ -348,10 +348,10 @@ class cl_acertid {
          return false;
        }
      }
-     if(trim($this->v15_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v15_instit"])){
+     if(trim((string) $this->v15_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v15_instit"])){
        $sql  .= $virgula." v15_instit = $this->v15_instit ";
        $virgula = ",";
-       if(trim($this->v15_instit) == null ){
+       if(trim((string) $this->v15_instit) == null ){
          $this->erro_sql = " Campo Cod. Instituição nao Informado.";
          $this->erro_campo = "v15_instit";
          $this->erro_banco = "";
@@ -361,7 +361,7 @@ class cl_acertid {
          return false;
        }
      }
-     if(trim($this->v15_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v15_observacao"])){
+     if(trim((string) $this->v15_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v15_observacao"])){
        $sql  .= $virgula." v15_observacao = '$this->v15_observacao' ";
        $virgula = ",";
      }
@@ -373,25 +373,25 @@ class cl_acertid {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7625,'$this->v15_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v15_codigo"]) || $this->v15_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,1265,7625,'".AddSlashes(pg_result($resaco,$conresaco,'v15_codigo'))."','$this->v15_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1265,7625,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v15_codigo'))."','$this->v15_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v15_certid"]) || $this->v15_certid != "")
-           $resac = db_query("insert into db_acount values($acount,1265,7626,'".AddSlashes(pg_result($resaco,$conresaco,'v15_certid'))."','$this->v15_certid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1265,7626,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v15_certid'))."','$this->v15_certid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v15_data"]) || $this->v15_data != "")
-           $resac = db_query("insert into db_acount values($acount,1265,7627,'".AddSlashes(pg_result($resaco,$conresaco,'v15_data'))."','$this->v15_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1265,7627,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v15_data'))."','$this->v15_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v15_hora"]) || $this->v15_hora != "")
-           $resac = db_query("insert into db_acount values($acount,1265,7628,'".AddSlashes(pg_result($resaco,$conresaco,'v15_hora'))."','$this->v15_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1265,7628,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v15_hora'))."','$this->v15_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v15_usuario"]) || $this->v15_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,1265,7629,'".AddSlashes(pg_result($resaco,$conresaco,'v15_usuario'))."','$this->v15_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1265,7629,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v15_usuario'))."','$this->v15_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v15_parcial"]) || $this->v15_parcial != "")
-           $resac = db_query("insert into db_acount values($acount,1265,7630,'".AddSlashes(pg_result($resaco,$conresaco,'v15_parcial'))."','$this->v15_parcial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1265,7630,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v15_parcial'))."','$this->v15_parcial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v15_instit"]) || $this->v15_instit != "")
-           $resac = db_query("insert into db_acount values($acount,1265,10571,'".AddSlashes(pg_result($resaco,$conresaco,'v15_instit'))."','$this->v15_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1265,10571,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v15_instit'))."','$this->v15_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v15_observacao"]) || $this->v15_observacao != "")
-           $resac = db_query("insert into db_acount values($acount,1265,19289,'".AddSlashes(pg_result($resaco,$conresaco,'v15_observacao'))."','$this->v15_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1265,19289,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v15_observacao'))."','$this->v15_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -436,17 +436,17 @@ class cl_acertid {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7625,'$v15_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1265,7625,'','".AddSlashes(pg_result($resaco,$iresaco,'v15_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1265,7626,'','".AddSlashes(pg_result($resaco,$iresaco,'v15_certid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1265,7627,'','".AddSlashes(pg_result($resaco,$iresaco,'v15_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1265,7628,'','".AddSlashes(pg_result($resaco,$iresaco,'v15_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1265,7629,'','".AddSlashes(pg_result($resaco,$iresaco,'v15_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1265,7630,'','".AddSlashes(pg_result($resaco,$iresaco,'v15_parcial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1265,10571,'','".AddSlashes(pg_result($resaco,$iresaco,'v15_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1265,19289,'','".AddSlashes(pg_result($resaco,$iresaco,'v15_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1265,7625,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v15_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1265,7626,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v15_certid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1265,7627,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v15_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1265,7628,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v15_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1265,7629,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v15_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1265,7630,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v15_parcial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1265,10571,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v15_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1265,19289,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v15_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from acertid
@@ -506,7 +506,7 @@ class cl_acertid {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:acertid";
@@ -521,7 +521,7 @@ class cl_acertid {
    function sql_query ( $v15_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -545,7 +545,7 @@ class cl_acertid {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -558,7 +558,7 @@ class cl_acertid {
    function sql_query_file ( $v15_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -579,7 +579,7 @@ class cl_acertid {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -592,7 +592,7 @@ class cl_acertid {
 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -624,7 +624,7 @@ class cl_acertid {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

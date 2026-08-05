@@ -67,7 +67,7 @@ class cl_lab_entrega {
                  la31_retiradopor = varchar(100) = Retirado por 
                  ";
    //funcao construtor da classe 
-   function cl_lab_entrega() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_entrega"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

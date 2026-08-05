@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -35,8 +35,8 @@ include(modification("classes/db_questaoaval_classe.php"));
 include(modification("classes/db_opcaoquestao_classe.php"));
 include(modification("classes/db_progconfig_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 $clprogavalpedag = new cl_progavalpedag;
 $clquestaoaval = new cl_questaoaval;
 $clopcaoquestao = new cl_opcaoquestao;
@@ -54,16 +54,16 @@ if(isset($alterar)){
   $ed117_i_opcaoquestao = "ed117_i_opcaoquestao".$t;
   $ed117_i_codigo = "ed117_i_codigo".$t;
   db_inicio_transacao();
-  $clprogavalpedag->ed117_i_questaoaval = $$ed117_i_questaoaval;
-  $clprogavalpedag->ed117_i_opcaoquestao = $$ed117_i_opcaoquestao;
+  $clprogavalpedag->ed117_i_questaoaval = ${$ed117_i_questaoaval};
+  $clprogavalpedag->ed117_i_opcaoquestao = ${$ed117_i_opcaoquestao};
   $clprogavalpedag->ed117_i_usuario = db_getsession("DB_id_usuario");
-  $clprogavalpedag->ed117_i_codigo = $$ed117_i_codigo;
-  $clprogavalpedag->alterar($$ed117_i_codigo);
+  $clprogavalpedag->ed117_i_codigo = ${$ed117_i_codigo};
+  $clprogavalpedag->alterar(${$ed117_i_codigo});
   db_fim_transacao();
  }
 }elseif(isset($ed112_i_rhpessoal)){
  $db_opcao = 2;
- $ed117_c_tipo = trim($ed117_c_tipo)=="AVALIAÇÃO"?"A":"U";
+ $ed117_c_tipo = trim((string) $ed117_c_tipo)=="AVALIAÇÃO"?"A":"U";
  $result = $clprogavalpedag->sql_record($clprogavalpedag->sql_query("","*",""," ed112_i_rhpessoal = $ed112_i_rhpessoal AND ed117_i_ano = $ed117_i_ano AND ed117_c_tipo = '$ed117_c_tipo'"));
  db_fieldsmemory($result,0);
  $db_botao = true;
@@ -89,20 +89,20 @@ if(isset($alterar)){
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Avaliação Pedagógica</b></legend>
-    <?include(modification("forms/db_frmprogavalpedag2.php"));?>
+    <?php include(modification("forms/db_frmprogavalpedag2.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar)){
  if($clprogavalpedag->erro_status=="0"){
   $clprogavalpedag->erro(true,false);

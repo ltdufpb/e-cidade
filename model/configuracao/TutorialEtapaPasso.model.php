@@ -31,7 +31,7 @@ class TutorialEtapaPasso {
 
   /**
    * Instancia da etapa respectiva a esse passo
-   * @var \TutorialEtapa
+   * @var TutorialEtapa
    */
   private $etapa;
 
@@ -67,7 +67,7 @@ class TutorialEtapaPasso {
     return $this->ordem;
   }
 
-  public function setEtapa(\TutorialEtapa $etapa) {
+  public function setEtapa(TutorialEtapa $etapa) {
     $this->etapa = $etapa;
   }
 
@@ -77,7 +77,7 @@ class TutorialEtapaPasso {
 
   public function toObject() {
 
-    $obj = new \stdClass();
+    $obj = new stdClass();
 
     $obj->id = $this->getId();
     $obj->xpath = $this->getXpath();

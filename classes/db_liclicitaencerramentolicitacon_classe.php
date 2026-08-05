@@ -54,7 +54,7 @@ class cl_liclicitaencerramentolicitacon {
                  l18_data = date = Data de Geração
                  ";
    //funcao construtor da classe
-   function cl_liclicitaencerramentolicitacon() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liclicitaencerramentolicitacon");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

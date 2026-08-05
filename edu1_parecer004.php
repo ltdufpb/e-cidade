@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -33,8 +33,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_parecer_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 $clparecer = new cl_parecer;
 if(isset($atualizar)){
  $tam = sizeof($pareceres);
@@ -62,7 +62,7 @@ if(isset($atualizar)){
   parent.location.href = "<?=$location?>";
   parent.db_iframe_ordenacao.hide();
  </script>
- <?
+ <?php 
  exit;
 }
 ?>
@@ -85,11 +85,11 @@ if(isset($atualizar)){
  </tr>
  <tr>
   <td align="right" valign="top" >
-   <?
+   <?php 
    $result = $clparecer->sql_record($clparecer->sql_query("","*","ed92_i_sequencial"," ed92_i_escola = ".db_getsession("DB_coddepto").""));
    ?>
    <select name="numparecer[]" id="numparecer" size="15" style="font-size:9px;width:50px;" multiple>
-    <?
+    <?php 
     for($x=0;$x<$clparecer->numrows;$x++){
      db_fieldsmemory($result,$x);
      echo "<option value='".($x+1)."'>".($x+1)."</option>";
@@ -99,7 +99,7 @@ if(isset($atualizar)){
   </td>
   <td align="right" valign="top">
    <select name="pareceres[]" id="pareceres" size="15" style="font-size:9px;width:600px;" multiple>
-   <?
+   <?php 
    for($x=0;$x<$clparecer->numrows;$x++){
     db_fieldsmemory($result,$x);
     echo "<option value='$ed92_i_codigo'>".($ed92_i_sequencial==""?"S/N":$ed92_i_sequencial)." - $ed92_c_descr</option>";

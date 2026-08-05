@@ -33,7 +33,7 @@ require modification('libs/db_usuariosonline.php');
 require modification('classes/db_atividaderh_classe.php');
 require modification('classes/db_relacaotrabalho_classe.php');
 require modification('dbforms/db_funcoes.php');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clatividaderh = new cl_atividaderh;
 $relacaotrabalho = new cl_relacaotrabalho;
 $db_opcao = 1;
@@ -129,7 +129,7 @@ isset($mostraServidoresInativos) ?: $mostraServidoresInativos = 'false';
         if (isset($atividade)) {
         if ($atividade != '') {
             $result3 = $clatividaderh->sql_record($clatividaderh->sql_query('', '*', 'ed01_c_descr', " ed01_i_codigo = $atividade"));
-            $descrativ = pg_result($result3, 0, 'ed01_c_descr');
+            $descrativ = pg_fetch_result($result3, 0, 'ed01_c_descr');
         }
         ?>
         <tr>

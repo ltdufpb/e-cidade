@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -43,7 +43,7 @@ if ($db_opcao == 1) {
        <?=@$Ldb03_docum?>
     </td>
     <td> 
-       <?db_input('db03_docum', 8, $Idb03_docum, true, 'text', 3, "")?>
+       <?php db_input('db03_docum', 8, $Idb03_docum, true, 'text', 3, "")?>
     </td>
   </tr>
   <tr>
@@ -51,16 +51,16 @@ if ($db_opcao == 1) {
        <?=@$Ldb03_descr?>
     </td>
     <td> 
-       <?db_input('db03_descr', 40, $Idb03_descr, true, 'text', $db_opcao, "")?>
+       <?php db_input('db03_descr', 40, $Idb03_descr, true, 'text', $db_opcao, "")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tdb03_tipodoc?>">
-       <?db_ancora(@ $Ldb03_tipodoc, "js_pesquisadb03_tipodoc(true);", $db_opcao);?>
+       <?php db_ancora(@ $Ldb03_tipodoc, "js_pesquisadb03_tipodoc(true);", $db_opcao);?>
     </td>
     <td> 
-       <?db_input('db03_tipodoc', 10, $Idb03_tipodoc, true, 'text', $db_opcao, " onchange='js_pesquisadb03_tipodoc(false);'")?>
-       <?db_input('db08_descr', 40, $Idb08_descr, true, 'text', 3, '')?>
+       <?php db_input('db03_tipodoc', 10, $Idb03_tipodoc, true, 'text', $db_opcao, " onchange='js_pesquisadb03_tipodoc(false);'")?>
+       <?php db_input('db08_descr', 40, $Idb08_descr, true, 'text', 3, '')?>
     </td>
   </tr>
   <tr>
@@ -68,7 +68,7 @@ if ($db_opcao == 1) {
        <?=$Ldb03_instit?>
     </td>
     <td> 
-      <?$result = $cldb_config->sql_record($cldb_config->sql_query_file(null, "codigo,nomeinst", "", " codigo = ".db_getsession("DB_instit")));
+      <?php $result = $cldb_config->sql_record($cldb_config->sql_query_file(null, "codigo,nomeinst", "", " codigo = ".db_getsession("DB_instit")));
         db_selectrecord("db03_instit", $result, true, $db_opcao, "", "", "");?>
     </td>
   </tr>
@@ -76,12 +76,12 @@ if ($db_opcao == 1) {
 </center>
 <input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2?"Alterar":"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"))?>" <?=($db_botao==false?"disabled":"")?>  >
 <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >
-<?
+<?php 
 if ($db_opcao==1){
 ?>
 <input name="import" type="button" id="import" value="Importar Documento" onclick="js_importadoc(false);" >
 <input name="import" type="button" id="import" value="Importar Documento Padrão" onclick="js_importadoc(true);" >
-<?
+<?php 
 }
 ?>
 </form>
@@ -91,7 +91,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_db_documento.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

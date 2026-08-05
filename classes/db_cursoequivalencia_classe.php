@@ -1,35 +1,35 @@
-<?
+<?php
 //MODULO: secretariadeeducacao
 //CLASSE DA ENTIDADE cursoequivalencia
 class cl_cursoequivalencia {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $ed140_sequencial = 0;
-   var $ed140_cursoedu = 0;
-   var $ed140_cursoequivalente = 0;
+   public $ed140_sequencial = 0;
+   public $ed140_cursoedu = 0;
+   public $ed140_cursoequivalente = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  ed140_sequencial = int4 = Código
                  ed140_cursoedu = int4 = Curso
                  ed140_cursoequivalente = int4 = Curso equivalente
                  ";
    //funcao construtor da classe
-   function cl_cursoequivalencia() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cursoequivalencia");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -81,10 +81,10 @@ class cl_cursoequivalencia {
          $this->erro_status = "0";
          return false;
        }
-       $this->ed140_sequencial = pg_result($result,0,0);
+       $this->ed140_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from cursoequivalencia_ed140_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed140_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed140_sequencial)){
          $this->erro_sql = " Campo ed140_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_cursoequivalencia {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "cursoequivalencia ($this->ed140_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "cursoequivalencia já Cadastrado";
@@ -145,12 +145,12 @@ class cl_cursoequivalencia {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,22323,'$this->ed140_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,4023,22323,'','".AddSlashes(pg_result($resaco,0,'ed140_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,4023,22324,'','".AddSlashes(pg_result($resaco,0,'ed140_cursoedu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,4023,22325,'','".AddSlashes(pg_result($resaco,0,'ed140_cursoequivalente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,4023,22323,'','".AddSlashes(pg_fetch_result($resaco,0,'ed140_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,4023,22324,'','".AddSlashes(pg_fetch_result($resaco,0,'ed140_cursoedu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,4023,22325,'','".AddSlashes(pg_fetch_result($resaco,0,'ed140_cursoequivalente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_cursoequivalencia {
       $this->atualizacampos();
      $sql = " update cursoequivalencia set ";
      $virgula = "";
-     if(trim($this->ed140_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed140_sequencial"])){
+     if(trim((string) $this->ed140_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed140_sequencial"])){
        $sql  .= $virgula." ed140_sequencial = $this->ed140_sequencial ";
        $virgula = ",";
-       if(trim($this->ed140_sequencial) == null ){
+       if(trim((string) $this->ed140_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "ed140_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_cursoequivalencia {
          return false;
        }
      }
-     if(trim($this->ed140_cursoedu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed140_cursoedu"])){
+     if(trim((string) $this->ed140_cursoedu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed140_cursoedu"])){
        $sql  .= $virgula." ed140_cursoedu = $this->ed140_cursoedu ";
        $virgula = ",";
-       if(trim($this->ed140_cursoedu) == null ){
+       if(trim((string) $this->ed140_cursoedu) == null ){
          $this->erro_sql = " Campo Curso não informado.";
          $this->erro_campo = "ed140_cursoedu";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_cursoequivalencia {
          return false;
        }
      }
-     if(trim($this->ed140_cursoequivalente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed140_cursoequivalente"])){
+     if(trim((string) $this->ed140_cursoequivalente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed140_cursoequivalente"])){
        $sql  .= $virgula." ed140_cursoequivalente = $this->ed140_cursoequivalente ";
        $virgula = ",";
-       if(trim($this->ed140_cursoequivalente) == null ){
+       if(trim((string) $this->ed140_cursoequivalente) == null ){
          $this->erro_sql = " Campo Curso equivalente não informado.";
          $this->erro_campo = "ed140_cursoequivalente";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_cursoequivalencia {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,22323,'$this->ed140_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed140_sequencial"]) || $this->ed140_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,4023,22323,'".AddSlashes(pg_result($resaco,$conresaco,'ed140_sequencial'))."','$this->ed140_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,4023,22323,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed140_sequencial'))."','$this->ed140_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed140_cursoedu"]) || $this->ed140_cursoedu != "")
-             $resac = db_query("insert into db_acount values($acount,4023,22324,'".AddSlashes(pg_result($resaco,$conresaco,'ed140_cursoedu'))."','$this->ed140_cursoedu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,4023,22324,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed140_cursoedu'))."','$this->ed140_cursoedu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed140_cursoequivalente"]) || $this->ed140_cursoequivalente != "")
-             $resac = db_query("insert into db_acount values($acount,4023,22325,'".AddSlashes(pg_result($resaco,$conresaco,'ed140_cursoequivalente'))."','$this->ed140_cursoequivalente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,4023,22325,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed140_cursoequivalente'))."','$this->ed140_cursoequivalente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_cursoequivalencia {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,22323,'$ed140_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,4023,22323,'','".AddSlashes(pg_result($resaco,$iresaco,'ed140_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,4023,22324,'','".AddSlashes(pg_result($resaco,$iresaco,'ed140_cursoedu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,4023,22325,'','".AddSlashes(pg_result($resaco,$iresaco,'ed140_cursoequivalente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,4023,22323,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed140_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,4023,22324,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed140_cursoedu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,4023,22325,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed140_cursoequivalente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

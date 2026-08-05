@@ -146,7 +146,8 @@ class AssentamentoRRA extends Assentamento {
 	 * Para a inclusão dos dados, o valor total devido e o numero de meses deve ser informado
 	 * @throws DBException
 	 */
-	public function persist($lSomenteRRA = false) {
+	#[Override]
+    public function persist($lSomenteRRA = false) {
 		
 		$this->validarDadosObrigatorios();
 		
@@ -218,11 +219,12 @@ class AssentamentoRRA extends Assentamento {
 	 * Converte os dados da classe emm um objeto json
 	 * @return stdClass
 	 */
-	public function toJSON() {
+	#[Override]
+    public function toJSON() {
 		
 		$oDados = json_decode(parent::toJSON());
 		if (empty($oDados)) {
-		  $oDados = new \stdClass();
+		  $oDados = new stdClass();
     }
 		$oDados->natureza                       = "RRA";
 		$oDados->valor_total_devido             = $this->getValorTotalDevido();

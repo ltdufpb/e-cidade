@@ -95,7 +95,7 @@ class DuracaoRepository
      * @param Duracao|null $duracao
      * @throws Exception
      */
-    public function delete(Duracao $duracao = null)
+    public function delete(?Duracao $duracao = null)
     {
         $id = $duracao instanceof Duracao ? $duracao->getSequencial() : null;
 
@@ -113,7 +113,7 @@ class DuracaoRepository
      * @return bool|Duracao
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhpessoalprocessoduracao;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

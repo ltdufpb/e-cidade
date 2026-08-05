@@ -35,7 +35,7 @@ class CensoDisciplinaRegistry
     /**
      * @var CensoDisciplina[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     public static function set(CensoDisciplina $censoDisciplina)
     {
@@ -44,7 +44,7 @@ class CensoDisciplinaRegistry
 
     public static function get($key)
     {
-        if (!array_key_exists($key, self::$storage)) {
+        if (!array_key_exists((string) $key, self::$storage)) {
             $censoDisciplina = CensoDisciplinaRepository::find($key);
             if (is_null($censoDisciplina)) {
                 return null;

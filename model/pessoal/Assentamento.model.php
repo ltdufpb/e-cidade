@@ -24,7 +24,8 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-
+use ECidade\RecursosHumanos\RH\PontoEletronico\Evento\Model\Evento;
+use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\AdicionalNoturno;
 use \ECidade\RecursosHumanos\RH\PontoEletronico\Manutencao\Repository\EspelhoPontoCache;
 use \ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\DiaTrabalho;
 use \ECidade\RecursosHumanos\RH\PontoEletronico\Manutencao\EspelhoPonto;
@@ -164,7 +165,7 @@ class Assentamento
      */
     private $oServidor = null;
 
-    protected $aValoresAtributosDinamicos = array();
+    protected $aValoresAtributosDinamicos = [];
 
     /**
      * Atributo que guarda a quantidade de horas do assentamento
@@ -189,7 +190,7 @@ class Assentamento
      * Construtor da classe
      *
      * @param Integer $iCodigo
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     public function __construct($iCodigo = null)
     {
@@ -304,7 +305,7 @@ class Assentamento
     }
 
     /**
-     * @return \TipoAssentamento
+     * @return TipoAssentamento
      */
     public function getInstanciaTipoAssentamento()
     {
@@ -599,10 +600,10 @@ class Assentamento
         $classenta->h16_nrport  = $this->getCodigoPortaria();
         $classenta->h16_atofic  = $this->getDescricaoAto();
         $classenta->h16_quant   = $this->getDias();
-        $classenta->h16_perc    = ($this->getPercentual()) ? $this->getPercentual() : '0';
+        $classenta->h16_perc    = $this->getPercentual() ?: '0';
         $classenta->h16_dtterm  = ($this->getDataTermino() instanceof DBDate ? $this->getDataTermino()->getDate() : $this->getDataTermino());
         $classenta->h16_hist2   = $this->getSegundoHistorico();
-        $classenta->h16_login   = ($this->getLoginUsuario()) ? $this->getLoginUsuario() : '1';
+        $classenta->h16_login   = $this->getLoginUsuario() ?: '1';
         $classenta->h16_dtlanc  = ($this->getDataLancamento() instanceof DBDate ? $this->getDataLancamento()->getDate() : $this->getDataLancamento());
         $classenta->h16_conver  = ((bool)(int)$this->isConvertido()) == false ? 'false' : 'true';
         $classenta->h16_anoato  = $this->getAnoPortaria();
@@ -649,12 +650,12 @@ class Assentamento
             DBPessoal::getMesFolha()
         );
 
-        return array(
+        return [
             'codigo' => $this->getCodigo(),
             'tipo' => $this->getTipoAssentamento(),
             'natureza' => 'padrao',
             'cgm_servidor' => $servidor->getCgm()->getCodigo(),
-            'nome_servidor' => utf8_encode($servidor->getCgm()->getNome()),
+            'nome_servidor' => mb_convert_encoding($servidor->getCgm()->getNome(), 'UTF-8', 'ISO-8859-1'),
             'matricula' => $this->getMatricula(),
             'dataConcessao' => ($this->getDataConcessao() instanceof DBDate ? $this->getDataConcessao()->getDate(DBDate::DATA_PTBR) : $this->getDataConcessao()),
             'historico' => $this->getHistorico(),
@@ -669,7 +670,7 @@ class Assentamento
             'convertido' => (int)$this->isConvertido(),
             'anoPortaria' => $this->getAnoPortaria(),
             'hora' => $this->getHora(),
-        );
+        ];
     }
 
     /**
@@ -718,7 +719,7 @@ class Assentamento
 
             if(pg_num_rows($rsValorQuantidade) > 0) {
                 $sFieldName       = pg_field_name($rsValorQuantidade, 0);
-                $nValorQuantidade = pg_result($rsValorQuantidade, 0, $sFieldName);
+                $nValorQuantidade = pg_fetch_result($rsValorQuantidade, 0, $sFieldName);
             }
 
             if($oTipoAssentamento->getTipoLancamentoTipoAssentamentoFinanceiro() != 1 && $oTipoAssentamento->getTipoLancamentoTipoAssentamentoFinanceiro() != 2) {
@@ -797,12 +798,12 @@ class Assentamento
     /**
      * Retorna os atributos dinâmicos do assentamento
      * @return array
-     * @throws \DBException
+     * @throws DBException
      */
     public function getAtributosDinamicos()
     {
 
-        $aAtributosDinamicos = array();
+        $aAtributosDinamicos = [];
 
         $sSqlBuscaAtributos  = 'select db109_sequencial, 
   	        	                     db109_descricao, 
@@ -857,7 +858,7 @@ class Assentamento
      * Define o valor do atributo dinamico pelo seu nome
      * @param $sNomeAtributo
      * @param $sValor
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     public function setValorAtributo($sNomeAtributo, $sValor)
     {
@@ -917,8 +918,8 @@ class Assentamento
     {
 
         /* inicializa um array com todas horas permitidas */
-        $horasPermitidas = \ECidade\RecursosHumanos\RH\PontoEletronico\Evento\Model\Evento::$horasExtrasPermitidas;
-        $horasRetorno = array();
+        $horasPermitidas = Evento::$horasExtrasPermitidas;
+        $horasRetorno = [];
         foreach ($horasPermitidas as $codigoHora) {
             $horasRetorno[$codigoHora] = '00:00';
         }
@@ -956,7 +957,7 @@ class Assentamento
     public function getHorasAbonoHoras()
     {
 
-        $horasRetorno       = array('horaInicio'=>null, 'horaFim'=>null);
+        $horasRetorno       = ['horaInicio'=>null, 'horaFim'=>null];
         $daoAbonoFalta      = new cl_assentamentoabonofalta();
         $rsBuscaHorasExtras = db_query($daoAbonoFalta->sql_query_file(null, "*", null, "rh213_codigo = {$this->iCodigo}"));
 
@@ -968,12 +969,10 @@ class Assentamento
         $totalRegistrosLancados = pg_num_rows($rsBuscaHorasExtras);
         if ($totalRegistrosLancados > 0) {
 
-            return db_utils::makeFromRecord($rsBuscaHorasExtras, function($retorno) {
-                return (object)array(
-                  'horaInicio' => $retorno->rh213_horainicio,
-                  'horaFim'    => $retorno->rh213_horafim
-                );
-            }, 0);
+            return db_utils::makeFromRecord($rsBuscaHorasExtras, fn($retorno) => (object)[
+              'horaInicio' => $retorno->rh213_horainicio,
+              'horaFim'    => $retorno->rh213_horafim
+            ], 0);
         }
 
         return (object)$horasRetorno;
@@ -1002,32 +1001,31 @@ class Assentamento
         }
 
         $stdConsulta = db_utils::fieldsMemory($resRetificacao, 0);
-        return (object) array(
+        return (object) [
           'sequencial' => $stdConsulta->rh220_sequencial,
           'origem'     => $stdConsulta->rh220_origemretificacao,
           'tipo'       => $stdConsulta->rh220_tipoprocesso,
           'numero'     => $stdConsulta->rh220_numeroprocesso
-        );
+        ];
     }
 
     /**
      * @param $iTipoAssentamento
      * @param $iSelecao
-     * @return \stdClass
+     * @return stdClass
      */
-
     public function buscaAgendaAssetamento($iTipoAssentamento, $iSelecao)
     {
 
-        $oDaoAgendaAssentamento = new \cl_agendaassentamento();
+        $oDaoAgendaAssentamento = new cl_agendaassentamento();
 
-        $fields = array(
+        $fields = [
           'formulainicio.db148_nome as db148_nome_inicio',
           'formulafim.db148_nome as db148_nome_fim',
           'formulafaltasperiodo.db148_nome as db148_nome_faltasperiodo',
           'h82_tipoassentamento, h82_selecao'
 
-        );
+        ];
 
 
         $sSqlAgendaAssentamento = $oDaoAgendaAssentamento
@@ -1040,7 +1038,7 @@ class Assentamento
           );
 
         $rsAgendaAssentamento = db_query($sSqlAgendaAssentamento);
-        $stdAgendaAssentamento = \db_utils::fieldsMemory($rsAgendaAssentamento, 0);
+        $stdAgendaAssentamento = db_utils::fieldsMemory($rsAgendaAssentamento, 0);
 
         return $stdAgendaAssentamento;
     }
@@ -1058,18 +1056,18 @@ class Assentamento
         if (
             in_array(
                 $tipoAssentamento->getNatureza(),
-                array(
+                [
                     static::NATUREZA_JUSTIFICATIVA,
                     static::NATUREZA_ABONO_FALTA,
                     static::NATUREZA_AUTORIZA_HORA_EXTRA,
-                )
+                ]
             )
             ||
             strtoupper($tipoAssentamento->getTipo()) == 'A'
         ) {
-            $dataInicial = $this->getDataConcessao() instanceof DBDate ? $this->getDataConcessao() : new \DBDate($this->getDataConcessao());
+            $dataInicial = $this->getDataConcessao() instanceof DBDate ? $this->getDataConcessao() : new DBDate($this->getDataConcessao());
             $dataFinal = $this->getDataTermino();
-            $dataFinal = empty($dataFinal) ? clone $dataInicial : (($dataFinal instanceof DBDate) ? $dataFinal : new \DBDate($dataFinal));
+            $dataFinal = empty($dataFinal) ? clone $dataInicial : (($dataFinal instanceof DBDate) ? $dataFinal : new DBDate($dataFinal));
 
             EspelhoPontoCache::init()->invalidarCacheNoPeriodo($this->getMatricula(), $dataInicial, $dataFinal);
         }
@@ -1115,13 +1113,13 @@ class Assentamento
     public function calcularHorasDiurnasNoturnasNoDia(DiaTrabalho $diaTrabalho)
     {
         if (strtoupper($this->getInstanciaTipoAssentamento()->getTipo()) == 'A') {
-            $baseHora = new \ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Horas\AdicionalNoturno($diaTrabalho);
+            $baseHora = new AdicionalNoturno($diaTrabalho);
             $jornada = $diaTrabalho->getJornada();
 
             $horasJornada = $jornada->getHoras();
             $quantidadeHorasJornada = count($horasJornada);
 
-            $horasTotais = array();
+            $horasTotais = [];
             for ($i = 0; $i < $quantidadeHorasJornada; $i = $i + 2) {
                 $indiceEntrada = $i;
                 $indiceSaida = $i+1;
@@ -1141,21 +1139,21 @@ class Assentamento
     }
 
     /**
-     * @param \stdClass[] $horasTotais
+     * @param stdClass[] $horasTotais
      * @return String
      */
-    protected function totalizarHorasDiurnasENoturnas($horasTotais = array())
+    protected function totalizarHorasDiurnasENoturnas($horasTotais = [])
     {
         $horastotaisDiurnas = '00:00';
         $horastotaisNoturnas = '00:00';
         foreach ($horasTotais as $hora) {
-            $horastotaisDiurnas = EspelhoPonto::somarTotalizador(array($horastotaisDiurnas, $hora->horasDiurnas->format('H:i')));
-            $horastotaisNoturnas = EspelhoPonto::somarTotalizador(array($horastotaisNoturnas, $hora->horasNoturnas->format('H:i')));
+            $horastotaisDiurnas = EspelhoPonto::somarTotalizador([$horastotaisDiurnas, $hora->horasDiurnas->format('H:i')]);
+            $horastotaisNoturnas = EspelhoPonto::somarTotalizador([$horastotaisNoturnas, $hora->horasNoturnas->format('H:i')]);
         }
 
         $this->setHoraDiurna($horastotaisDiurnas);
         $this->setHoraNoturna($horastotaisNoturnas);
-        $this->setHora(EspelhoPonto::somarTotalizador(array($horastotaisDiurnas, $horastotaisNoturnas)));
+        $this->setHora(EspelhoPonto::somarTotalizador([$horastotaisDiurnas, $horastotaisNoturnas]));
 
         return $this->getHora();
     }

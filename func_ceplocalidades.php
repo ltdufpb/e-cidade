@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ceplocalidades_classe.php"));
 db_postmemory($HTTP_POST_VARS,0);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clceplocalidades = new cl_ceplocalidades;
 $clceplocalidades->rotulo->label("cp05_codlocalidades");
 $clceplocalidades->rotulo->label("cp05_localidades");
@@ -55,7 +56,7 @@ $clceplocalidades->rotulo->label("cp05_sigla");
               <?=$Lcp05_codlocalidades?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("cp05_codlocalidades",10,$Icp05_codlocalidades,true,"text",4,"","chave_cp05_codlocalidades");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $clceplocalidades->rotulo->label("cp05_sigla");
               <?=$Lcp05_sigla?>
             </td>
             <td width="96%" align="left" nowrap> 
-            <?
+            <?php 
 		       		db_input("cp05_sigla",10,2,true,"text",4,"","chave_cp05_sigla");
 		       	?>
             </td>
@@ -75,7 +76,7 @@ $clceplocalidades->rotulo->label("cp05_sigla");
               <?=$Lcp05_localidades?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("cp05_localidades",40,$Icp05_localidades,true,"text",4,"","chave_cp05_localidades");
 		       ?>
             </td>
@@ -93,7 +94,7 @@ $clceplocalidades->rotulo->label("cp05_sigla");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_ceplocalidades.php")==true){
@@ -135,12 +136,12 @@ $clceplocalidades->rotulo->label("cp05_sigla");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

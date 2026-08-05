@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -46,7 +46,8 @@ $clempagepag  = new cl_empagepag;
 $clempageconf  = new cl_empageconf;
 
 //echo ($HTTP_SERVER_VARS["QUERY_STRING"]);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 //db_postmemory($HTTP_POST_VARS);
 $db_opcao = 1;
 $db_botao = false;
@@ -81,7 +82,7 @@ $numrows= $clempageconf->numrows;
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <style>
-<?$cor="#999999"?>
+<?php $cor="#999999"?>
 .bordas02{
          border: 2px solid #cccccc;
          border-top-color: <?=$cor?>;
@@ -116,7 +117,7 @@ $numrows= $clempageconf->numrows;
           <td class='bordas02'><small><b><?=$RLe81_valor?></b></small></td>
           <td class='bordas02'><small><b><?=$RLe83_codtipo?></b></small></td>
 	</tr>
-        <?
+        <?php 
 	  for($i=0; $i<$numrows; $i++){
 	    db_fieldsmemory($result,$i,true);
 	?>
@@ -129,7 +130,7 @@ $numrows= $clempageconf->numrows;
           <td class='bordas' align='right'><small><?=number_format($e81_valor,"2",".","")?></small></td>
           <td class='bordas' align='left'><small><?=$e83_descr?></small></td>
 	</tr>
-        <?
+        <?php 
 	  }
 	?>
       </table>

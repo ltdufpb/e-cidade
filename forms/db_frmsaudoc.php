@@ -543,7 +543,7 @@ function js_pesquisa() {
 function js_preenchepesquisa( chave ) {
 
   db_iframe_cgs_und.hide();
-  <?echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";?>
+  <?php echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";?>
 }
 
 function js_novo() {

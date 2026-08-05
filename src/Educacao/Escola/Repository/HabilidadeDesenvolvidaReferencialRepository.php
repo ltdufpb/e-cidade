@@ -3,6 +3,7 @@
 
 namespace ECidade\Educacao\Escola\Repository;
 
+use cl_diario_classe_bncc_habilidade_referencial;
 use ECidade\Educacao\Escola\Model\HabilidadeDesenvolvida;
 use ECidade\Educacao\Escola\Model\HabilidadeDesenvolvidaReferencial;
 use ECidade\Educacao\Secretaria\BNCC\Model\HabilidadeReferencialCurricularEstadual;
@@ -17,7 +18,7 @@ class HabilidadeDesenvolvidaReferencialRepository extends Repository
 
     public function get()
     {
-        $dao = new \cl_diario_classe_bncc_habilidade_referencial();
+        $dao = new cl_diario_classe_bncc_habilidade_referencial();
         $sql = $dao->sql_query_file(null, "*", null, implode(', ', $this->scopes));
         $rs = db_query($sql);
 
@@ -35,7 +36,7 @@ class HabilidadeDesenvolvidaReferencialRepository extends Repository
 
     public function salvar(HabilidadeDesenvolvidaReferencial $habilidadeReferencial)
     {
-        $dao = new \cl_diario_classe_bncc_habilidade_referencial();
+        $dao = new cl_diario_classe_bncc_habilidade_referencial();
         $dao->ed169_codigo = null;
         $dao->ed169_diario_classe_bncc_habilidade = $habilidadeReferencial->getHabilidadeDesenvolvida()->getCodigo();
         $dao->ed169_bnccreferencial = $habilidadeReferencial->getReferencialCurricular()->getCodigo();
@@ -56,7 +57,7 @@ class HabilidadeDesenvolvidaReferencialRepository extends Repository
      */
     public function excluir(HabilidadeDesenvolvidaReferencial $habilidadeDesenvolidaReferencial)
     {
-        $dao = new \cl_diario_classe_bncc_habilidade_referencial();
+        $dao = new cl_diario_classe_bncc_habilidade_referencial();
         $dao->ed169_codigo = $habilidadeDesenvolidaReferencial->getCodigo();
         $dao->excluir($dao->ed169_codigo);
 

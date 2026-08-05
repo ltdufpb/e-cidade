@@ -34,15 +34,15 @@ abstract class LogCensoRegistry
     const MATRICULA_INICIAL = 1;
     const SITUACAO_ALUNO = 2;
 
-    private static $storedValues = array();
+    private static $storedValues = [];
 
     /**
      * @var array
      */
-    private static $allowedKeys = array(
+    private static $allowedKeys = [
         self::MATRICULA_INICIAL,
         self::SITUACAO_ALUNO,
-    );
+    ];
 
     /**
      * @param string $key

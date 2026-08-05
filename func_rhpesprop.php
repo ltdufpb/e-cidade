@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhpesprop_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhpesprop = new cl_rhpesprop;
 $clrhpesprop->rotulo->label("rh19_regist");
 $clrhpesprop->rotulo->label("rh19_propi");
@@ -54,7 +55,7 @@ $clrhpesprop->rotulo->label("rh19_propi");
               <?=$Lrh19_regist?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh19_regist",6,$Irh19_regist,true,"text",4,"","chave_rh19_regist");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clrhpesprop->rotulo->label("rh19_propi");
               <?=$Lrh19_propi?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh19_propi",15,$Irh19_propi,true,"text",4,"","chave_rh19_propi");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clrhpesprop->rotulo->label("rh19_propi");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhpesprop.php")==true){
@@ -118,12 +119,12 @@ $clrhpesprop->rotulo->label("rh19_propi");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

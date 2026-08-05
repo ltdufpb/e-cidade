@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiccadposto_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clveiccadposto = new cl_veiccadposto;
 $clveiccadposto->rotulo->label("ve29_codigo");
@@ -51,7 +52,7 @@ $clveiccadposto->rotulo->label("ve29_codigo");
     <td height="63" align="center" valign="top">
         <table width="35%" border="0" align="center" cellspacing="0">
 	     <form name="form2" method="post" action="" >
-<?     
+<?php      
     if (isset($param_tipo) && $param_tipo == 3){
 ?>       
           <tr> 
@@ -59,13 +60,13 @@ $clveiccadposto->rotulo->label("ve29_codigo");
 						<b>Tipo de Posto</b>
             </td>
             <td width="96%" align="left" nowrap> 
-					<?
+					<?php 
             $tipo = array('0' => 'Todos', '1'=>'Interno','2'=>'Externo');
 					  db_select('tipo',$tipo,true,2,"");
 				  ?>
           </td>
           </tr>
-<?
+<?php 
     }
 ?>
           <tr> 
@@ -73,7 +74,7 @@ $clveiccadposto->rotulo->label("ve29_codigo");
               <?=$Lve29_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ve29_codigo",10,$Ive29_codigo,true,"text",4,"","chave_ve29_codigo");
 		       ?>
             </td>
@@ -91,7 +92,7 @@ $clveiccadposto->rotulo->label("ve29_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $dbwhere = "";
       $and     = "";
       if (isset($param_tipo) && trim($param_tipo) != ""){
@@ -142,12 +143,12 @@ $clveiccadposto->rotulo->label("ve29_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

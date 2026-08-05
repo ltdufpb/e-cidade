@@ -35,21 +35,17 @@ require_once(modification("interfaces/iLog.interface.php"));
 
 class DBLogJSON implements iLog {
 
-  private $sCaminhoArquivo = null;
   private $pArquivo;
-  private $lMostraDataHora = false;
   private $oServiceJson    = null;
   private $oLog            = null;
   /**
    * Construtor da Classe
    * @param integer $sCaminhoArquivo
    */
-  public function __construct($sCaminhoArquivo, $lMostrarHora = false) {
+  public function __construct(private $sCaminhoArquivo, private $lMostraDataHora = false) {
 
-    $this->sCaminhoArquivo = $sCaminhoArquivo;
-    $this->lMostraDataHora = $lMostrarHora;
     $this->oServiceJson    = new Services_JSON();
-    $this->pArquivo        = fopen($sCaminhoArquivo, 'w');
+    $this->pArquivo        = fopen($this->sCaminhoArquivo, 'w');
     $this->oLog            = new stdClass();
   }
 
@@ -87,7 +83,7 @@ class DBLogJSON implements iLog {
 
   public function finalizarLog() {
 
-    fputs($this->pArquivo, $this->oServiceJson->encode($this->oLog));
+    fputs($this->pArquivo, (string) $this->oServiceJson->encode($this->oLog));
     fclose($this->pArquivo);
   }
 

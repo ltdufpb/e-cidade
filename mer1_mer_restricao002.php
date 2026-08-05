@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_mer_restricao_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $clmer_restricao = new cl_mer_restricao;
 $db_opcao        = 22;
@@ -58,7 +58,7 @@ if (isset($alterar)) {
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href   = 'mer1_mer_restricaointolerancia001.php?me34_i_restricao=<?=$chavepesquisa?>'+
                                          '&me24_i_aluno=<?=$me24_i_aluno?>&ed47_v_nome=<?=$ed47_v_nome?>';     
   </script>
-  <?
+  <?php 
   
 }
 ?>
@@ -77,7 +77,7 @@ if (isset($alterar)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Restrição</b></legend>
-    <?include(modification("forms/db_frmmer_restricao.php"));?>
+    <?php include(modification("forms/db_frmmer_restricao.php"));?>
    </fieldset>
    </center>
   </td>
@@ -85,7 +85,7 @@ if (isset($alterar)) {
 </table>
 </body>
 </html>
-<?
+<?php 
 if (isset($alterar)) {
 	
  if ($clmer_restricao->erro_status=="0") {

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_areatrabalho_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clareatrabalho = new cl_areatrabalho;
 $db_opcao = 1;
 $db_botao = true;
@@ -77,19 +77,19 @@ if(isset($excluir)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Cadastro de Área de Trabalho</b></legend>
-    <?include(modification("forms/db_frmareatrabalho.php"));?>
+    <?php include(modification("forms/db_frmareatrabalho.php"));?>
    </fieldset>
    </center>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
 js_tabulacaoforms("form1","ed25_c_descr",true,1,"ed25_c_descr",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
  if($clareatrabalho->erro_status=="0"){
   $clareatrabalho->erro(true,false);

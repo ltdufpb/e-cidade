@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_descartemedicamento_classe.php"));
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cldescartemedicamento = new cl_descartemedicamento;
 $cldescartemedicamento->rotulo->label("sd107_sequencial");
 $cldescartemedicamento->rotulo->label("sd107_medicamento");
@@ -54,11 +55,11 @@ $oRotulo->label("m60_descr");
       <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
         <tr>
           <td><label for="chave_sd107_sequencial" class="bold">Código Descarte:</label></td>
-          <td><? db_input("sd107_sequencial",10,$Isd107_sequencial,true,"text",4,"","chave_sd107_sequencial"); ?></td>
+          <td><?php  db_input("sd107_sequencial",10,$Isd107_sequencial,true,"text",4,"","chave_sd107_sequencial"); ?></td>
         </tr>
         <tr>
           <td><label for="chave_m60_descr" class="bold"><?=$Lsd107_medicamento?></label></td>
-          <td><? db_input("m60_descr",30, $Im60_descr,true,"text",4,"","chave_m60_descr");?></td>
+          <td><?php  db_input("m60_descr",30, $Im60_descr,true,"text",4,"","chave_m60_descr");?></td>
         </tr>
       </table>
     </fieldset>

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_serieregimemat_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clserieregimemat = new cl_serieregimemat;
 $clrotulo = new rotulocampo;
 $clrotulo->label("ed218_i_codigo");
@@ -55,7 +56,7 @@ $clrotulo->label("ed218_c_nome");
        <?=$Led218_i_codigo?>
       </td>
       <td width="96%" align="left" nowrap>
-       <?db_input("ed218_i_codigo",20,$Ied218_i_codigo,true,"text",4,"","chave_ed218_i_codigo");?>
+       <?php db_input("ed218_i_codigo",20,$Ied218_i_codigo,true,"text",4,"","chave_ed218_i_codigo");?>
       </td>
      </tr>
      <tr>
@@ -63,7 +64,7 @@ $clrotulo->label("ed218_c_nome");
        <?=$Led218_c_nome?>
       </td>
       <td width="96%" align="left" nowrap>
-       <?db_input("ed218_c_nome",30,$Ied218_c_nome,true,"text",4,"","chave_ed218_c_nome");?>
+       <?php db_input("ed218_c_nome",30,$Ied218_c_nome,true,"text",4,"","chave_ed218_c_nome");?>
       </td>
      </tr>
      <tr>
@@ -79,7 +80,7 @@ $clrotulo->label("ed218_c_nome");
  </tr>
  <tr>
   <td align="center" valign="top">
-   <?
+   <?php 
    $condicao = " AND ed11_i_ensino = $codensino ";
    $campos = "DISTINCT regimemat.*";
    if(!isset($pesquisa_chave)){

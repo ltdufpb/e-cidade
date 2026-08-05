@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -250,7 +250,7 @@ if (isset ($excluir)) {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <script>
 function js_load_lote(){
-  <?
+  <?php 
 
 
 if (!isset ($chavepesquisa)) {
@@ -273,7 +273,7 @@ if (!isset ($chavepesquisa)) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 
 
 include(modification("forms/db_frmlote.php"));
@@ -282,14 +282,14 @@ include(modification("forms/db_frmlote.php"));
 	</td>
   </tr>
 </table>
-<?
+<?php 
 
 
 db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php 
 
 
 if ($cllote->erro_status == "0") {

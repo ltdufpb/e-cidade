@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issarqsimples_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clissarqsimples = new cl_issarqsimples;
 $clissarqsimples->rotulo->label("q17_sequencial");
 $clissarqsimples->rotulo->label("q17_nomearq");
@@ -54,7 +55,7 @@ $clissarqsimples->rotulo->label("q17_nomearq");
               <?=$Lq17_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q17_sequencial",8,$Iq17_sequencial,true,"text",4,"","chave_q17_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clissarqsimples->rotulo->label("q17_nomearq");
               <?=$Lq17_nomearq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("q17_nomearq",10,$Iq17_nomearq,true,"text",4,"","chave_q17_nomearq");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clissarqsimples->rotulo->label("q17_nomearq");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sWhere = "q17_instit = ".db_getsession("DB_instit");
       $and    = " and ";
       if (isset($semproc) && $semproc != null){
@@ -134,12 +135,12 @@ $clissarqsimples->rotulo->label("q17_nomearq");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

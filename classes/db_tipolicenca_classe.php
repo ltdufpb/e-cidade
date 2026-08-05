@@ -50,7 +50,7 @@ class cl_tipolicenca {
                  am09_descricao = varchar(50) = Descrição da Licença
                  ";
    //funcao construtor da classe
-   function cl_tipolicenca() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipolicenca");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

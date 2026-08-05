@@ -28,6 +28,8 @@
 
 namespace ECidade\Financeiro\Orcamento\Recurso;
 
+use Deprecated;
+use ECidade\Financeiro\Orcamento\Model\Complemento;
 use cl_orctiporec;
 use db_utils;
 use DBDate;
@@ -124,7 +126,7 @@ class Recurso
     protected $codigoComplemento;
 
     /**
-     * @var \ECidade\Financeiro\Orcamento\Model\Complemento
+     * @var Complemento
      */
     protected $complemento;
 
@@ -196,8 +198,8 @@ class Recurso
      *
      * @return int
      * @see getCodigo
-     * @deprecated
      */
+    #[Deprecated]
     public function getCodigoRecurso()
     {
         return $this->iCodigoRecurso;
@@ -473,7 +475,7 @@ class Recurso
     {
         $this->sEspecificacao = $sEspecificacao;
         if (!empty($sEspecificacao) && FONTE_RECURSO_UNIAO) {
-            $this->sEspecificacao = str_pad($sEspecificacao, 2, '0', STR_PAD_LEFT);
+            $this->sEspecificacao = str_pad((string) $sEspecificacao, 2, '0', STR_PAD_LEFT);
         }
     }
 
@@ -540,11 +542,11 @@ class Recurso
             }
         }
 
-        $where = implode(' and ', array(
+        $where = implode(' and ', [
             "o15_codigo <> {$this->iCodigoRecurso}",
             "trim(o15_codtri) = trim('{$this->sCodigoTribunal}')",
             "(o15_datalimite is null or o15_datalimite >= '{$dataAtual}')"
-        ));
+        ]);
 
         $daoRecurso = new cl_orctiporec();
         $buscaRecurso = $daoRecurso->sql_query_file(null, "*", null, $where);
@@ -563,7 +565,7 @@ class Recurso
     }
 
     /**
-     * @return \ECidade\Financeiro\Orcamento\Model\Complemento
+     * @return Complemento
      * @throws Exception
      */
     public function getComplementoRecursoVinculado()

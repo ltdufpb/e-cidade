@@ -54,7 +54,7 @@ try {
     case "buscarEscolasFora":
 
       $aEscolas           = EscolaProcedenciaRepository::getTodasEscolasProcedencia();
-      $oRetorno->aEscolas = array();
+      $oRetorno->aEscolas = [];
       foreach ($aEscolas as $oEscola) {
 
         $oDados          = new stdClass();
@@ -78,7 +78,7 @@ try {
       }
 
       $iLinhas            = pg_num_rows($rs);
-      $oRetorno->aEscolas = array();
+      $oRetorno->aEscolas = [];
       for( $i = 0; $i < $iLinhas; $i++) {
 
         $oDadosEscola         = db_utils::fieldsMemory($rs, $i);
@@ -92,7 +92,7 @@ try {
 
     case 'buscarAlunosDisponiveisParaTransferencia':
 
-      $oRetorno->aAlunos = array();
+      $oRetorno->aAlunos = [];
       if ( empty($oParam->iEtapa) ) {
         throw new ParameterException( _M( MSG_EDU4_TRANSFERIRALUNOSENCERRADOSRPC . "informe_etapa") );
       }
@@ -176,7 +176,7 @@ try {
 
     case 'buscarEmissor':
 
-      $oRetorno->aEmissores = array();
+      $oRetorno->aEmissores = [];
 
       $oDaoEscolaDiretor  = new cl_escoladiretor();
       $sCamposDiretor     = " 'DIRETOR' as funcao, ";

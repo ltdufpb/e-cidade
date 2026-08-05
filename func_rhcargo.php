@@ -33,7 +33,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhcargo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhcargo = new cl_rhcargo;
 $clrhcargo->rotulo->label("rh04_codigo");
 $clrhcargo->rotulo->label("rh04_descr");
@@ -57,7 +58,7 @@ $clrhcargo->rotulo->label("rh04_descr");
                 <?=$Lrh04_codigo?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php 
              db_input("rh04_codigo",5,$Irh04_codigo,true,"text",4,"","chave_rh04_codigo");
              ?>
               </td>
@@ -67,7 +68,7 @@ $clrhcargo->rotulo->label("rh04_descr");
                 <?=$Lrh04_descr?>
               </td>
               <td width="96%" align="left" nowrap>
-                <?
+                <?php 
              db_input("rh04_descr",40,$Irh04_descr,true,"text",4,"","chave_rh04_descr");
              ?>
               </td>
@@ -90,7 +91,7 @@ $clrhcargo->rotulo->label("rh04_descr");
     <td align="center" valign="top">
       <fieldset>
         <legend>Resultado da Pesquisa</legend>
-      <?
+      <?php 
       $where = " rh04_instit = ".db_getsession("DB_instit");
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
@@ -128,12 +129,12 @@ $clrhcargo->rotulo->label("rh04_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

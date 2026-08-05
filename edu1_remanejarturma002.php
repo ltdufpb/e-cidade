@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -40,8 +40,8 @@ include(modification("classes/db_regenciahorario_classe.php"));
 include(modification("classes/db_turmaserieregimemat_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_jsplibwebseller.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str($_SERVER["QUERY_STRING"] ?? "", $_parseStr); extract($_parseStr, EXTR_SKIP);
+db_postmemory($_POST);
 $iAnoEtapaCenso        = null;
 $clturma               = new cl_turma;
 $clturmaturnoadicional = new cl_turmaturnoadicional;
@@ -85,7 +85,7 @@ if(isset($alterar)) {
   $db_opcao  = 2;
   $db_opcao1 = 3;
   db_inicio_transacao();
-  $clturma->ed57_c_descr = trim($ed57_c_descr);
+  $clturma->ed57_c_descr = trim((string) $ed57_c_descr);
   $clturma->alterar($ed57_i_codigo);
   db_fim_transacao();
   $db_botao = true;
@@ -138,7 +138,7 @@ if(isset($alterar)) {
    (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a5.location.href='edu1_parecerturma001.php?ed105_i_turma=<?=$ed57_i_codigo?>'+
                                      '&ed57_c_descr=<?=$ed57_c_descr?>&ed52_c_descr=<?=$ed52_c_descr?>';
   </script>
- <?
+ <?php 
 }
 ?>
 <html>
@@ -158,7 +158,7 @@ if(isset($alterar)) {
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Turma</b></legend>
-    <?include(modification("forms/db_frmturma.php"));?>
+    <?php include(modification("forms/db_frmturma.php"));?>
    </fieldset>
    </center>
   </td>
@@ -169,7 +169,7 @@ if(isset($alterar)) {
 <script>
 js_tabulacaoforms("form1","ed57_c_descr",true,1,"ed57_c_descr",true);
 </script>
-<?
+<?php 
 if (isset($alterar)) {
   if ($clturma->erro_status == "0") {
     $clturma->erro(true,false);
@@ -209,7 +209,7 @@ if (isset($alterar)) {
                                         );
     $linhas2 = $clturmaturnoadicional->numrows;
     if ($linhas2 > 0) {
-      $turnoaddant = pg_result($result2,0,'turnoaddant');
+      $turnoaddant = pg_fetch_result($result2,0,'turnoaddant');
     }
     if ($ed246_i_turno == "") {
       if ($clturmaturnoadicional->numrows > 0) {
@@ -240,7 +240,7 @@ if (isset($alterar)) {
   }
   ?>
    <script>parent.document.form2.teste.click();</script>
-  <?
+  <?php 
  }
 }
 if ($db_opcao == 22) {

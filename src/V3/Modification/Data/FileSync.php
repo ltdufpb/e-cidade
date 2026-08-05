@@ -13,17 +13,11 @@ use \ECidade\V3\Modification\Data\File;
 class FileSync extends Storage
 {
     /**
-     * @var \ECidade\V3\Modification\Data\File
-     */
-    private $fileData;
-
-    /**
      * @param string $path
      */
-    public function __construct(File $fileData)
+    public function __construct(private readonly File $fileData)
     {
-        $this->fileData = $fileData;
-        $path = $fileData->getPrefix() . $fileData->getOriginalPath();
+        $path = $this->fileData->getPrefix() . $this->fileData->getOriginalPath();
         parent::__construct(ECIDADE_MODIFICATION_DATA_PATH . "file/sync/" . $path);
         $this->setSerialize(false);
     }
@@ -48,7 +42,7 @@ class FileSync extends Storage
      *
      * @param string $path
      * @param string $user
-     * @return \ECidade\V3\Modification\Data\File | false
+     * @return File|false
      */
     public static function update($path, $user = null)
     {

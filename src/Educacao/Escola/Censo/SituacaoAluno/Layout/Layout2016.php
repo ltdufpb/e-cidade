@@ -1,6 +1,8 @@
 <?php
 namespace ECidade\Educacao\Escola\Censo\SituacaoAluno\Layout;
 
+use DBLayoutReader;
+
 class Layout2016 extends Layout {
 
   const LAYOUT = 277;
@@ -12,7 +14,7 @@ class Layout2016 extends Layout {
 
   static public function lerArquivo($sFilePath) {
 
-    $oDbLayoutReader = new \DBLayoutReader(self::LAYOUT, $sFilePath, true, true, false);
+    $oDbLayoutReader = new DBLayoutReader(self::LAYOUT, $sFilePath, true, true, false);
     return $oDbLayoutReader->getLines();
   }
 }

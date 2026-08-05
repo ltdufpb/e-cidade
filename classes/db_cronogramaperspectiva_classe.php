@@ -65,7 +65,7 @@ class cl_cronogramaperspectiva {
                  o124_tipo = int4 = Tipo da Perspectiva
                  ";
    //funcao construtor da classe
-   function cl_cronogramaperspectiva() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cronogramaperspectiva");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

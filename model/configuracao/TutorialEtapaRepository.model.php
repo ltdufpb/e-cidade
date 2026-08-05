@@ -2,7 +2,7 @@
 
 class TutorialEtapaRepository {
 
-  private static $etapas = array();
+  private static $etapas = [];
 
   public static function getById($id) {
 
@@ -44,7 +44,7 @@ class TutorialEtapaRepository {
 
     $aDadosEtapas = db_utils::getCollectionByRecord($rsEtapas);
 
-    $aEtapas = array();
+    $aEtapas = [];
 
     foreach ($aDadosEtapas as $obj) {
 

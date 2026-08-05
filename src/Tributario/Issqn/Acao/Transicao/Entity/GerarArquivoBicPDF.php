@@ -1,11 +1,15 @@
 <?php
 namespace ECidade\Tributario\Issqn\Acao\Transicao\Entity;
 
+use cl_escrito;
+use cl_issquant;
+use rotulocampo;
+use Exception;
+use PDF;
 use Illuminate\Support\Facades\Log;
 
 class GerarArquivoBicPDF
 {
-    private $inscricao;
     private $pdf;
     private $daoIssQuant;
     private $daoEscrito;
@@ -14,13 +18,12 @@ class GerarArquivoBicPDF
     private $texto = 8;
     private $caminho;
 
-    public function __construct($inscricao)
+    public function __construct(private $inscricao)
     {
         require_once(modification("fpdf151/pdf.php"));
-        $this->inscricao = $inscricao;
-        $this->daoEscrito = new \cl_escrito();
-        $this->daoIssQuant = new \cl_issquant();
-        $this->rotulo = new \rotulocampo();
+        $this->daoEscrito = new cl_escrito();
+        $this->daoIssQuant = new cl_issquant();
+        $this->rotulo = new rotulocampo();
         $data = date('dmYHis');
         $this->caminho = "tmp/bic_inscricao_{$this->inscricao}_data_{$data}.pdf";
     }
@@ -46,7 +49,7 @@ class GerarArquivoBicPDF
     {
         $dadosCadastrais = $this->getDadosCadastrais();
         if (empty($dadosCadastrais)) {
-            throw new \Exception(
+            throw new Exception(
                 "Dados cadastrais não encotradados para inscrição {$this->inscricao}"
             );
         }
@@ -124,7 +127,7 @@ class GerarArquivoBicPDF
         $head4 = "BIC Alvará";
         $head5 = "Inscrição: {$this->inscricao}";
         $head6 = "CGM: {$dadosCadastrais[0]['z01_numcgm']}";
-        $this->pdf = new \PDF();
+        $this->pdf = new PDF();
         $this->pdf->Open();
         $this->pdf->AliasNbPages();
     }
@@ -146,9 +149,9 @@ class GerarArquivoBicPDF
         $this->pdf->Cell(60, 1, "", "", 0, "L", 0);
 
         //lado direito da tela
-        if (strlen(trim($dadoCadastral->z01_cgccpf)) == 14) {
+        if (strlen(trim((string) $dadoCadastral->z01_cgccpf)) == 14) {
             $cpfcnpj = db_formatar($dadoCadastral->z01_cgccpf, "cnpj");
-        } elseif (strlen(trim($dadoCadastral->z01_cgccpf)) == 11) {
+        } elseif (strlen(trim((string) $dadoCadastral->z01_cgccpf)) == 11) {
             $cpfcnpj = db_formatar($dadoCadastral->z01_cgccpf, "cpf");
         } else {
             $cpfcnpj = $dadoCadastral->z01_cgccpf;
@@ -191,10 +194,10 @@ class GerarArquivoBicPDF
 
         //lado direito da tela
         $telefone = '';
-        if (strlen(trim($dadoCadastral->z01_telef)) > 0) {
+        if (strlen(trim((string) $dadoCadastral->z01_telef)) > 0) {
             $telefone = $dadoCadastral->z01_telef;
         }
-        if (strlen(trim($dadoCadastral->z01_telcel)) > 0) {
+        if (strlen(trim((string) $dadoCadastral->z01_telcel)) > 0) {
             $telefone = $telefone . ' / ' . $dadoCadastral->z01_telcel;
         }
 
@@ -323,7 +326,7 @@ class GerarArquivoBicPDF
         $this->pdf->Cell(60, 1, "", "", 0, "L", 0);
 
         $complemento = $dadoCadastral->q02_numero;
-        if (strlen(trim($dadoCadastral->q02_compl)) > 0) {
+        if (strlen(trim((string) $dadoCadastral->q02_compl)) > 0) {
             $complemento .= ' / ' . $dadoCadastral->q02_compl;
         }
 
@@ -495,7 +498,7 @@ class GerarArquivoBicPDF
         $this->pdf->Cell(60, 1, "", "", 1, "L", 0);
     }
 
-    private function buildAtividades($atividades = array())
+    private function buildAtividades($atividades = [])
     {
         $this->pdf->setX(5);
         $this->pdf->SetFont('Arial', 'B', 9);
@@ -540,7 +543,7 @@ class GerarArquivoBicPDF
         }
     }
 
-    private function buildSocios($socios = array())
+    private function buildSocios($socios = [])
     {
         $this->pdf->Cell(200, 2, "", "", 1, "C", 0);
         $this->pdf->setX(5);
@@ -662,7 +665,7 @@ class GerarArquivoBicPDF
         }
     }
 
-    private function buildSimplesNacional($simples = array())
+    private function buildSimplesNacional($simples = [])
     {
 
         $this->pdf->Cell(200, 2, "", "", 1, "C", 0);

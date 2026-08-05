@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,7 +39,7 @@ $clrotulo->label("me20_i_unidade");
        <?=@$Lme10_i_codigo?>
     </td>
     <td> 
-    <?db_input('me10_i_codigo',10,$Ime10_i_codigo,true,'text',3,"")?>
+    <?php db_input('me10_i_codigo',10,$Ime10_i_codigo,true,'text',3,"")?>
     </td>
   </tr>
   <tr>
@@ -47,31 +47,31 @@ $clrotulo->label("me20_i_unidade");
        <?=@$Lme10_c_descr?>
     </td>
     <td> 
-    <?db_input('me10_c_descr',48,$Ime10_c_descr,true,'text',$db_opcao,"")?>
+    <?php db_input('me10_c_descr',48,$Ime10_c_descr,true,'text',$db_opcao,"")?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme10_i_unidade?>">
-     <?db_ancora(@$Lme10_i_unidade,"js_pesquisame10_i_unidade(true);",$db_opcao);?>
+     <?php db_ancora(@$Lme10_i_unidade,"js_pesquisame10_i_unidade(true);",$db_opcao);?>
     </td>
     <td> 
-     <?db_input('me10_i_unidade',10,$Ime10_i_unidade,true,'text',$db_opcao,
+     <?php db_input('me10_i_unidade',10,$Ime10_i_unidade,true,'text',$db_opcao,
                  " onchange='js_pesquisame10_i_unidade(false);'"
                )
      ?>
-     <?db_input('me15_c_descr',35,@$Ime15_c_descr,true,'text',3,'')?>
+     <?php db_input('me15_c_descr',35,@$Ime15_c_descr,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tme20_i_unidade?>">
-      <?db_ancora(@$Lme20_i_unidade,"js_pesquisame20_i_unidade(true);",$db_opcao);?>
+      <?php db_ancora(@$Lme20_i_unidade,"js_pesquisame20_i_unidade(true);",$db_opcao);?>
     </td>
     <td> 
-     <?db_input('me20_i_unidade',10,@$Ime20_i_unidade,true,'text',$db_opcao,
+     <?php db_input('me20_i_unidade',10,@$Ime20_i_unidade,true,'text',$db_opcao,
                 " onchange='js_pesquisame20_i_unidade(false);'"
                )
      ?>
-     <?db_input('me15_c_descrunid',35,@$Ime15_c_descrunid,true,'text',3,'')?>
+     <?php db_input('me15_c_descrunid',35,@$Ime15_c_descrunid,true,'text',3,'')?>
     </td>
   </tr>
   <tr>
@@ -79,7 +79,7 @@ $clrotulo->label("me20_i_unidade");
        <?=@$Lme10_c_controlavalidade?>
     </td>
     <td> 
-     <?
+     <?php 
        if (!isset($me10_c_controlavalidade)) {
          $me10_c_controlavalidade = 3;
        }
@@ -92,7 +92,7 @@ $clrotulo->label("me20_i_unidade");
        <?=@$Lme10_c_ativo?>
     </td>
     <td> 
-   <?     
+   <?php      
      $xx = array("t"=>"SIM","f"=>"NAO");
      db_select('me10_c_ativo',$xx,true,$db_opcao,"");
    ?>
@@ -202,7 +202,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
 	
   db_iframe_mer_item.hide();
-  <?
+  <?php 
   if ($db_opcao!=1) {
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

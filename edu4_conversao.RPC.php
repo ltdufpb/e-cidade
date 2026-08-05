@@ -75,7 +75,7 @@ try {
 
             $aMatriculas = $oTurma->getAlunosMatriculadosNaTurmaPorSerie($oEtapa);
             $iAno = $oTurma->getCalendario()->getAnoExecucao();
-            $aAlunos = array();
+            $aAlunos = [];
 
             foreach ($aMatriculas as $oMatricula) {
                 if ($oMatricula->getSituacao() != 'MATRICULADO' || !$oMatricula->isAtiva() || $oMatricula->isConcluida()) {
@@ -120,7 +120,7 @@ try {
                 $oDadosAluno->lConvertido = $oAvaliacao->isConvertido();
                 $oDadosAluno->nMenorValor = '';
                 $oDadosAluno->nMaiorValor = '';
-                $oDadosAluno->aConceito = array();
+                $oDadosAluno->aConceito = [];
                 $oDadosAluno->mAproveitamentoMinino = $oProcedimentoAvaliacao->getFormaAvaliacao()->getAproveitamentoMinino();
 
                 if ($oProcedimentoAvaliacao->getFormaAvaliacao()->getTipo() == 'NOTA') {
@@ -151,7 +151,7 @@ try {
                 $oAvaliacaoOrigem->nMenorValor = '';
                 $oAvaliacaoOrigem->nMaiorValor = '';
 
-                $oAvaliacaoOrigem->aConceito = array();
+                $oAvaliacaoOrigem->aConceito = [];
 
                 if ($oAvaliacao->getAproveitamentoOrigem()->getElementoAvaliacao()->getFormaDeAvaliacao()->getTipo() == 'NOTA') {
                     $oAvaliacaoOrigem->nMenorValor = $oAvaliacao->getAproveitamentoOrigem()->getElementoAvaliacao()->getFormaDeAvaliacao()->getMenorValor();

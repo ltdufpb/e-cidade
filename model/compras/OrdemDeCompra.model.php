@@ -37,12 +37,6 @@ class OrdemDeCompra {
   const TIPO_AUTOMATICA = 2;
 
   /**
-   * codigo da ordem de compra
-   * @var integer
-   */
-  public  $iCodigoOrdem;
-
-  /**
    * data de emissao da ordem
    * @var DBDate
    */
@@ -105,7 +99,7 @@ class OrdemDeCompra {
    * Armazena os itens da ordem de compra
    * @var ItemOrdemDeCompra[]
    */
-  private $aItens = array();
+  private $aItens = [];
 
   /**
    * Código do Departamento
@@ -135,9 +129,11 @@ class OrdemDeCompra {
    * Carrega os dados da ordem de compra
    * @param integer $iCodigoOrdem
    */
-  public function __construct( $iCodigoOrdem = null ) {
+  public function __construct( /**
+   * codigo da ordem de compra
+   */
+  public $iCodigoOrdem = null ) {
 
-    $this->iCodigoOrdem = $iCodigoOrdem;
     if (!empty($this->iCodigoOrdem)) {
 
       $oDaoMatOrdem         = new cl_matordem();
@@ -157,7 +153,7 @@ class OrdemDeCompra {
       $sCamposMatOrdem .= "({$sSqlValorAnulado}) as valoranulado, ";
       $sCamposMatOrdem .= "($sSqlMatestoqueitemoc) as valorlancado ";
 
-      $sSqlMatOrdem = $oDaoMatOrdem->sql_query_tot( null,$sCamposMatOrdem , null, "m51_codordem = {$iCodigoOrdem}");
+      $sSqlMatOrdem = $oDaoMatOrdem->sql_query_tot( null,$sCamposMatOrdem , null, "m51_codordem = {$this->iCodigoOrdem}");
       $rsMatOrdem   = $oDaoMatOrdem->sql_record($sSqlMatOrdem);
 
       if ($oDaoMatOrdem->erro_status == "0") {
@@ -378,7 +374,7 @@ class OrdemDeCompra {
     $sSqlMatOrdemItem  = $oDaoMatOrdemItem->sql_query_entradas( null, "*", null, $sWhereOrdemCompra);
     $rsMatOrdemItem    = $oDaoMatOrdemItem->sql_record($sSqlMatOrdemItem);
 
-    $aItensEntrada     = array();
+    $aItensEntrada     = [];
     if ($oDaoMatOrdemItem->numrows > 0) {
 
       $iTotalItens    = $oDaoMatOrdemItem->numrows;

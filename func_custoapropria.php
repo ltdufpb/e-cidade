@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_custoapropria_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clcustoapropria = new cl_custoapropria;
 $oRotulo = new rotulocampo();
 $clcustoapropria->rotulo->label("cc12_sequencial");
@@ -56,7 +57,7 @@ $oRotulo->label("m60_descr");
               <b>Material</b>
             </td>
             <td  align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m60_codmater",10,$Icc12_sequencial,true,"text",4,"","chave_m60_codmater");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $oRotulo->label("m60_descr");
               <?=$Lm60_descr?>
             </td>
             <td  align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m60_descr",30,$Im60_descr,true,"text",4,"","chave_m60_descr");
 		       ?>
             </td>
@@ -74,7 +75,7 @@ $oRotulo->label("m60_descr");
               <b>Data Inicial:</b>
             </td>
             <td nowrap>
-              <?
+              <?php 
                
                db_inputdata("datainicial",null,null,null,true,"text", 1);
               ?>
@@ -83,7 +84,7 @@ $oRotulo->label("m60_descr");
               <b>Data Final:</b>
               </td>
               <td nowrap align="">
-              <?
+              <?php 
                db_inputdata("datafinal",null,null,null,true,"text", 1);
               ?>
             </td>
@@ -102,7 +103,7 @@ $oRotulo->label("m60_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sWhere = " m80_coddepto = ".db_getsession("DB_coddepto");
       $sOrder = " m80_codigo,m80_data";
       if(!isset($pesquisa_chave)){
@@ -162,12 +163,12 @@ $oRotulo->label("m60_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -8,6 +8,8 @@
 
 namespace ECidade\Configuracao\Workflow;
 
+use DBDepartamento;
+
 class Atividade
 {
 
@@ -36,9 +38,9 @@ class Atividade
     protected $grupoAtributos = '';
 
   /**
-   * Departamento da atividade
-   * @var \DBDepartamento
-   */
+     * Departamento da atividade
+     * @var DBDepartamento
+     */
     protected $departamento;
 
   /**
@@ -113,8 +115,8 @@ class Atividade
     }
 
   /**
-   * @return \DBDepartamento
-   */
+     * @return DBDepartamento
+     */
     public function getDepartamento()
     {
 
@@ -122,9 +124,9 @@ class Atividade
     }
 
   /**
-   * @param \DBDepartamento $departamento
-   */
-    public function setDepartamento(\DBDepartamento $departamento)
+     * @param DBDepartamento $departamento
+     */
+    public function setDepartamento(DBDepartamento $departamento)
     {
         $this->departamento = $departamento;
     }

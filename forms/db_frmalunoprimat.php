@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -38,21 +38,21 @@ $clrotulo->label("ed47_i_codigo");
        <?=@$Led76_i_codigo?>
     </td>
     <td>
-<?
-$x = array(''=>'');
+<?php 
+$x = [''=>''];
 db_select('ed76_i_codigo',$x,true,$db_opcao,"");
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted76_i_aluno?>">
-       <?
+       <?php 
        db_ancora(@$Led76_i_aluno,"js_pesquisaed76_i_aluno(true);",$db_opcao);
        ?>
     </td>
     <td>
-<?
-$x = array(''=>'');
+<?php 
+$x = [''=>''];
 db_select('ed76_i_aluno',$x,true,$db_opcao," onchange='js_pesquisaed76_i_aluno(false);'");
 ?>
     </td>
@@ -62,8 +62,8 @@ db_select('ed76_i_aluno',$x,true,$db_opcao," onchange='js_pesquisaed76_i_aluno(f
        <?=@$Led76_i_escola?>
     </td>
     <td>
-<?
-$x = array(''=>'');
+<?php 
+$x = [''=>''];
 db_select('ed76_i_escola',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -73,8 +73,8 @@ db_select('ed76_i_escola',$x,true,$db_opcao,"");
        <?=@$Led76_d_data?>
     </td>
     <td>
-<?
-$x = array(''=>'');
+<?php 
+$x = [''=>''];
 db_select('ed76_d_data',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -84,7 +84,7 @@ db_select('ed76_d_data',$x,true,$db_opcao,"");
        <?=@$Led76_c_tipo?>
     </td>
     <td>
-<?
+<?php 
 db_input('ed76_c_tipo',1,$Ied76_c_tipo,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -123,9 +123,9 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_alunoprimat.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

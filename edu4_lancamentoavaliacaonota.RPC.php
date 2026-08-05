@@ -43,7 +43,7 @@ $iEscola           = db_getsession("DB_coddepto");
 $oJson             = new Services_JSON();
 $oParam            = $oJson->decode(str_replace("\\", "", $_POST["json"]));
 $oRetorno          = new stdClass();
-$oRetorno->dados   = array();
+$oRetorno->dados   = [];
 $oRetorno->status  = 1;
 $oRetorno->message = '';
 
@@ -89,7 +89,7 @@ try {
 
       if (isset($oParam->iTurma) && isset($oParam->iEtapa) && !empty($oParam->iTurma) && !empty($oParam->iEtapa)) {
 
-        $oRetorno->aPeriodos    = array();
+        $oRetorno->aPeriodos    = [];
 
         $oTurma = EducacaoSessionManager::carregarTurma($oParam->iTurma);
         $oEtapa = EducacaoSessionManager::carregarEtapa($oParam->iEtapa);
@@ -107,7 +107,7 @@ try {
           $lControlaFrequencia = true;
         }
 
-        $aPeriodosAvaliacaoRetorno = array();
+        $aPeriodosAvaliacaoRetorno = [];
 
         foreach ($oProcedimentoAvaliacao->getElementos() as $oAvaliacao) {
 
@@ -133,7 +133,7 @@ try {
 
             case 'NIVEL':
 
-              $oPeriodosAvaliacao->aConceitos = array();
+              $oPeriodosAvaliacao->aConceitos = [];
               foreach ($oAvaliacao->getFormaDeAvaliacao()->getConceitos() as $oConceito) {
 
                 $oDadoConceito                     = new stdClass();
@@ -212,7 +212,7 @@ try {
       $oTurma = EducacaoSessionManager::carregarTurma($oParam->iTurma);
       $oEtapa = EducacaoSessionManager::carregarEtapa($oParam->iEtapa);
 
-      $oRetorno->aAlunos   = array();
+      $oRetorno->aAlunos   = [];
 
       $oDaoParametro       = db_utils::getDao('edu_parametros');
       $sWhereParametro     = "ed233_i_escola = " .db_getsession('DB_coddepto') ;
@@ -261,7 +261,7 @@ try {
       $lTurmaUtilizaProporciolalidade = false;
       $oProcedimentoAvaliacao         = $oTurma->getProcedimentoDeAvaliacaoDaEtapa($oEtapa);
 
-      $aOrdemElementosCompoeResultadoComProporcionalidade = array();
+      $aOrdemElementosCompoeResultadoComProporcionalidade = [];
       foreach ($oProcedimentoAvaliacao->getResultados() as $oResultadoAvaliacao) {
 
         if ( $oResultadoAvaliacao->getFormaDeObtencao() == 'SO' &&
@@ -272,7 +272,7 @@ try {
         }
       }
 
-      $aDiarioConselho = array();
+      $aDiarioConselho = [];
 
       db_inicio_transacao();
       foreach ($aMatriculas as $oMatricula) {
@@ -287,8 +287,8 @@ try {
 
         $sSituacaoReal = Situacao($oMatricula->getSituacao(),$oMatricula->getCodigo());
 
-        $oDadosAluno->sSituacaoReal      = urlencode($sSituacaoReal);
-        $oDadosAluno->sSituacaoAluno     = urlencode($oMatricula->getSituacao());
+        $oDadosAluno->sSituacaoReal      = urlencode((string) $sSituacaoReal);
+        $oDadosAluno->sSituacaoAluno     = urlencode((string) $oMatricula->getSituacao());
         $oDadosAluno->sSituacaoAbreviada = urlencode( $oMatricula->getAbreviaturaSituacao() );
         $oDadosAluno->dtMatricula        = $oMatricula->getDataMatricula()->convertTo(DBDate::DATA_PTBR);
         $oDadosAluno->lAvaliadoParecer   = $oMatricula->isAvaliadoPorParecer();
@@ -313,13 +313,13 @@ try {
 
         $oDadosAluno->lProgressaoParcialNaEtapa  = false;
         $oDadosAluno->lProgressaoParcialAnterior = false;
-        $oDadosAluno->aDisciplinasProgressao     = array();
+        $oDadosAluno->aDisciplinasProgressao     = [];
 
         $oDadoRegencia                        = new stdClass();
         $oDadoRegencia->iCodigoRegencia       = $oRegencia->getCodigo();
         $oDadoRegencia->sDescricao            = urlencode($oRegencia->getDisciplina()->getNomeDisciplina());
         $oDadoRegencia->sFrequenciaGlobal     = $oRegencia->getFrequenciaGlobal();
-        $oDadoRegencia->aAproveitamentos      = array();
+        $oDadoRegencia->aAproveitamentos      = [];
         $oDadoRegencia->lObrigatoria          = $oRegencia->isObrigatoria();
         $oDadoRegencia->lCaracterReprobatorio = $oRegencia->possuiCaracterReprobatorio();
         $oDadoRegencia->lProgressaoParcial    = false;
@@ -363,10 +363,10 @@ try {
           }
         }
 
-        $aAvaliacoesDependentesReprovadas = array();
+        $aAvaliacoesDependentesReprovadas = [];
         $lTemRecuperacao                  = false;
-        $aElementosEmRecuperacao          = array();
-        $aElementosDeRecuperacao          = array();
+        $aElementosEmRecuperacao          = [];
+        $aElementosDeRecuperacao          = [];
 
         foreach ($oDadosAproveitamento->getAvaliacoes() as $oAvaliacao) {
 
@@ -526,18 +526,18 @@ try {
           $oDadosAvaliacao->lAvaliacaoExterna     = $oAvaliacao->isAvaliacaoExterna();
           $oDadosAvaliacao->lAmparado             = $lAmparado;
           $oDadosAvaliacao->lConvertido           = $oAvaliacao->isConvertido();
-          $oDadosAvaliacao->sFormaAvaliacao       = urlencode($sFormaAvaliacao);
+          $oDadosAvaliacao->sFormaAvaliacao       = urlencode((string) $sFormaAvaliacao);
           $oDadosAvaliacao->iFormaAvaliacao       = $oAvaliacao->getElementoAvaliacao()
                                                                ->getFormaDeAvaliacao()
                                                                ->getCodigo();
-          $oDadosAvaliacao->sTipoFormaAvaliacao   = urlencode($sFormaAvaliacao);
+          $oDadosAvaliacao->sTipoFormaAvaliacao   = urlencode((string) $sFormaAvaliacao);
           $oDadosAvaliacao->nMenorValor           = "";
           $oDadosAvaliacao->nMaiorValor           = "";
           $oDadosAvaliacao->nVariacao             = "";
           $oDadosAvaliacao->mAproveitamentoMinino = $oAvaliacao->getElementoAvaliacao()
                                                                ->getFormaDeAvaliacao()
                                                                ->getAproveitamentoMinino();
-          $oDadosAvaliacao->aConceito             = array();
+          $oDadosAvaliacao->aConceito             = [];
 
           if ($sFormaAvaliacao == 'NIVEL') {
             $oDadosAvaliacao->aConceito = $oAvaliacao->getElementoAvaliacao()->getFormaDeAvaliacao()->getConceitos();
@@ -573,8 +573,8 @@ try {
 
           	$oDadosAvaliacao->sTipoAbreviado = $oAvaliacao->getTipo();
             $oDadosAvaliacao->sTipoEscola    = $oAvaliacao->getTipo() == "M" ? 'ESCOLA DA REDE' : 'FORA DA REDE';
-            $oDadosAvaliacao->sEscola        = urlencode($oAvaliacao->getEscola()->getNome());
-            $oDadosAvaliacao->sMunicipio     = urlencode($oAvaliacao->getEscola()->getMunicipio());
+            $oDadosAvaliacao->sEscola        = urlencode((string) $oAvaliacao->getEscola()->getNome());
+            $oDadosAvaliacao->sMunicipio     = urlencode((string) $oAvaliacao->getEscola()->getMunicipio());
           }
 
           if ($sFormaAvaliacao != 'PARECER' && $oDadosAvaliacao->nNota == '' && !$oDadosAvaliacao->lMinimoAtingido) {
@@ -621,9 +621,9 @@ try {
               if (!empty($oEscolaOrigem)) {
 
                 $oDadosAvaliacao->oAvaliacaoOrigem->iEscola    = $oEscolaOrigem->getCodigo();
-                $oDadosAvaliacao->oAvaliacaoOrigem->sEscola    = urlencode($oEscolaOrigem->getNome());
-                $oDadosAvaliacao->oAvaliacaoOrigem->sMunicipio = urlencode($oEscolaOrigem->getMunicipio());
-                $oDadosAvaliacao->oAvaliacaoOrigem->sEstado    = urlencode($oEscolaOrigem->getUf());
+                $oDadosAvaliacao->oAvaliacaoOrigem->sEscola    = urlencode((string) $oEscolaOrigem->getNome());
+                $oDadosAvaliacao->oAvaliacaoOrigem->sMunicipio = urlencode((string) $oEscolaOrigem->getMunicipio());
+                $oDadosAvaliacao->oAvaliacaoOrigem->sEstado    = urlencode((string) $oEscolaOrigem->getUf());
               }
 
               $oDadosAvaliacao->oAvaliacaoOrigem->nMenorValor     = "";
@@ -803,7 +803,7 @@ try {
       $iCodigoEnsino     = $oTurma->getBaseCurricular()->getCurso()->getEnsino()->getCodigo();
       $iAnoCalendario    = $oTurma->getCalendario()->getAnoExecucao();
       $aTermos           = DBEducacaoTermo::getTermoEncerramentoDoEnsino($iCodigoEnsino, $iAnoCalendario);
-      $oRetorno->aTermos = array();
+      $oRetorno->aTermos = [];
 
       $iContadorTermos        = 1;
       $oStdTermo              = new stdClass();
@@ -816,9 +816,9 @@ try {
         foreach ($aTermos as $oTermo) {
 
           $oAuxTermo              = clone($oStdTermo);
-          $oAuxTermo->sReferencia = urlencode($oTermo->sReferencia);
-          $oAuxTermo->sDescricao  = urlencode($oTermo->sDescricao);
-          $oAuxTermo->sSigla      = urlencode($oTermo->sAbreviatura);
+          $oAuxTermo->sReferencia = urlencode((string) $oTermo->sReferencia);
+          $oAuxTermo->sDescricao  = urlencode((string) $oTermo->sDescricao);
+          $oAuxTermo->sSigla      = urlencode((string) $oTermo->sAbreviatura);
 
           $oRetorno->aTermos[$iContadorTermos] = $oAuxTermo;
           $iContadorTermos++;
@@ -961,7 +961,7 @@ try {
           $oParecer = LancamentoAvaliacaoAluno::getParecer($oMatricula,
                                                            RegenciaRepository::getRegenciaByCodigo($oParam->iRegencia),
                                                            $oParam->iOrdem);
-          $oRetorno->sParecerPadronizado = urlencode($oParecer->sParecerPadronizado);
+          $oRetorno->sParecerPadronizado = urlencode((string) $oParecer->sParecerPadronizado);
           $oRetorno->sParecer            = urlencode(str_replace('\n',"\n", $oParecer->sParecer));
           break;
         }
@@ -1036,7 +1036,7 @@ echo $oJson->encode($oRetorno);
  * @param  array  $a
  * @return integer[]
  */
-function buscaOrdemElementos($oElementoAvaliacao, $a = array() ) {
+function buscaOrdemElementos($oElementoAvaliacao, $a = [] ) {
 
   if ($oElementoAvaliacao instanceof ResultadoAvaliacao ) {
 

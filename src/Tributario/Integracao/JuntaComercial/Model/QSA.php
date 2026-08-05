@@ -27,6 +27,8 @@
 
 namespace ECidade\Tributario\Integracao\JuntaComercial\Model;
 
+use CgmBase;
+
 /**
  * Class QSA
  * @package ECidade\Tributario\Integracao\JuntaComercial\Model
@@ -34,20 +36,12 @@ namespace ECidade\Tributario\Integracao\JuntaComercial\Model;
  */
 abstract class QSA
 {
-  /**
-   * @var \CgmBase
-   */
-  private $cgm;
-  private $tipoRelacionamento;
-
-  public function __construct(\CgmBase $cgm, $tipoRelacionamento)
+  public function __construct(private CgmBase $cgm, private $tipoRelacionamento)
   {
-    $this->cgm = $cgm;
-    $this->tipoRelacionamento = $tipoRelacionamento;
   }
 
   /**
-   * @return \CgmBase
+   * @return CgmBase
    */
   public function getCgm()
   {
@@ -55,7 +49,7 @@ abstract class QSA
   }
 
   /**
-   * @param \CgmBase $cgm
+   * @param CgmBase $cgm
    */
   public function setCgm($cgm)
   {

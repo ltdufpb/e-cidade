@@ -44,7 +44,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_jsplibwebseller.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $ed103_d_data_dia     = date("d", db_getsession("DB_datausu"));
 $ed103_d_data_mes     = date("m", db_getsession("DB_datausu"));
@@ -111,9 +111,9 @@ if (isset($incluir)) {
         }
       }//fecha o for
 
-      $dDataModif                         = substr($ed103_d_data,6,4)."-".substr($ed103_d_data,3,2)."-".
-                                            substr($ed103_d_data,0,2);
-      $dDataModifAnt                      = substr($datamodif,6,4)."-".substr($datamodif,3,2)."-".substr($datamodif,0,2);
+      $dDataModif                         = substr((string) $ed103_d_data,6,4)."-".substr((string) $ed103_d_data,3,2)."-".
+                                            substr((string) $ed103_d_data,0,2);
+      $dDataModifAnt                      = substr((string) $datamodif,6,4)."-".substr((string) $datamodif,3,2)."-".substr((string) $datamodif,0,2);
       $oDaoMatricula->ed60_c_situacao     = 'TRANSFERIDO REDE';
       $oDaoMatricula->ed60_d_datamodif    = $dDataModif;
       $oDaoMatricula->ed60_d_datasaida    = ($dDataModif==""?"null":$dDataModif);
@@ -128,11 +128,11 @@ if (isset($incluir)) {
         $matriculaAluno = MatriculaRepository::getMatriculaByCodigo($matricula);
         $matriculaAluno->getDiarioDeClasse()->getDiarioAlunoService()->encerrar();
 
-      $sDescr                                 = "ALUNO DA TURMA ".trim($turma)." TRANSFERIDO PARA ESCOLA ";
-      $sDescr                                .= trim($nomeescola).",CONFORME ATESTADO DE VAGA N°";
+      $sDescr                                 = "ALUNO DA TURMA ".trim((string) $turma)." TRANSFERIDO PARA ESCOLA ";
+      $sDescr                                .= trim((string) $nomeescola).",CONFORME ATESTADO DE VAGA N°";
       $sDescr                                .= $ed103_i_atestvaga." DE". $dataatestado;
-      $dDataEvento                            = substr($ed103_d_data,6,4)."-".
-                                                substr($ed103_d_data,3,2)."-".substr($ed103_d_data,0,2);
+      $dDataEvento                            = substr((string) $ed103_d_data,6,4)."-".
+                                                substr((string) $ed103_d_data,3,2)."-".substr((string) $ed103_d_data,0,2);
       $oDaoMatriculaMov->ed229_i_matricula    = $matricula;
       $oDaoMatriculaMov->ed229_i_usuario      = db_getsession("DB_id_usuario");
       $oDaoMatriculaMov->ed229_c_procedimento = "TRANSFERÊNCIA ENTRE ESCOLAS DA REDE";
@@ -250,17 +250,17 @@ if (isset($incluir)) {
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
-        <? MsgAviso(db_getsession("DB_coddepto"), "escola"); ?>
+        <?php  MsgAviso(db_getsession("DB_coddepto"), "escola"); ?>
         <br>
         <center>
         <fieldset style="width:95%"><legend><b>Transferência entre escolas da rede municipal</b></legend>
-          <? include(modification("forms/db_frmtransfescolarede.php")); ?>
+          <?php  include(modification("forms/db_frmtransfescolarede.php")); ?>
         </fieldset>
         </center>
       </td>
     </tr>
   </table>
-  <? db_menu(db_getsession("DB_id_usuario"),
+  <?php  db_menu(db_getsession("DB_id_usuario"),
              db_getsession("DB_modulo"),
              db_getsession("DB_anousu"),
              db_getsession("DB_instit")
@@ -271,7 +271,7 @@ if (isset($incluir)) {
 <script>
   js_tabulacaoforms("form1","ed103_i_atestvaga",true,1,"ed103_i_atestvaga",true);
 </script>
-<?
+<?php 
 if (isset($incluir)) {
 
   if ($oDaoTransfEscolaRede->erro_status == "0") {
@@ -308,7 +308,7 @@ if (isset($incluir)) {
       var oGuiaTransferencia = new EmissaoRelatorio('edu2_guiatransf002.php', oParametros);
           oGuiaTransferencia.open();
     </script>
-    <?
+    <?php 
     db_redireciona("edu1_transfescolarede001.php");
 
   }

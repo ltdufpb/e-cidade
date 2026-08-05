@@ -2,23 +2,22 @@
 
 namespace ECidade\Patrimonial\Protocolo\Processo\ProcessoEletronico\Parser\Entity;
 
-use \ParameterException;
-use \BusinessException;
+use stdClass;
 use \JSON;
 
 class AlvaraEmpresa extends SolicitacaoAlvara
 {
     public function toJSON($objetoSolicitacaoAlvara)
     {
-        $objetoSolicitacaoAlvara = trim($objetoSolicitacaoAlvara->metadados);
+        $objetoSolicitacaoAlvara = trim((string) $objetoSolicitacaoAlvara->metadados);
         file_put_contents('tmp/solicitacaoAlvaraEmpresaProcessoEletronico.json', $objetoSolicitacaoAlvara);
         $objetoSolicitacaoAlvara = JSON::create()->parse($objetoSolicitacaoAlvara);
 
-        $solicitacao = (object) array(
+        $solicitacao = (object) [
              "requerente" => $this->objetoSolicitacaoRequerente($objetoSolicitacaoAlvara)
             ,"empresa"    => $this->objetoEmpresa($objetoSolicitacaoAlvara)
             ,"documentos" => $this->objetoSolicitacaoDocumentos($objetoSolicitacaoAlvara)
-        );
+        ];
 
         file_put_contents(
             'tmp/solicitacaoAlvaraEmpresaProcessoEletronico_response.json',
@@ -29,101 +28,101 @@ class AlvaraEmpresa extends SolicitacaoAlvara
 
     public function objetoEmpresa($objetoSolicitacaoAlvara)
     {
-        $empresa = array(
-            "tipo_empresa" => (object) array(
+        $empresa = [
+            "tipo_empresa" => (object) [
                  "label" => "Tipo de Empresa"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::DADOS_EMPRESA, 'tipo_empresa')
-            ),
-            "cnpj" => (object) array(
+            ],
+            "cnpj" => (object) [
                  "label" => "CPF/CNPJ"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::DADOS_EMPRESA, 'cnpj')
-            ),
-            "razao_social" => (object) array(
+            ],
+            "razao_social" => (object) [
                  "label" => "Nome/Razão Social"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::DADOS_EMPRESA, 'razao_social')
-            ),
-            "nome_fantasia" => (object) array(
+            ],
+            "nome_fantasia" => (object) [
                  "label" => "Nome Fantasia"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::DADOS_EMPRESA, 'nome_fantasia')
-            ),
-            "inscricao_estadual" => (object) array(
+            ],
+            "inscricao_estadual" => (object) [
                  "label" => "Inscrição Estadual"
                 ,"value" => $this->getInformacaoJSON(
                     $objetoSolicitacaoAlvara,
                     self::DADOS_EMPRESA,
                     'inscricao_estadual'
                 )
-            )
+            ]
             ,"endereco"     => $this->objetoEmpresaEndereco($objetoSolicitacaoAlvara)
-            ,"data_junta_comercial" => (object) array (
+            ,"data_junta_comercial" => (object)  [
                 "label" => "Data Junta"
                 ,"value" => $this->getInformacaoJSON(
                     $objetoSolicitacaoAlvara,
                     self::DADOS_EMPRESA,
                     'data_junta_comercial'
                 )
-            ),
-            "registro_junta" => (object) array (
+            ],
+            "registro_junta" => (object)  [
                 "label" => "Registro Junta"
                 ,"value" => $this->getInformacaoJSON(
                     $objetoSolicitacaoAlvara,
                     self::DADOS_EMPRESA,
                     'registro_junta'
                 )
-            ),
-            "protocolo_junta" => (object) array (
+            ],
+            "protocolo_junta" => (object)  [
                 "label" => "Protocolo Junta"
                 ,"value" => $this->getInformacaoJSON(
                     $objetoSolicitacaoAlvara,
                     self::DADOS_EMPRESA,
                     'protocolo_junta'
                 )
-            ),
-            "email" => (object) array (
+            ],
+            "email" => (object)  [
                 "label" => "E-mail"
                 ,"value" => $this->getInformacaoJSON(
                     $objetoSolicitacaoAlvara,
                     self::DADOS_EMPRESA,
                     'emailempresa'
                 )
-            )
+            ]
             ,"outros_dados" => $this->objetoEmpresaOutrosDados($objetoSolicitacaoAlvara)
             ,"simples"      => $this->objetoEmpresaSimples($objetoSolicitacaoAlvara)
             ,"atividades"   => $this->objetoSolicitacaoAtividades($objetoSolicitacaoAlvara)
             ,"socios"       => $this->objetoEmpresaSocios($objetoSolicitacaoAlvara)
-        );
+        ];
 
         return (object) $empresa;
     }
 
     public function objetoEmpresaOutrosDados($objetoSolicitacaoAlvara)
     {
-        $outros_dados = array(
-            "escritorio_contabil" => (object) array(
+        $outros_dados = [
+            "escritorio_contabil" => (object) [
                  "label" => "Escritório Contábil"
                 ,"value" => $this->getInformacaoJSON(
                     $objetoSolicitacaoAlvara,
                     self::OUTROS_DADOS,
                     'escritorio_contabil'
                 )
-            ),
-            "porte" => (object) array(
+            ],
+            "porte" => (object) [
                  "label" => "Porte"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::DADOS_EMPRESA, 'porte')
-            ),
-            "empregados" => (object) array(
+            ],
+            "empregados" => (object) [
                  "label" => "Empregados"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::DADOS_EMPRESA, 'empregados')
-            ),
-            "area" => (object) array(
+            ],
+            "area" => (object) [
                  "label" => "Área"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::DADOS_EMPRESA, 'area')
-            ),
-            "zona" => (object) array(
+            ],
+            "zona" => (object) [
                  "label" => "Zona"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::DADOS_EMPRESA_ENDERECO, 'zona')
-            ),
-        );
+            ],
+        ];
 
         return (object) $outros_dados;
     }
@@ -132,32 +131,32 @@ class AlvaraEmpresa extends SolicitacaoAlvara
     {
         $optanteSimples = $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::DADOS_EMPRESA, 'optante_simples');
 
-        $simples = array(
-            "optante_simples" => (object) array(
+        $simples = [
+            "optante_simples" => (object) [
                  "label" => "Optante Simples"
                 ,"value" => $optanteSimples
-            ),
-        );
+            ],
+        ];
 
         if ((int)$optanteSimples->codigo === 1) { //Significa que eh optante pelo simples
-            $simples['data_opcao_simples'] = (object) array(
+            $simples['data_opcao_simples'] = (object) [
                  "label" => "Data da Opção pelo Simples"
                 ,"value" => $this->getInformacaoJSON(
                     $objetoSolicitacaoAlvara,
                     self::DADOS_EMPRESA,
                     'data_opcao_simples'
                 )
-            );
+            ];
 
             $categoriaSimples = $this->getInformacaoJSON(
                 $objetoSolicitacaoAlvara,
                 self::DADOS_EMPRESA,
                 'categoria_simples'
             );
-            $simples['categoria_simples']  = (object) array(
+            $simples['categoria_simples']  = (object) [
                  "label" => "Categoria no Simples"
                 ,"value" => $categoriaSimples
-            );
+            ];
         }
 
         return (object) $simples;
@@ -165,7 +164,7 @@ class AlvaraEmpresa extends SolicitacaoAlvara
 
     public function objetoEmpresaSocios($objetoSolicitacaoAlvara)
     {
-        $socios = array();
+        $socios = [];
 
         $sociosInformados  = $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::SOCIOS, 'resposta');
         $secaoSociosCampos = $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::SOCIOS, 'campos');
@@ -182,7 +181,7 @@ class AlvaraEmpresa extends SolicitacaoAlvara
         ];
 
         foreach ($sociosInformados as $key => $socio) {
-            $socioSolicitacao = new \stdClass();
+            $socioSolicitacao = new stdClass();
 
             foreach ($secaoSociosCampos as $campoSocio) {
                 $value = $this->getResposta($campoSocio, $socio->{$campoSocio->nome});
@@ -190,15 +189,15 @@ class AlvaraEmpresa extends SolicitacaoAlvara
                 $chave = $campoSocio->nome;
 
                 if (in_array($chave, $chavesEndereco) && isset($socioSolicitacao->endereco)) {
-                    $socioSolicitacao->endereco->{$chave} = (object) array(
+                    $socioSolicitacao->endereco->{$chave} = (object) [
                         "label" => $label
                         ,"value" => $value
-                    );
+                    ];
                 } else {
-                    $socioSolicitacao->{$chave} = (object) array(
+                    $socioSolicitacao->{$chave} = (object) [
                         "label" => $label
                         ,"value" => $value
-                    );
+                    ];
                 }
             }
 
@@ -210,7 +209,7 @@ class AlvaraEmpresa extends SolicitacaoAlvara
 
     public function objetoEmpresaEndereco($objetoSolicitacaoAlvara)
     {
-        $matricula  = (object) array (
+        $matricula  = (object)  [
             'codigo' => $this->getInformacaoJSON(
                 $objetoSolicitacaoAlvara,
                 self::DADOS_EMPRESA_ENDERECO,
@@ -221,62 +220,62 @@ class AlvaraEmpresa extends SolicitacaoAlvara
                 self::DADOS_EMPRESA_ENDERECO,
                 'nome_proprietario'
             )
-        );
+        ];
 
-        $endereco = array(
-            "matricula" => (object) array(
+        $endereco = [
+            "matricula" => (object) [
                  "label" => "Matrícula"
                 ,"value" => $matricula
-            ),
-            "telefone" => (object) array(
+            ],
+            "telefone" => (object) [
                  "label" => "Telefone"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::DADOS_EMPRESA_ENDERECO, 'telefone')
-            ),
-            "celular" => (object) array(
+            ],
+            "celular" => (object) [
                  "label" => "Celular"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::DADOS_EMPRESA_ENDERECO, 'celular')
-            ),
-            "cep" => (object) array(
+            ],
+            "cep" => (object) [
                  "label" => "CEP"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::DADOS_EMPRESA_ENDERECO, 'cep')
-            ),
-            "bairro" => (object) array(
+            ],
+            "bairro" => (object) [
                  "label" => "Bairro"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::DADOS_EMPRESA_ENDERECO, 'bairro')
-            ),
-            "estado" => (object) array(
+            ],
+            "estado" => (object) [
                 "label" => "Estado"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::DADOS_EMPRESA_ENDERECO, 'estado')
-            ),
-            "municipio" => (object) array(
+            ],
+            "municipio" => (object) [
                 "label" => "Municipio"
                 ,"value" => $this->getInformacaoJSON(
                     $objetoSolicitacaoAlvara,
                     self::DADOS_EMPRESA_ENDERECO,
                     'municipio'
                 )
-            ),
-            "logradouro" => (object) array(
+            ],
+            "logradouro" => (object) [
                  "label" => "Logradouro"
                 ,"value" => $this->getInformacaoJSON(
                     $objetoSolicitacaoAlvara,
                     self::DADOS_EMPRESA_ENDERECO,
                     'logradouro'
                 )
-            ),
-            "numero" => (object) array(
+            ],
+            "numero" => (object) [
                  "label" => "Número"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::DADOS_EMPRESA_ENDERECO, 'numero')
-            ),
-            "complemento" => (object) array(
+            ],
+            "complemento" => (object) [
                  "label" => "Complemento"
                 ,"value" => $this->getInformacaoJSON(
                     $objetoSolicitacaoAlvara,
                     self::DADOS_EMPRESA_ENDERECO,
                     'complemento'
                 )
-            ),
-        );
+            ],
+        ];
         $pontoReferencia = $this->getInformacaoJSON(
             $objetoSolicitacaoAlvara,
             self::DADOS_EMPRESA_ENDERECO,
@@ -284,10 +283,10 @@ class AlvaraEmpresa extends SolicitacaoAlvara
         );
 
         if (!empty($pontoReferencia) && !empty($pontoReferencia->codigo)) {
-            $endereco['ponto_referencia'] = (object) array(
+            $endereco['ponto_referencia'] = (object) [
                  'label' => "Ponto de Referência"
                 ,'value' => $pontoReferencia
-            );
+            ];
         }
 
         return (object) $endereco;

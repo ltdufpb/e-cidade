@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcparamseq_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcparamseq = new cl_orcparamseq;
 $clorcparamseq->rotulo->label("o69_codparamrel");
 $clorcparamseq->rotulo->label("o69_codseq");
@@ -56,7 +57,7 @@ $clorcparamseq->rotulo->label("o69_codparamrel");
               <?=$Lo69_codseq?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o69_codseq",10,$Io69_codseq,true,"text",4,"","chave_o69_codseq");
 		       ?>
             </td>
@@ -67,7 +68,7 @@ $clorcparamseq->rotulo->label("o69_codparamrel");
               <?=$Lo69_codparamrel?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o69_codparamrel",10,$Io69_codparamrel,true,"text",4,"","chave_o69_codparamrel");
 		       ?>
             </td>
@@ -86,7 +87,7 @@ $clorcparamseq->rotulo->label("o69_codparamrel");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if (!isset($pesquisa_chave)) {
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcparamseq.php")==true){
@@ -135,12 +136,12 @@ $clorcparamseq->rotulo->label("o69_codparamrel");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

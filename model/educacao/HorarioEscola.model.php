@@ -49,7 +49,7 @@ class HorarioEscola {
    */
   private $iTurno;
 
-  private $aTurnos = array(1 => "MANHÃ", 2 => "TARDE", 3 => "NOITE");
+  private $aTurnos = [1 => "MANHÃ", 2 => "TARDE", 3 => "NOITE"];
 
   /**
    * Escola vinculada
@@ -106,7 +106,7 @@ class HorarioEscola {
    */
   public function setTurno ($iTurno) {
 
-    if (!array_key_exists($iTurno, $this->aTurnos)) {
+    if (!array_key_exists((string) $iTurno, $this->aTurnos)) {
       throw new Exception(_M(self::MSG_HORARIOESCOLA ."turno_inexistente"));
     }
     $this->iTurno = $iTurno;

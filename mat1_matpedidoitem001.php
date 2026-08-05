@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -37,7 +37,8 @@ include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_utils.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clmatpedidoitem = new cl_matpedidoitem;
 $clmatpedido     = new cl_matpedido;
@@ -116,7 +117,7 @@ if(isset($incluir)){
     <br></br>
     <center>
     <fieldset style="width:50%"><legend><b>Itens da Solicitação</b></legend>
-	<?
+	<?php 
 	include(modification("forms/db_frmmatpedidoitem.php"));
 	?>
 	</fieldset>
@@ -126,7 +127,7 @@ if(isset($incluir)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($incluir) || isset($alterar) || isset($excluir)){
   if($sqlerro==true){
       db_msgbox($erro_msg);

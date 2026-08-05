@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_editora_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cleditora = new cl_editora;
 $cleditora->rotulo->label("bi02_codigo");
 $cleditora->rotulo->label("bi02_nome");
@@ -55,7 +56,7 @@ $cleditora->rotulo->label("bi02_nome");
               <?=$Lbi02_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("bi02_codigo",10,$Ibi02_codigo,true,"text",4,"","chave_bi02_codigo");
 		       ?>
             </td>
@@ -65,7 +66,7 @@ $cleditora->rotulo->label("bi02_nome");
               <?=$Lbi02_nome?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("bi02_nome",50,$Ibi02_nome,true,"text",4,"","chave_bi02_nome");
 		       ?>
             </td>
@@ -83,7 +84,7 @@ $cleditora->rotulo->label("bi02_nome");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_editora.php")==true){
@@ -119,12 +120,12 @@ $cleditora->rotulo->label("bi02_nome");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

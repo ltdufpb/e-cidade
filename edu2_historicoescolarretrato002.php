@@ -1,4 +1,6 @@
 <?php
+use ECidade\Pdf\Pdf;
+
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -35,11 +37,11 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification('model/educacao/ArredondamentoNota.model.php'));
 
 $oGet = db_utils::postMemory($_GET);
-$aAlunosSelecionados = explode(",", $oGet->alunos);
+$aAlunosSelecionados = explode(",", (string) $oGet->alunos);
 $lExibirReclassificao = $oGet->sExibirReclassificacao == 't' ? true : false;
 $iAnoLimite = (int)$oGet->sAno;
 $sDataEmissao = $oGet->dataemissao;
-$oFpdf = new \ECidade\Pdf\Pdf("P");
+$oFpdf = new Pdf("P");
 $oFpdf->init(false, false, false, false, false);
 $oFpdf->AliasNbPages();
 $oFpdf->SetMargins(8, 10);

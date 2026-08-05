@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -56,25 +56,25 @@ if(isset($opcao) && $opcao=="alterar"){
    <?=@$Led51_i_codigo?>
   </td>
   <td>
-   <?db_input('ed51_i_codigo',10,$Ied51_i_codigo,true,'text',3,"")?>
+   <?php db_input('ed51_i_codigo',10,$Ied51_i_codigo,true,'text',3,"")?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted51_i_procedimento?>">
-   <?db_ancora(@$Led51_i_procedimento,"",3);?>
+   <?php db_ancora(@$Led51_i_procedimento,"",3);?>
   </td>
   <td>
-   <?db_input('ed51_i_procedimento',10,$Ied51_i_procedimento,true,'text',3,"")?>
-   <?db_input('ed40_c_descr',30,@$Ied40_c_descr,true,'text',3,'')?>
+   <?php db_input('ed51_i_procedimento',10,$Ied51_i_procedimento,true,'text',3,"")?>
+   <?php db_input('ed40_c_descr',30,@$Ied40_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted51_i_recomendacao?>">
-   <?db_ancora(@$Led51_i_recomendacao,"js_pesquisaed51_i_recomendacao(true);",$db_opcao);?>
+   <?php db_ancora(@$Led51_i_recomendacao,"js_pesquisaed51_i_recomendacao(true);",$db_opcao);?>
   </td>
   <td>
-   <?db_input('ed51_i_recomendacao',10,$Ied51_i_recomendacao,true,'text',$db_opcao," onchange='js_pesquisaed51_i_recomendacao(false);'")?>
-   <?db_input('ed46_c_descr',60,@$Ied46_c_descr,true,'text',3,'')?>
+   <?php db_input('ed51_i_recomendacao',10,$Ied51_i_recomendacao,true,'text',$db_opcao," onchange='js_pesquisaed51_i_recomendacao(false);'")?>
+   <?php db_input('ed46_c_descr',60,@$Ied46_c_descr,true,'text',3,'')?>
   </td>
  </tr>
 </table>
@@ -83,8 +83,8 @@ if(isset($opcao) && $opcao=="alterar"){
 <table>
  <tr>
   <td valign="top">
-  <?
-   $chavepri= array("ed51_i_codigo"=>@$ed51_i_codigo,"ed40_c_descr"=>@$ed40_c_descr,"ed51_i_procedimento"=>@$ed51_i_procedimento,"ed51_i_recomendacao"=>@$ed51_i_recomendacao,"ed46_c_descr"=>@$ed46_c_descr);
+  <?php 
+   $chavepri= ["ed51_i_codigo"=>@$ed51_i_codigo,"ed40_c_descr"=>@$ed40_c_descr,"ed51_i_procedimento"=>@$ed51_i_procedimento,"ed51_i_recomendacao"=>@$ed51_i_recomendacao,"ed46_c_descr"=>@$ed46_c_descr];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clprocrecomendacao->sql_query("","*","ed46_c_descr"," ed51_i_procedimento = $ed51_i_procedimento");
    $cliframe_alterar_excluir->campos  ="ed46_i_codigo,ed46_c_descr";

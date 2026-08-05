@@ -34,7 +34,7 @@ require 'libs/db_usuariosonline.php';
 require 'dbforms/db_funcoes.php';
 require 'libs/db_jsplibwebseller.php';
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao           = 1;
 $db_opcao1          = 1;
@@ -42,8 +42,8 @@ $db_botao           = true;
 $naotem             = false;
 
 
-$tipo_servidor = isset($_GET['tipo_servidor']) ? $_GET['tipo_servidor'] : '0';
-$lotacao       = isset($_GET['lotacao']) ? $_GET['lotacao'] : '0';
+$tipo_servidor = $_GET['tipo_servidor'] ?? '0';
+$lotacao       = $_GET['lotacao'] ?? '0';
 
 if (!isset($_GET['codigo'])) {
     $_GET['codigo'] = '';
@@ -57,8 +57,8 @@ if (!isset($_GET['nome'])) {
 
 $nome = $_GET['nome'] == '' ? '' : $_GET['nome'];
 
-$escolas = isset($_GET['escolas']) ? $_GET['escolas'] : 'todas';
-$ano     = isset($_GET['ano']) ? $_GET['ano'] : '';
+$escolas = $_GET['escolas'] ?? 'todas';
+$ano     = $_GET['ano'] ?? '';
 
 ?>
 <!DOCTYPE html>

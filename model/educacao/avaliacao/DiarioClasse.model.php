@@ -41,16 +41,10 @@ define('MENSAGENS_DIARIOCLASSE_MODEL', 'educacao.escola.DiarioClasse.');
 class DiarioClasse
 {
     /**
-     * Dados da matrícula de um aluno
-     * @var object
-     */
-    private $oMatricula;
-
-    /**
      * Array de disciplinas
      * @var DiarioAvaliacaoDisciplina[]
      */
-    private $aDiarioDisciplina = array();
+    private $aDiarioDisciplina = [];
 
     /**
      * Dados da turma que a matrícula está vinculada
@@ -81,14 +75,16 @@ class DiarioClasse
      * @throws DBException
      * @throws Exception
      */
-    public function __construct(Matricula $oMatricula, $lCriarDiario = true)
+    public function __construct(/**
+     * Dados da matrícula de um aluno
+     */
+    private readonly Matricula $oMatricula, $lCriarDiario = true)
     {
-        $this->oMatricula = $oMatricula;
         if ($lCriarDiario) {
             $this->criarDiarioClasseAluno();
         }
 
-        $this->diarioAlunoService = new DiarioAlunoService($oMatricula);
+        $this->diarioAlunoService = new DiarioAlunoService($this->oMatricula);
     }
 
     /**
@@ -117,9 +113,11 @@ class DiarioClasse
      * @return AvaliacaoPeriodica[]|ResultadoAvaliacao[]
      * @throws BusinessException
      * @throws DBException
-     * @deprecated a partir da versão 2.3.32 os periodos de avaliação devem ser vistos de acordo com o
-     *             procedimento de avaliação de cada regência
      */
+    #[Deprecated(message: <<<'TXT'
+    a partir da versão 2.3.32 os periodos de avaliação devem ser vistos de acordo com o
+                 procedimento de avaliação de cada regência
+    TXT)]
     public function getPeriodoAvaliacao($iCodigoEtapa = '')
     {
         if (count($this->aPeriodosAvaliacao) == 0) {
@@ -459,7 +457,7 @@ class DiarioClasse
      */
     public function getDisciplinasComReprovacao()
     {
-        $aDisciplinasComReprovacao = array();
+        $aDisciplinasComReprovacao = [];
         $aDisciplinas = $this->getDisciplinas();
         foreach ($aDisciplinas as $oDisciplina) {
             $oResultadoFinal = $oDisciplina->getResultadoFinal();
@@ -478,7 +476,7 @@ class DiarioClasse
      */
     public function getDisciplinasComReprovacaoNoAproveitamento()
     {
-        $aDisciplinasComReprovacaoNoAproveitamento = array();
+        $aDisciplinasComReprovacaoNoAproveitamento = [];
         $aDisciplinas = $this->getDisciplinas();
         foreach ($aDisciplinas as $oDisciplina) {
             if (!$oDisciplina->getRegencia()->isObrigatoria()) {
@@ -501,7 +499,7 @@ class DiarioClasse
      */
     public function getDisciplinasComReprovacaoNaFrequencia()
     {
-        $aDisciplinasComReprovacaoNaFrequencia = array();
+        $aDisciplinasComReprovacaoNaFrequencia = [];
         $aDisciplinas = $this->getDisciplinas();
         foreach ($aDisciplinas as $oDisciplina) {
             $oResultadoFinal = $oDisciplina->getResultadoFinal();
@@ -538,7 +536,7 @@ class DiarioClasse
         }
 
 
-        $aEtapasComProgressao = array();
+        $aEtapasComProgressao = [];
         foreach ($oParametroProgressaoParcial->getEtapas() as $oEtapa) {
             $aEtapasComProgressao[] = $oEtapa->getCodigo();
         }
@@ -640,7 +638,7 @@ class DiarioClasse
                 }
             }
 
-            $aDisciplinaHistorico = array();
+            $aDisciplinaHistorico = [];
             if ($oEtapaHistorico != null) {
                 $aDisciplinaHistorico = $oEtapaHistorico->getDisciplinas();
             }
@@ -708,8 +706,8 @@ class DiarioClasse
          * em que a etapa seja a mesma da matricula do diario;
          */
         $oEtapaMatricula = $this->getMatricula()->getEtapaDeOrigem();
-        $aPendencias = array();
-        $aProgressoes = array();
+        $aPendencias = [];
+        $aProgressoes = [];
 
         /**
          * Percorre as progressões do aluno, verificando alguma pendência existente.
@@ -808,7 +806,7 @@ class DiarioClasse
      */
     public function getPendenciasEncerramento()
     {
-        $aPendencias = array();
+        $aPendencias = [];
 
         /**
          * Verificamos quais disciplinas estao sem resultado final
@@ -891,13 +889,13 @@ class DiarioClasse
      * @throws ParameterException
      * @throws Exception
      */
-    public function atualizar(DiarioClasse $oDiario, array $aListaRegenciasSubstituir = null)
+    public function atualizar(DiarioClasse $oDiario, ?array $aListaRegenciasSubstituir = null)
     {
         if (empty($oDiario)) {
             throw new ParameterException('Parâmetro $oDiario não foi informado.');
         }
 
-        $aRegenciasSubstituir = array();
+        $aRegenciasSubstituir = [];
         /**
          * criamos um array associativo apenas com o codigo da regencia de destino apontando para qual regencia
          * de origem deve ser usado.
@@ -1293,7 +1291,7 @@ class DiarioClasse
      */
     public function getDisciplinasReprovadasNoPeriodo(iElementoAvaliacao $oElemento, $lConsideraAmparo = true)
     {
-        $aDisciplinasComReprovacaoNoPeriodo = array();
+        $aDisciplinasComReprovacaoNoPeriodo = [];
         foreach ($this->getDisciplinas() as $oDisciplina) {
             if ($oDisciplina->getRegencia()->getFrequenciaGlobal() == 'F') {
                 continue;
@@ -1347,7 +1345,7 @@ class DiarioClasse
      */
     public function getPendenciasCancelamentoEncerramento()
     {
-        $aPendencias = array();
+        $aPendencias = [];
         $aProgressoes = $this->getMatricula()->getAluno()->getProgressaoParcial();
 
         foreach ($aProgressoes as $oProgressao) {
@@ -1451,8 +1449,8 @@ class DiarioClasse
      */
     public function periodosCalculoResultadoFinal()
     {
-        $aDiarios = array();
-        $aOrdensPeriodos = array();
+        $aDiarios = [];
+        $aOrdensPeriodos = [];
 
         foreach ($this->getDisciplinas() as $oDiarioAvaliacaoDisciplina) {
             $aDiarios[] = $oDiarioAvaliacaoDisciplina->getCodigoDiario();

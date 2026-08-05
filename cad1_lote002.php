@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -520,7 +520,7 @@ db_fim_transacao($sqlerro);
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <script>
 function js_load_lote(){
-  <?
+  <?php 
     if(!isset($chavepesquisa)){
        echo "js_pesquisa();";
    }
@@ -541,19 +541,19 @@ function js_load_lote(){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
-	<?
+	<?php 
 	include(modification("forms/db_frmlote.php"));
 	?>
     </center>
 	</td>
   </tr>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
 </html>
-<?
+<?php 
 if($replote==true){
  echo "<script>";
  if($repete=="incluir"){        

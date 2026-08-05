@@ -31,7 +31,6 @@ use ECidade\RecursosHumanos\ESocial\Model\ProcessoJudicial\Servidor as ServidorP
 use ECidade\RecursosHumanos\ESocial\Repository\ProcessoJudicial\ServidorRepository as ServidorRepositoryProcesso;
 use Exception;
 use stdClass;
-use DBDate;
 
 class ServidorService
 {
@@ -71,7 +70,7 @@ class ServidorService
             throw new Exception("<i>'Dados do Local de Trabalho'</i> do servidor <strong>({$matricula} - {$nome}) " .
                 "</strong>não definido. Favor revisar.");
         }
-        $qtdeDigitosInscricao = strlen($servidorFolha->getLocalTrabalhoPrincial()->getInstituicao()->getCNPJ());
+        $qtdeDigitosInscricao = strlen((string) $servidorFolha->getLocalTrabalhoPrincial()->getInstituicao()->getCNPJ());
         if ($qtdeDigitosInscricao < 11
             && $qtdeDigitosInscricao > 14
             && ($qtdeDigitosInscricao == 11 ||
@@ -99,7 +98,7 @@ class ServidorService
         if (!empty($processosServidores)) {
             foreach ($processosServidores as $dado) {
                 $servidor = \ServidorRepository::getInstanciaByCodigo($dado->matricula);
-                $dados = new \stdClass();
+                $dados = new stdClass();
                 $dados->sequencial = $dado->sequencial;
                 $dados->nome = $servidor->getCgm()->getNomeCompleto();
                 $dados->matricula = $dado->matricula;

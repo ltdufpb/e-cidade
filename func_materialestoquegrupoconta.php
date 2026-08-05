@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_materialestoquegrupoconta_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmaterialestoquegrupoconta = new cl_materialestoquegrupoconta;
 $clmaterialestoquegrupoconta->rotulo->label("m66_sequencial");
 $clmaterialestoquegrupoconta->rotulo->label("m66_materialestoquegrupo");
@@ -54,7 +55,7 @@ $clmaterialestoquegrupoconta->rotulo->label("m66_materialestoquegrupo");
               <?=$Lm66_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m66_sequencial",10,$Im66_sequencial,true,"text",4,"","chave_m66_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clmaterialestoquegrupoconta->rotulo->label("m66_materialestoquegrupo");
               <?=$Lm66_materialestoquegrupo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m66_materialestoquegrupo",10,$Im66_materialestoquegrupo,true,"text",4,"","chave_m66_materialestoquegrupo");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clmaterialestoquegrupoconta->rotulo->label("m66_materialestoquegrupo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_materialestoquegrupoconta.php")==true){
@@ -122,12 +123,12 @@ $clmaterialestoquegrupoconta->rotulo->label("m66_materialestoquegrupo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

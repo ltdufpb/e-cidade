@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orctiporecconveniosituacao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorctiporecconveniosituacao = new cl_orctiporecconveniosituacao;
 $clorctiporecconveniosituacao->rotulo->label("o100_sequencial");
 $clorctiporecconveniosituacao->rotulo->label("o100_descricao");
@@ -54,7 +55,7 @@ $clorctiporecconveniosituacao->rotulo->label("o100_descricao");
               <?=$Lo100_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o100_sequencial",10,$Io100_sequencial,true,"text",4,"","chave_o100_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clorctiporecconveniosituacao->rotulo->label("o100_descricao");
               <?=$Lo100_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o100_descricao",50,$Io100_descricao,true,"text",4,"","chave_o100_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clorctiporecconveniosituacao->rotulo->label("o100_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orctiporecconveniosituacao.php")==true){
@@ -122,12 +123,12 @@ $clorctiporecconveniosituacao->rotulo->label("o100_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

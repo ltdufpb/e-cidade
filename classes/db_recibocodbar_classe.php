@@ -54,7 +54,7 @@ class cl_recibocodbar {
                  k00_nossonumero = varchar(20) = Nosso Número
                  ";
    //funcao construtor da classe
-   function cl_recibocodbar() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("recibocodbar");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);

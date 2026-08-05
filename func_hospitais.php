@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_hospitais_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clhospitais = new cl_hospitais;
 $clhospitais->rotulo->label("cm18_i_hospital");
 $clhospitais->rotulo->label("cm18_i_hospital");
@@ -54,7 +55,7 @@ $clhospitais->rotulo->label("cm18_i_hospital");
               <?=$Lcm18_i_hospital?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
                        db_input("cm18_i_hospital",10,$Icm18_i_hospital,true,"text",4,"","chave_cm18_i_hospital");
                        ?>
             </td>
@@ -64,7 +65,7 @@ $clhospitais->rotulo->label("cm18_i_hospital");
               <strong> Nome: </strong>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
                        db_input("z01_c_nome",40,@$z01_nome,true,"text",4,"","chave_cm18_c_nome");
                        ?>
             </td>
@@ -82,7 +83,7 @@ $clhospitais->rotulo->label("cm18_i_hospital");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_hospitais.php")==true){
@@ -118,12 +119,12 @@ $clhospitais->rotulo->label("cm18_i_hospital");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

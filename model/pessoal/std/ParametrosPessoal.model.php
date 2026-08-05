@@ -168,7 +168,7 @@ class ParametrosPessoal {
     /**
      * Rubrica utilizada para pensão alimenticia
      *
-     * @var \Rubrica
+     * @var Rubrica
      */
     private $rubricaAbonoPecunia;
 
@@ -315,7 +315,7 @@ class ParametrosPessoal {
    * @access public
    * @return void
    */
-  public function setRubricaAbonoPermanencia( Rubrica $oRubrica = null) {
+  public function setRubricaAbonoPermanencia( ?Rubrica $oRubrica = null) {
 
     $this->oRubricaAbonoPermanencia = $oRubrica;
     return;
@@ -363,7 +363,7 @@ class ParametrosPessoal {
    *
    * @param Rubrica|null $oRubrica
    */
-  public function setRubricaEscalaFerias( Rubrica $oRubrica = null) {
+  public function setRubricaEscalaFerias( ?Rubrica $oRubrica = null) {
     $this->oRubricaEscalaFerias = $oRubrica;
   }
 
@@ -372,7 +372,7 @@ class ParametrosPessoal {
    *
    * @param Rubrica|null $oRubricaTercoFerias
    */
-  public function setRubricaTercoFerias( Rubrica $oRubricaTercoFerias = null ) {
+  public function setRubricaTercoFerias( ?Rubrica $oRubricaTercoFerias = null ) {
     $this->oRubricaTercoFerias = $oRubricaTercoFerias;
   }
 
@@ -577,7 +577,7 @@ class ParametrosPessoal {
     /**
      * @param Rubrica $rubricaAbonoPecunia
      */
-    public function setRubricaAbonoPecunia(\Rubrica $rubricaAbonoPecunia)
+    public function setRubricaAbonoPecunia(Rubrica $rubricaAbonoPecunia)
     {
         $this->rubricaAbonoPecunia = $rubricaAbonoPecunia;
     }

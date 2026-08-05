@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_recreparcori_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrecreparcori = new cl_recreparcori;
 $clrecreparcori->rotulo->label("k70_codigo");
 $clrecreparcori->rotulo->label("k70_recori");
@@ -54,7 +55,7 @@ $clrecreparcori->rotulo->label("k70_recori");
               <?=$Lk70_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k70_codigo",10,$Ik70_codigo,true,"text",4,"","chave_k70_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clrecreparcori->rotulo->label("k70_recori");
               <?=$Lk70_recori?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("k70_recori",5,$Ik70_recori,true,"text",4,"","chave_k70_recori");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clrecreparcori->rotulo->label("k70_recori");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
 			
 			// incluir na busca o metodo sql_query_dest e o campo - k71_recdest
 			
@@ -125,12 +126,12 @@ $clrecreparcori->rotulo->label("k70_recori");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

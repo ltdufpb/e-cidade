@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -63,40 +63,40 @@ if(isset($opcao) && $opcao=="alterar"){
        <?=@$Lsd30_i_codigo?>
     </td>
     <td> 
-<?
+<?php 
 db_input('sd30_i_codigo',10,$Isd30_i_codigo,true,'text',3,"")
 ?>
-<?
+<?php 
 db_input('sd30_i_undmed',10,$Isd30_i_undmed,true,'text',3,"")
 ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tsd04_i_unidade?>">
-       <?
+       <?php 
        db_ancora(@$Lsd04_i_unidade,"js_pesquisasd04_i_unidade(true);",3);
        ?>
     </td>
     <td>
-<?
+<?php 
 db_input('sd04_i_unidade',10,$Isd04_i_unidade,true,'text',3," onchange='js_pesquisasd04_i_unidade(false);'")
 ?>
-       <?
+       <?php 
 db_input('descrdepto',80,$Idescrdepto,true,'text',3,'')
        ?>
     </td>
   </tr>
     <tr>
     <td nowrap title="<?=@$Tsd04_i_medico?>">
-       <?
+       <?php 
        db_ancora(@$Lsd04_i_medico,"js_pesquisasd04_i_medico(true);",3);
        ?>
     </td>
     <td>
-<?
+<?php 
 db_input('sd04_i_medico',10,$Isd04_i_medico,true,'text',3," onchange='js_pesquisasd04_i_medico(false);'")
 ?>
-       <?
+       <?php 
 db_input('z01_nome',80,$Iz01_nome,true,'text',3,'')
        ?>
     </td>
@@ -104,23 +104,23 @@ db_input('z01_nome',80,$Iz01_nome,true,'text',3,'')
 
   <tr>
     <td nowrap title="<?=@$Tsd30_i_diasemana?>">
-       <?
+       <?php 
        db_ancora(@$Lsd30_i_diasemana,"js_pesquisasd30_i_diasemana(true);",$db_opcao);
        ?>
     </td>
     <td> 
-<?
+<?php 
 db_input('sd30_i_diasemana',5,$Isd30_i_diasemana,true,'text',$db_opcao," onchange='js_pesquisasd30_i_diasemana(false);'")
 ?>
-       <?
+       <?php 
 db_input('ed32_c_descr',10,$Ied32_c_descr,true,'text',3,'')
        ?>
        <?=@$Lsd30_c_horaini?>
-<?
+<?php 
 db_input('sd30_c_horaini',5,$Isd30_c_horaini,true,'text',$db_opcao,"onKeyPress='formata_hora(this)'")
 ?>
        <?=@$Lsd30_c_horafim?>
-<?
+<?php 
 db_input('sd30_c_horafim',5,$Isd30_c_horafim,true,'text',$db_opcao,"onKeyPress='formata_hora(this)'")
 ?>
     </td>
@@ -128,20 +128,20 @@ db_input('sd30_c_horafim',5,$Isd30_c_horafim,true,'text',$db_opcao,"onKeyPress='
   <tr>
     <td nowrap title="<?=@$Tsd30_i_fichas?>" colspan="2">
        <?=@$Lsd30_i_fichas?>
-<?
+<?php 
 db_input('sd30_i_fichas',5,$Isd30_i_fichas,true,'text',$db_opcao,"")
 ?>
        <?=@$Lsd30_i_reservas?>
-<?
+<?php 
 db_input('sd30_i_reservas',5,$Isd30_i_reservas,true,'text',$db_opcao,"")
 ?>
-            <? if ( $db_opcao == 1 ){ ?>
+            <?php  if ( $db_opcao == 1 ){ ?>
               <?=$Lsd30_i_turno?>
-              <?
+              <?php 
                  $x = array("1"=>"Manhã","2"=>"Tarde","3"=>"Noite");
                  db_select('sd30_i_turno',$x,true,$db_opcao, "","",2);
               ?>
-            <?}?>
+            <?php }?>
     </td>
   </tr>
   </table>
@@ -151,7 +151,7 @@ db_input('sd30_i_reservas',5,$Isd30_i_reservas,true,'text',$db_opcao,"")
 <table>
  <tr>
   <td valign="top"><br>
-  <?
+  <?php 
    $chavepri= array("sd30_i_codigo"=>@$sd30_i_codigo,"sd30_i_undmed"=>@$sd30_i_undmed,"sd30_i_diasemana"=>@$sd30_i_diasemana,"sd30_c_horaini"=>@$sd30_c_horaini,"sd30_c_horafim"=>@$sd30_c_horafim,"sd30_i_fichas"=>@$sd30_i_fichas,"sd30_i_reservas"=>@$sd30_i_reservas,"ed32_c_descr"=>@$ed32_c_descr,"sd30_i_turno"=>@$sd30_i_turno);
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clundmedhorario->sql_query($sd30_i_codigo,"sd30_i_codigo,sd30_i_undmed,sd30_i_diasemana,sd30_i_turno,sd30_c_horaini,sd30_c_horafim,sd30_i_fichas,sd30_i_reservas,sd04_i_unidade,sd04_i_medico,ed32_c_descr","","sd30_i_undmed = $sd30_i_undmed");
@@ -225,7 +225,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_undmedhorario.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }

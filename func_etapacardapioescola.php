@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -35,7 +35,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matricula_classe.php"));
 include(modification("classes/db_mer_restriitem_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmatricula = new cl_matricula;
 $clmer_restriitem = new cl_mer_restriitem;
 $campos  = " to_char(ed60_d_datasaida,'DD/MM/YYYY') as datasaida, ";
@@ -106,7 +107,7 @@ if (!isset($refeicao)) {
     <td><b>Data Matrícula</b></td>
     <td><b>Restrição</b></td>
    </tr>
-   <?   
+   <?php    
    for($c=0;$c<$clmatricula->numrows;$c++){
     db_fieldsmemory($result,$c);
     $inf_ant  = explode("|",RFanterior($ed60_i_codigo));
@@ -134,19 +135,19 @@ if (!isset($refeicao)) {
      <td class="aluno" align="center"><?=db_formatar($ed60_d_datamatricula,'d')?></td>
      <td>
      <table>
-     <?if($clmer_restriitem->numrows>0){?>
+     <?php if($clmer_restriitem->numrows>0){?>
          <tr>         
          <td class="aluno" align="center"><b>Item </b></td>
          <td class='aluno' align='center'><b>Item Substituto</b></td> 
          </tr>
-         <?}else{?>
+         <?php }else{?>
          <tr>         
          <td class="aluno" align="center"><b>Sem Restrição</b></td>
          <td class='aluno' align='center'><b></b></td> 
          </tr>
          
-         <?}?>
-     <?for($d=0;$d<$clmer_restriitem->numrows;$d++){
+         <?php }?>
+     <?php for($d=0;$d<$clmer_restriitem->numrows;$d++){
         db_fieldsmemory($result1,$d);     
      	?>
      	
@@ -156,12 +157,12 @@ if (!isset($refeicao)) {
          </tr>
      
                 
-        <?}
+        <?php }
      ?>
         </table>
     </td>
     </tr>
-    <?
+    <?php 
    }
    ?>
   </table>

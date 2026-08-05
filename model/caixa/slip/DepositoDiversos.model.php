@@ -34,6 +34,7 @@
  */
 class DepositoDiversos extends Transferencia {
 
+  #[Override]
   public function salvar () {
 
   	parent::salvar();

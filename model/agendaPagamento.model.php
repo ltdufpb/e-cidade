@@ -169,7 +169,7 @@ class agendaPagamento {
         $sCampos     .= "  where  e82_codord = e50_codord) as totalCheques                             ";
         $sSqlOrdens   = $oDaoPagOrdem->sql_query_pagordemele(null, $sCampos, "e50_codord",$sWhere);
         $rsOrdens     = $oDaoPagOrdem->sql_record($sSqlOrdens);
-        $aNotas       = array();
+        $aNotas       = [];
         if ($oDaoPagOrdem->numrows > 0) {
 
             for ($iOrdens = 0; $iOrdens < $oDaoPagOrdem->numrows; $iOrdens++) {
@@ -191,8 +191,8 @@ class agendaPagamento {
      * @param integer $iCodigoOrdem código da ordem
      * @param bool $lRetornaContasVinculadas
      *
-     * @return array|\stdClass[]
-     * @throws \Exception
+     * @return array|stdClass[]
+     * @throws Exception
      */
     public function getContasRecurso($iCodigoOrdem, $lRetornaContasVinculadas = true) {
 
@@ -208,7 +208,7 @@ class agendaPagamento {
 
 
         $rsContas       = $oDaoEmpAgeTipo->sql_record($sSqlContas);
-        $aContas        = array();
+        $aContas        = [];
         if ($oDaoEmpAgeTipo->numrows > 0 ) {
             $aContas = db_utils::getCollectionByRecord($rsContas,false,false, $this->getUrlEncode());
         }
@@ -269,7 +269,7 @@ class agendaPagamento {
         $sCredor   = $sInformacaoExtra;
         $sStrVerso = "";
         //$sBanco =
-        $aCgms    = array();
+        $aCgms    = [];
         if (count($aMovimentos) > 0) {
 
             $sIn      = "";
@@ -312,15 +312,15 @@ class agendaPagamento {
                     $k13_descr  = "";
                     if ($oConta->pc63_banco != "") {
 
-                        if(isset($oConta->pc63_banco) && trim($oConta->pc63_banco) == '001'){
+                        if(isset($oConta->pc63_banco) && trim((string) $oConta->pc63_banco) == '001'){
                             $k13_descr = 'BANCO DO BRASIL S/A';
-                        } else if(isset($oConta->pc63_banco) && trim($oConta->pc63_banco) == '041'){
+                        } else if(isset($oConta->pc63_banco) && trim((string) $oConta->pc63_banco) == '041'){
                             $k13_descr = 'BANRISUL S/A';
-                        } else if(isset($oConta->pc63_banco) && trim($oConta->pc63_banco) == '104'){
+                        } else if(isset($oConta->pc63_banco) && trim((string) $oConta->pc63_banco) == '104'){
                             $k13_descr = 'CAIXA ECONÔMICA FEDERAL';
-                        } else if(isset($oConta->pc63_banco) && trim($oConta->pc63_banco) == '008'){
+                        } else if(isset($oConta->pc63_banco) && trim((string) $oConta->pc63_banco) == '008'){
                             $k13_descr = 'SANTANDER S/A';
-                        } else if(isset($oConta->pc63_banco) && trim($oConta->pc63_banco) == '237'){
+                        } else if(isset($oConta->pc63_banco) && trim((string) $oConta->pc63_banco) == '237'){
                             $k13_descr = 'BRADESCO S/A';
                         } else{
                             $k13_descr = '.';
@@ -714,7 +714,7 @@ class agendaPagamento {
             throw new Exception("Erro [2] Parametro dtNota não pode ser nulo");
         }
 
-        $aSaldoMov = array();
+        $aSaldoMov = [];
         $dtEmissao = implode("-", array_reverse(explode("/", $dtData)));
 
         /*
@@ -760,7 +760,7 @@ class agendaPagamento {
          * Verifica parametro de controle do saldo das contas (caiparametro->k29_saldoemitechq)
          */
         $iControlaSaldoConta = 1; // O padrao é "Controlar Saldo da Conta"
-        $aParametrosCaixa    = db_stdClass::getParametro("caiparametro",array(db_getsession("DB_instit")));
+        $aParametrosCaixa    = db_stdClass::getParametro("caiparametro",[db_getsession("DB_instit")]);
         if (count($aParametrosCaixa) > 0) {
             $iControlaSaldoConta = $aParametrosCaixa[0]->k29_saldoemitechq;
         }
@@ -785,10 +785,10 @@ class agendaPagamento {
         $NumeroCheque     = $oDaoEmpAgeTipo->getMaxCheque($iCodConta);
         if (count($aCheques) == 0 || $aCheques == null) {
 
-            $aChequesLancar[] = array(
+            $aChequesLancar[] = [
                 "nValorCheque" => $nValorCheque,
                 "iSeqCheque"   => $NumeroCheque,
-            );
+            ];
             $sDescrCheque = $NumeroCheque;
 
         } else {
@@ -798,10 +798,10 @@ class agendaPagamento {
 
 
                 $sDescrCheque .= $sVirgula . $NumeroCheque;
-                $aChequesLancar[] = array(
+                $aChequesLancar[] = [
                     "nValorCheque" => $aCheques[$iNumCheques],
                     "iSeqCheque"   => $NumeroCheque,
-                );
+                ];
                 $NumeroCheque++;
                 $sVirgula = ", ";
             }
@@ -825,7 +825,7 @@ class agendaPagamento {
 
         }
 
-        $aMovimentosValidar = array();
+        $aMovimentosValidar = [];
 
         for ($iNotas = 0; $iNotas < count($aNotasLiquidacao); $iNotas++) {
 
@@ -1189,7 +1189,7 @@ class agendaPagamento {
         $oDaoEmpageconfCheCanc->e93_codmov    = $oDadosCheque->e91_codmov;
         $oDaoEmpageconfCheCanc->e93_cheque    = $oDadosCheque->e91_cheque;
         $oDaoEmpageconfCheCanc->e93_valor     = $oDadosCheque->e91_valor;
-        $oDaoEmpageconfCheCanc->incluir($oDadosCheque->e91_codcheque);
+        $oDaoEmpageconfCheCanc->incluir();
         if ($oDaoEmpageconfCheCanc->erro_status==0) {
             throw new Exception("Erro [3] - não foi possível cancelar cheque ({$oDadosCheque->e91_cheque}).");
         }
@@ -1261,7 +1261,7 @@ class agendaPagamento {
             throw new Exception("Erro [0] - Não há nenhuma transação ativa. Processo cancelado");
         }
 
-        $aChavesObjetos = array("iCodMov","iCodNota","nValor");
+        $aChavesObjetos = ["iCodMov","iCodNota","nValor"];
         $dtPagamento  = implode("-",array_reverse(explode("/", $dtPagamento)));
         $oDaoOrdemPag = new cl_empageordem();
         if ($iCodigoOPauxiliar == null) {
@@ -1386,7 +1386,7 @@ class agendaPagamento {
      * @param string $sJoin joins extras
      * @return array com movimentos
      */
-    function getMovimentosAgenda($sWhere = null, $sJoin, $lTrazfornecedor = true, $lTrazContaPagadora = true,$sCamposAdicionais='', $lVinculadas=true, $sCredorCgm = null) {
+    function getMovimentosAgenda($sWhere = null, $sJoin = null, $lTrazfornecedor = true, $lTrazContaPagadora = true,$sCamposAdicionais='', $lVinculadas=true, $sCredorCgm = null) {
 
         $sOrderBy = "e81_codmov, e50_codord";
         if ($this->orderBy != null) {
@@ -1479,7 +1479,7 @@ class agendaPagamento {
         );
 
         $rsMovimento  = $oDaoEmpAgeMov->sql_record($sSqlMovimentos);
-        $aNotas       = array();
+        $aNotas       = [];
 
 
 
@@ -1507,7 +1507,7 @@ class agendaPagamento {
     }
 
 
-    function getMovimentosAgendaPagamento($sWhere = null, $sJoin, $lTrazfornecedor = true, $lTrazContaPagadora = true,$sCamposAdicionais='', $lVinculadas=true, $sCredorCgm = null) {
+    function getMovimentosAgendaPagamento($sWhere = null, $sJoin = null, $lTrazfornecedor = true, $lTrazContaPagadora = true,$sCamposAdicionais='', $lVinculadas=true, $sCredorCgm = null) {
 
         $sOrderBy = "e81_codmov, e50_codord";
         if ($this->orderBy != null) {
@@ -1626,7 +1626,7 @@ class agendaPagamento {
         );
 
         $rsMovimento  = $oDaoEmpAgeMov->sql_record($sSqlMovimentos);
-        $aNotas       = array();
+        $aNotas       = [];
 
 
 
@@ -1692,7 +1692,7 @@ class agendaPagamento {
         $sSqlMovimentos .= "  order by k105_data ,k105_autent";
         $oDaoEmpAgeMov   = new cl_pagordem();
         $rsMovimento = $oDaoEmpAgeMov->sql_record($sSqlMovimentos);
-        $aNotas       = array();
+        $aNotas       = [];
         if ($oDaoEmpAgeMov->numrows > 0) {
 
             for ($iMovimentos = 0; $iMovimentos < $oDaoEmpAgeMov->numrows; $iMovimentos++) {
@@ -2075,7 +2075,7 @@ class agendaPagamento {
             $oDaoEmpageConcar->excluir(null, "e79_empagemov      = {$iCodigoMovimento}");
 
             if (!$lMovimentoSlip) {
-                if (trim($oMovimento->sConCarPeculiar) == "") {
+                if (trim((string) $oMovimento->sConCarPeculiar) == "") {
 
                     $sMsg  = "C. Peculiar/Cod. de Aplicação para o ";
                     $sMsg .= "Movimento {$oMovimento->iCodMov} ";
@@ -2135,7 +2135,7 @@ class agendaPagamento {
         $sDataIni    = implode("-", array_reverse(explode("/", $dtInicial)));
         $sDataFim    = implode("-", array_reverse(explode("/", $dtFinal)));
         $sInner      = "";
-        $aMovimentos = array();
+        $aMovimentos = [];
         if ($iAgrupar == 1) {
 
             $sCampoValor = "sum(k107_valor) as k107_valor";
@@ -2351,7 +2351,7 @@ class agendaPagamento {
 
         $oInstit   = db_stdClass::getDadosInstit();
         $oDaoSlip  = new cl_empageslip();
-        $aSlips    = array();
+        $aSlips    = [];
 
         // @todo -- verificar ultima conta do fornecedor etc...
         $sCampos   = "e90_cancelado,                                          ";
@@ -2516,7 +2516,7 @@ class agendaPagamento {
 
         $rsMovimentos  = $oDaoSlip->sql_record($sSqlMovimentosCheques);
 
-        $aMovimentos   = array();
+        $aMovimentos   = [];
 
         if ($oDaoSlip->numrows > 0 ) {
             $aMovimentos = db_utils::getCollectionByRecord($rsMovimentos, false, false, $this->getUrlEncode());
@@ -2640,7 +2640,7 @@ class agendaPagamento {
         }
         $sSqlTotais .= " ) as x group by e96_descr";
         $rsTotais    = db_query($sSqlTotais);
-        $aTotais     = array();
+        $aTotais     = [];
         if ($rsTotais) {
             $aTotais   = db_utils::getCollectionByRecord($rsTotais);
         }
@@ -2742,7 +2742,7 @@ class agendaPagamento {
             throw new Exception($sMessage);
         }
 
-        $oNovoMovimento = new \stdClass();
+        $oNovoMovimento = new stdClass();
         $oNovoMovimento->iCodTipo = null;
         $oNovoMovimento->iNumEmp  = $iNumeroEmpenho;
         $oNovoMovimento->nValor   = $nValorNovoMovimento;
@@ -2780,10 +2780,10 @@ class agendaPagamento {
 
         $rsDadosRecurso = db_query($sqlDados);
         if (! $rsDadosRecurso || pg_num_rows($rsDadosRecurso) == 0) {
-            throw new \Exception("Ocorreu algo inesperado ao buscar recurso do movimento selecionado.");
+            throw new Exception("Ocorreu algo inesperado ao buscar recurso do movimento selecionado.");
         }
 
-        return \RecursoRepository::getRecursoPorCodigo(db_utils::fieldsMemory($rsDadosRecurso,0)->recurso);
+        return RecursoRepository::getRecursoPorCodigo(db_utils::fieldsMemory($rsDadosRecurso,0)->recurso);
     }
 
 

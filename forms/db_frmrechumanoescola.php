@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -120,7 +120,7 @@ db_fieldsmemory($result, 0);
   </tr>
   <tr>
     <td nowrap title="<?=@$Ted75_i_escola?>">
-      <?db_ancora( @$Led75_i_escola, "js_pesquisaed75_i_escola(true);", 3 );?>
+      <?php db_ancora( @$Led75_i_escola, "js_pesquisaed75_i_escola(true);", 3 );?>
     </td>
     <td>
       <?php
@@ -177,13 +177,13 @@ db_fieldsmemory($result, 0);
   <tr>
     <td valign="top">
       <?php
-        $chavepri= array(
+        $chavepri= [
                           "ed75_i_codigo"    => @$ed75_i_codigo,
                           "ed75_i_rechumano" => @$ed75_i_rechumano,
                           "z01_nome"         => @$z01_nome,
                           "ed75_i_escola"    => @$ed75_i_escola,
                           "ed18_c_nome"      => @$ed18_c_nome
-                        );
+                        ];
         $sOrdenacao          = "ed18_c_nome, ed75_d_ingresso";
         $sWhere              = "ed75_i_rechumano = {$ed75_i_rechumano}";
         $sSqlRecHumanoEscola = $clrechumanoescola->sql_query( "", "*", $sOrdenacao, $sWhere );

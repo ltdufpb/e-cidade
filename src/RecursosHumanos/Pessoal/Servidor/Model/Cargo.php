@@ -26,8 +26,10 @@
  */
 namespace ECidade\RecursosHumanos\Pessoal\Servidor\Model;
 
-use ECidade\Configuracao\Instituicao\Model\Instituicao;
-
+use DBException;
+use BusinessException;
+use db_utils;
+use DBDate;
 class Cargo
 {
     /**
@@ -76,12 +78,12 @@ class Cargo
     private $funcaoGrupo;
 
     /**
-     * @var \DBDate|null
+     * @var DBDate|null
      */
     private $dataInicio;
 
     /**
-     * @var \DBDate|null
+     * @var DBDate|null
      */
     private $dataFim;
 
@@ -109,14 +111,14 @@ class Cargo
             $rs = \db_query($sql);
 
             if (!$rs) {
-                throw new \DBException("Houve um erro ao buscar o cargo código {$codigo}.");
+                throw new DBException("Houve um erro ao buscar o cargo código {$codigo}.");
             }
 
             if (pg_num_rows($rs) == 0) {
-                throw new \BusinessException("Cargo código {$codigo} não encontrado.");
+                throw new BusinessException("Cargo código {$codigo} não encontrado.");
             }
 
-            $cargo = \db_utils::fieldsMemory($rs, 0);
+            $cargo = db_utils::fieldsMemory($rs, 0);
             $this->setCodigo($cargo->rh37_funcao);
             $this->setCodigoInstituicao($cargo->rh37_instit);
             $this->setDescricao($cargo->rh37_descr);
@@ -127,10 +129,10 @@ class Cargo
             $this->setAtivo($cargo->rh37_ativo);
             $this->setFuncaoGrupo($cargo->rh37_funcaogrupo);
             if (!empty($cargo->rh37_datainicial)) {
-                $this->setDataInicio(new \DBDate($cargo->rh37_datainicial));
+                $this->setDataInicio(new DBDate($cargo->rh37_datainicial));
             }
             if (!empty($cargo->rh37_datafinal)) {
-                $this->setDataFim(new \DBDate($cargo->rh37_datafinal));
+                $this->setDataFim(new DBDate($cargo->rh37_datafinal));
             }
             $this->setDescricaoCompleta($cargo->rh37_descricaocompleta);
             $this->setCodigoInstrucao($cargo->rh37_rhinstrucao);
@@ -283,7 +285,7 @@ class Cargo
     }
 
     /**
-     * @return \DBDate|null
+     * @return DBDate|null
      */
     public function getDataInicio()
     {
@@ -291,7 +293,7 @@ class Cargo
     }
 
     /**
-     * @param \DBDate|null $dataInicio
+     * @param DBDate|null $dataInicio
      */
     public function setDataInicio($dataInicio)
     {
@@ -299,7 +301,7 @@ class Cargo
     }
 
     /**
-     * @return \DBDate|null
+     * @return DBDate|null
      */
     public function getDataFim()
     {
@@ -307,7 +309,7 @@ class Cargo
     }
 
     /**
-     * @param \DBDate|null $dataFim
+     * @param DBDate|null $dataFim
      */
     public function setDataFim($dataFim)
     {

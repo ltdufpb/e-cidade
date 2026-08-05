@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pactovalorsaldo_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpactovalorsaldo = new cl_pactovalorsaldo;
 $clpactovalorsaldo->rotulo->label("o103_sequencial");
 $clpactovalorsaldo->rotulo->label("o103_pactovalor");
@@ -54,7 +55,7 @@ $clpactovalorsaldo->rotulo->label("o103_pactovalor");
               <?=$Lo103_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o103_sequencial",10,$Io103_sequencial,true,"text",4,"","chave_o103_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clpactovalorsaldo->rotulo->label("o103_pactovalor");
               <?=$Lo103_pactovalor?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o103_pactovalor",10,$Io103_pactovalor,true,"text",4,"","chave_o103_pactovalor");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clpactovalorsaldo->rotulo->label("o103_pactovalor");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       $sWhere = "";
       if (isset($iTipo)) {
         $sWhere .= " o103_pactovalorsaldotipo in({$iTipo})";
@@ -131,12 +132,12 @@ $clpactovalorsaldo->rotulo->label("o103_pactovalor");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

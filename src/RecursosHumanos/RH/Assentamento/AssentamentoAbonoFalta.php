@@ -27,6 +27,7 @@
 
 namespace ECidade\RecursosHumanos\RH\Assentamento;
 
+use Override;
 use Assentamento;
 use AssentamentoRepository;
 use BusinessException;
@@ -155,6 +156,7 @@ class AssentamentoAbonoFalta extends Assentamento
     /**
      * @param string $sHora
      */
+    #[Override]
     public function setHora($sHora)
     {
         parent::setHora($sHora);
@@ -176,6 +178,7 @@ class AssentamentoAbonoFalta extends Assentamento
      * @return $this|mixed
      * @throws DBException
      */
+    #[Override]
     public function persist()
     {
         parent::persist();
@@ -278,7 +281,7 @@ class AssentamentoAbonoFalta extends Assentamento
             throw new BusinessException('Informe a hora final para verificar as horas justificadas.');
         }
 
-        list($diferenca, $mensagem) = static::getHorasDeAbono(
+        [$diferenca, $mensagem] = static::getHorasDeAbono(
             $this->getServidor(),
             $dataConcessao,
             $this->horaInicio,
@@ -374,9 +377,10 @@ class AssentamentoAbonoFalta extends Assentamento
      * @param DiaTrabalho $diaTrabalho
      * @return null|String
      */
+    #[Override]
     public function calcularHorasDiurnasNoturnasNoDia(DiaTrabalho $diaTrabalho)
     {
-        $horasTotais = array();
+        $horasTotais = [];
         $baseHora = new AdicionalNoturno($diaTrabalho);
 
         $inicioJornada = $diaTrabalho->getJornada()->getInicioJornada();

@@ -31,7 +31,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clpontoeletronicoconfiguracoeslotacao = new cl_pontoeletronicoconfiguracoeslotacao;
 $clpontoeletronicoconfiguracoeslotacao->rotulo->label("rh195_sequencial");

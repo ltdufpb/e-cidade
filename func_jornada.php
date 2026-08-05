@@ -31,7 +31,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_jornada_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str($_SERVER["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $instituicao = db_getsession('DB_instit');
 $cljornada = new \cl_jornada;
@@ -51,11 +52,11 @@ $cljornada->rotulo->label("rh188_descricao");
         <table width="35%" border="0" align="center" cellspacing="3" class="form-container">
             <tr>
                 <td><label>Código</label></td>
-                <td><? db_input("rh188_sequencial", 10, 1, true, "text", 4, "", "chave_sequencial"); ?></td>
+                <td><?php  db_input("rh188_sequencial", 10, 1, true, "text", 4, "", "chave_sequencial"); ?></td>
             </tr>
             <tr>
                 <td><label>Descrição</label></td>
-                <td><? db_input("rh188_descricao", 40, 3, true, "text", 4, "", "chave_descricao"); ?></td>
+                <td><?php  db_input("rh188_descricao", 40, 3, true, "text", 4, "", "chave_descricao"); ?></td>
             </tr>
         </table>
     </fieldset>

@@ -34,7 +34,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( $_SERVER["QUERY_STRING"], $_parseStr );
+extract($_parseStr, EXTR_SKIP);
 
 $clescola = new cl_escola;
 $clescola->rotulo->label("ed18_i_codigo");
@@ -61,7 +62,7 @@ $iEscola     = db_getsession('DB_coddepto');
       <?=$Led18_i_codigo?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed18_i_codigo",10,$Ied18_i_codigo,true,"text",4,"","chave_ed18_i_codigo");?>
+      <?php db_input("ed18_i_codigo",10,$Ied18_i_codigo,true,"text",4,"","chave_ed18_i_codigo");?>
      </td>
     </tr>
     <tr>
@@ -69,7 +70,7 @@ $iEscola     = db_getsession('DB_coddepto');
       <?=$Led18_c_nome?>
      </td>
      <td width="96%" align="left" nowrap>
-      <?db_input("ed18_c_nome",40,$Ied18_c_nome,true,"text",4,"","chave_ed18_c_nome");?>
+      <?php db_input("ed18_c_nome",40,$Ied18_c_nome,true,"text",4,"","chave_ed18_c_nome");?>
      </td>
     </tr>
     <tr>

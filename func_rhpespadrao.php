@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhpespadrao_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clrhpespadrao = new cl_rhpespadrao;
 $clrotulo = new rotulocampo;
 $clrhpespadrao->rotulo->label("rh03_seqpes");
@@ -56,7 +57,7 @@ $clrotulo->label("r02_descr");
               <?=$Lrh03_seqpes?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh03_seqpes",6,$Irh03_seqpes,true,"text",4,"","chave_rh03_seqpes");
 		       ?>
             </td>
@@ -66,7 +67,7 @@ $clrotulo->label("r02_descr");
               <?=$Lrh03_padrao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("rh03_padrao",10,$Irh03_padrao,true,"text",4,"","chave_rh03_padrao");
 		       ?>
             </td>
@@ -76,7 +77,7 @@ $clrotulo->label("r02_descr");
               <?=$Lr02_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("r02_descr",10,$Ir02_descr,true,"text",4,"","chave_r02_descr");
 		       ?>
             </td>
@@ -94,7 +95,7 @@ $clrotulo->label("r02_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_rhpespadrao.php")==true){
@@ -132,12 +133,12 @@ $clrotulo->label("r02_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

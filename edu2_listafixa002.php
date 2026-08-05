@@ -67,7 +67,7 @@ if ($clturma->numrows == 0) {?>
 
 }
 
-$ano_calendario    = pg_result($result,0,'ed52_i_ano');
+$ano_calendario    = pg_fetch_result($result,0,'ed52_i_ano');
 $result_parametros = $cledu_parametros->sql_record($cledu_parametros->sql_query("",
                                                                                 "ed233_c_database,ed233_c_limitemov",
                                                                                 "",
@@ -78,7 +78,7 @@ $result_parametros = $cledu_parametros->sql_record($cledu_parametros->sql_query(
 if ($cledu_parametros->numrows > 0) {
 
   db_fieldsmemory($result_parametros,0);
-  if (!strstr($ed233_c_database,"/") || !strstr($ed233_c_limitemov,"/")) {
+  if (!strstr((string) $ed233_c_database,"/") || !strstr((string) $ed233_c_limitemov,"/")) {
 
    ?>
     <table width='100%'>
@@ -88,22 +88,22 @@ if ($cledu_parametros->numrows > 0) {
         <b>Parâmetros Dia/Mês Limite da Movimentação e Data Base para Cálculo da Idade (Procedimentos->Parâmetros)<br>
            devem estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2)<br><br>
            Valor atual do parâmetro Dia/Mês Limite da Movimentação:
-           <?=trim($ed233_c_limitemov)==""?"Não informado":$ed233_c_limitemov?><br>
+           <?=trim((string) $ed233_c_limitemov)==""?"Não informado":$ed233_c_limitemov?><br>
            Valor atual do parâmetro Data Base para Cálculo da Idade:
-           <?=trim($ed233_c_database)==""?"Não informado":$ed233_c_database?><br><br></b>
+           <?=trim((string) $ed233_c_database)==""?"Não informado":$ed233_c_database?><br><br></b>
           <input type='button' value='Fechar' onclick='window.close()'>
        </font>
       </td>
      </tr>
     </table>
-   <?
+   <?php 
    exit;
 
   }
 
 
-  $database      = explode("/",$ed233_c_database);
-  $limitemov     = explode("/",$ed233_c_limitemov);
+  $database      = explode("/",(string) $ed233_c_database);
+  $limitemov     = explode("/",(string) $ed233_c_limitemov);
   $dia_database  = $database[0];
   $mes_database  = $database[1];
   $dia_limitemov = $limitemov[0];
@@ -120,9 +120,9 @@ if ($cledu_parametros->numrows > 0) {
         <b>Parâmetros Dia/Mês Limite da Movimentação e Data Base para Cálculo da Idade (Procedimentos->Parâmetros)<br>
            devem estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2) e devem ser uma data válida.<br><br>
            Valor atual do parâmetro Dia/Mês Limite da Movimentação:
-           <?=trim($ed233_c_limitemov)==""?"Não informado":$ed233_c_limitemov?><br>
+           <?=trim((string) $ed233_c_limitemov)==""?"Não informado":$ed233_c_limitemov?><br>
            Valor atual do parâmetro Data Base para Cálculo da Idade:
-           <?=trim($ed233_c_database)==""?"Não informado":$ed233_c_database?><br><br>
+           <?=trim((string) $ed233_c_database)==""?"Não informado":$ed233_c_database?><br><br>
            Data Limite da Movimentação: <?=$dia_limitemov."/".$mes_limitemov."/".$ano_calendario?>
            <?=@!checkdate($mes_limitemov,$dia_limitemov,$ano_calendario)?"(Data Inválida)":"(Data Válida)"?><br>
            Data Base para Cálculo Idade: <?=$dia_database."/".$mes_database."/".$ano_calendario?>
@@ -132,7 +132,7 @@ if ($cledu_parametros->numrows > 0) {
       </td>
      </tr>
     </table>
-    <?
+    <?php 
     exit;
 
   }
@@ -155,7 +155,7 @@ function Entrada($situacao,$matricula) {
   $sql .= "  FROM matricula ";
   $sql .= "  WHERE ed60_i_codigo = $matricula ";
   $result = db_query($sql);
-  $tipo = pg_result($result,0,0);
+  $tipo = pg_fetch_result($result,0,0);
 
   $retorno = "R";
   if ($tipo == "N") {
@@ -224,20 +224,20 @@ for ($x = 0; $x < $linhas; $x++) {
 
     if ($datasaida != "") {
 
-      if (trim($ed60_c_situacao)=="TRANSFERIDO REDE"){
+      if (trim((string) $ed60_c_situacao)=="TRANSFERIDO REDE"){
         $sit = "TR";
-      } elseif (trim($ed60_c_situacao)=="TRANSFERIDO FORA"){
+      } elseif (trim((string) $ed60_c_situacao)=="TRANSFERIDO FORA"){
         $sit = "TF";
-      } elseif (trim($ed60_c_situacao)=="TROCA DE MODALIDADE") {
+      } elseif (trim((string) $ed60_c_situacao)=="TROCA DE MODALIDADE") {
         $sit = "TM";
-      } else if (trim($ed60_c_situacao)=="MATRICULA TRANCADA") {
+      } else if (trim((string) $ed60_c_situacao)=="MATRICULA TRANCADA") {
         $sit = "MT";
-      } else if (trim($ed60_c_situacao)=="MATRICULA INDEVIDA") {
+      } else if (trim((string) $ed60_c_situacao)=="MATRICULA INDEVIDA") {
         $sit = "MI";
-      } else if (trim($ed60_c_situacao)=="MATRICULA INDEFERIDA") {
+      } else if (trim((string) $ed60_c_situacao)=="MATRICULA INDEFERIDA") {
         $sit = "IN";
       } else {
-         $sit = substr($ed60_c_situacao,0,1);
+         $sit = substr((string) $ed60_c_situacao,0,1);
       }
       $pdf->cell(5,4,$sit,1,0,"C",0);
     } else {
@@ -260,7 +260,7 @@ for ($x = 0; $x < $linhas; $x++) {
     $pdf->cell(5,4,$inclusao,1,1,"C",0);
     $pdf->setfont('arial','',8);
 
-    if(trim($ed60_c_situacao)=="MATRICULADO"){
+    if(trim((string) $ed60_c_situacao)=="MATRICULADO"){
       $cont++;
     }
   }

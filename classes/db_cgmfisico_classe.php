@@ -60,7 +60,7 @@ class cl_cgmfisico
     public function __construct()
     {
         $this->rotulo = new rotulo("cgmfisico"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -119,10 +119,10 @@ class cl_cgmfisico
          $this->erro_status = "0";
          return false; 
        }
-       $this->z04_sequencial = pg_result($result,0,0); 
+       $this->z04_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cgmfisico_z04_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $z04_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $z04_sequencial)){
          $this->erro_sql = " Campo z04_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -160,7 +160,7 @@ class cl_cgmfisico
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cgm Físico ($this->z04_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cgm Físico já Cadastrado";
@@ -189,15 +189,15 @@ class cl_cgmfisico
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16715,'$this->z04_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,2939,16715,'','".AddSlashes(pg_result($resaco,0,'z04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2939,16716,'','".AddSlashes(pg_result($resaco,0,'z04_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2939,19585,'','".AddSlashes(pg_result($resaco,0,'z04_rhcbo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2939,1013640,'','".AddSlashes(pg_result($resaco,0,'z04_nomesocial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2939,1013638,'','".AddSlashes(pg_result($resaco,0,'z04_paisnascimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2939,1013639,'','".AddSlashes(pg_result($resaco,0,'z04_paisnacionalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2939,16715,'','".AddSlashes(pg_fetch_result($resaco,0,'z04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2939,16716,'','".AddSlashes(pg_fetch_result($resaco,0,'z04_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2939,19585,'','".AddSlashes(pg_fetch_result($resaco,0,'z04_rhcbo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2939,1013640,'','".AddSlashes(pg_fetch_result($resaco,0,'z04_nomesocial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2939,1013638,'','".AddSlashes(pg_fetch_result($resaco,0,'z04_paisnascimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2939,1013639,'','".AddSlashes(pg_fetch_result($resaco,0,'z04_paisnacionalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -208,10 +208,10 @@ class cl_cgmfisico
       $this->atualizacampos();
      $sql = " update cgmfisico set ";
      $virgula = "";
-     if(trim($this->z04_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z04_sequencial"])){ 
+     if(trim((string) $this->z04_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z04_sequencial"])){ 
        $sql  .= $virgula." z04_sequencial = $this->z04_sequencial ";
        $virgula = ",";
-       if(trim($this->z04_sequencial) == null ){ 
+       if(trim((string) $this->z04_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "z04_sequencial";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_cgmfisico
          return false;
        }
      }
-     if(trim($this->z04_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z04_numcgm"])){ 
+     if(trim((string) $this->z04_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z04_numcgm"])){ 
        $sql  .= $virgula." z04_numcgm = $this->z04_numcgm ";
        $virgula = ",";
-       if(trim($this->z04_numcgm) == null ){ 
+       if(trim((string) $this->z04_numcgm) == null ){ 
          $this->erro_sql = " Campo Código CGM não informado.";
          $this->erro_campo = "z04_numcgm";
          $this->erro_banco = "";
@@ -234,17 +234,17 @@ class cl_cgmfisico
          return false;
        }
      }
-     if(trim($this->z04_rhcbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z04_rhcbo"])){ 
-        if(trim($this->z04_rhcbo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["z04_rhcbo"])){ 
+     if(trim((string) $this->z04_rhcbo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z04_rhcbo"])){ 
+        if(trim((string) $this->z04_rhcbo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["z04_rhcbo"])){ 
            $this->z04_rhcbo = "0" ; 
         } 
        $sql  .= $virgula." z04_rhcbo = $this->z04_rhcbo ";
        $virgula = ",";
      }
-     if(trim($this->z04_nomesocial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z04_nomesocial"])){ 
+     if(trim((string) $this->z04_nomesocial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z04_nomesocial"])){ 
        $sql  .= $virgula." z04_nomesocial = '$this->z04_nomesocial' ";
        $virgula = ",";
-       if(trim($this->z04_nomesocial) == null ){ 
+       if(trim((string) $this->z04_nomesocial) == null ){ 
          $this->erro_sql = " Campo Nome Social não informado.";
          $this->erro_campo = "z04_nomesocial";
          $this->erro_banco = "";
@@ -254,10 +254,10 @@ class cl_cgmfisico
          return false;
        }
      }
-     if(trim($this->z04_paisnascimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z04_paisnascimento"])){ 
+     if(trim((string) $this->z04_paisnascimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z04_paisnascimento"])){ 
        $sql  .= $virgula." z04_paisnascimento = $this->z04_paisnascimento ";
        $virgula = ",";
-       if(trim($this->z04_paisnascimento) == null ){ 
+       if(trim((string) $this->z04_paisnascimento) == null ){ 
          $this->erro_sql = " Campo País Nascimento não informado.";
          $this->erro_campo = "z04_paisnascimento";
          $this->erro_banco = "";
@@ -267,10 +267,10 @@ class cl_cgmfisico
          return false;
        }
      }
-     if(trim($this->z04_paisnacionalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z04_paisnacionalidade"])){ 
+     if(trim((string) $this->z04_paisnacionalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z04_paisnacionalidade"])){ 
        $sql  .= $virgula." z04_paisnacionalidade = $this->z04_paisnacionalidade ";
        $virgula = ",";
-       if(trim($this->z04_paisnacionalidade) == null ){ 
+       if(trim((string) $this->z04_paisnacionalidade) == null ){ 
          $this->erro_sql = " Campo País Nacionalidade não informado.";
          $this->erro_campo = "z04_paisnacionalidade";
          $this->erro_banco = "";
@@ -294,21 +294,21 @@ class cl_cgmfisico
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,16715,'$this->z04_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["z04_sequencial"]) || $this->z04_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,2939,16715,'".AddSlashes(pg_result($resaco,$conresaco,'z04_sequencial'))."','$this->z04_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2939,16715,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'z04_sequencial'))."','$this->z04_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["z04_numcgm"]) || $this->z04_numcgm != "")
-             $resac = db_query("insert into db_acount values($acount,2939,16716,'".AddSlashes(pg_result($resaco,$conresaco,'z04_numcgm'))."','$this->z04_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2939,16716,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'z04_numcgm'))."','$this->z04_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["z04_rhcbo"]) || $this->z04_rhcbo != "")
-             $resac = db_query("insert into db_acount values($acount,2939,19585,'".AddSlashes(pg_result($resaco,$conresaco,'z04_rhcbo'))."','$this->z04_rhcbo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2939,19585,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'z04_rhcbo'))."','$this->z04_rhcbo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["z04_nomesocial"]) || $this->z04_nomesocial != "")
-             $resac = db_query("insert into db_acount values($acount,2939,1013640,'".AddSlashes(pg_result($resaco,$conresaco,'z04_nomesocial'))."','$this->z04_nomesocial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2939,1013640,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'z04_nomesocial'))."','$this->z04_nomesocial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["z04_paisnascimento"]) || $this->z04_paisnascimento != "")
-             $resac = db_query("insert into db_acount values($acount,2939,1013638,'".AddSlashes(pg_result($resaco,$conresaco,'z04_paisnascimento'))."','$this->z04_paisnascimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2939,1013638,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'z04_paisnascimento'))."','$this->z04_paisnascimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["z04_paisnacionalidade"]) || $this->z04_paisnacionalidade != "")
-             $resac = db_query("insert into db_acount values($acount,2939,1013639,'".AddSlashes(pg_result($resaco,$conresaco,'z04_paisnacionalidade'))."','$this->z04_paisnacionalidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2939,1013639,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'z04_paisnacionalidade'))."','$this->z04_paisnacionalidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -362,15 +362,15 @@ class cl_cgmfisico
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,16715,'$z04_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,2939,16715,'','".AddSlashes(pg_result($resaco,$iresaco,'z04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2939,16716,'','".AddSlashes(pg_result($resaco,$iresaco,'z04_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2939,19585,'','".AddSlashes(pg_result($resaco,$iresaco,'z04_rhcbo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2939,1013640,'','".AddSlashes(pg_result($resaco,$iresaco,'z04_nomesocial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2939,1013638,'','".AddSlashes(pg_result($resaco,$iresaco,'z04_paisnascimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2939,1013639,'','".AddSlashes(pg_result($resaco,$iresaco,'z04_paisnacionalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2939,16715,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'z04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2939,16716,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'z04_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2939,19585,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'z04_rhcbo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2939,1013640,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'z04_nomesocial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2939,1013638,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'z04_paisnascimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2939,1013639,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'z04_paisnacionalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -39,10 +39,10 @@ $clrotulo->label("j29_cep");
        <?=@$Lj14_codigo?>
     </td>
     <td> 
-		<?
+		<?php 
 			db_input('db_teste',7,'db_teste',true,'hidden',"","")
 		?>
-		<?
+		<?php 
 			db_input('j14_codigo',7,$Ij14_codigo,true,'text',$db_codopcao,"");
 			if (isset($mostrabotao) && $mostrabotao == 't'){
 				echo '<input name="db_procproximo" type="submit" id="db_proc" value="Procura Próximo">';
@@ -58,7 +58,7 @@ $clrotulo->label("j29_cep");
        <?=@$Lj14_nome?>
     </td>
     <td> 
-		<?
+		<?php 
 			db_input('j14_nome',40,$Ij14_nome,true,'text',$db_opcao,"")
 		?>
     </td>
@@ -68,7 +68,7 @@ $clrotulo->label("j29_cep");
        <?=@$Lj14_tipo?>
     </td>
     <td> 
-	<?
+	<?php 
 
     $rsConsultaRuasTp = $clruastipo->sql_record($clruastipo->sql_query_file(null,"j88_codigo,j88_descricao"));
     db_selectrecord("j14_tipo",$rsConsultaRuasTp,$Ij14_tipo,$db_opcao,"");    
@@ -81,7 +81,7 @@ $clrotulo->label("j29_cep");
        <?=@$Lj14_rural?>
     </td>
     <td> 
-		<?
+		<?php 
 			$x = array("f"=>"NAO","t"=>"SIM");
 			db_select('j14_rural',$x,true,$db_opcao,"");
 		?>
@@ -92,7 +92,7 @@ $clrotulo->label("j29_cep");
       <?=@$Lj29_cep?>
     </td>
     <td>
-	<?
+	<?php 
 	  db_input('j29_cep',8,$Ij29_cep,true,'text',$db_opcao,"")
 	?>
    </td>
@@ -102,7 +102,7 @@ $clrotulo->label("j29_cep");
       <?=@$Lj14_lei?>
     </td>
     <td>
-	<?
+	<?php 
 	  db_input('j14_lei',30,$Ij14_lei,true,'text',$db_opcao,"")
 	?>
    </td>
@@ -112,7 +112,7 @@ $clrotulo->label("j29_cep");
       <?=@$Lj14_dtlei?>
     </td>
     <td>
-	<?
+	<?php 
 //	if (isset($j14_dtlei)&&$j14_dtlei!=""){
 //		echo "ano $j14_dtlei <br> ";
 //		$j14_dtlei_ano=substr($j14_dtlei,0,4);
@@ -131,7 +131,7 @@ $clrotulo->label("j29_cep");
       <?=@$Lj14_obs ?>
     </td>
     <td>
-     <?
+     <?php 
       db_textarea('j14_obs',5,60,$Ij14_obs,true,'text',$db_opcao,"");
      ?>
     </td>
@@ -140,7 +140,7 @@ $clrotulo->label("j29_cep");
   </center>
 <input name="db_opcao" type="submit" id="db_opcao" value="<?=($db_opcao==1?"Incluir":($db_opcao==2||$db_opcao==22?"Alterar":"Excluir"))?>" <?=($db_botao==false?"disabled":"")?> >
 
-<? if(($db_opcao == 3) or ($db_opcao == 33)){  
+<?php  if(($db_opcao == 3) or ($db_opcao == 33)){  
      echo '<input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa1();" >';
  }else{ 
      echo ' <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();" >';
@@ -152,7 +152,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_ruas.hide();
-  <?
+  <?php 
   if($db_opcao!=1){
     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
@@ -166,7 +166,7 @@ function js_pesquisa1(){
 }
 function js_preenchepesquisa1(chave){
     db_iframe_ruas.hide();
-      <?
+      <?php 
         if($db_opcao!=1){
 	      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
 	        }

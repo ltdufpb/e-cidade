@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -40,7 +40,8 @@ include(modification("classes/db_censomunic_classe.php"));
 include(modification("classes/db_censoorgemissrg_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_jsplibwebseller.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $claluno = new cl_aluno;
 $clalunoaltera = new cl_alunoaltera;
@@ -228,7 +229,7 @@ if(isset($alterar)){
   parent.document.formaba.a2.style.color = "black";
   parent.iframe_a2.location.href='bib1_aluno002.php?chavepesquisa=<?=$ed47_i_codigo?>';
  </script>
- <?
+ <?php 
  $sql_vinculo = "SELECT DISTINCT ed18_i_codigo as codvinculo,ed18_c_nome as nomevinculo
                  FROM aluno 
   		  left join alunocurso       on ed47_i_codigo = ed56_i_aluno
@@ -265,7 +266,7 @@ if(isset($excluirfoto)){
    parent.parent.db_iframe_alteradados.hide();
    parent.parent.dadosleitor.location.href = "bib1_leitor004.php?chavepesquisa=<?=$ed47_i_codigo?>&tipo=ALUNO";
   </script>
-  <?
+  <?php 
 }
 ?>
 <html>
@@ -282,7 +283,7 @@ if(isset($excluirfoto)){
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <center>
    <fieldset style="width:95%"><legend><b>Alteração de Aluno</b></legend>
-    <?include(modification("forms/db_frmbibalunodados.php"));?>
+    <?php include(modification("forms/db_frmbibalunodados.php"));?>
    </fieldset>
    </center>
   </td>
@@ -290,7 +291,7 @@ if(isset($excluirfoto)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar)){
  if($claluno->erro_status=="0"){
   $claluno->erro(true,false);
@@ -314,7 +315,7 @@ if(isset($alterar)){
     parent.parent.db_iframe_alteradados.hide();
    }
   </script>
-  <?
+  <?php 
  }
 }
 if($linhas_vinculo>0){
@@ -359,7 +360,7 @@ function js_removeMsg(idObj){
  obj = document.getElementById("MsgBox");
  document.body.removeChild(obj);
 }
-<?if($linhas_vinculo>0){?>
+<?php if($linhas_vinculo>0){?>
  js_msg_nao_altera("<?=$esc_vinculo?>","MsgBox");
-<?}?>
+<?php }?>
 </script>

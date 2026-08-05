@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -97,7 +97,7 @@ function js_marcadesmarca(){
 <center>
 <form name='form1' method='post'>
 <table border='1'>
-<?
+<?php 
 
   $result = $clclientes->sql_record($clclientes->sql_query(null,'at01_codcli,at01_nomecli,at01_cidade','at01_nomecli',' at01_status is true '));
   //db_criatabela($result);

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_grupoexames_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clsau_grupoexames = new cl_sau_grupoexames;
 $clsau_grupoexames->rotulo->label("s130_i_codigo");
 $clsau_grupoexames->rotulo->label("s130_c_descricao");
@@ -54,7 +55,7 @@ $clsau_grupoexames->rotulo->label("s130_c_descricao");
               <?=$Ls130_i_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("s130_i_codigo",10,$Is130_i_codigo,true,"text",4,"","chave_s130_i_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clsau_grupoexames->rotulo->label("s130_c_descricao");
               <?=$Ls130_c_descricao?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("s130_c_descricao",50,$Is130_c_descricao,true,"text",4,"","chave_s130_c_descricao");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clsau_grupoexames->rotulo->label("s130_c_descricao");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_sau_grupoexames.php")==true){
@@ -122,12 +123,12 @@ $clsau_grupoexames->rotulo->label("s130_c_descricao");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

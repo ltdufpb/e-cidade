@@ -89,11 +89,11 @@ $iTotalRegistros = count($oJsonArquivo->aLogs);
 
 $iIdentificador = null;
 
-$aRegistros = array(
+$aRegistros = [
   89 => "Registro 89 - Dados da Escola",
   90 => "Registro 90 - Alunos admitidos antes da data base do censo",
   91 => "Registro 91 - Alunos admitidos após a data base do censo",
-);
+];
 
 foreach($oJsonArquivo->aLogs as $oErro) {
 
@@ -111,7 +111,7 @@ foreach($oJsonArquivo->aLogs as $oErro) {
     $iPreenchimento = 1;
   }
 
-  $oPdf->MultiCell($iLargura, $iAltura, utf8_decode($oErro->sErro), 0, 'L', $iPreenchimento);
+  $oPdf->MultiCell($iLargura, $iAltura, mb_convert_encoding($oErro->sErro, 'ISO-8859-1'), 0, 'L', $iPreenchimento);
   $iContador++;
 }
 

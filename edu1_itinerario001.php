@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,7 @@ include(modification("classes/db_itinerario_classe.php"));
 include(modification("classes/db_itinerarioescolaproc_classe.php"));
 include(modification("classes/db_itinerarioescola_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clitinerario = new cl_itinerario;
 $clitinerarioescolaproc = new cl_itinerarioescolaproc;
 $clitinerarioescola = new cl_itinerarioescola;
@@ -70,13 +70,13 @@ if(isset($incluir)){
     <br>
     <fieldset style="width:95%"><legend><b>Inclusão de itinerário</b></legend>
     <center>
-     <?include(modification("forms/db_frmitinerario.php"));?>
+     <?php include(modification("forms/db_frmitinerario.php"));?>
     </center>
     </fieldset>
    </td>
   </tr>
 </table>
-<?
+<?php 
 db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));
 ?>
 </body>
@@ -84,7 +84,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <script>
 js_tabulacaoforms("form1","ed218_d_datacad",true,1,"ed218_d_datacad",true);
 </script>
-<?
+<?php 
 if(isset($incluir)){
   if($clitinerario->erro_status=="0"){
     $clitinerario->erro(true,false);
@@ -96,7 +96,7 @@ if(isset($incluir)){
     }
   }else{
   $result = @db_query("select last_value from itinerario_ed218_i_codigo_seq");
-  $ultimo = pg_result($result,0,0);
+  $ultimo = pg_fetch_result($result,0,0);
   if($tipoescola=="F"){
    db_inicio_transacao();
    $clitinerarioescolaproc->ed222_i_itinerario=$ultimo;

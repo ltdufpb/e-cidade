@@ -656,18 +656,18 @@ function js_prosseguir(aba){
       parent.mo_camada('a2');
       <?php
       } else {
-        ?>alert('FAA sem procedimentos.');<?
+        ?>alert('FAA sem procedimentos.');<?php 
       }
       ?>
   } else if(parent.document.formaba.a4 != undefined && aba == 'a4' ) {
-     <?
+     <?php 
      if( $clprontproced->numrows > 0 ) {
 
        echo "parent.document.formaba.a4.disabled = false;";
        echo "parent.iframe_a4.location.href='sau4_fichaatendabas004.php?chavepesquisaprontuario=$chavepesquisaprontuario&chaveprofissional='+document.form1.sd03_i_codigo.value;";
        echo "parent.mo_camada('a4');";
      } else {
-       ?>alert('FAA sem procedimentos.');<?
+       ?>alert('FAA sem procedimentos.');<?php 
      }
      ?>
   }

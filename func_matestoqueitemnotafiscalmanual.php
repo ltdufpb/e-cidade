@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matestoqueitemnotafiscalmanual_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clmatestoqueitemnotafiscalmanual = new cl_matestoqueitemnotafiscalmanual;
 $clmatestoqueitemnotafiscalmanual->rotulo->label("m79_sequencial");
 $clmatestoqueitemnotafiscalmanual->rotulo->label("m79_notafiscal");
@@ -54,7 +55,7 @@ $clmatestoqueitemnotafiscalmanual->rotulo->label("m79_notafiscal");
               <?=$Lm79_sequencial?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m79_sequencial",10,$Im79_sequencial,true,"text",4,"","chave_m79_sequencial");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clmatestoqueitemnotafiscalmanual->rotulo->label("m79_notafiscal");
               <?=$Lm79_notafiscal?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("m79_notafiscal",15,$Im79_notafiscal,true,"text",4,"","chave_m79_notafiscal");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clmatestoqueitemnotafiscalmanual->rotulo->label("m79_notafiscal");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_matestoqueitemnotafiscalmanual.php")==true){
@@ -122,12 +123,12 @@ $clmatestoqueitemnotafiscalmanual->rotulo->label("m79_notafiscal");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

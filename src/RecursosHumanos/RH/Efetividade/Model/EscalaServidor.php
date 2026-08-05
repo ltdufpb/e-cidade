@@ -27,6 +27,8 @@
 
 namespace ECidade\RecursosHumanos\RH\Efetividade\Model;
 
+use Servidor;
+use DBDate;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\EscalaTrabalho;
 
 /**
@@ -45,7 +47,7 @@ class EscalaServidor {
 
   /**
    * Instância de Servidor
-   * @var \Servidor
+   * @var Servidor
    */
   private $oServidor;
 
@@ -57,7 +59,7 @@ class EscalaServidor {
 
   /**
    * Data de início do servidor na escala
-   * @var \DBDate
+   * @var DBDate
    */
   private $oDataEscala;
 
@@ -75,7 +77,7 @@ class EscalaServidor {
 
   /**
    * Retorna o servidor
-   * @return \Servidor
+   * @return Servidor
    */
   public function getServidor() {
     return $this->oServidor;
@@ -91,7 +93,7 @@ class EscalaServidor {
 
   /**
    * Retorna da data de início do servidor na escala
-   * @return \DBDate
+   * @return DBDate
    */
   public function getDataEscala() {
     return $this->oDataEscala;
@@ -112,9 +114,9 @@ class EscalaServidor {
   }
 
   /**
-   * @param \Servidor $oServidor
+   * @param Servidor $oServidor
    */
-  public function setServidor(\Servidor $oServidor) {
+  public function setServidor(Servidor $oServidor) {
     $this->oServidor = $oServidor;
   }
 
@@ -126,9 +128,9 @@ class EscalaServidor {
   }
 
   /**
-   * @param \DBDate $oDataEscala
+   * @param DBDate $oDataEscala
    */
-  public function setDataEscala(\DBDate $oDataEscala) {
+  public function setDataEscala(DBDate $oDataEscala) {
     $this->oDataEscala = $oDataEscala;
   }
 

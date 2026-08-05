@@ -3,7 +3,6 @@
 namespace ECidade\Patrimonial\Protocolo\Processo\ProcessoEletronico\Repository;
 
 use \DBDate;
-use \BusinessException;
 use \DBException;
 use \db_utils;
 use \db_query;
@@ -42,39 +41,34 @@ class ConsultaProcesso
 
     private function getAll(FiltroListagemProcessos $filtro)
     {
-        switch ($this->tipoConsulta) {
-            case 'CONSULTA_OBJETO_SOLICITACAO':
-                $campos = array(
-                     "sequencial"     => "ov01_sequencial"
-                    ,"tipo_processo"  => "ov01_tipoprocesso"
-                    ,"processo"       => "ov01_numero||'/'||ov01_anousu"
-                    ,"metadados"      => "ov33_informacoesprocesso"
-                );
-                break;
+        $campos = match ($this->tipoConsulta) {
+            'CONSULTA_OBJETO_SOLICITACAO' => [
+                 "sequencial"     => "ov01_sequencial"
+                ,"tipo_processo"  => "ov01_tipoprocesso"
+                ,"processo"       => "ov01_numero||'/'||ov01_anousu"
+                ,"metadados"      => "ov33_informacoesprocesso"
+            ],
+            default => [
+                 "sequencial"               => "ov01_sequencial"
+                ,"tipo_processo"            => "ov01_tipoprocesso"
+                ,"tipo_processo_descricao"  => "p51_descr"
+                ,"solicitante"              => "ov02_nome"
+                ,"processo"                 => "ov01_numero||'/'||ov01_anousu"
+                ,"data"                     => "ov01_dataatend"
+                ,"numero"                   => "ov01_numero"
+                ,"ano"                      => "ov01_anousu"
+            ],
+        };
 
-            default:
-                $campos = array(
-                     "sequencial"               => "ov01_sequencial"
-                    ,"tipo_processo"            => "ov01_tipoprocesso"
-                    ,"tipo_processo_descricao"  => "p51_descr"
-                    ,"solicitante"              => "ov02_nome"
-                    ,"processo"                 => "ov01_numero||'/'||ov01_anousu"
-                    ,"data"                     => "ov01_dataatend"
-                    ,"numero"                   => "ov01_numero"
-                    ,"ano"                      => "ov01_anousu"
-                );
-                break;
-        }
-
-        $resultado   = array();
+        $resultado   = [];
         $fnResultado = function ($retorno) use ($campos) {
 
-            $items = array();
+            $items = [];
 
             foreach ($campos as $campo => $valor) {
                 $valor = $retorno->{$campo};
 
-                if (!empty($valor) && strpos($campo, 'data') !== false) {
+                if (!empty($valor) && str_contains($campo, 'data')) {
                     $valor = DBDate::getInstance($valor)->getDate(DBDate::DATA_PTBR);
                 }
 
@@ -89,7 +83,7 @@ class ConsultaProcesso
         if (pg_num_rows($rsResultado) > 1) {
             $resultado = db_utils::makeCollectionFromRecord($rsResultado, $fnResultado);
         } elseif (pg_num_rows($rsResultado) == 1) {
-            $resultado = array(db_utils::makeFromRecord($rsResultado, $fnResultado, 0));
+            $resultado = [db_utils::makeFromRecord($rsResultado, $fnResultado, 0)];
         }
 
         return $resultado;
@@ -108,7 +102,7 @@ class ConsultaProcesso
                     LEFT JOIN processoouvidoria ON ov09_ouvidoriaatendimento = ov01_sequencial
                 ";
 
-                $where = array();
+                $where = [];
 
                 if ($filtro->getNumeroProcesso() != null) {
                     $where[] = "ov01_numero = {$filtro->getNumeroProcesso()}";
@@ -137,14 +131,14 @@ class ConsultaProcesso
                     LEFT JOIN processoouvidoria ON ov09_ouvidoriaatendimento = ov01_sequencial
                 ";
 
-                $where = array(
+                $where = [
                      "ov01_instit                       = {$filtro->getCodigoInstituicao()}"
                     ,"ov01_situacaoouvidoriaatendimento = {$filtro->getSituacaoOuvidoriaAtendimento()}"
                     ,"p51_codigo IN ( SELECT p41_tipoproc
                                         FROM tipoprocdepto
                                        WHERE p41_coddepto = {$filtro->getCodigoDepartamento()})"
                     ,"ov09_ouvidoriaatendimento is null"
-                );
+                ];
 
                 if ($filtro->getDataInicio() !== null && $filtro->getDataFim() !== null) {
                     if ($filtro->getDataInicio() instanceof DBDate && $filtro->getDataFim() instanceof DBDate) {
@@ -171,16 +165,16 @@ class ConsultaProcesso
                     }
                 }
 
-                $order = array(
+                $order = [
                      "data"
                     ,"processo"
-                );
+                ];
 
                 $erro = "Ocorreu um erro ao consultar os processos\n";
                 break;
         }
 
-        $camposConsulta = array();
+        $camposConsulta = [];
         foreach ($campos as $key => $campo) {
             $camposConsulta[] = $campo . ' as ' . $key;
         }

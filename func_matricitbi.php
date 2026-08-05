@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -46,7 +46,8 @@ if(!isset($lote)) {
   $lote = '';
 }
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $cliptubase = new cl_iptubase;
 $cliptubase->rotulo->label("j01_matric");
 $clrotulo = new rotulocampo;
@@ -68,7 +69,7 @@ $clrotulo->label("j04_loteregimo");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<?
+<?php 
  db_app::load('estilos.css');
  db_app::load('scripts.js, prototype.js, strings.js, DBViewPesquisaSetorQuadraLote.js, dbcomboBox.widget.js');
 ?>
@@ -81,7 +82,7 @@ $clrotulo->label("j04_loteregimo");
   <?=$Lj01_matric?>
   </td>
   <td> 
-  <?
+  <?php 
     db_input("j01_matric",10,$Ij01_matric,true,"text",4,"","chave_j01_matric");
   ?>
   </td>
@@ -89,12 +90,12 @@ $clrotulo->label("j04_loteregimo");
 
 <tr> 
   <td title="<?=$Tj14_codigo?>">
-  <?
+  <?php 
     db_ancora($Lj14_codigo,' js_mostraruas(true); ',2);
   ?>
   </td>
   <td> 
-  <?
+  <?php 
     db_input("j14_codigo",10,$Ij14_codigo,true,'text',4," onchange='js_mostraruas(false);'");
     db_input("j14_nome",30,$Ij14_nome,true,"text",3);
   ?>
@@ -106,7 +107,7 @@ $clrotulo->label("j04_loteregimo");
     <?=$Lz01_nome?>
   </td>
   <td> 
-  <?
+  <?php 
     db_input("z01_nome",42,$Iz01_nome,true,'text',4);
   ?>
   </td>
@@ -117,7 +118,7 @@ $clrotulo->label("j04_loteregimo");
     <?=$Lj34_setor?>/<?=$Lj34_quadra?>/<?=$Lj34_lote?>
   </td>
   <td> 
-  <?
+  <?php 
     db_input("j34_setor" ,10,$Ij34_setor,true,'text',4);
     db_input("j34_quadra",10,$Ij34_quadra,true,'text',4);
     db_input("j34_lote"  ,10,$Ij34_lote,true,'text',4);
@@ -130,7 +131,7 @@ $clrotulo->label("j04_loteregimo");
     <?=$Lj40_refant?>
   </td>
   <td> 
-  <?
+  <?php 
     db_input("j40_refant",42,$Ij40_refant,true,'text',4);
   ?>
   </td>
@@ -141,7 +142,7 @@ $clrotulo->label("j04_loteregimo");
     <b>Matrícula RI :</b>
   </td>
   <td> 
-  <?
+  <?php 
     db_input("j04_matricregimo",10,$Ij04_matricregimo,true,"text",4,"","chave_j04_matricregimo");
   ?>
   </td>
@@ -152,7 +153,7 @@ $clrotulo->label("j04_loteregimo");
     <b>Setor/Quadra/Lote RI :</b>
   </td>
   <td> 
-  <?
+  <?php 
     db_input("j04_setorregimovel", 10, $Ij04_setorregimovel, true, 'text', 1);
     db_input("j04_quadraregimo"  , 10, $Ij04_quadraregimo  , true, 'text', 1);
     db_input("j04_loteregimo"    , 10, $Ij04_loteregimo    , true, 'text', 1);
@@ -179,7 +180,7 @@ $clrotulo->label("j04_loteregimo");
 <table id="lovrot" align="center">
 <tr>
   <td>
-  <?
+  <?php 
     $funcao_js_anterior = $funcao_js;
 
     if (isset($valida) && $valida=="true" ) {
@@ -353,14 +354,14 @@ function js_mostraruas(mostra){
  }
  
 </script>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_j01_matric.focus();
 document.form2.chave_j01_matric.select();
   </script>
-  <?
+  <?php 
 }
 
 $db_iframe= new janela('db_iframe','');
@@ -377,7 +378,7 @@ $db_iframe ->mostrar();
 var oPesquisa = new DBViewPesquisaSetorQuadraLote('pesquisa', 'oPesquisa');
     oPesquisa.show();
     oPesquisa.appendForm();
-<? 
+<?php  
   echo "oPesquisa.setValues('{$setorCodigo}','{$quadra}','{$lote}');"; 
 ?>
 </script>

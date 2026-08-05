@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_auto_classe.php"));
 db_postmemory($HTTP_POST_VARS);
 db_postmemory($HTTP_SERVER_VARS);//exit;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clauto = new cl_auto;
 $clauto->rotulo->label("y50_codauto");
 $clauto->rotulo->label("y50_nome");
@@ -53,7 +54,7 @@ $clrotulo->label("j01_matric");
 <table height="100%" border="0"  align="center" cellspacing="0" bgcolor="#CCCCCC">
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
 //      if(!isset($pesquisa_chave)){
 		  if(isset($origem) && $origem == "cgm"){
 				$sql = " select y50_codauto,y50_data,y50_nome,y50_dtvenc from auto inner join autocgm on auto.y50_codauto = autocgm.y54_codauto where autocgm.y54_numcgm = $num ";

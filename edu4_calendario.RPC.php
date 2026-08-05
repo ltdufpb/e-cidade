@@ -45,7 +45,7 @@ $oJson              = new services_json();
 $oParam             = $oJson->decode(str_replace("\\","",$_POST["json"]));
 
 $oRetorno           = new stdClass();
-$oRetorno->dados    = array();
+$oRetorno->dados    = [];
 $oRetorno->status   = 1;
 $oRetorno->message  = "";
 
@@ -296,7 +296,7 @@ try {
         $oDaoPeriodoCalendario->excluir(""," ed53_i_calendario = {$oParam->iCodigoCalendario}");
         $oDaoCalendario->excluir($oParam->iCodigoCalendario);
 
-        $oRetorno->message = urlencode ( _M( $sCaminhoMensagens."calendario_excluido" ) );
+        $oRetorno->message = urlencode ( (string) _M( $sCaminhoMensagens."calendario_excluido" ) );
 
         db_fim_transacao( false );
       }
@@ -320,7 +320,7 @@ try {
         $sSqlDuracaoCal = $oDaoDuracaoCal->sql_query_file($oCalendarioClone->getPeriodicidade());
         $rsDuracaoCal   = $oDaoDuracaoCal->sql_record($sSqlDuracaoCal);
 
-        $oDadosCalendario->sDescricaoPeriodicidade      = urlencode(db_utils::fieldsMemory($rsDuracaoCal,0)->ed55_c_descr);
+        $oDadosCalendario->sDescricaoPeriodicidade      = urlencode((string) db_utils::fieldsMemory($rsDuracaoCal,0)->ed55_c_descr);
       } else {
         $oDadosCalendario->sDescricaoPeriodicidade = null;
       }
@@ -386,7 +386,7 @@ try {
         throw new Exception( _M( $sCaminhoMensagens . "informe_turma") );
       }
 
-      $oTurma      = new \Turma($oParam->iTurma);
+      $oTurma      = new Turma($oParam->iTurma);
       $oCalendario = $oTurma->getCalendario();
 
       $oRetorno->dataInicio = $oCalendario->getDataInicio()->convertTo(DBDate::DATA_PTBR);

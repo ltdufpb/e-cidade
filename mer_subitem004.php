@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -61,7 +61,7 @@ if ($clferiado->numrows>0) {
 ?>
 
 <script>
-<?if (@$data_script!="") {?>
+<?php if (@$data_script!="") {?>
     parent.document.form1.<?=$campo?>_ano.value = "<?=substr($data_script,0,4)?>";
     parent.document.form1.<?=$campo?>_mes.value = "<?=substr($data_script,5,2)?>";
     parent.document.form1.<?=$campo?>_dia.value = "<?=substr($data_script,8,2)?>";
@@ -74,9 +74,9 @@ if ($clferiado->numrows>0) {
     d1 = "<?=substr($data_script,8,2)?>";
     m1 = "<?=substr($data_script,5,2)?>";
     a1 = "<?=substr($data_script,0,4)?>";
-<?}?>	
+<?php }?>	
 
-<?if (@$data_script=="") {?>
+<?php if (@$data_script=="") {?>
     parent.document.form1.<?=$campo?>_ano.value = "";
     parent.document.form1.<?=$campo?>_mes.value = "";
     parent.document.form1.<?=$campo?>_dia.value = "";
@@ -84,7 +84,7 @@ if ($clferiado->numrows>0) {
     d1 = "";
     m1 = "";
     a1 = "";
-<?}?>
+<?php }?>
   var vet    = parent.document.form1.me29_d_inicio.value.split("/");
   var ano    = vet[2];
   var mes    = vet[1]-1;

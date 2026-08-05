@@ -61,7 +61,7 @@ class Periodo
     /**
      * @var Contribuicao[]
      */
-    private $contribuicoesSindicais = array();
+    private $contribuicoesSindicais = [];
 
     /**
      * Periodo constructor.
@@ -204,13 +204,13 @@ class Periodo
      */
     public function toArray()
     {
-        $retorno = array(
+        $retorno = [
             'sequencial' => $this->getSequencial(),
             'empregador' => $this->getEmpregador()->toArray(),
             'indicativoPeriodo' => $this->getIndicativoPeriodo(),
             'periodo' => $this->getPeriodo(),
-            'contribuicoes' => array()
-        );
+            'contribuicoes' => []
+        ];
         $contribuicoes = $this->getContribuicoesSindicais();
         if (count($contribuicoes) > 0) {
             foreach ($contribuicoes as $contribuicao) {

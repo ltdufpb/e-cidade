@@ -27,6 +27,11 @@
 
 namespace ECidade\RecursosHumanos\RH\Efetividade\Repository;
 
+use cl_jornadahoras;
+use DBException;
+use db_utils;
+use stdClass;
+use DateTime;
 use ECidade\RecursosHumanos\RH\Efetividade\Model\Jornada as JornadaModel;
 
 /**
@@ -40,12 +45,12 @@ class JornadaHoras {
   /**
    * Retorna uma coleção de objetos com as informações das horas de uma jornada
    * @param JornadaModel $oJornada
-   * @return \stdClass[]
-   * @throws \DBException
+   * @return stdClass[]
+   * @throws DBException
    */
   public static function getHorasPorJornada(JornadaModel $oJornada) {
 
-    $oDaoJornadaHoras = new \cl_jornadahoras();
+    $oDaoJornadaHoras = new cl_jornadahoras();
     $sSqlJornadaHoras = $oDaoJornadaHoras->sql_query_file(
       null,
       'rh189_tiporegistro, rh189_hora',
@@ -55,19 +60,19 @@ class JornadaHoras {
     $rsJornadaHoras   = db_query($sSqlJornadaHoras);
 
     if(!$rsJornadaHoras) {
-      throw new \DBException('Erro ao buscar as horas da jornada.');
+      throw new DBException('Erro ao buscar as horas da jornada.');
     }
 
     if(pg_num_rows($rsJornadaHoras) == 0) {
-      return array();
+      return [];
     }
 
-    return \db_utils::makeCollectionFromRecord($rsJornadaHoras, function($oRetorno) {
+    return db_utils::makeCollectionFromRecord($rsJornadaHoras, function($oRetorno) {
 
-      $oDadosJornadaHora                = new \stdClass();
+      $oDadosJornadaHora                = new stdClass();
       $oDadosJornadaHora->iTipoRegistro = $oRetorno->rh189_tiporegistro;
       $oDadosJornadaHora->sTipoRegistro = JornadaHoras::getTipoEntrada($oRetorno->rh189_tiporegistro);
-      $oDadosJornadaHora->oHora         = new \DateTime($oRetorno->rh189_hora);
+      $oDadosJornadaHora->oHora         = new DateTime($oRetorno->rh189_hora);
       $oDadosJornadaHora->sHora         = $oRetorno->rh189_hora;
 
       return $oDadosJornadaHora;
@@ -81,12 +86,12 @@ class JornadaHoras {
    */
   public static function getTipoEntrada($iTipoEntrada) {
 
-    $aTipoEntrada = array(
+    $aTipoEntrada = [
       1 => 'ENTRADA 1',
       2 => 'SAIDA 1',
       3 => 'ENTRADA 2',
       4 => 'SAIDA 2'
-    );
+    ];
 
     return $aTipoEntrada[$iTipoEntrada];
   }

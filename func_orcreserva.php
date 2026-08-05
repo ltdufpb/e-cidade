@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -32,7 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_orcreserva_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcreserva = new cl_orcreserva;
 $clorcreserva->rotulo->label("o80_codres");
 $clorcreserva->rotulo->label("o80_descr");
@@ -52,15 +53,15 @@ $clorcreserva->rotulo->label("o80_coddot");
           <form name="form2" method="post" action="" >
             <tr>
               <td width="4%" align="right" nowrap title="<?=$To80_codres?>"><?=$Lo80_codres?></td>
-              <td width="96%" align="left" nowrap><? db_input("o80_codres",8,$Io80_codres,true,"text",4,"","chave_o80_codres"); ?></td>
+              <td width="96%" align="left" nowrap><?php  db_input("o80_codres",8,$Io80_codres,true,"text",4,"","chave_o80_codres"); ?></td>
             </tr>
             <tr>
               <td width="4%" align="right" nowrap title="<?=$To80_descr?>"><?=$Lo80_descr?></td>
-              <td width="96%" align="left" nowrap><? db_input("o80_descr",40,$Io80_descr,true,"text",4,"","chave_o80_descr");?></td>
+              <td width="96%" align="left" nowrap><?php  db_input("o80_descr",40,$Io80_descr,true,"text",4,"","chave_o80_descr");?></td>
             </tr>
             <tr>
               <td width="4%" align="right" nowrap title="<?=$To80_coddot?>"><?=$Lo80_coddot?></td>
-              <td width="96%" align="left" nowrap><? db_input("o80_coddot",8,$Io80_coddot,true,"text",4,"","chave_o80_coddot"); ?></td>
+              <td width="96%" align="left" nowrap><?php  db_input("o80_coddot",8,$Io80_coddot,true,"text",4,"","chave_o80_coddot"); ?></td>
             </tr>
             <tr>
               <td colspan="2" align="center">
@@ -75,7 +76,7 @@ $clorcreserva->rotulo->label("o80_coddot");
     </tr>
     <tr>
       <td align="center" valign="top">
-        <?
+        <?php 
 
         if(!isset($pesquisa_chave)){
           if(isset($campos)==false){
@@ -168,12 +169,12 @@ $clorcreserva->rotulo->label("o80_coddot");
   </table>
   </body>
   </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-<?
+<?php 
 }
 ?>
 <script type="text/javascript">

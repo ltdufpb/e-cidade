@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -34,7 +34,8 @@ require_once(modification("classes/db_veicretirada_classe.php"));
 require_once(modification("classes/db_veiccadcentraldepart_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clveicretirada         = new cl_veicretirada;
 $clveiccadcentraldepart = new cl_veiccadcentraldepart;
@@ -59,7 +60,7 @@ $clveiccadcentraldepart->rotulo->label("ve37_veiccadcentral");
               <?=$Lve60_codigo?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("ve60_codigo",10,$Ive60_codigo,true,"text",4,"","chave_ve60_codigo");
 		       ?>
             </td>
@@ -77,7 +78,7 @@ $clveiccadcentraldepart->rotulo->label("ve37_veiccadcentral");
   </tr>
   <tr>
     <td align="center" valign="top">
-      <?
+      <?php 
       $where="";
       if(isset($devol)){
       	if ($devol==false){
@@ -142,12 +143,12 @@ $clveiccadcentraldepart->rotulo->label("ve37_veiccadcentral");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

@@ -2,9 +2,13 @@
 
 namespace ECidade\RecursosHumanos\ESocial\Integracao\Formatter;
 
+use Override;
+use InstituicaoRepository;
+use Instituicao;
+use BusinessException;
+use DBException;
 use App\Domain\RecursosHumanos\Pessoal\Repository\Helper\CompetenciaHelper;
 use CgmFisico;
-use CgmJuridico;
 use ECidade\RecursosHumanos\ESocial\Entity\RemuneracaoRPPS;
 use ECidade\RecursosHumanos\ESocial\Repository\ESocialRubricasRepository;
 use ECidade\RecursosHumanos\ESocial\Service\RemuneracaoRPPSService;
@@ -59,7 +63,7 @@ class RemuneracaoRPPSFormatter extends Formatter
 
 
     /**
-     * @var \Instituicao
+     * @var Instituicao
      */
     private $instituicao;
 
@@ -125,9 +129,10 @@ class RemuneracaoRPPSFormatter extends Formatter
      *
      * @param array $dados
      * @return array|stdClass[]
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
+    #[Override]
     public function formatar($dados)
     {
         $dados = (object) $dados;
@@ -136,7 +141,7 @@ class RemuneracaoRPPSFormatter extends Formatter
         $this->mesCompetencia = $dados->mesCompetencia;
         $this->rubricasRepository = new ESocialRubricasRepository();
         $this->rubricasValidas = $this->rubricasRepository->validarRubricas('1202');
-        $this->instituicao = \InstituicaoRepository::getInstituicaoSessao();
+        $this->instituicao = InstituicaoRepository::getInstituicaoSessao();
         $this->possuiNaturezaSaude = false;
         $this->competencia = CompetenciaHelper::get($this->anoCompetencia, $this->mesCompetencia);
         $this->rubricaDiferenca = $dados->rubricaDiferenca;
@@ -160,8 +165,8 @@ class RemuneracaoRPPSFormatter extends Formatter
     /**
      * @param $cgm
      * @return stdClass
-     * @throws \BusinessException
-     * @throws \DBException
+     * @throws BusinessException
+     * @throws DBException
      */
     private function buscarDadosECidade($cgm)
     {
@@ -173,9 +178,9 @@ class RemuneracaoRPPSFormatter extends Formatter
 
 
         $dadoFormatado = new stdClass();
-        $dadoFormatado->dmDev = array();
+        $dadoFormatado->dmDev = [];
         $dadoFormatado->referencia = $cgm . '-' . $this->remuneracaoRPPSService->getAnoCompetencia()
-        . str_pad($this->remuneracaoRPPSService->getMesCompetencia(), 2, '0', STR_PAD_LEFT);
+        . str_pad((string) $this->remuneracaoRPPSService->getMesCompetencia(), 2, '0', STR_PAD_LEFT);
 
         if ($this->isDecimoTerceiro) {
             $dadoFormatado->referencia .= '-2';
@@ -368,13 +373,13 @@ class RemuneracaoRPPSFormatter extends Formatter
     {
         $dadoFormatado->ideTrabalhador->infoMV = new stdClass();
         $dadoFormatado->ideTrabalhador->infoMV->indMV = null;
-        $dadoFormatado->ideTrabalhador->infoMV->remunOutrEmpr = array();
+        $dadoFormatado->ideTrabalhador->infoMV->remunOutrEmpr = [];
     }
 
     /**
      * @param $dadoFormatado
      * @param $index
-     * @throws \BusinessException
+     * @throws BusinessException
      */
     private function organizarDadosPagamentos(&$dadoFormatado, $folha, $index = 0, $indexDmDev = 0)
     {
@@ -384,7 +389,7 @@ class RemuneracaoRPPSFormatter extends Formatter
         foreach ($folha as $pagamento) {
             $item = new stdClass();
             $item->codRubr = $pagamento->codigo;
-            if (!array_key_exists($pagamento->codigo, $this->rubricasValidas)) {
+            if (!array_key_exists((string) $pagamento->codigo, $this->rubricasValidas)) {
                 continue;
             }
 
@@ -652,6 +657,7 @@ class RemuneracaoRPPSFormatter extends Formatter
         }
     }
 
+    #[Override]
     public function truncar($valor)
     {
         $valor = abs(round($valor, 6));

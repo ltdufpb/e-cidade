@@ -1,4 +1,4 @@
-<?PHP
+<?php PHP
 
 require_once modification('libs/db_stdlib.php');
 require_once modification('libs/db_conecta.php');
@@ -269,7 +269,7 @@ if (isset($atualizar)) {
                         <tr>
                                 <td> <strong>Assentamento:</strong> </td>
                                 <td colspan='2'>
-                                        <?PHP
+                                        <?php PHP
                                         echo $codigo_assent . "-" . $descr
                                         ?>
                                         <input name='codigo_assent' value='<?= $codigo_assent ?>' type='hidden'>
@@ -289,7 +289,7 @@ if (isset($atualizar)) {
                                 </td>
 
                         </tr>
-                        <?PHP
+                        <?php PHP
                         $sql = "select h12_codigo,h12_assent||'-'||h12_descr as h12_descr
               from tipoasse
 	      where h12_codigo != $codigo_assent
@@ -402,7 +402,7 @@ if (isset($atualizar)) {
                         </tr>
                 </table>
         </form>
-        <?
+        <?php 
         db_menu(db_getsession("DB_id_usuario"), db_getsession("DB_modulo"), db_getsession("DB_anousu"), db_getsession("DB_instit"));
         ?>
 </body>

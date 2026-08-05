@@ -2,6 +2,9 @@
 
 namespace ECidade\Educacao\Escola\Censo\SituacaoAluno\Dados;
 
+use cl_escolagestorcenso;
+use DBException;
+use db_utils;
 use ECidade\Educacao\Escola\Censo\Censo;
 use Escola;
 use Exception;
@@ -42,7 +45,7 @@ class BuscaDadosEscola2016 implements BuscarDados
         $sCampos .= ",'' as separador_final ";
         $sWhere = "escola.ed18_i_codigo = {$escola->getCodigo()} ";
 
-        $oDaoEscolaGestorCenso = new \cl_escolagestorcenso();
+        $oDaoEscolaGestorCenso = new cl_escolagestorcenso();
         $sSqlEscolaGestorCenso = $oDaoEscolaGestorCenso->sql_query_dados_gestor(
             null,
             $sCampos,
@@ -52,7 +55,7 @@ class BuscaDadosEscola2016 implements BuscarDados
         $rsEscolaGestorCenso = db_query($sSqlEscolaGestorCenso);
 
         if (!$rsEscolaGestorCenso) {
-            throw new \DBException("Erro ao buscar os dados da Escola.");
+            throw new DBException("Erro ao buscar os dados da Escola.");
         }
 
         if (pg_num_rows($rsEscolaGestorCenso) == 0) {
@@ -61,7 +64,7 @@ class BuscaDadosEscola2016 implements BuscarDados
             );
         }
 
-        $this->oDados = \db_utils::fieldsMemory($rsEscolaGestorCenso, 0);
+        $this->oDados = db_utils::fieldsMemory($rsEscolaGestorCenso, 0);
     }
 
     /**

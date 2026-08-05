@@ -77,7 +77,7 @@ class LoteRegistrosPonto {
    * 
    * @var RegistroPonto[]
    */
-  private $aRegistroPonto = array();
+  private $aRegistroPonto = [];
 
   /**
    * Representa a situação do lote.
@@ -176,7 +176,7 @@ class LoteRegistrosPonto {
    */
   public function getRegistroPontoServidor(){
 
-    $aServidorRegistrosPonto = array();
+    $aServidorRegistrosPonto = [];
     
     foreach ($this->getRegistroPonto() as $oRegistro) {
       $aServidorRegistrosPonto[$oRegistro->getServidor()->getMatricula()][] = $oRegistro;
@@ -365,7 +365,7 @@ class LoteRegistrosPonto {
    * Responsável por confirmar o lote e lançar os registros no ponto de salário
    *
    * @return bool
-   * @throws \BusinessException
+   * @throws BusinessException
    */
   public function confirmarLote () {
 
@@ -438,11 +438,11 @@ class LoteRegistrosPonto {
   /**
    * Retorna a folha de pagamento ao qual o lote está vinculado ou false se nenhuma folha
    * @return bool|FolhaPagamento
-   * @throws \DBException
+   * @throws DBException
    */
   public function getFolhaPagamento() {
 
-    if($this->getSequencial() != null && trim($this->getSequencial()) != "") {
+    if($this->getSequencial() != null && trim((string) $this->getSequencial()) != "") {
 
       if(DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
 

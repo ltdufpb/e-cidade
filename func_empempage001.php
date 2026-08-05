@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_empagemov_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($_POST);
 $clempagemov = new cl_empagemov();
 $clrotulo    = new rotulocampo();
@@ -55,7 +56,7 @@ $clempagemov->rotulo->label();
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
       <center>
       <input name="fechar" type="button" value="Fechar" onclick="parent.db_iframe_agendamento.hide();">
-      <?
+      <?php 
       $sql = $clempagemov->sql_query_consemp(null,"
              distinct e81_codage,
              e43_ordempagamento as DL_OP_auxiliar,

@@ -88,7 +88,7 @@ class LinhaColuna
      */
     public function toArray()
     {
-        return array(
+        return [
             'sequencial' => $this->getSequencial(),
             'linha' => $this->getLinha()->getLinha(),
             'ordemLinha' => $this->getLinha()->getOrdem(),
@@ -97,7 +97,7 @@ class LinhaColuna
             'ordem' => $this->getOrdem(),
             'periodo' => $this->getPeriodo(),
             'formula' => $this->getFormula()
-        );
+        ];
     }
 
     /**

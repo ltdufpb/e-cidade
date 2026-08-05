@@ -41,19 +41,6 @@ class AreaGradeAproveitamentoRelatorio
     // Colunas que compõe o Resultado Final
     protected $colunaAprov = 0;
     protected $colunaRF = 0;
-
-    /**
-     * @var FPDF
-     */
-    private $pdf;
-    /**
-     * @var Matricula
-     */
-    private $matricula;
-    /**
-     * @var integer
-     */
-    private $tamanhoLinha;
     /**
      * @var GradeAproveitamentoAreaPorAreaService
      */
@@ -74,15 +61,12 @@ class AreaGradeAproveitamentoRelatorio
      * @param integer $tamanhoLinha
      * @throws Exception
      */
-    public function __construct(FPDF $pdf, Matricula $matricula, $tamanhoLinha)
+    public function __construct(private readonly FPDF $pdf, private readonly Matricula $matricula, private $tamanhoLinha)
     {
-        $this->pdf = $pdf;
         $this->pdf->SetFillColor(230);
-        $this->matricula = $matricula;
-        $this->tamanhoLinha = $tamanhoLinha;
 
         db_inicio_transacao();
-        $diarioClasse = $matricula->getDiarioDeClasse();
+        $diarioClasse = $this->matricula->getDiarioDeClasse();
         db_fim_transacao();
         $this->gradeService = new GradeAproveitamentoAreaPorAreaService($diarioClasse);
         $this->mapper = $this->gradeService->getGradeAproveitamento();
@@ -296,7 +280,7 @@ class AreaGradeAproveitamentoRelatorio
         $formaAvaliacao = $this->procedimento->getResultado()->getFormaAvaliacao();
         if ($formaAvaliacao->getTipo() === 'NIVEL') {
             $conceitos = $formaAvaliacao->getConceitos();
-            $listaDescricao = array();
+            $listaDescricao = [];
 
             foreach ($conceitos as $conceito) {
                 $listaDescricao[] = $conceito->iOrdem . '-' . $conceito->sConceito . ':' . $conceito->sDescricao;

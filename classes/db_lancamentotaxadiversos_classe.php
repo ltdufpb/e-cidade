@@ -28,35 +28,35 @@
 //CLASSE DA ENTIDADE lancamentotaxadiversos
 class cl_lancamentotaxadiversos {
   // cria variaveis de erro
-  var $rotulo     = null;
-  var $query_sql  = null;
-  var $numrows    = 0;
-  var $numrows_incluir = 0;
-  var $numrows_alterar = 0;
-  var $numrows_excluir = 0;
-  var $erro_status= null;
-  var $erro_sql   = null;
-  var $erro_banco = null;
-  var $erro_msg   = null;
-  var $erro_campo = null;
-  var $pagina_retorno = null;
+  public $rotulo     = null;
+  public $query_sql  = null;
+  public $numrows    = 0;
+  public $numrows_incluir = 0;
+  public $numrows_alterar = 0;
+  public $numrows_excluir = 0;
+  public $erro_status= null;
+  public $erro_sql   = null;
+  public $erro_banco = null;
+  public $erro_msg   = null;
+  public $erro_campo = null;
+  public $pagina_retorno = null;
   // cria variaveis do arquivo
-  var $y120_sequencial = 0;
-  var $y120_cgm = 0;
-  var $y120_taxadiversos = 0;
-  var $y120_unidade = 0;
-  var $y120_periodo = 0;
-  var $y120_datainicio_dia = null;
-  var $y120_datainicio_mes = null;
-  var $y120_datainicio_ano = null;
-  var $y120_datainicio = null;
-  var $y120_datafim_dia = null;
-  var $y120_datafim_mes = null;
-  var $y120_datafim_ano = null;
-  var $y120_datafim = null;
-  var $y120_issbase = null;
+  public $y120_sequencial = 0;
+  public $y120_cgm = 0;
+  public $y120_taxadiversos = 0;
+  public $y120_unidade = 0;
+  public $y120_periodo = 0;
+  public $y120_datainicio_dia = null;
+  public $y120_datainicio_mes = null;
+  public $y120_datainicio_ano = null;
+  public $y120_datainicio = null;
+  public $y120_datafim_dia = null;
+  public $y120_datafim_mes = null;
+  public $y120_datafim_ano = null;
+  public $y120_datafim = null;
+  public $y120_issbase = null;
   // cria propriedade com as variaveis do arquivo
-  var $campos = "
+  public $campos = "
                  y120_sequencial = int4 = Sequencial 
                  y120_cgm = int4 = CGM 
                  y120_taxadiversos = int4 = Taxa 
@@ -67,10 +67,10 @@ class cl_lancamentotaxadiversos {
                  y120_issbase = int4 = Inscrição Municipal 
                  ";
   //funcao construtor da classe
-  function cl_lancamentotaxadiversos() {
+  function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("lancamentotaxadiversos");
-    $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+    $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
   }
   //funcao erro
   function erro($mostra,$retorna) {
@@ -156,10 +156,10 @@ class cl_lancamentotaxadiversos {
         $this->erro_status = "0";
         return false;
       }
-      $this->y120_sequencial = pg_result($result,0,0);
+      $this->y120_sequencial = pg_fetch_result($result,0,0);
     }else{
       $result = db_query("select last_value from lancamentotaxadiversos_y120_sequencial_seq");
-      if(($result != false) && (pg_result($result,0,0) < $y120_sequencial)){
+      if(($result != false) && (pg_fetch_result($result,0,0) < $y120_sequencial)){
         $this->erro_sql = " Campo y120_sequencial maior que último número da sequencia.";
         $this->erro_banco = "Sequencia menor que este número.";
         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -201,7 +201,7 @@ class cl_lancamentotaxadiversos {
     $result = db_query($sql);
     if($result==false){
       $this->erro_banco = str_replace("\n","",@pg_last_error());
-      if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+      if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
         $this->erro_sql   = "Lançamento de Taxas diversas ($this->y120_sequencial) não Incluído. Inclusão Abortada.";
         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
         $this->erro_banco = "Lançamento de Taxas diversas já Cadastrado";
@@ -230,17 +230,17 @@ class cl_lancamentotaxadiversos {
       if(($resaco!=false)||($this->numrows!=0)){
 
         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-        $acount = pg_result($resac,0,0);
+        $acount = pg_fetch_result($resac,0,0);
         $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
         $resac = db_query("insert into db_acountkey values($acount,22057,'$this->y120_sequencial','I')");
-        $resac = db_query("insert into db_acount values($acount,3974,22057,'','".AddSlashes(pg_result($resaco,0,'y120_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,3974,22058,'','".AddSlashes(pg_result($resaco,0,'y120_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,3974,22059,'','".AddSlashes(pg_result($resaco,0,'y120_taxadiversos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,3974,22060,'','".AddSlashes(pg_result($resaco,0,'y120_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,3974,22079,'','".AddSlashes(pg_result($resaco,0,'y120_periodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,3974,22061,'','".AddSlashes(pg_result($resaco,0,'y120_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,3974,22062,'','".AddSlashes(pg_result($resaco,0,'y120_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,3974,22124,'','".AddSlashes(pg_result($resaco,0,'y120_issbase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3974,22057,'','".AddSlashes(pg_fetch_result($resaco,0,'y120_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3974,22058,'','".AddSlashes(pg_fetch_result($resaco,0,'y120_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3974,22059,'','".AddSlashes(pg_fetch_result($resaco,0,'y120_taxadiversos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3974,22060,'','".AddSlashes(pg_fetch_result($resaco,0,'y120_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3974,22079,'','".AddSlashes(pg_fetch_result($resaco,0,'y120_periodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3974,22061,'','".AddSlashes(pg_fetch_result($resaco,0,'y120_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3974,22062,'','".AddSlashes(pg_fetch_result($resaco,0,'y120_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3974,22124,'','".AddSlashes(pg_fetch_result($resaco,0,'y120_issbase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
       }
     }
     return true;
@@ -250,10 +250,10 @@ class cl_lancamentotaxadiversos {
     $this->atualizacampos();
     $sql = " update lancamentotaxadiversos set ";
     $virgula = "";
-    if(trim($this->y120_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y120_sequencial"])){
+    if(trim((string) $this->y120_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y120_sequencial"])){
       $sql  .= $virgula." y120_sequencial = $this->y120_sequencial ";
       $virgula = ",";
-      if(trim($this->y120_sequencial) == null ){
+      if(trim((string) $this->y120_sequencial) == null ){
         $this->erro_sql = " Campo Sequencial não informado.";
         $this->erro_campo = "y120_sequencial";
         $this->erro_banco = "";
@@ -263,17 +263,17 @@ class cl_lancamentotaxadiversos {
         return false;
       }
     }
-    if(trim($this->y120_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y120_cgm"])){
-      if(trim($this->y120_cgm)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y120_cgm"])){
+    if(trim((string) $this->y120_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y120_cgm"])){
+      if(trim((string) $this->y120_cgm)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y120_cgm"])){
         $this->y120_cgm = "0" ;
       }
       $sql  .= $virgula." y120_cgm = $this->y120_cgm ";
       $virgula = ",";
     }
-    if(trim($this->y120_taxadiversos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y120_taxadiversos"])){
+    if(trim((string) $this->y120_taxadiversos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y120_taxadiversos"])){
       $sql  .= $virgula." y120_taxadiversos = $this->y120_taxadiversos ";
       $virgula = ",";
-      if(trim($this->y120_taxadiversos) == null ){
+      if(trim((string) $this->y120_taxadiversos) == null ){
         $this->erro_sql = " Campo Taxa não informado.";
         $this->erro_campo = "y120_taxadiversos";
         $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_lancamentotaxadiversos {
         return false;
       }
     }
-    if(trim($this->y120_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y120_unidade"])){
+    if(trim((string) $this->y120_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y120_unidade"])){
       $sql  .= $virgula." y120_unidade = $this->y120_unidade ";
       $virgula = ",";
-      if(trim($this->y120_unidade) == null ){
+      if(trim((string) $this->y120_unidade) == null ){
         $this->erro_sql = " Campo Unidade não informado.";
         $this->erro_campo = "y120_unidade";
         $this->erro_banco = "";
@@ -296,16 +296,16 @@ class cl_lancamentotaxadiversos {
         return false;
       }
     }
-    if(trim($this->y120_periodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y120_periodo"])){
-      if(trim($this->y120_periodo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y120_periodo"])){
+    if(trim((string) $this->y120_periodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y120_periodo"])){
+      if(trim((string) $this->y120_periodo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y120_periodo"])){
         $this->y120_periodo = "0" ;
       }
       $sql  .= $virgula." y120_periodo = $this->y120_periodo ";
       $virgula = ",";
     }
-    if(trim($this->y120_datainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y120_datainicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y120_datainicio_dia"] !="") ){
+    if(trim((string) $this->y120_datainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y120_datainicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y120_datainicio_dia"] !="") ){
 
-      if(trim($this->y120_datainicio) == 'null') {
+      if(trim((string) $this->y120_datainicio) == 'null') {
         $sql  .= $virgula." y120_datainicio = null ";
       } else {
         $sql  .= $virgula." y120_datainicio = '$this->y120_datainicio' ";
@@ -319,9 +319,9 @@ class cl_lancamentotaxadiversos {
         $virgula = ",";
       }
     }
-    if(trim($this->y120_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y120_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y120_datafim_dia"] !="") ){
+    if(trim((string) $this->y120_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y120_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y120_datafim_dia"] !="") ){
 
-      if(trim($this->y120_datafim) == 'null') {
+      if(trim((string) $this->y120_datafim) == 'null') {
         $sql  .= $virgula." y120_datafim = null ";
       } else {
         $sql  .= $virgula." y120_datafim = '$this->y120_datafim' ";
@@ -334,8 +334,8 @@ class cl_lancamentotaxadiversos {
         $virgula = ",";
       }
     }
-    if(trim($this->y120_issbase)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y120_issbase"])){
-      if(trim($this->y120_issbase)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y120_issbase"])){
+    if(trim((string) $this->y120_issbase)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y120_issbase"])){
+      if(trim((string) $this->y120_issbase)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y120_issbase"])){
         $this->y120_issbase = 'null' ;
       }
       $sql  .= $virgula." y120_issbase = $this->y120_issbase ";
@@ -355,25 +355,25 @@ class cl_lancamentotaxadiversos {
         for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
           $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-          $acount = pg_result($resac,0,0);
+          $acount = pg_fetch_result($resac,0,0);
           $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
           $resac = db_query("insert into db_acountkey values($acount,22057,'$this->y120_sequencial','A')");
           if (isset($GLOBALS["HTTP_POST_VARS"]["y120_sequencial"]) || $this->y120_sequencial != "")
-            $resac = db_query("insert into db_acount values($acount,3974,22057,'".AddSlashes(pg_result($resaco,$conresaco,'y120_sequencial'))."','$this->y120_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3974,22057,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y120_sequencial'))."','$this->y120_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["y120_cgm"]) || $this->y120_cgm != "")
-            $resac = db_query("insert into db_acount values($acount,3974,22058,'".AddSlashes(pg_result($resaco,$conresaco,'y120_cgm'))."','$this->y120_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3974,22058,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y120_cgm'))."','$this->y120_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["y120_taxadiversos"]) || $this->y120_taxadiversos != "")
-            $resac = db_query("insert into db_acount values($acount,3974,22059,'".AddSlashes(pg_result($resaco,$conresaco,'y120_taxadiversos'))."','$this->y120_taxadiversos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3974,22059,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y120_taxadiversos'))."','$this->y120_taxadiversos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["y120_unidade"]) || $this->y120_unidade != "")
-            $resac = db_query("insert into db_acount values($acount,3974,22060,'".AddSlashes(pg_result($resaco,$conresaco,'y120_unidade'))."','$this->y120_unidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3974,22060,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y120_unidade'))."','$this->y120_unidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["y120_periodo"]) || $this->y120_periodo != "")
-            $resac = db_query("insert into db_acount values($acount,3974,22079,'".AddSlashes(pg_result($resaco,$conresaco,'y120_periodo'))."','$this->y120_periodo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3974,22079,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y120_periodo'))."','$this->y120_periodo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["y120_datainicio"]) || $this->y120_datainicio != "")
-            $resac = db_query("insert into db_acount values($acount,3974,22061,'".AddSlashes(pg_result($resaco,$conresaco,'y120_datainicio'))."','$this->y120_datainicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3974,22061,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y120_datainicio'))."','$this->y120_datainicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["y120_datafim"]) || $this->y120_datafim != "")
-            $resac = db_query("insert into db_acount values($acount,3974,22062,'".AddSlashes(pg_result($resaco,$conresaco,'y120_datafim'))."','$this->y120_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3974,22062,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y120_datafim'))."','$this->y120_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if (isset($GLOBALS["HTTP_POST_VARS"]["y120_issbase"]) || $this->y120_issbase != "")
-            $resac = db_query("insert into db_acount values($acount,3974,22124,'".AddSlashes(pg_result($resaco,$conresaco,'y120_issbase'))."','$this->y120_issbase',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3974,22124,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y120_issbase'))."','$this->y120_issbase',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
         }
       }
     }
@@ -427,17 +427,17 @@ class cl_lancamentotaxadiversos {
         for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
           $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-          $acount = pg_result($resac,0,0);
+          $acount = pg_fetch_result($resac,0,0);
           $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
           $resac  = db_query("insert into db_acountkey values($acount,22057,'$y120_sequencial','E')");
-          $resac  = db_query("insert into db_acount values($acount,3974,22057,'','".AddSlashes(pg_result($resaco,$iresaco,'y120_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-          $resac  = db_query("insert into db_acount values($acount,3974,22058,'','".AddSlashes(pg_result($resaco,$iresaco,'y120_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-          $resac  = db_query("insert into db_acount values($acount,3974,22059,'','".AddSlashes(pg_result($resaco,$iresaco,'y120_taxadiversos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-          $resac  = db_query("insert into db_acount values($acount,3974,22060,'','".AddSlashes(pg_result($resaco,$iresaco,'y120_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-          $resac  = db_query("insert into db_acount values($acount,3974,22079,'','".AddSlashes(pg_result($resaco,$iresaco,'y120_periodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-          $resac  = db_query("insert into db_acount values($acount,3974,22061,'','".AddSlashes(pg_result($resaco,$iresaco,'y120_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-          $resac  = db_query("insert into db_acount values($acount,3974,22062,'','".AddSlashes(pg_result($resaco,$iresaco,'y120_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-          $resac  = db_query("insert into db_acount values($acount,3974,22124,'','".AddSlashes(pg_result($resaco,$iresaco,'y120_issbase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac  = db_query("insert into db_acount values($acount,3974,22057,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y120_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac  = db_query("insert into db_acount values($acount,3974,22058,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y120_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac  = db_query("insert into db_acount values($acount,3974,22059,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y120_taxadiversos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac  = db_query("insert into db_acount values($acount,3974,22060,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y120_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac  = db_query("insert into db_acount values($acount,3974,22079,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y120_periodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac  = db_query("insert into db_acount values($acount,3974,22061,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y120_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac  = db_query("insert into db_acount values($acount,3974,22062,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y120_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac  = db_query("insert into db_acount values($acount,3974,22124,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y120_issbase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
         }
       }
     }

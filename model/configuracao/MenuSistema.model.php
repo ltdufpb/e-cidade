@@ -92,7 +92,7 @@ class MenuSistema {
    * Array com com os menus filho
    * @var array
    */
-  private $aItensFilho = array();
+  private $aItensFilho = [];
   
   /**
    * Construtor da classe. Recebe o código como parâmetro, que pode ser null
@@ -436,7 +436,7 @@ class MenuSistema {
       $oDaoDbMenu->id_item_filho = $this->getCodigo();
       $oDaoDbMenu->menusequencia = $iMenuSequencia + 1;
       $oDaoDbMenu->modulo        = $oModuloSistema->getCodigo();
-      $oDaoDbMenu->incluir( null );
+      $oDaoDbMenu->incluir();
 
       if ( $oDaoDbMenu->erro_status == "0" ) {
 
@@ -453,9 +453,9 @@ class MenuSistema {
    * @return array
    * @throws DBException
    */
-  public function menusVinculados( ModuloSistema $oModuloSistema = null ) {
+  public function menusVinculados( ?ModuloSistema $oModuloSistema = null ) {
 
-    $aMenus       = array();
+    $aMenus       = [];
     $oDaoDbMenu   = new cl_db_menu();
     $sWhereDbMenu = "id_item_filho = {$this->getCodigo()}";
 

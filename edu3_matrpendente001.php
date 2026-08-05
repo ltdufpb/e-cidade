@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_matricula_classe.php"));
 include(modification("classes/db_calendario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmatricula = new cl_matricula;
 $clcalendario = new cl_calendario;
 $db_opcao = 1;
@@ -73,11 +73,11 @@ $escola = db_getsession("DB_coddepto");
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr>
   <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
-   <?MsgAviso(db_getsession("DB_coddepto"),"escola");?>
+   <?php MsgAviso(db_getsession("DB_coddepto"),"escola");?>
    <br>
    <form name="form1" method="post" action="">
    <fieldset style="width:95%"><legend><b><?=$nomeescola?> - Matrículas Pendentes</b></legend>
-    <?
+    <?php 
     $result = $clcalendario->sql_record($clcalendario->sql_query_calturma("","ed52_i_codigo,ed52_c_descr,ed52_i_ano","ed52_i_ano desc"," ed38_i_escola = $escola AND ed52_c_passivo = 'N'"));?>
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
      <tr>
@@ -85,7 +85,7 @@ $escola = db_getsession("DB_coddepto");
        <b>Selecione o Calendário:</b>
        <select name="calendario" style="font-size:9px;width:200px;height:18px;" onchange="js_botao(this.value)">
         <option value=""></option>
-        <?
+        <?php 
         for($i=0;$i<$clcalendario->numrows;$i++) {
          db_fieldsmemory($result,$i);
          $selected = isset( $calendario ) && $ed52_i_codigo == $calendario ? "selected" : "";
@@ -96,7 +96,7 @@ $escola = db_getsession("DB_coddepto");
       </td>
      </tr>
     </table>
-    <?if(isset($calendario)){?>
+    <?php if(isset($calendario)){?>
      <br>
      <table border="0" cellspacing="2px" width="100%" height="100%" cellpadding="1px" bgcolor="#cccccc">
      <tr>
@@ -109,7 +109,7 @@ $escola = db_getsession("DB_coddepto");
          <td align='center'><b>Matrícula</b></td>
          <td align='center'><b>Data Matrícula</b></td>
         </tr>
-        <?
+        <?php 
         $sCampos  = "ed60_i_codigo, ed47_v_nome, turma.ed57_c_descr, serie.ed11_c_descr, ed60_c_situacao";
         $sCampos .= ", ed60_d_datamatricula, ed60_matricula";
         $sOrder   = "turma.ed57_c_descr, serie.ed11_c_descr, ed47_v_nome";
@@ -136,7 +136,7 @@ $escola = db_getsession("DB_coddepto");
            <td class='aluno' align='center'><?=$ed60_matricula?></td>
            <td class='aluno' align='center'><?=db_formatar($ed60_d_datamatricula,'d')?></td>
           </tr>
-          <?
+          <?php 
          }
         }else{
          ?>
@@ -145,20 +145,20 @@ $escola = db_getsession("DB_coddepto");
            <td class='aluno'>NENHUMA MATRÍCULA PENDENTE NESTE CALENDÁRIO.</td>
           </tr>
          </table>
-         <?
+         <?php 
         }
         ?>
        </table>
       </td>
      </tr>
      </table>
-    <?}?>
+    <?php }?>
    </fieldset>
    </form>
   </td>
  </tr>
 </table>
-<?db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
+<?php db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));?>
 </body>
 </html>
 <script>
@@ -167,9 +167,9 @@ function js_botao(calendario){
   location.href = "edu3_matrpendente001.php?calendario="+calendario;
  }
 }
-<?if(!isset($calendario) && pg_num_rows($result)>0){?>
+<?php if(!isset($calendario) && pg_num_rows($result)>0){?>
  document.form1.calendario.options[1].selected = true;
  js_botao(document.form1.calendario.options[1].value);
-<?}?>
+<?php }?>
 
 </script>

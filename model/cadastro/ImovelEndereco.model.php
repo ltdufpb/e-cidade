@@ -104,14 +104,14 @@ class ImovelEndereco {
       
       $oDadosEndereco = db_utils::fieldsMemory($rsImovelEndereco, 0);
       
-      $this->setEndereco    (trim(substr($oDadosEndereco->endereco_imovel, 0  , 40)));
-      $this->setNumero      (trim(substr($oDadosEndereco->endereco_imovel, 41 , 10)));
-      $this->setComplemento (trim(substr($oDadosEndereco->endereco_imovel, 52 , 20)));
-      $this->setBairro      (trim(substr($oDadosEndereco->endereco_imovel, 73 , 40)));
-      $this->setMunicipio   (trim(substr($oDadosEndereco->endereco_imovel, 114, 40)));
-      $this->setUf          (trim(substr($oDadosEndereco->endereco_imovel, 155,  2)));
-      $this->setCep         (trim(substr($oDadosEndereco->endereco_imovel, 158,  8)));
-      $this->setCaixaPostal (trim(substr($oDadosEndereco->endereco_imovel, 167, 20)));      
+      $this->setEndereco    (trim(substr((string) $oDadosEndereco->endereco_imovel, 0  , 40)));
+      $this->setNumero      (trim(substr((string) $oDadosEndereco->endereco_imovel, 41 , 10)));
+      $this->setComplemento (trim(substr((string) $oDadosEndereco->endereco_imovel, 52 , 20)));
+      $this->setBairro      (trim(substr((string) $oDadosEndereco->endereco_imovel, 73 , 40)));
+      $this->setMunicipio   (trim(substr((string) $oDadosEndereco->endereco_imovel, 114, 40)));
+      $this->setUf          (trim(substr((string) $oDadosEndereco->endereco_imovel, 155,  2)));
+      $this->setCep         (trim(substr((string) $oDadosEndereco->endereco_imovel, 158,  8)));
+      $this->setCaixaPostal (trim(substr((string) $oDadosEndereco->endereco_imovel, 167, 20)));      
       
     }
     

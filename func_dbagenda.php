@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -33,7 +33,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conlancam_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clconlancam = new cl_conlancam;
 $clconlancam->rotulo->label("c70_codlan");
 $clconlancam->rotulo->label("c70_anousu");
@@ -68,7 +69,7 @@ function carrega_destinatario(){
    <form name="form2" method="post" action="" >
           <tr> 
             <td  align="right" nowrap title="<?=$Tc70_codlan?>"> Ordem   </td>
-            <td  align="left" nowrap colspan=2><?  db_input("ordem",10,'',true,"text",3);  ?></td>
+            <td  align="left" nowrap colspan=2><?php   db_input("ordem",10,'',true,"text",3);  ?></td>
           </tr>
           <tr> 
             <td  align="right" nowrap>Descrição       </td>
@@ -83,7 +84,7 @@ function carrega_destinatario(){
             <td  align="right" nowrap> Responável     </td>
             <td  align="right" nowrap colspan=2>          
                   <select name=responsavel>
-                     <? echo carrega_destinatario(); ?>
+                     <?php  echo carrega_destinatario(); ?>
                   </select>      
             </td>
           </tr>                        

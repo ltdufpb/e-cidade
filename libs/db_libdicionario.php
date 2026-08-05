@@ -34,7 +34,7 @@
 
 function getValoresPadroesCampo($sNomeCam) {
 
-  $aRetorno     = array();
+  $aRetorno     = [];
   $sSqlDefault  = "select defcampo, ";
   $sSqlDefault .= "       defdescr  ";
   $sSqlDefault .= "  from db_syscampodef ";
@@ -47,7 +47,7 @@ function getValoresPadroesCampo($sNomeCam) {
     $iTotRows = pg_num_rows($rsCampos);
     for ($i = 0; $i < $iTotRows; $i++) {
 
-       $aRetorno[pg_result($rsCampos,$i,0)] = pg_result($rsCampos,$i,1); 
+       $aRetorno[pg_fetch_result($rsCampos,$i,0)] = pg_fetch_result($rsCampos,$i,1); 
     }
   }
   return $aRetorno;

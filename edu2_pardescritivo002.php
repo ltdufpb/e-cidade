@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -45,7 +45,7 @@ $clescola = new cl_escola;
 $escola = db_getsession("DB_coddepto");
 $sql = $clmatricula->sql_query("","*","ed47_v_nome"," ed60_i_aluno in ($alunos) AND ed60_i_turma = $turma");
 $result = $clmatricula->sql_record($sql);
-$periodo = explode("|",$periodo);
+$periodo = explode("|",(string) $periodo);
 //db_criatabela($result);
 //exit;
 if($clmatricula->numrows==0){?>
@@ -59,7 +59,7 @@ if($clmatricula->numrows==0){?>
    </td>
   </tr>
  </table>
- <?
+ <?php 
  exit;
 }
 $pdf = new PDF();
@@ -137,8 +137,8 @@ for($x=0;$x<$clmatricula->numrows;$x++){
   $linhas3 = pg_num_rows($result3);
   if($linhas3>0){
    if($tp_per=="A"){
-    $amparo = pg_result($result3,0,'amparo');
-    $amparoum = pg_result($result3,0,'amparoum');
+    $amparo = pg_fetch_result($result3,0,'amparo');
+    $amparoum = pg_fetch_result($result3,0,'amparoum');
    }else{
     $amparo = "N";
     $amparoum = "N";
@@ -185,7 +185,7 @@ for($x=0;$x<$clmatricula->numrows;$x++){
     $pdf->cell(25,4,"Aproveitamento","RTB",0,"L",0);
     $pdf->cell(5,4,"","LR",1,"L",0);
     $linha = $pdf->getY();
-    if(pg_result($result3,0,'codparecer')!=""){
+    if(pg_fetch_result($result3,0,'codparecer')!=""){
      $cor1 = 0;
      $cor2 = 1;
      $cor = "";
@@ -223,7 +223,7 @@ for($x=0;$x<$clmatricula->numrows;$x++){
     $pdf->cell(5,4,"","R",1,"L",0);
     $pdf->cell(190,2,"","LR",1,"L",0);
     $pdf->setfont('arial','',7);
-    $pdf->multicell(190,3,"       ".pg_result($result3,0,'parecer'),"RL","J",0,0);
+    $pdf->multicell(190,3,"       ".pg_fetch_result($result3,0,'parecer'),"RL","J",0,0);
     $pdf->cell(190,4,"","LR",1,"L",0);
     $completar = 260-$pdf->getY();
     $pdf->cell(190,$completar,"","LR",1,"L",0);
@@ -233,7 +233,7 @@ for($x=0;$x<$clmatricula->numrows;$x++){
     $pdf->cell(170,4,"Aluno possui amparo para esta discilpina neste período",0,0,"L",0);
     $pdf->cell(10,4,"","R",1,"L",0);
     $pdf->cell(10,4,"","L",0,"L",0);
-    $pdf->cell(170,4,"Justificativa Legal: ".pg_result($result3,0,'justificativa'),0,0,"L",0);
+    $pdf->cell(170,4,"Justificativa Legal: ".pg_fetch_result($result3,0,'justificativa'),0,0,"L",0);
     $pdf->cell(10,4,"","R",1,"L",0);
     $completar = 260-$pdf->getY();
     $pdf->cell(190,$completar,"","LR",1,"L",0);

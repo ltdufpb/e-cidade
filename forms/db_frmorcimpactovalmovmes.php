@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -91,7 +91,7 @@ function js_verificar(){
 }
 
 function js_calcula(){
-<?  
+<?php   
   echo "arr_ano = new Array(";
   $sep = '';
   for($i=$o96_anoini; $i<= $o96_anofim; $i++){
@@ -114,7 +114,7 @@ function js_calcula(){
 
 
 function js_divide(){
-<?  
+<?php   
   echo "arr_ano = new Array(";
   $sep = '';
   for($i=$o96_anoini; $i<= $o96_anofim; $i++){
@@ -167,7 +167,7 @@ function js_verif(ano,mes){
 <form name="form1" method="post" action="">
 <center>
 
-<?
+<?php 
 db_input('o65_codimp',8,$Io64_codimpmov,true,'hidden',3);
 db_input('o64_proces',8,$Io64_proces,true,'hidden',3);
 ?>
@@ -179,7 +179,7 @@ db_input('o64_proces',8,$Io64_proces,true,'hidden',3);
     <td nowrap title="<?=@$To64_exercicio?>">
        <b>Exerc</b>
     </td>
-<?
+<?php 
     $arr_mes = array("1"=>"JAN","2"=>"FEV","3"=>"MAR","4"=>"ABR","5"=>"MAI","6"=>"JUN","7"=>"JUL","8"=>"AGO","9"=>"SET","10"=>"OUT","11"=>"NOV","12"=>"DEZ");
     for($t=1; $t<count($arr_mes)+1; $t++){   
       echo "<td nowrap align='center'><b>";
@@ -197,7 +197,7 @@ db_input('o64_proces',8,$Io64_proces,true,'hidden',3);
        <b>Resto</b>
     </td>
   </tr>
-<?
+<?php 
 for($i=$o96_anoini; $i<= $o96_anofim; $i++){
     
      $x = "o64_valor_$i";
@@ -234,9 +234,9 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
 
   <tr>
     <td nowrap title="<?=@$To64_exercicio?>">
-      <?db_input("o64_exercicio_$i",4,$Io64_exercicio,true,'text',3);?>
+      <?php db_input("o64_exercicio_$i",4,$Io64_exercicio,true,'text',3);?>
     </td>
-<?
+<?php 
     $total = "total_$i";  
     $tot=0; 
     $valparc = number_format($$total/12,"2",".","");
@@ -277,17 +277,17 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
 ?>
 
     <td nowrap title="">
-        <?db_input("$soma",8,0,true,'text',3);?>
+        <?php db_input("$soma",8,0,true,'text',3);?>
     </td>
     <td nowrap title="">
-        <?db_input("$total",8,0,true,'text',3);?>
+        <?php db_input("$total",8,0,true,'text',3);?>
     </td>
     <td nowrap title="">
-        <?db_input("$resto",8,0,true,'text',3);?>
+        <?php db_input("$resto",8,0,true,'text',3);?>
     </td>
   </tr>
 
-<?
+<?php 
 }
 ?>
 
@@ -305,7 +305,7 @@ function js_cancelar(){
   document.form1.submit();
 }
 
-<?
+<?php 
 for($i=$o96_anoini; $i<= $o96_anofim; $i++){
   //rotina  para repetir os valores digitado na primeira linha para os campos abaixo
   if($i == $o96_anoini){
@@ -348,7 +348,7 @@ function js_mostraorcelemento_<?=$i?>(chave,erro){
     document.form1.o56_elemento_<?=$i?>.value = ''; 
     return false;
   }
-  <?
+  <?php 
   if($i == $o96_anoini){
      for($c=$o96_anoini+1; $c<= $o96_anofim; $c++){
         echo "document.form1.o56_elemento_$c.value = document.form1.o56_elemento_$i.value;";
@@ -361,7 +361,7 @@ function js_mostraorcelemento_<?=$i?>(chave,erro){
 
 function js_mostraorcelemento1_<?=$i?>(chave1,chave2){
   document.form1.o56_elemento_<?=$i?>.value = chave1;
-  <?
+  <?php 
   if($i == $o96_anoini){
      for($c=$o96_anoini+1; $c<= $o96_anofim; $c++){
         echo "document.form1.o56_elemento_$c.value = chave1;";
@@ -387,7 +387,7 @@ function js_mostraorctiporec_<?=$i?>(chave,erro){
     document.form1.o93_codigo_<?=$i?>.value = ''; 
     return false;
   }
-  <?
+  <?php 
   if($i == $o96_anoini){
      for($c=$o96_anoini+1; $c<= $o96_anofim; $c++){
         echo "document.form1.o93_codigo_$c.value = document.form1.o93_codigo_$i.value ;";
@@ -398,7 +398,7 @@ function js_mostraorctiporec_<?=$i?>(chave,erro){
 function js_mostraorctiporec1_<?=$i?>(chave1,chave2){
   document.form1.o93_codigo_<?=$i?>.value = chave1;
 //  document.form1.o15_descr.value = chave2;
-  <?
+  <?php 
   if($i == $o96_anoini){
      for($c=$o96_anoini+1; $c<= $o96_anofim; $c++){
         echo "document.form1.o93_codigo_$c.value = document.form1.o93_codigo_$i.value ;";
@@ -410,7 +410,7 @@ function js_mostraorctiporec1_<?=$i?>(chave1,chave2){
 
 
 
-<?}
+<?php }
 
 
  if(isset($numrows99) && $numrows99 == 0 ){

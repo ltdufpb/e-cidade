@@ -33,7 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_cadfiscais_classe.php"));
 
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 
 $clcadfiscais = new cl_cadfiscais;
 $clcadfiscais->rotulo->label("id_usuario");
@@ -55,7 +56,7 @@ $clcadfiscais->rotulo->label("id_usuario");
               <?=$Lid_usuario?>
             </td>
             <td width="96%" align="left" nowrap>
-              <?
+              <?php 
 		       db_input("id_usuario",5,$Iid_usuario,true,"text",4,"","chave_id_usuario");
 		       ?>
             </td>

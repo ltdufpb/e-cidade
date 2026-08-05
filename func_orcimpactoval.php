@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcimpactoval_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clorcimpactoval = new cl_orcimpactoval;
 $clorcimpactoval->rotulo->label("o91_codseqimp");
 $clorcimpactoval->rotulo->label("o91_codimp");
@@ -54,7 +55,7 @@ $clorcimpactoval->rotulo->label("o91_codimp");
               <?=$Lo91_codseqimp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o91_codseqimp",5,$Io91_codseqimp,true,"text",4,"","chave_o91_codseqimp");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clorcimpactoval->rotulo->label("o91_codimp");
               <?=$Lo91_codimp?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("o91_codimp",5,$Io91_codimp,true,"text",4,"","chave_o91_codimp");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clorcimpactoval->rotulo->label("o91_codimp");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_orcimpactoval.php")==true){
@@ -118,12 +119,12 @@ $clorcimpactoval->rotulo->label("o91_codimp");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

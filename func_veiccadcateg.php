@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiccadcateg_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clveiccadcateg = new cl_veiccadcateg;
 $clveiccadcateg->rotulo->label("ve32_codigo");
 $clveiccadcateg->rotulo->label("ve32_descr");
@@ -54,7 +55,7 @@ $clveiccadcateg->rotulo->label("ve32_descr");
               <?=$Lve32_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ve32_codigo",10,$Ive32_codigo,true,"text",4,"","chave_ve32_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clveiccadcateg->rotulo->label("ve32_descr");
               <?=$Lve32_descr?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("ve32_descr",10,$Ive32_descr,true,"text",4,"","chave_ve32_descr");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clveiccadcateg->rotulo->label("ve32_descr");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_veiccadcateg.php")==true){
@@ -122,12 +123,12 @@ $clveiccadcateg->rotulo->label("ve32_descr");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script>

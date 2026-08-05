@@ -194,7 +194,7 @@ class Imigrante
             $rs = db_query($sql);
 
             if (!$rs) {
-                throw new \BusinessException(
+                throw new BusinessException(
                     "Erro ao buscar informações de imigrante da matricula {$this->getMatricula()}."
                 );
             }

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -49,7 +49,7 @@ $clrotulo->label("o74_descricao");
                  <b>Código da Abertura:</b>
               </td>
               <td> 
-                <?
+                <?php 
                 db_input('pc10_numero',10,$Ipc10_numero,true,'text',3)
                 ?>
               </td>
@@ -59,7 +59,7 @@ $clrotulo->label("o74_descricao");
                 <b>Data Vigência:</b>
               </td>
               <td>
-                <?
+                <?php 
                 $recebedata = db_getsession("DB_datausu");
                 $recebedata = date("Y-m-d",$recebedata);
                 if(isset($pc10_data) && trim($pc10_data) != ""){
@@ -79,7 +79,7 @@ $clrotulo->label("o74_descricao");
                 <b>Resumo:</b>
               </td>
               <td> 
-              <?
+              <?php 
                @$pc10_resumo = stripslashes($pc10_resumo);
                db_textarea("pc10_resumo",10,120,"",true,"text",$db_opcao,"","","",735); 
               ?>
@@ -104,7 +104,7 @@ $clrotulo->label("o74_descricao");
       <td colspan="2" style="text-align: center;">
         <input type='button' value='Salvar' id='btnSalvar'>
         <input type='button' value='Imprimir' id='btnImprimir'>
-        <?
+        <?php 
           if ($lBtnShowBtnConsulta) {
            echo "<input type='button' value='Pesquisar' id='btnConsultar'>"; 
           }
@@ -237,7 +237,7 @@ function js_imprimir() {
 }  
 $('btnSalvar').observe("click", js_salvarAbertura);
 $('btnImprimir').observe("click", js_imprimir);
-<?
+<?php 
 if ($lBtnShowBtnConsulta) {
 
   echo "js_pesquisar();\n";

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_proctransferint_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clproctransferint = new cl_proctransferint;
 $clproctransferint->rotulo->label("p88_codigo");
 $clproctransferint->rotulo->label("p88_codigo");
@@ -54,7 +55,7 @@ $clproctransferint->rotulo->label("p88_codigo");
               <?=$Lp88_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p88_codigo",10,$Ip88_codigo,true,"text",4,"","chave_p88_codigo");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clproctransferint->rotulo->label("p88_codigo");
               <?=$Lp88_codigo?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("p88_codigo",10,$Ip88_codigo,true,"text",4,"","chave_p88_codigo");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clproctransferint->rotulo->label("p88_codigo");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_proctransferint.php")==true){
@@ -118,12 +119,12 @@ $clproctransferint->rotulo->label("p88_codigo");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

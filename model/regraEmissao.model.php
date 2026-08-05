@@ -37,20 +37,15 @@ class regraEmissao {
   private $lCobranca    	       = false;
   private $iCodConvenioCobranca  = false;
   private $iCadTipoConvenio      = null;
+  private $lOpenUnico            = false;
 
   /**
-   * se Deve gerar novo objeto pdf, ou usar um já existente
-   *
-   * @var boolean
+   * @param bool $lNovoPdf
    */
-  private $lNovoPdf              = true;
-  private $lOpenUnico            = false;
-  public  $oPdfUnico             = null;
-
-  public function __construct($iArretipo=null,$iTipoMod,$iInstit,$dDatahj,$sIp=null, $lNovoPdf = true, $oPdfUnico = null, $iParcelaInicial = null, $iParcelaFinal = null) {
-
-    $this->lNovoPdf  = $lNovoPdf;
-    $this->oPdfUnico = $oPdfUnico;
+  public function __construct($iArretipo=null,$iTipoMod = null,$iInstit = null,$dDatahj = null,$sIp=null, /**
+   * se Deve gerar novo objeto pdf, ou usar um já existente
+   */
+  private $lNovoPdf = true, public $oPdfUnico = null, $iParcelaInicial = null, $iParcelaFinal = null) {
 
     $sWhereModCarne  = "   where k48_dataini   <= '{$dDatahj}' 	";
     $sWhereModCarne .= "     and k48_datafim   >= '{$dDatahj}'  ";
@@ -145,7 +140,7 @@ class regraEmissao {
 		 * Caso não tenha retornado nenhum tipo ou excessão e a variável $iCodModCarnePadrao estiver vazia então é atribuído
 		 * a ela o código do molelo padrão
 		 */
-  		} else if (trim($iCodModCarnePadrao) == '') {
+  		} else if (trim((string) $iCodModCarnePadrao) == '') {
         $iCodModCarnePadrao = $oTipoExcessao->k48_sequencial;
   		}
 
@@ -226,7 +221,7 @@ class regraEmissao {
  	  return $this->getObjLayout();
   }
 
-  function setObjPdf($iAltura="",$iLargura="",$sOrientacao="",$iCadModCarne){
+  function setObjPdf($iAltura="",$iLargura="",$sOrientacao="",$iCadModCarne = null){
 
     if ( !class_exists('db_impcarne') ) {
   	  require_once(modification("fpdf151/impcarne.php"));
@@ -239,7 +234,7 @@ class regraEmissao {
   	if ($this->lNovoPdf) {
     	if ( $iAltura != 0 && $iLargura != 0 && $sOrientacao != ""){
 
-    	  $aMedidas 	 = array($iAltura,$iLargura);
+    	  $aMedidas 	 = [$iAltura,$iLargura];
   	    $this->oSpdf = new scpdf($sOrientacao,"mm",$aMedidas);
 
     	} else {
@@ -325,7 +320,7 @@ class regraEmissao {
  
     $sSql = "select ar49_conveniocustaboleto from conveniocustaboleto";
     $rsConveio = db_query($sSql);
-    if (!$rsConveio || pg_numrows($rsConveio) <= 0) {
+    if (!$rsConveio || pg_num_rows($rsConveio) <= 0) {
     throw new Exception("Erro ao Buscar Parametro da Custa do Boleto");
     }
     return db_utils::fieldsMemory($rsConveio, 0)->ar49_conveniocustaboleto;

@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -52,16 +52,16 @@ if($db_opcao==1||$db_opcao==11){
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk91_transf?>"> <?=@$Lk91_transf?> </td>
-    <td><? db_input('k91_transf',10,$Ik91_transf,true,'text',3,"") ?> </td>
+    <td><?php  db_input('k91_transf',10,$Ik91_transf,true,'text',3,"") ?> </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk91_descr?>"><?=@$Lk91_descr?></td>
-    <td><?db_input('k91_descr',50,$Ik91_descr,true,'text',$db_opcao,"")?>  </td>
+    <td><?php db_input('k91_descr',50,$Ik91_descr,true,'text',$db_opcao,"")?>  </td>
   </tr>
 
   <tr>
     <td nowrap title="<?=@$Tk91_tipo?>"><?=@$Lk91_tipo?></td>
-    <td><?   
+    <td><?php    
            $matriz = array('I'=>'Interferência', 'R'=>'Repasse');
            db_select('k91_tipo',$matriz,true,1);    
          ?> 
@@ -70,20 +70,20 @@ if($db_opcao==1||$db_opcao==11){
 
 
   <tr>
-    <td nowrap title="<?=@$Tk91_debito?>"><? db_ancora(@$Lk91_debito,"js_pesquisak91_debito(true);",$db_opcao);?></td>
-    <td><? db_input('k91_debito',8,$Ik91_debito,true,'text',$db_opcao," onchange='js_pesquisak91_debito(false);'") ?> 
-        <? db_input('debito_descr',40,$Ik13_descr,true,'text',3,'')    ?>
+    <td nowrap title="<?=@$Tk91_debito?>"><?php  db_ancora(@$Lk91_debito,"js_pesquisak91_debito(true);",$db_opcao);?></td>
+    <td><?php  db_input('k91_debito',8,$Ik91_debito,true,'text',$db_opcao," onchange='js_pesquisak91_debito(false);'") ?> 
+        <?php  db_input('debito_descr',40,$Ik13_descr,true,'text',3,'')    ?>
     </td>
   </tr>
   <tr>
-    <td nowrap title="<?=@$Tk91_credito?>"><? db_ancora(@$Lk91_credito,"js_pesquisak91_credito(true);",$db_opcao);?> </td>
-    <td><? db_input('k91_credito',8,$Ik91_credito,true,'text',$db_opcao," onchange='js_pesquisak91_credito(false);'") ?>
-        <? db_input('credito_descr',40,$Ik02_descr,true,'text',3,'')       ?>
+    <td nowrap title="<?=@$Tk91_credito?>"><?php  db_ancora(@$Lk91_credito,"js_pesquisak91_credito(true);",$db_opcao);?> </td>
+    <td><?php  db_input('k91_credito',8,$Ik91_credito,true,'text',$db_opcao," onchange='js_pesquisak91_credito(false);'") ?>
+        <?php  db_input('credito_descr',40,$Ik02_descr,true,'text',3,'')       ?>
     </td>
   </tr>
   <tr>
     <td nowrap title="<?=@$Tk91_finalidade?>"><?=@$Lk91_finalidade?></td>
-    <td><?db_textarea('k91_finalidade',2,48,$Ik91_finalidade,true,'text',$db_opcao,"")?>  </td>
+    <td><?php db_textarea('k91_finalidade',2,48,$Ik91_finalidade,true,'text',$db_opcao,"")?>  </td>
   </tr>  
   </table>
 </fieldset>
@@ -92,7 +92,7 @@ if($db_opcao==1||$db_opcao==11){
 <table border=0 align=center>
   <tr>
     <td nowrap title="<?=@$Tk92_instit?>"><?=@$Lk92_instit?></td>
-    <td><? 
+    <td><?php  
          // seleciona as instituições, exceto a instituição atual
          $res = db_query("select codigo,nomeinst from db_config where codigo <> ".db_getsession("DB_instit"));
 	 $db_matriz = array();
@@ -108,15 +108,15 @@ if($db_opcao==1||$db_opcao==11){
   </tr>  
 
   <tr>
-    <td nowrap title="<?=@$Tk92_debito?>"><? db_ancora(@$Lk92_debito,"js_pesquisak92_debito(true);",$db_opcao);?></td>
-    <td><? db_input('k92_debito',8,$Ik92_debito,true,'text',$db_opcao," onchange='js_pesquisak92_debito(false);'") ?> 
-        <? db_input('dest_debito_descr',40,$Ik13_descr,true,'text',3,'','dest_debito_descr')    ?>
+    <td nowrap title="<?=@$Tk92_debito?>"><?php  db_ancora(@$Lk92_debito,"js_pesquisak92_debito(true);",$db_opcao);?></td>
+    <td><?php  db_input('k92_debito',8,$Ik92_debito,true,'text',$db_opcao," onchange='js_pesquisak92_debito(false);'") ?> 
+        <?php  db_input('dest_debito_descr',40,$Ik13_descr,true,'text',3,'','dest_debito_descr')    ?>
     </td>
   </tr>
   <tr>
-    <td nowrap title="<?=@$Tk91_credito?>"><? db_ancora(@$Lk92_credito,"js_pesquisak92_credito(true);",$db_opcao);?> </td>
-    <td><? db_input('k92_credito',8,$Ik92_credito,true,'text',$db_opcao," onchange='js_pesquisak92_credito(false);'") ?>
-        <? db_input('dest_credito_descr',40,$Ik02_descr,true,'text',3,'','dest_credito_descr')       ?>
+    <td nowrap title="<?=@$Tk91_credito?>"><?php  db_ancora(@$Lk92_credito,"js_pesquisak92_credito(true);",$db_opcao);?> </td>
+    <td><?php  db_input('k92_credito',8,$Ik92_credito,true,'text',$db_opcao," onchange='js_pesquisak92_credito(false);'") ?>
+        <?php  db_input('dest_credito_descr',40,$Ik02_descr,true,'text',3,'','dest_credito_descr')       ?>
     </td>
   </tr>
 
@@ -186,7 +186,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_caitransf.hide();
-  <? 
+  <?php  
     if($db_opcao!=1){
       echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     };

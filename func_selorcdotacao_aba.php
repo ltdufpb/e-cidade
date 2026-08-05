@@ -39,7 +39,8 @@ include(modification("classes/db_db_config_classe.php"));
 
 $cldb_config = new cl_db_config;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_SERVER_VARS);
 
 $clempresto = new cl_empresto();

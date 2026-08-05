@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -38,7 +38,8 @@ include(modification("classes/db_censomunic_classe.php"));
 include(modification("classes/db_censoorgemissrg_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_jsplibwebseller.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 db_postmemory($HTTP_POST_VARS);
 $claluno = new cl_aluno;
 $clalunoaltera = new cl_alunoaltera;
@@ -106,7 +107,7 @@ if(isset($chavepesquisa)){
    <br>
    <center>
    <fieldset style="width:95%"><legend><b>Documentação do Aluno</b></legend>
-    <?include(modification("forms/db_frmbibaluno.php"));?>
+    <?php include(modification("forms/db_frmbibaluno.php"));?>
    </fieldset>
    </center>
   </td>
@@ -114,7 +115,7 @@ if(isset($chavepesquisa)){
 </table>
 </body>
 </html>
-<?
+<?php 
 if(isset($alterar)){
  if($claluno->erro_status=="0"){
   $claluno->erro(true,false);
@@ -138,7 +139,7 @@ if(isset($alterar)){
     parent.parent.document.form1.tipo.value = "ALUNO";
    }
   </script>
-  <?
+  <?php 
  }
 }
 if($linhas_vinculo>0){
@@ -183,7 +184,7 @@ function js_removeMsg(idObj){
  obj = document.getElementById("MsgBox");
  document.body.removeChild(obj);
 }
-<?if($linhas_vinculo>0){?>
+<?php if($linhas_vinculo>0){?>
  js_msg_nao_altera("<?=$esc_vinculo?>","MsgBox");
-<?}?>
+<?php }?>
 </script>

@@ -107,7 +107,7 @@ class SuspensaoPensaoRepository
      * @param SuspensaPensao|null $suspensaPensao
      * @throws BusinessException
      */
-    public function delete(SuspensaPensao $suspensaPensao = null)
+    public function delete(?SuspensaPensao $suspensaPensao = null)
     {
         $id = $suspensaPensao instanceof SuspensaPensao ? $suspensaPensao->getSequencial() : null;
 
@@ -125,7 +125,7 @@ class SuspensaoPensaoRepository
      * @return bool|SuspensaPensao
      * @throws BusinessException
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhprocessosuspensapensao;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

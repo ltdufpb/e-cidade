@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -95,20 +95,20 @@ if ($linhas1 > 0) {
 <table border="0">
  <tr>
   <td nowrap title="<?=@$Ted34_i_serie?>">
-   <?db_ancora(@$Led34_i_serie,"",3);?>
+   <?php db_ancora(@$Led34_i_serie,"",3);?>
   </td>
   <td>
-   <?db_input('ed34_i_serie',15,$Ied34_i_serie,true,'text',3,"")?>
-   <?db_input('ed11_c_descr',40,@$Ied11_c_descr,true,'text',3,'')?>
+   <?php db_input('ed34_i_serie',15,$Ied34_i_serie,true,'text',3,"")?>
+   <?php db_input('ed11_c_descr',40,@$Ied11_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
   <td nowrap title="<?=@$Ted34_i_disciplina?>">
-   <?db_ancora(@$Led34_i_disciplina,"js_pesquisaed34_i_disciplina(true);",$db_opcao1);?>
+   <?php db_ancora(@$Led34_i_disciplina,"js_pesquisaed34_i_disciplina(true);",$db_opcao1);?>
   </td>
   <td>
-   <?db_input('ed34_i_disciplina',15,$Ied34_i_disciplina,true,'text',$db_opcao1," onchange='js_pesquisaed34_i_disciplina(false);'")?>
-   <?db_input('ed232_c_descr',40,@$Ied232_c_descr,true,'text',3,'')?>
+   <?php db_input('ed34_i_disciplina',15,$Ied34_i_disciplina,true,'text',$db_opcao1," onchange='js_pesquisaed34_i_disciplina(false);'")?>
+   <?php db_input('ed232_c_descr',40,@$Ied232_c_descr,true,'text',3,'')?>
   </td>
  </tr>
  <tr>
@@ -116,9 +116,9 @@ if ($linhas1 > 0) {
    <?=@$Led34_i_qtdperiodo?>
   </td>
   <td>
-   <?db_input('ed34_i_qtdperiodo',10,$Ied34_i_qtdperiodo,true,'text',$db_opcao2,"")?>
-   <?//=@$Led34_i_chtotal?>
-   <?db_input('ed34_i_chtotal',10,$Ied34_i_chtotal,true,'text',$db_opcao," style=\"visibility:hidden\"")?>
+   <?php db_input('ed34_i_qtdperiodo',10,$Ied34_i_qtdperiodo,true,'text',$db_opcao2,"")?>
+   <?php //=@$Led34_i_chtotal?>
+   <?php db_input('ed34_i_chtotal',10,$Ied34_i_chtotal,true,'text',$db_opcao," style=\"visibility:hidden\"")?>
   </td>
  </tr>
  <tr>
@@ -126,11 +126,11 @@ if ($linhas1 > 0) {
    <?=@$Led34_c_condicao?>
   </td>
   <td>
-   <?
+   <?php 
    if(isset($ed34_i_qtdperiodo) && $ed34_i_qtdperiodo>0 && $discglob!=0){
-    $x = array('OB'=>'OBRIGATÓRIA');
+    $x = ['OB'=>'OBRIGATÓRIA'];
    }else{
-    $x = array('OB'=>'OBRIGATÓRIA','OP'=>'OPCIONAL');
+    $x = ['OB'=>'OBRIGATÓRIA','OP'=>'OPCIONAL'];
    }
    db_select('ed34_c_condicao',$x,true,$db_opcao,"onchange='js_lancarHistorico(this.value)'");
    ?>
@@ -143,7 +143,7 @@ if ($linhas1 > 0) {
    </td>
    <td>
      <?php
-       $aOpcoes = array('f'=>'NÃO', 't'=>'SIM');
+       $aOpcoes = ['f'=>'NÃO', 't'=>'SIM'];
        db_select('ed34_lancarhistorico',$aOpcoes,true,$db_opcao,"", 'ed34_lancarhistorico');
      ?>
    </td>
@@ -166,11 +166,11 @@ if ($linhas1 > 0) {
 <table width="90%">
  <tr>
   <td valign="top">
-  <?
+  <?php 
    $campos  = "ed34_i_codigo, ed34_i_base, ed31_c_descr, ed34_i_serie, ed11_c_descr, ed34_i_disciplina, ed232_c_descr";
    $campos .= ", ed34_i_qtdperiodo, ed34_lancarhistorico, ed34_i_chtotal, ed293_descr as ed232_areaconhecimento";
    $campos .= ", case when ed34_c_condicao='OB' then 'OBRIGATÒRIA' else 'OPCIONAL' end as ed34_c_condicao";
-   $chavepri= array("ed34_i_codigo"        => @$ed34_i_codigo,
+   $chavepri= ["ed34_i_codigo"        => @$ed34_i_codigo,
                     "ed31_c_descr"         => @$ed31_c_descr,
                     "ed34_i_disciplina"    => @$ed34_i_disciplina,
                     "ed232_c_descr"        => @$ed232_c_descr,
@@ -179,7 +179,7 @@ if ($linhas1 > 0) {
                     "ed34_i_qtdperiodo"    => @$ed34_i_qtdperiodo,
                     "ed34_i_chtotal"       => @$ed34_i_chtotal,
                     "ed34_c_condicao"      => @$ed34_c_condicao,
-                    "ed34_lancarhistorico" => @$ed34_lancarhistorico);
+                    "ed34_lancarhistorico" => @$ed34_lancarhistorico];
 
    $cliframe_alterar_excluir->chavepri      = $chavepri;
    $sWhere = " ed34_i_base = $ed34_i_base AND ed34_i_serie = $ed34_i_serie";

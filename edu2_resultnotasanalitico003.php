@@ -65,7 +65,7 @@ $oJson = new Services_JSON();
 
 $aTurmasSelecionadas = $oJson->decode(str_replace("\\", "", $oGet->oTurmas));
 
-$aFiltroParametro = array();
+$aFiltroParametro = [];
 $aFiltroParametro[] = null;
 $aFiltroParametro[] = "ed233_c_notabranca";
 $aFiltroParametro[] = null;
@@ -110,7 +110,7 @@ $oConfigRelatorio->iLarguraTotalDisciplinas  = (282 - $iSomaColunasDadosAluno)* 
 $oConfigRelatorio->iLarguraTotalDisciplinas -= (0.3 * $oConfigRelatorio->iMaximoDisciplinaPagina);
 $oConfigRelatorio->lCalculaMediaParcial      = $aParametroGlobal[0]->ed233_c_notabranca == 'S' ? true : false;
 
-$aTurmas = array();
+$aTurmas = [];
 /**
  * Cria a instancia de todas turmas selecionas no filtro
  * Organizamos os dados a serem impressos no relatório
@@ -125,8 +125,8 @@ foreach ($aTurmasSelecionadas as $oTurmaSelecionada) {
   }
 
   $oTurmaEtapa           = new stdClass();
-  $oTurmaEtapa->aAlunos  = array();
-  $oTurmaEtapa->aPaginas = array();
+  $oTurmaEtapa->aAlunos  = [];
+  $oTurmaEtapa->aPaginas = [];
   $iContDisciplinas      = 0;
 
   /**
@@ -165,14 +165,14 @@ foreach ($aTurmasSelecionadas as $oTurmaSelecionada) {
   $oTurmaEtapa->iColunaNome     = $oConfigRelatorio->iColunaNome;
 
 
-    if((substr($oTurmaEtapa->sTipoCalendario,0,5) == 'EJA 1' || (substr($oTurmaEtapa->sTipoCalendario,0,5) == 'EJA 2'))){
+    if((str_starts_with((string) $oTurmaEtapa->sTipoCalendario, 'EJA 1') || (str_starts_with((string) $oTurmaEtapa->sTipoCalendario, 'EJA 2')))){
         $oConfigRelatorio->iLarguraTotalDisciplinas = (282 - $iSomaColunasDadosAluno) * 1.1 ;
     }
   /**
    * Localizamos qual forma de avaliacao para o período selecionado
    */
   $oAvaliacaoPeriodica = null;
-  $aAvalicaoPeriodica =  array();
+  $aAvalicaoPeriodica =  [];
 
   $iOrdemPeriodoSelecionado = 0;
   $iOrdemUltimoPeriodoTurma = 0;
@@ -215,7 +215,7 @@ foreach ($aTurmasSelecionadas as $oTurmaSelecionada) {
     $oDadosAluno->sSituacao           = $oMatricula->getSituacao();
     $oDadosAluno->oDtMatricula        = $oMatricula->getDataMatricula();
     $oDadosAluno->iClassificacao      = $oMatricula->getNumeroOrdemAluno();
-    $oDadosAluno->aAvaliacao          = array();
+    $oDadosAluno->aAvaliacao          = [];
     $oDadosAluno->iTotalFaltas        = 0;
     $oDadosAluno->lAvaliadoPorParecer = $oMatricula->isAvaliadoPorParecer();
 
@@ -223,14 +223,14 @@ foreach ($aTurmasSelecionadas as $oTurmaSelecionada) {
 
     $oDiarioDeClasse = $oMatricula->getDiarioDeClasse();
 
-    $aSomaNotaDisciplinas = array();
-    $aSomaNota1Bim = array();
-    $aSomaNotas = array();
+    $aSomaNotaDisciplinas = [];
+    $aSomaNota1Bim = [];
+    $aSomaNotas = [];
 
       foreach ($aAvalicaoPeriodica as $oAvaliacaoPeriodica ) {
           foreach ($oTurma->getDisciplinasPorEtapa($oEtapa) as $oRegencia) {
 
-              $oDisciplinaDiario        = $oDiarioDeClasse->getDisciplinasPorRegencia($oRegencia, $oAvaliacaoPeriodica);
+              $oDisciplinaDiario        = $oDiarioDeClasse->getDisciplinasPorRegencia($oRegencia);
               $oAvaliacaoAproveitamento = $oDisciplinaDiario->getAvaliacoesPorOrdem($oAvaliacaoPeriodica->getOrdemSequencia());
 
               $oAvaliacao = new stdClass();
@@ -240,7 +240,7 @@ foreach ($aTurmasSelecionadas as $oTurmaSelecionada) {
 
 
               $stringDisciplina = strtolower($oAvaliacao->sNomeDisplina); // 2018-06-26 Wallace (ATMA) tranforma a disciplina em letra minúscula
-              if((substr($oTurmaEtapa->sTipoCalendario,0,5) == 'EJA 1' || substr($oTurmaEtapa->sTipoCalendario,0,5) == 'EJA 2') && $oAvaliacaoPeriodica->iPeriodo == 1){
+              if((str_starts_with((string) $oTurmaEtapa->sTipoCalendario, 'EJA 1') || str_starts_with((string) $oTurmaEtapa->sTipoCalendario, 'EJA 2')) && $oAvaliacaoPeriodica->iPeriodo == 1){
 
                   if($oAvaliacao->lAmparado){
 
@@ -256,7 +256,7 @@ foreach ($aTurmasSelecionadas as $oTurmaSelecionada) {
           }
       }
 
-      if(substr($oTurmaEtapa->sTipoCalendario,0,5) == 'EJA 1' || substr($oTurmaEtapa->sTipoCalendario,0,5) == 'EJA 2') {
+      if(str_starts_with((string) $oTurmaEtapa->sTipoCalendario, 'EJA 1') || str_starts_with((string) $oTurmaEtapa->sTipoCalendario, 'EJA 2')) {
           $aSomaNotaDisciplinas = getNotaRestanteEjaSemestral($aSomaNota1Bim, $oRegencia->getTurma()->getCalendario()->getAnoExecucao());
 
       }else {
@@ -268,7 +268,7 @@ foreach ($aTurmasSelecionadas as $oTurmaSelecionada) {
       foreach ($oTurma->getDisciplinasPorEtapa($oEtapa) as $oRegencia) {
 
           $iContDisciplinas ++;
-          $oDisciplinaDiario        = $oDiarioDeClasse->getDisciplinasPorRegencia($oRegencia, $oAvaliacaoPeriodica);
+          $oDisciplinaDiario        = $oDiarioDeClasse->getDisciplinasPorRegencia($oRegencia);
           $oAvaliacaoAproveitamento = $oDisciplinaDiario->getAvaliacoesPorOrdem($oAvaliacaoPeriodica->getOrdemSequencia());
 
           $oAvaliacao = new stdClass();
@@ -774,7 +774,7 @@ function getSituacoes() {
   /**
    * Array com as situaçõe da matricula do aluno indexado pela abreviatura
    */
-  $aSituacoes       = array();
+  $aSituacoes       = [];
   $aSituacoes['MT'] = 'MATRICULA TRANCADA';
   $aSituacoes['IN'] = 'MATRICULA INDEFERIDA';
   $aSituacoes['MI'] = 'MATRICULA INDEVIDA';
@@ -836,7 +836,7 @@ function abreviar($nome, $max, $substr=false) {
 $oPdf->Output();
 
 function getNotaRestanteRegular($aNotas,$iAno){
-    $aMetaNota= array();
+    $aMetaNota= [];
     foreach($aNotas as  $chaveDisciplina => $oNotas){
         $aMetaNota[$chaveDisciplina] =  (50 - $oNotas)/4;
 //        $aMetaNota[$chaveDisciplina] = ArredondamentoNota::arredondar($aMetaNota[$chaveDisciplina],$iAno);
@@ -848,13 +848,13 @@ function getNotaRestanteRegular($aNotas,$iAno){
 
 function round_up($value, $places) // FHSYS - FUNÇÃO PARA ARREDONDAR SEMPRE PARA CIMA
 {
-    $mult = pow(10, abs($places));
+    $mult = 10 ** abs($places);
     return $places < 0 ? ceil($value / $mult) * $mult : ceil($value * $mult) / $mult;
 }
 
 function getNotaRestanteEjaSemestral($aNotas,$iAno)
 {
-    $aMetaNota = array();
+    $aMetaNota = [];
     foreach ($aNotas as $chaveDisciplina => $oNotas) {
         $aMetaNota[$chaveDisciplina] = (15 - $oNotas) / 2;
         $aMetaNota[$chaveDisciplina] = ArredondamentoNota::arredondar($aMetaNota[$chaveDisciplina], $iAno);
@@ -865,7 +865,7 @@ function getNotaRestanteEjaSemestral($aNotas,$iAno)
 
 function getTipoCalendario($Calendario)
 {
-    $aCalendario = explode(" ",$Calendario);
+    $aCalendario = explode(" ",(string) $Calendario);
     $tipo ="";
     foreach ($aCalendario  as $i =>  $tipoCalendario) {
 

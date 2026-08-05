@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBSeller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_aguahidromatric_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $claguahidromatric = new cl_aguahidromatric;
 $claguahidromatric->rotulo->label("x04_codhidrometro");
 $claguahidromatric->rotulo->label("x04_matric");
@@ -54,7 +55,7 @@ $claguahidromatric->rotulo->label("x04_matric");
               <?=$Lx04_codhidrometro?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x04_codhidrometro",6,$Ix04_codhidrometro,true,"text",4,"","chave_x04_codhidrometro");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $claguahidromatric->rotulo->label("x04_matric");
               <?=$Lx04_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("x04_matric",10,$Ix04_matric,true,"text",4,"","chave_x04_matric");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $claguahidromatric->rotulo->label("x04_matric");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         $campos = "aguahidromatric.x04_codhidrometro,aguahidromatric.x04_matric,aguahidromatric.x04_coddiametro,x15_diametro,aguahidromatric.x04_codmarca,x03_nomemarca";        
         if(isset($chave_x04_codhidrometro) && (trim($chave_x04_codhidrometro)!="") ){
@@ -112,12 +113,12 @@ $claguahidromatric->rotulo->label("x04_matric");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

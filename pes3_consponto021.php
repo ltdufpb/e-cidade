@@ -276,7 +276,7 @@ MM_reloadPage(true);
 <table width="100%" id="tabela-calculos" cellspacing="0">
 
 <tr>
-<?
+<?php 
 if ($opcao != 'previden' && $opcao != 'irf'){
 ?>
      <th class="borda" width="80" nowrap>Código</th>
@@ -285,13 +285,13 @@ if ($opcao != 'previden' && $opcao != 'irf'){
      <th class="borda" width="80" nowrap>Proventos</th>
      <th class="borda" width="80" nowrap>Descontos</th>
      <th class="borda" width="80" nowrap>Prov/Desc</th>
-    <?if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
+    <?php if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
        <th class="borda" style="font-size:12px" nowrap>Tipo</th>
-    <?
+    <?php 
      }
      ?>
    </tr>
-<?
+<?php 
 
 $cor="#F0F0F0";
     for($x=0;$x<pg_numrows($result);$x++){
@@ -308,19 +308,19 @@ $cor="#F0F0F0";
            <td align="right" style="font-size:12px" nowrap  bgcolor="#ddd">&nbsp;<strong><?=db_formatar($provento,'f')?></strong></td>
            <td align="right" style="font-size:12px" nowrap  bgcolor="#ddd">&nbsp;<strong><?=db_formatar($desconto,'f')?></strong></td>
            <td align="left" style="font-size:12px" nowrap  bgcolor="#ddd">&nbsp;<strong><?=$provdesc?></strong></td>
-           <?if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
+           <?php if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
               <td align="left" style="font-size:12px" nowrap  bgcolor="#ddd">&nbsp;<?=$tipo?></td>
-	   <?}?>
+	   <?php }?>
            </tr>
            <tr>
            <td align="center" colspan="3" style="font-size:12px" nowrap  bgcolor="#ddd">&nbsp;<strong>LÍQUIDO<strong></td>
            <td colspan="2" align="right" style="font-size:12px" nowrap  bgcolor="#ddd">&nbsp;<strong><?=db_formatar($provento-$desconto,'f')?></strong></td>
            <td align="left" style="font-size:12px" nowrap  bgcolor="#ddd">&nbsp;<strong><?=$provdesc?></strong></td>
-           <?if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
+           <?php if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
               <td align="left" style="font-size:12px" nowrap  bgcolor="#ddd">&nbsp;<?=$tipo?></td>
-	   <?}?>
+	   <?php }?>
            </tr>
-<?
+<?php 
          }else{
 ?>
            <tr>
@@ -330,11 +330,11 @@ $cor="#F0F0F0";
            <td align="right" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($provento,'f')?>&nbsp;</td>
            <td align="right" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($desconto,'f')?>&nbsp;</td>
            <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$provdesc?>&nbsp;</td>
-           <?if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
+           <?php if ($opcao == 'ferias' || $opcao == 'rescisao'){?>
               <td align="left" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=$tipo?></td>
-	   <?}?>
+	   <?php }?>
            </tr>
-<?
+<?php 
         }
     }
 
@@ -347,7 +347,7 @@ $cor="#F0F0F0";
      <th class="borda" style="font-size:12px" nowrap>Base</th>
      <th class="borda" style="font-size:12px" nowrap>Desconto</th>
    </tr>
-<?
+<?php 
 
 $cor="#EFE029";
     $tot_base_sal = 0;
@@ -383,7 +383,7 @@ $cor="#EFE029";
           <td align="right" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($r60_novod,'f')?></td>
 	</tr>
 
-<?
+<?php 
    }
 ?>
         <tr>
@@ -407,7 +407,7 @@ $cor="#EFE029";
           <td align="right" style="font-size:12px" nowrap bgcolor="#ddd">&nbsp;<strong><?=db_formatar($tot_base_fer,'f')?></strong></td>
           <td align="right" style="font-size:12px" nowrap bgcolor="#ddd">&nbsp;<strong><?=db_formatar($tot_desc_fer,'f')?></strong></td>
 	</tr>
-<?
+<?php 
 }elseif ($opcao == 'irf'){
 ?>
      <th class="borda" style="font-size:12px" nowrap>Código</th>
@@ -417,7 +417,7 @@ $cor="#EFE029";
      <th class="borda" style="font-size:12px" nowrap>Base</th>
      <th class="borda" style="font-size:12px" nowrap>Desconto</th>
    </tr>
-<?
+<?php 
 
 $cor="#EFE029";
     $tot_base_sal = 0;
@@ -453,7 +453,7 @@ $cor="#EFE029";
           <td align="right" style="font-size:12px" nowrap bgcolor="<?=$cor?>">&nbsp;<?=db_formatar($r61_novod,'f')?></td>
 	</tr>
 
-<?
+<?php 
    }
 ?>
         <tr>
@@ -477,7 +477,7 @@ $cor="#EFE029";
           <td align="right" style="font-size:12px" nowrap bgcolor="#ddd">&nbsp;<strong><?=db_formatar($tot_base_fer,'f')?></strong></td>
           <td align="right" style="font-size:12px" nowrap bgcolor="#ddd">&nbsp;<strong><?=db_formatar($tot_desc_fer,'f')?></strong></td>
 	</tr>
-<?
+<?php 
 
 }
 

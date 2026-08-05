@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  *     E-cidade Software Publico para Gestao Municipal
  *  Copyright (C) 2009  DBSeller Servicos de Informatica
@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE db_bancos
 class cl_db_bancos {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $db90_codban = null;
-   var $db90_descr = null;
-   var $db90_digban = null;
-   var $db90_abrev = null;
-   var $db90_logo = 0;
+   public $db90_codban = null;
+   public $db90_descr = null;
+   public $db90_digban = null;
+   public $db90_abrev = null;
+   public $db90_logo = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  db90_codban = varchar(10) = Código do banco FEBRABAN 
                  db90_descr = varchar(40) = Descrição 
                  db90_digban = varchar(2) = Digito Verificador do Codigo do Banco 
@@ -56,10 +56,10 @@ class cl_db_bancos {
                  db90_logo = oid = Arquivo do logo 
                  ";
    //funcao construtor da classe
-   function cl_db_bancos() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_bancos");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -120,7 +120,7 @@ class cl_db_bancos {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de bancos ($this->db90_codban) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de bancos já Cadastrado";
@@ -144,14 +144,14 @@ class cl_db_bancos {
      $resaco = $this->sql_record($this->sql_query_file($this->db90_codban));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7148,'$this->db90_codban','I')");
-       $resac = db_query("insert into db_acount values($acount,1185,7148,'','".AddSlashes(pg_result($resaco,0,'db90_codban'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1185,7149,'','".AddSlashes(pg_result($resaco,0,'db90_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1185,11724,'','".AddSlashes(pg_result($resaco,0,'db90_digban'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1185,11725,'','".AddSlashes(pg_result($resaco,0,'db90_abrev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1185,11726,'','".AddSlashes(pg_result($resaco,0,'db90_logo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1185,7148,'','".AddSlashes(pg_fetch_result($resaco,0,'db90_codban'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1185,7149,'','".AddSlashes(pg_fetch_result($resaco,0,'db90_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1185,11724,'','".AddSlashes(pg_fetch_result($resaco,0,'db90_digban'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1185,11725,'','".AddSlashes(pg_fetch_result($resaco,0,'db90_abrev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1185,11726,'','".AddSlashes(pg_fetch_result($resaco,0,'db90_logo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -160,10 +160,10 @@ class cl_db_bancos {
       $this->atualizacampos();
      $sql = " update db_bancos set ";
      $virgula = "";
-     if(trim($this->db90_codban)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db90_codban"])){
+     if(trim((string) $this->db90_codban)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db90_codban"])){
        $sql  .= $virgula." db90_codban = '$this->db90_codban' ";
        $virgula = ",";
-       if(trim($this->db90_codban) == null ){
+       if(trim((string) $this->db90_codban) == null ){
          $this->erro_sql = " Campo Código do banco FEBRABAN nao Informado.";
          $this->erro_campo = "db90_codban";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_db_bancos {
          return false;
        }
      }
-     if(trim($this->db90_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db90_descr"])){
+     if(trim((string) $this->db90_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db90_descr"])){
        $sql  .= $virgula." db90_descr = '$this->db90_descr' ";
        $virgula = ",";
-       if(trim($this->db90_descr) == null ){
+       if(trim((string) $this->db90_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "db90_descr";
          $this->erro_banco = "";
@@ -186,15 +186,15 @@ class cl_db_bancos {
          return false;
        }
      }
-     if(trim($this->db90_digban)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db90_digban"])){
+     if(trim((string) $this->db90_digban)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db90_digban"])){
        $sql  .= $virgula." db90_digban = '$this->db90_digban' ";
        $virgula = ",";
      }
-     if(trim($this->db90_abrev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db90_abrev"])){
+     if(trim((string) $this->db90_abrev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db90_abrev"])){
        $sql  .= $virgula." db90_abrev = '$this->db90_abrev' ";
        $virgula = ",";
      }
-     if(trim($this->db90_logo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db90_logo"])){
+     if(trim((string) $this->db90_logo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db90_logo"])){
        $sql  .= $virgula." db90_logo = $this->db90_logo ";
        $virgula = ",";
      }
@@ -206,19 +206,19 @@ class cl_db_bancos {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7148,'$this->db90_codban','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db90_codban"]))
-           $resac = db_query("insert into db_acount values($acount,1185,7148,'".AddSlashes(pg_result($resaco,$conresaco,'db90_codban'))."','$this->db90_codban',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1185,7148,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db90_codban'))."','$this->db90_codban',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db90_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1185,7149,'".AddSlashes(pg_result($resaco,$conresaco,'db90_descr'))."','$this->db90_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1185,7149,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db90_descr'))."','$this->db90_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db90_digban"]))
-           $resac = db_query("insert into db_acount values($acount,1185,11724,'".AddSlashes(pg_result($resaco,$conresaco,'db90_digban'))."','$this->db90_digban',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1185,11724,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db90_digban'))."','$this->db90_digban',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db90_abrev"]))
-           $resac = db_query("insert into db_acount values($acount,1185,11725,'".AddSlashes(pg_result($resaco,$conresaco,'db90_abrev'))."','$this->db90_abrev',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1185,11725,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db90_abrev'))."','$this->db90_abrev',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db90_logo"]))
-           $resac = db_query("insert into db_acount values($acount,1185,11726,'".AddSlashes(pg_result($resaco,$conresaco,'db90_logo'))."','$this->db90_logo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1185,11726,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db90_logo'))."','$this->db90_logo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -263,14 +263,14 @@ class cl_db_bancos {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7148,'$db90_codban','E')");
-         $resac = db_query("insert into db_acount values($acount,1185,7148,'','".AddSlashes(pg_result($resaco,$iresaco,'db90_codban'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1185,7149,'','".AddSlashes(pg_result($resaco,$iresaco,'db90_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1185,11724,'','".AddSlashes(pg_result($resaco,$iresaco,'db90_digban'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1185,11725,'','".AddSlashes(pg_result($resaco,$iresaco,'db90_abrev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1185,11726,'','".AddSlashes(pg_result($resaco,$iresaco,'db90_logo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1185,7148,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db90_codban'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1185,7149,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db90_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1185,11724,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db90_digban'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1185,11725,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db90_abrev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1185,11726,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db90_logo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_bancos
@@ -330,7 +330,7 @@ class cl_db_bancos {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_bancos";
@@ -344,7 +344,7 @@ class cl_db_bancos {
    function sql_query ( $db90_codban=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -365,7 +365,7 @@ class cl_db_bancos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -377,7 +377,7 @@ class cl_db_bancos {
    function sql_query_empage ( $db90_codban=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,7 +405,7 @@ class cl_db_bancos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_db_bancos {
    function sql_query_file ( $db90_codban=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,7 +438,7 @@ class cl_db_bancos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

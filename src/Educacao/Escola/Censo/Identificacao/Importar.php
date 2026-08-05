@@ -47,7 +47,7 @@ class Importar
      */
     private $pessoas = [];
 
-    public function importar(stdClass $file)
+    public function __construct(stdClass $file)
     {
         $this->validar($file);
         $this->lerArquivo($file);

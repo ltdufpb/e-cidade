@@ -35,14 +35,14 @@ abstract class Configuracao
      */
     public function toArray()
     {
-        return array(
+        return [
             'sequencial' => $this->getSequencial(),
             'relatorio' => $this->getRelatorio()->getSequencial(),
             'linha' => $this->getLinha()->getLinha(),
             'ordemLinha' => $this->getLinha()->getOrdem(),
             'ano' => $this->getAno(),
             'filtro' => $this->getFiltro(),
-        );
+        ];
     }
 
     /**

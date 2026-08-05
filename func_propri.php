@@ -1,4 +1,4 @@
-<?
+<?php 
 /*
  *     E-cidade Software Publico para Gestao Municipal                
  *  Copyright (C) 2009  DBselller Servicos de Informatica             
@@ -32,7 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_propri_classe.php"));
 db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $_parseStr);
+extract($_parseStr, EXTR_SKIP);
 $clpropri = new cl_propri;
 $clpropri->rotulo->label("j42_matric");
 $clpropri->rotulo->label("j42_numcgm");
@@ -54,7 +55,7 @@ $clpropri->rotulo->label("j42_numcgm");
               <?=$Lj42_matric?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j42_matric",4,$Ij42_matric,true,"text",4,"","chave_j42_matric");
 		       ?>
             </td>
@@ -64,7 +65,7 @@ $clpropri->rotulo->label("j42_numcgm");
               <?=$Lj42_numcgm?>
             </td>
             <td width="96%" align="left" nowrap> 
-              <?
+              <?php 
 		       db_input("j42_numcgm",4,$Ij42_numcgm,true,"text",4,"","chave_j42_numcgm");
 		       ?>
             </td>
@@ -82,7 +83,7 @@ $clpropri->rotulo->label("j42_numcgm");
   </tr>
   <tr> 
     <td align="center" valign="top"> 
-      <?
+      <?php 
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            $campos = "propri.*";
@@ -110,14 +111,14 @@ $clpropri->rotulo->label("j42_numcgm");
 </table>
 </body>
 </html>
-<?
+<?php 
 if(!isset($pesquisa_chave)){
   ?>
   <script>
 document.form2.chave_j42_matric.focus();
 document.form2.chave_j42_matric.select();
   </script>
-  <?
+  <?php 
 }
 ?>
 <script type="text/javascript">

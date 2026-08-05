@@ -1376,7 +1376,7 @@ abstract class DiarioClassePdf extends FpdfMultiCellBorder
         $descricaoLegenda['S'] = "S - Sexo";
         $descricaoLegenda['FA'] = "FA - Faltas Abonadas";
 
-        $legendasImprimir = array();
+        $legendasImprimir = [];
 
         foreach ($legendas as $sigla => $legenda) {
             if ($legenda) {

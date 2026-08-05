@@ -49,7 +49,7 @@ class RelatorioProfessorEscolaSintetico extends RelatorioProfessorEscola {
    */
   private function organizaDados($oEscola) {
 
-    $aDadosOrganizados = array();
+    $aDadosOrganizados = [];
 
     foreach ($oEscola->aProfessores as $oProfessor) {
       $oDadosProfissional = new stdClass();
@@ -58,16 +58,16 @@ class RelatorioProfessorEscolaSintetico extends RelatorioProfessorEscola {
       if (isset($oProfessor->dtSaida)) {
           $oDadosProfissional->dtSaida  = $oProfessor->dtSaida;
       }
-      $oDadosProfissional->aAreas = array();
+      $oDadosProfissional->aAreas = [];
 
 
       foreach ($oProfessor->aAreaTrabalho as $oAreaTrabalho) {
 
-        if ( !array_key_exists($oAreaTrabalho->iAreaTrabalho, $oDadosProfissional->aAreas) ) {
+        if ( !array_key_exists((string) $oAreaTrabalho->iAreaTrabalho, $oDadosProfissional->aAreas) ) {
 
           $oArea                  = new stdClass();
           $oArea->sAreaTrabalho   = $oAreaTrabalho->sAreaTrabalho;
-          $oArea->aRegimeTrabalho[$oAreaTrabalho->iRegime] = array();
+          $oArea->aRegimeTrabalho[$oAreaTrabalho->iRegime] = [];
           $oDadosProfissional->aAreas[$oAreaTrabalho->iAreaTrabalho] = $oArea;
         }
 
